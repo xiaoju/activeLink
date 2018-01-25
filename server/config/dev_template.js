@@ -5,5 +5,8 @@ module.exports = {
   googleClientID: 'xxxxxxx-xxxxxxx.apps.googleusercontent.com',
   googleClientSecret: 'xxxxxxxxxx',
   mongoURI: 'mongodb://login:password.mlab.com:project_id/project_name',
-  cookieKey: 'any_random_a_to_z_string'
+  cookieKey: 'any_random_a_to_z_string',
+  cookieKey: 'gyhjhgfcvhkjlghfdrtgcfhvbnnjhgkjfcghvhbn',
+  stripePublishableKey: 'pk_test_xxxxxxx',
+  stripeSecretKey: 'sk_test_xxxxxxxxx'
 };
