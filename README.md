@@ -2,12 +2,13 @@
 
 ## Purpose
 
-* ActiveLink is a web-based platform to manage extra-curricular activities at a school:
-  * users:
-    * plaftormMaster: manages the platform.
-    * providers: offer classes for kids, receive paiements.
-    * parents: register their kids to classes, pay for the classes.
-    * kids: attend the classes.
+* ActiveLink is a free and open-source 'School Management System' currently solely focused on management of extracurricular activities: manage registrations to classes and payments.
+* Typical users of activeLink are:
+  * teachers: offer classes for kids, receive payments.
+  * vendor: several teachers can be associated into a single 'vendor', for example if the payments land onto the same bank account.
+  * parents: register their kids to classes, pay for the classes.
+  * kids: attend the classes.
+  * plaftormMaster: manages the platform.
 
 ## References
 
@@ -17,6 +18,16 @@
 ## Installation
 
 * try online: https://activelink.herokuapp.com
+
+Feel free to log in as teacher, parent or platformMaster, and create classes, register to them, send payments using Stripe test card, etc.
+
+Access codes:
+//TODO
+platformMaster
+teacher
+parent
+test credit card number
+
 * try locally:
 
   * prerequisites: available accounts at heroku.com, mLab.com and google developers.
@@ -35,13 +46,30 @@
   * A browser window should automatically open at http://localhost:3000
 
 * install for production
-  * prerequisites: GitHub, Heroku, mlab and google accounts
-  *
-  // TODO
+
+  * prerequisites: accounts by GitHub, Heroku (for app hosting), Sprite (for payments handling), mlab (for database hosting) and google (for OAuth2 authentication)
+  * setup Google+ API for OAuth2 authentication
+  * setup the environment variables for development and production:
+
+    * on the development machine:
+      `/config/dev.js`
+      `/.env.development`
+      `/.env.production`
+    * on the app hosting server:
+
+      * Heroku.com menus: select the app, then `Settings` > `Config Variables` > `Reveal Config Vars` environment variables, etc.:
+        * `cookieKey`: a-z 0-9 random string
+        * `GOOGLE_CLIENT_ID`: refer to google development console (Google+ API)
+        * `GOOGLE_CLIENT_SECRET`: refer to google development console (Google+ API)
+        * `MONGO_URI`: from mlab project
+        * `STRIPE_PUBLISHABLE_KEY`: pk_test_xxxxxx
+        * `STRIPE_SECRET_KEY`: sk_test_xxxxxx
 
 ## Architecture
 
-### Web stack
+### Technology stack
+
+* N.E.R.D.: Node.js, Express, React... plus any Database (Mango or PostgreSQL)
 
 * front end: React, Redux
 * back end: node.js, Express, Passport, oauth2, mongoose
