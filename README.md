@@ -19,7 +19,7 @@
 
 * try online: https://activelink.herokuapp.com
 
-Feel free to log in as teacher, parent or platformMaster, and create classes, register to them, send payments using Stripe test card, etc.
+Feel free to log in as teacher, parent or platformMaster, and create classes, register to them, send payments using Stripe test card (4242 4242 4242 4242), etc.
 
 Access codes:
 //TODO
@@ -45,6 +45,8 @@ test credit card number
 
   * A browser window should automatically open at http://localhost:3000
 
+  * Test credit card payments using the test number offered by Stripe, e.g. '4242 4242 4242 4242', as per https://stripe.com/docs/testing#cards.
+
 * install for production
 
   * prerequisites: accounts by GitHub, Heroku (for app hosting), Sprite (for payments handling), mlab (for database hosting) and google (for OAuth2 authentication)
@@ -64,6 +66,12 @@ test credit card number
         * `MONGO_URI`: from mlab project
         * `STRIPE_PUBLISHABLE_KEY`: pk_test_xxxxxx
         * `STRIPE_SECRET_KEY`: sk_test_xxxxxx
+
+push to heroku:
+`git subtree push --prefix server heroku master`
+
+force push to heroku:
+`git push heroku`git subtree split --prefix server master`:master --force`
 
 ## Architecture
 
