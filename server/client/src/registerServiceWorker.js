@@ -19,7 +19,7 @@ const isLocalhost = Boolean(
 );
 
 export default function register() {
-  console.log('registerServiceWorker.js is desactivated');
+  console.log('registerServiceWorker.js does not activate');
   // if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   //   // The URL constructor is available in all browsers that support SW.
   //   const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
@@ -113,6 +113,7 @@ export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
+      console.log('service worker just got desactivated');
     });
   }
 }
