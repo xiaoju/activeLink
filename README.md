@@ -31,23 +31,30 @@ test credit card number
 * try locally:
 
   * prerequisites: available accounts at heroku.com, mLab.com and google developers.
-  * clone the repository:
-    `clone https://github.com/xiaoju/activeLink.git`
-    `cd activeLink`
 
-  * add credentials for Google Developer and mlab projects, into a new `/config/dev.js` file, using same format as per `/config/dev_template.js`
+* github authentication:
+  * create credentials for the activeLink app: github.com > profile menu, upper right of screen > settings > developper settings > OAuth Apps > New OAuth App > fill in the form:
+    Homepage URL: http://localhost:3000
+    Authorization callback URL: http://localhost:3000/auth/github/callback
+    And copy the 'client ID' and 'Client Secret' to '/server/config/dev.js'
 
-  * install:
-    `npm install`
+- clone the repository:
+  `clone https://github.com/xiaoju/activeLink.git`
+  `cd activeLink`
 
-  * start:
-    `npm run dev`
+- add credentials for Google Developer and mlab projects, into a new `/config/dev.js` file, using same format as per `/config/dev_template.js`
 
-  * A browser window should automatically open at http://localhost:3000
+- install:
+  `npm install`
 
-  * Test credit card payments using the test number offered by Stripe, e.g. '4242 4242 4242 4242', as per https://stripe.com/docs/testing#cards.
+- start:
+  `npm run dev`
 
-* install for production
+- A browser window should automatically open at http://localhost:3000
+
+- Test credit card payments using the test number offered by Stripe, e.g. '4242 4242 4242 4242', as per https://stripe.com/docs/testing#cards.
+
+- install for production
 
   * prerequisites: accounts by GitHub, Heroku (for app hosting), Sprite (for payments handling), mlab (for database hosting) and google (for OAuth2 authentication)
   * setup Google+ API for OAuth2 authentication
