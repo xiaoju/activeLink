@@ -1,5 +1,5 @@
 const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
@@ -16,30 +16,26 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-// passport.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: keys.googleClientID,
-//       clientSecret: keys.googleClientSecret,
-//       callbackURL: '/auth/google/callback',
-//       proxy: true
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       console.log('accessToken: ', accessToken);
-//       console.log('refreshToken: ', refreshToken);
-//       console.log('profile: ', profile);
-//
-//       const existingUser = await User.findOne({ googleId: profile.id });
-//
-//       if (existingUser) {
-//         return done(null, existingUser);
-//       } else {
-//         const user = await new User({ googleId: profile.id }).save();
-//         done(null, user);
-//       }
-//     }
-//   )
-// );
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback',
+      proxy: true
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        return done(null, existingUser);
+      } else {
+        const user = await new User({ googleId: profile.id }).save();
+        done(null, user);
+      }
+    }
+  )
+);
 
 passport.use(
   new GithubStrategy(
@@ -50,12 +46,12 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ googleId: profile.id });
+      const existingUser = await User.findOne({ githubId: profile.id });
 
       if (existingUser) {
         return done(null, existingUser);
       } else {
-        const user = await new User({ googleId: profile.id }).save();
+        const user = await new User({ githubId: profile.id }).save();
         done(null, user);
       }
     }

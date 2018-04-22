@@ -10,14 +10,12 @@ class Header extends Component {
         return;
       case false:
         return [
-          // <li>
-          //   <a href="/auth/google">Login with Google</a>
-          // </li>,
-          // <li key="0">
-          <a key="0" href="/auth/github">
-            Login with Github
-          </a>
-          // </li>
+          <li key="9">
+            <a href="/auth/google">Login with Google</a>
+          </li>,
+          <li key="8">
+            <a href="/auth/github">Login with Github</a>
+          </li>
         ];
       default:
         return [
@@ -44,9 +42,7 @@ class Header extends Component {
           >
             activeLink
           </Link>
-          <ul className="right">
-            <li>{this.renderContent()}</li>
-          </ul>
+          <ul className="right">{this.renderContent()}</ul>
         </div>
       </nav>
     );
