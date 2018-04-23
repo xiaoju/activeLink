@@ -12,6 +12,11 @@ module.exports = app => {
   );
 
   app.get(
+    '/auth/local',
+    passport.authenticate('local', { scope: ['user:email'] })
+  );
+
+  app.get(
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
