@@ -5,6 +5,8 @@ import * as actions from '../actions';
 
 import Header from './Header';
 import Events from './Events';
+import Login from './Login';
+import LoginForm from './LoginForm';
 // const Dashboard = () => <h2>Dashboard</h2>;
 // const CreateItem = () => <h2>CreateItem</h2>;
 
@@ -20,6 +22,8 @@ class App extends Component {
           <div>
             <Header />
             <Route path="/" component={Events} />
+            <Route path="/login" component={Login} />
+            <Route path="/loginform" component={LoginForm} />
             {/* <Route path="/createItem" component={CreateItem} />
             <Route path="/dashboard" component={Dashboard} /> */}
           </div>

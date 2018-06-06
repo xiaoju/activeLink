@@ -7,10 +7,16 @@ class Events extends Component {
     return (
       <div style={{ textAlign: 'center' }}>
         {/* <button className="btn">Show past events</button> */}
-        <p>Credits: {this.props.auth && this.props.auth.credits}</p>
+        {/* <p>Credits: {this.props.auth && this.props.auth.credits}</p> */}
         <p>
-          First Event:{' '}
-          {this.props.events && this.props.events.events.abc01.title}
+          {/* First Event: <br /> */}
+          <h5>{this.props.data && this.props.data.data.events.e01.name}</h5>
+          <br />
+          {this.props.data && this.props.data.data.items.r1.name}
+          <br />
+          {this.props.data && this.props.data.data.items.r2.name}
+          <br />
+          {this.props.data && this.props.data.data.items.r3.name}
           {!this.props.auth && 'please log in to show the events'}
         </p>
       </div>
@@ -18,8 +24,8 @@ class Events extends Component {
   }
 }
 
-function mapStateToProps({ auth, events }) {
-  return { auth, events };
+function mapStateToProps({ auth, data }) {
+  return { auth, data };
 }
 
 export default connect(mapStateToProps, actions)(Events);

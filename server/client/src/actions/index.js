@@ -4,7 +4,7 @@ import { FETCH_USER, FETCH_EVENTS } from './types';
 export const fetchUser = () => async dispatch => {
   const thisUser = await axios.get('/api/current_user');
   dispatch({ type: FETCH_USER, payload: thisUser.data });
-  const thisEvent = thisUser.data && (await axios.get('/api/events'));
+  const thisEvent = thisUser.data && (await axios.get('/api/data'));
   dispatch({ type: FETCH_EVENTS, payload: thisEvent.data });
 };
 

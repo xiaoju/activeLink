@@ -1,8 +1,9 @@
 const requireLogin = require('../middlewares/requireLogin');
-const events = require('../models/dummyData').events;
+const data = require('../models/dummyData').data;
+// const items = require('../models/dummyData').items;
 
 module.exports = app => {
-  app.get('/api/events', requireLogin, (req, res) => {
-    res.send({ events });
+  app.get('/api/data', requireLogin, (req, res) => {
+    res.send({ data });
   });
 };

@@ -5,7 +5,7 @@
 * ActiveLink is a free and open-source 'School Management System' currently solely focused on management of extracurricular activities: manage registrations to classes and payments.
 * Typical users of activeLink are:
   * teachers: offer classes for kids, receive payments.
-  * vendor: several teachers can be associated into a single 'vendor', for example if the payments land onto the same bank account.
+  * vendors: the organization behind a group of teachers, for example if the payments of these several teachers land onto the same bank account.
   * parents: register their kids to classes, pay for the classes.
   * kids: attend the classes.
   * plaftormMaster: manages the platform.
@@ -81,6 +81,55 @@ force push to heroku:
 `git push heroku`git subtree split --prefix server master`:master --force`
 
 ## Architecture
+
+
+## authentication process
+
+### initial invitation
+- platformManager goes to `/invite`, creates a list of "new parents", with their name, surname, email addresses (mandatory), kids info.
+- then selects parents and clicks "send invitation".
+- For each parent, a temporary password is created and stored (hashed+salted),
+- and an invitation email is sent to parents with the clear text password inside a link (same kind of email as if parent asked to reset password)
+- parent clicks link, and is logged in through his email + temporary password,
+- which only give access to sign up page only.
+- Parent arrives to signup page, there he chooses login method (email+password or social)
+- then either logs in with social, either choose a new password,
+- if social login works / a password got typed, then parent profile is updated
+
+### normal log in
+- click `sign in` (if signed in already, then this becomes a `members` menu)
+- `/signin` opens
+- user clicks social auth button or fills in email + password + click
+- logged in! (or back to non-members page with a flash message)
+
+### building the app
+- build the front end, very basic, but all the pages: `/signin`, `/signup`, `/invite`, `/members`.
+- create the routes.
+- build the auth logic, starting with
+
+  - simple /signup page:
+    - needs email + password (from an email link) to access
+    - link to /auth/github
+- /auth/github/callback page
+
+### pages content
+- `/signin`:
+  - form: `email`, `password` + `login` button
+  - buttons for each social auth (Github, google, ...) (links to `/auth/github`, etc ) / ...
+  - link back to non-members area
+  - "forgot password" link to '/passwordLost'
+  - link to `/requestInvitation`
+- `/signup`
+- `/requestInvitation`: a contact form for parents to request an invitation. Needs give name/surname of parent, phone number, email, and for each kid: number of kids in school, name/surname of kid, birth date of kid, class)
+- `/members`: the landing page for members
+  - 'Next events:' (cards, pulled from database)
+  - link to `/invite` (only for platform masters: to invite parents to the platform)
+  - link to `/profile` (to view and edit the information about me)
+- `/invite`: only access for teachers (and platform master), to invite new parents to the platform
+  - a form to upload a .txt list of emails (mandatory), name, surname, kids info.
+  - show preview of the data
+  - teachers validates, and data goes into database and invitation emails are sent out.
+
 
 ### Technology stack
 

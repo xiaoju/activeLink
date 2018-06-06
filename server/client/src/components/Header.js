@@ -11,13 +11,13 @@ class Header extends Component {
       case false:
         return [
           <li key="9">
-            <a href="/auth/google">Login with Google</a>
+            <a href="/auth/google">Login through Google</a>
           </li>,
-          <li key="8">
-            <a href="/auth/github">Login with Github</a>
-          </li>,
+          // <li key="8">
+          //   <a href="/auth/github">Login with Github</a>
+          // </li>,
           <li key="7">
-            <a href="/auth/local">Login with username+password</a>
+            <a href="/auth/local">Login through username+password</a>
           </li>
         ];
       default:
