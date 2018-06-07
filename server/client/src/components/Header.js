@@ -25,29 +25,36 @@ class Header extends Component {
           <li key="1">
             <Payments />
           </li>,
-          <li key="2" style={{ margin: '0 10px' }}>
-            Credits: {this.props.auth.credits}
-          </li>,
-          <li key="3">
-            <a href="/api/logout">Logout</a>
+          // <li key="2" style={{ margin: '0 10px' }}>
+          //   Credits: {this.props.auth.credits}
+          // </li>,
+          <li key="5">
+            <a href="/api/profile">
+              <i className="medium material-icons">account_box</i>
+            </a>
           </li>
+          // <li key="3">
+          //   <a href="/api/logout">Logout</a>
+          // </li>
         ];
     }
   }
 
   render() {
     return (
-      <nav>
-        <div className="nav-wrapper">
-          <Link
-            to={this.props.auth ? '/dashboard' : '/'}
-            className="left brand-logo"
-          >
-            activeLink
-          </Link>
-          <ul className="right">{this.renderContent()}</ul>
-        </div>
-      </nav>
+      <div className="navbar-fixed">
+        <nav>
+          <div className="nav-wrapper deep-purple lighten-2">
+            <Link
+              to={this.props.auth ? '/dashboard' : '/'}
+              className="left brand-logo"
+            >
+              English Link
+            </Link>
+            <ul className="right">{this.renderContent()}</ul>
+          </div>
+        </nav>
+      </div>
     );
   }
 }

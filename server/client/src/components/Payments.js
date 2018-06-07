@@ -7,16 +7,20 @@ class Payments extends Component {
   render() {
     return (
       <StripeCheckout
-        name="activeLink"
-        description="USD 5 for 5 email credits"
-        amount={500}
+        name="English Link"
+        description="2018-2019 registrations"
+        amount={25500}
         token={token => this.props.handleToken(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
       >
-        <button className="btn">Add Credits</button>
+        <a class="waves-effect waves-light btn-large orange lighten-1">
+          <i class="material-icons left">shopping_cart</i>255 &euro;
+        </a>
       </StripeCheckout>
     );
   }
 }
 
 export default connect(null, actions)(Payments);
+
+// {this.props.registrationForm.totalPrice}

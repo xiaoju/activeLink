@@ -29,8 +29,14 @@ module.exports = {
     events: {
       e01: {
         id: 'e01',
-        name: 'Activités Péri-Scolaires 2018-2019',
-        items: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
+        name: '2018-2019 registrations are open!',
+        items: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'],
+        instructions: [
+          'First please update your profile (name of kids, etc) by clicking onto the top right button.',
+          'After your profile is up-to-date, you can select the activities for each of your kids, below in this page.',
+          "Finally, confirm registration by paying with the orange button on top of this page. Payments are securely processed by 'Stripe' and English Link never comes to see credit card numbers neither passwords.",
+          'Any questions? You can contact Catherine Souchard per phone: 06 32 54 91 62 or email: contactsecretary@englishlink.fr'
+        ]
       }
     },
     items: {
@@ -39,7 +45,8 @@ module.exports = {
         name: 'Registration to the association',
         description:
           'The registration to the English Link association is required to join the activities.',
-        priceFamily: 30
+        priceFamily: 30,
+        mandatory: true
       },
       r1: {
         id: 'r1',
@@ -48,7 +55,7 @@ module.exports = {
         position: 1,
         grades: ['GS'],
         description:
-          'English Classes for bilingual kids of Grande Section, twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family, for the english classes in maternelle or Petit College.',
+          'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family who join the english classes in maternelle or primary.',
         priceFirstKid: 225,
         priceSecondKid: 165,
         teacherName: 'Judith Morisset'
@@ -60,7 +67,7 @@ module.exports = {
         position: 2,
         grades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2'],
         description:
-          'English Classes for bilingual kids of CP to CM2. Adapted from the british national curriculum. 2 hours per week. CP & CE1 : 1 hour during class time + 1 hour Thursday 15h45 to 16h45. CE2,CM1 & CM2 : during normal class time. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family, for the english classes in maternelle or Petit College.',
+          'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family who join the english classes in maternelle or primary.',
         priceFirstKid: 450,
         priceSecondKid: 390,
         teacherName: '???'
@@ -72,7 +79,7 @@ module.exports = {
         position: 3,
         grades: ['PS', 'MS', 'GS'],
         description:
-          'Fun gathering for english speakers, enjoying games, songs, activities and reading. For the kids in maternelle (PS, MS, GS). 1 hour per week, on Wednesday from 11:00 to 12:00.',
+          'Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.',
         priceFirstKid: 150,
         teacherName: '???'
       },
@@ -83,7 +90,7 @@ module.exports = {
         position: 4,
         grades: ['CP', 'CE1'],
         description:
-          'Dynamic and renewed activities in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books. A quiet time at the end of the week for all ages from CP to CM2. Monday 12:30-13:30.',
+          'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
         priceFirstKid: 180,
         teacherName: 'Judith Morisset'
       },
@@ -94,7 +101,7 @@ module.exports = {
         position: 5,
         grades: ['CE2', 'CM1', 'CM2'],
         description:
-          'Dynamic and renewed activities in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books. A quiet time at the end of the week for all ages from CP to CM2. Thursday 12:30-13:30.',
+          'Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.',
         priceFirstKid: 180,
         teacherName: 'Judith Morisset'
       },
@@ -105,7 +112,7 @@ module.exports = {
         position: 6,
         grades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2'],
         description:
-          'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books. A quiet time at the end of the week for all ages from CP to CM2. Friday 12:30-13:30.',
+          'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. For all ages from CP to CM2. Friday 12:30-13:30.',
         priceFirstKid: 105,
         teacherName: '???'
       },

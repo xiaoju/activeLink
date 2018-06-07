@@ -7,6 +7,7 @@ import Header from './Header';
 import Events from './Events';
 import Login from './Login';
 import LoginForm from './LoginForm';
+import Test from './Test';
 // const Dashboard = () => <h2>Dashboard</h2>;
 // const CreateItem = () => <h2>CreateItem</h2>;
 
@@ -21,6 +22,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Header />
+            {/* <Test /> */}
             <Route path="/" component={Events} />
             <Route path="/login" component={Login} />
             <Route path="/loginform" component={LoginForm} />

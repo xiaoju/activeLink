@@ -82,6 +82,8 @@ force push to heroku:
 
 ## Architecture
 
+- Total price is calculated within the front end, to allow for a fast interface and avoid useless calls to the backend as each checkbox gets toggled.
+- However the payment is based on a value calculated in the backend, based on the selected checkboxes (from frontend) and prices per item (from backend), to ensure the user cannot tinker with the amount to be paid.
 
 ## authentication process
 
