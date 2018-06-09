@@ -28,11 +28,11 @@ class Events02 extends Component {
           <div className="card deep-purple lighten-2">
             <div className="card-content">
               <span className="card-title">
-                <strong>{this.props.data.data.event.name}</strong>
+                <strong>{this.props.data.event.name}</strong>
               </span>
 
               <ol style={{ textAlign: 'left' }}>
-                {this.props.data.data.event.instructions.map(thisTextRow => (
+                {this.props.data.event.instructions.map(thisTextRow => (
                   <li>
                     <p>{thisTextRow}</p>
                   </li>
@@ -43,59 +43,55 @@ class Events02 extends Component {
         )}
         <div class="divider" />
         {this.props.data &&
-          this.props.data.data.event.items.map((thisItemId, i) => (
+          this.props.data.event.items.map((thisItemId, i) => (
             // console.log('TEST',thisItem,this.props.data.data.items[thisItem])
             <div>
               {/* Name of the class */}
               <h5>
-                <strong>{this.props.data.data.items[thisItemId].name}</strong>
+                <strong>{this.props.data.items[thisItemId].name}</strong>
               </h5>
 
               {/* Description of the class */}
-              <div>{this.props.data.data.items[thisItemId].description}</div>
+              <div>{this.props.data.items[thisItemId].description}</div>
 
               {/* Teacher name */}
-              {this.props.data.data.items[thisItemId].teacherName && (
+              {this.props.data.items[thisItemId].teacherName && (
                 <div>
-                  Animated by{' '}
-                  {this.props.data.data.items[thisItemId].teacherName}
+                  Animated by {this.props.data.items[thisItemId].teacherName}
                 </div>
               )}
 
               {/* when price is per family, not per kid */}
-              {this.props.data.data.items[thisItemId].priceFamily && (
+              {this.props.data.items[thisItemId].priceFamily && (
                 <div>
                   Price per family:{' '}
-                  {this.props.data.data.items[thisItemId].priceFamily / 100}{' '}
-                  EUR/year
+                  {this.props.data.items[thisItemId].priceFamily / 100} EUR/year
                 </div>
               )}
 
               {/* when there is only one price per kid, no discount for further ones */}
-              {this.props.data.data.items[thisItemId].priceFirstKid &&
-                !this.props.data.data.items[thisItemId].priceSecondKid && (
+              {this.props.data.items[thisItemId].priceFirstKid &&
+                !this.props.data.items[thisItemId].priceSecondKid && (
                   <div>
                     Price per kid:{' '}
-                    {this.props.data.data.items[thisItemId].priceFirstKid / 100}{' '}
+                    {this.props.data.items[thisItemId].priceFirstKid / 100}{' '}
                     EUR/year
                   </div>
                 )}
 
               {/* when there is a discount for next kids */}
-              {this.props.data.data.items[thisItemId].priceFirstKid &&
-                this.props.data.data.items[thisItemId].priceSecondKid && (
+              {this.props.data.items[thisItemId].priceFirstKid &&
+                this.props.data.items[thisItemId].priceSecondKid && (
                   <div>
                     <div>
                       Price 1st kid:{' '}
-                      {this.props.data.data.items[thisItemId].priceFirstKid /
-                        100}{' '}
+                      {this.props.data.items[thisItemId].priceFirstKid / 100}{' '}
                       EUR/year
                     </div>
 
                     <div>
                       Discounted price:{' '}
-                      {this.props.data.data.items[thisItemId].priceSecondKid /
-                        100}{' '}
+                      {this.props.data.items[thisItemId].priceSecondKid / 100}{' '}
                       EUR/year
                     </div>
                   </div>
@@ -103,11 +99,9 @@ class Events02 extends Component {
 
               {/* the checkboxes. */}
               <div>
-                {Object.keys(this.props.data.data.users)
+                {Object.keys(this.props.data.users)
                   .filter(thisUserId =>
-                    this.props.data.data.users[thisUserId].items.includes(
-                      thisItemId
-                    )
+                    this.props.data.users[thisUserId].items.includes(thisItemId)
                   )
                   .map(thisUserId => (
                     <div>
@@ -119,7 +113,7 @@ class Events02 extends Component {
                         // checked="checked"
                       />
                       <label for={thisItemId + '_' + thisUserId}>
-                        {this.props.data.data.users[thisUserId].label}
+                        {this.props.data.users[thisUserId].label}
                       </label>
                     </div>
                   ))}
