@@ -34,3 +34,9 @@ nav i.material-icons.large {
   font-size: 5px !important;
   line-height: 36px;
 }
+
+label {
+  font: red;
+  /* trying to change the aspect of the kid names in front of checkboxes
+  I want them black and bold */
+}

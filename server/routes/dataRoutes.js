@@ -1,5 +1,6 @@
 const requireLogin = require('../middlewares/requireLogin');
-const data = require('../models/dummyData').data;
+// const data = require('../models/dummyData').data;
+const data = require('../models/draftState');
 // const items = require('../models/dummyData').items;
 
 module.exports = app => {

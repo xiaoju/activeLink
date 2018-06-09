@@ -16,25 +16,27 @@ module.exports = {
         id: 'kid1',
         parents: ['parent1'],
         firstName: 'Mulan',
-        familyName: 'Clerambault'
+        familyName: 'Clerambault',
+        grade: 'CE2'
       },
       kid2: {
         id: 'kid2',
         parents: ['parent1'],
         firstName: 'Zilan',
-        familyName: 'Ning'
+        familyName: 'Ning',
+        grade: 'GS'
       }
     },
     schools: {},
     events: {
       e01: {
         id: 'e01',
-        name: '2018-2019 registrations are open!',
+        name: 'Registrations for 2018-2019 are open!',
         items: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'],
         instructions: [
           'First please update your profile (name of kids, etc) by clicking onto the top right button.',
           'After your profile is up-to-date, you can select the activities for each of your kids, below in this page.',
-          "Finally, confirm registration by paying with the orange button on top of this page. Payments are securely processed by 'Stripe' and English Link never comes to see credit card numbers neither passwords.",
+          "Finally, confirm registration by paying with the orange button on top of this page. Payments are securely processed by 'Stripe', so that English Link never comes to see credit card numbers neither passwords.",
           'Any questions? You can contact Catherine Souchard per phone: 06 32 54 91 62 or email: contactsecretary@englishlink.fr'
         ]
       }

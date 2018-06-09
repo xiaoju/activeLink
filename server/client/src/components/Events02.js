@@ -5,33 +5,10 @@ import { bindActionCreators } from 'redux';
 import { exportSelection } from '../actions/index';
 // import PropTypes from 'prop-types';
 
-class Events extends Component {
+class Events02 extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      total: 30,
-      kid1: {
-        r1: false,
-        r2: false,
-        r3: false,
-        r4: false,
-        r5: false,
-        r6: false,
-        r7: false
-      },
-      kid2: {
-        r1: false,
-        r2: false,
-        r3: false,
-        r4: false,
-        r5: false,
-        r6: false,
-        r7: false
-      }
-      // Object.keys(this.props.data.data.kids).map((thisKid)=>([thisKid]: [false, false, false, false, false, false, false],)
-      // this would be an array, still to convert to object...
-    };
-
+    this.state = {};
     this.toggle = this.toggle.bind(this);
   }
 
@@ -51,70 +28,107 @@ class Events extends Component {
           <div className="card deep-purple lighten-2">
             <div className="card-content">
               <span className="card-title">
-                <strong>{this.props.data.data.events.e01.name}</strong>
+                <strong>{this.props.data.data.event.name}</strong>
               </span>
 
               <ol style={{ textAlign: 'left' }}>
-                {this.props.data.data.events.e01.instructions.map(
-                  thisTextRow => (
-                    <li>
-                      <p>{thisTextRow}</p>
-                    </li>
-                  )
-                )}
+                {this.props.data.data.event.instructions.map(thisTextRow => (
+                  <li>
+                    <p>{thisTextRow}</p>
+                  </li>
+                ))}
               </ol>
             </div>
           </div>
         )}
-
         <div class="divider" />
         {this.props.data &&
-          Object.keys(this.props.data.data.items).map((thisItem, i) => (
+          this.props.data.data.event.items.map((thisItemId, i) => (
+            // console.log('TEST',thisItem,this.props.data.data.items[thisItem])
             <div>
-              <div className="" key={i}>
-                <h5>
-                  <strong>{this.props.data.data.items[thisItem].name}</strong>
-                </h5>
-                <div>{this.props.data.data.items[thisItem].description}</div>
-                {this.props.data.data.items[thisItem].teacherName && (
+              {/* Name of the class */}
+              <h5>
+                <strong>{this.props.data.data.items[thisItemId].name}</strong>
+              </h5>
+
+              {/* Description of the class */}
+              <div>{this.props.data.data.items[thisItemId].description}</div>
+
+              {/* Teacher name */}
+              {this.props.data.data.items[thisItemId].teacherName && (
+                <div>
+                  Animated by{' '}
+                  {this.props.data.data.items[thisItemId].teacherName}
+                </div>
+              )}
+
+              {/* when price is per family, not per kid */}
+              {this.props.data.data.items[thisItemId].priceFamily && (
+                <div>
+                  Price per family:{' '}
+                  {this.props.data.data.items[thisItemId].priceFamily / 100}{' '}
+                  EUR/year
+                </div>
+              )}
+
+              {/* when there is only one price per kid, no discount for further ones */}
+              {this.props.data.data.items[thisItemId].priceFirstKid &&
+                !this.props.data.data.items[thisItemId].priceSecondKid && (
                   <div>
-                    Animated by{' '}
-                    {this.props.data.data.items[thisItem].teacherName}
+                    Price per kid:{' '}
+                    {this.props.data.data.items[thisItemId].priceFirstKid / 100}{' '}
+                    EUR/year
                   </div>
                 )}
-                {this.props.data.data.items[thisItem].priceFamily && (
+
+              {/* when there is a discount for next kids */}
+              {this.props.data.data.items[thisItemId].priceFirstKid &&
+                this.props.data.data.items[thisItemId].priceSecondKid && (
                   <div>
-                    Price per family:{' '}
-                    {this.props.data.data.items[thisItem].priceFamily} EUR/year
-                  </div>
-                )}
-                {this.props.data.data.items[thisItem].priceFirstKid &&
-                  !this.props.data.data.items[thisItem].priceSecondKid && (
                     <div>
-                      Price per kid:{' '}
-                      {this.props.data.data.items[thisItem].priceFirstKid}{' '}
+                      Price 1st kid:{' '}
+                      {this.props.data.data.items[thisItemId].priceFirstKid /
+                        100}{' '}
                       EUR/year
                     </div>
-                  )}
 
-                {this.props.data.data.items[thisItem].priceFirstKid &&
-                  this.props.data.data.items[thisItem].priceSecondKid && (
                     <div>
-                      <div>
-                        Price 1st kid:{' '}
-                        {this.props.data.data.items[thisItem].priceFirstKid}{' '}
-                        EUR/year
-                      </div>
-
-                      <div>
-                        Discounted price:{' '}
-                        {this.props.data.data.items[thisItem].priceSecondKid}{' '}
-                        EUR/year
-                      </div>
+                      Discounted price:{' '}
+                      {this.props.data.data.items[thisItemId].priceSecondKid /
+                        100}{' '}
+                      EUR/year
                     </div>
-                  )}
+                  </div>
+                )}
 
-                {this.props.data.data.items[thisItem].priceFamily &&
+              {/* the checkboxes. */}
+              <div>
+                {Object.keys(this.props.data.data.users)
+                  .filter(thisUserId =>
+                    this.props.data.data.users[thisUserId].items.includes(
+                      thisItemId
+                    )
+                  )
+                  .map(thisUserId => (
+                    <div>
+                      <input
+                        type="checkbox"
+                        onChange={this.toggle}
+                        id={thisItemId + '_' + thisUserId}
+                        className="filled-in checkbox-orange"
+                        // checked="checked"
+                      />
+                      <label for={thisItemId + '_' + thisUserId}>
+                        {this.props.data.data.users[thisUserId].label}
+                      </label>
+                    </div>
+                  ))}
+              </div>
+
+              <div class="divider" />
+            </div>
+          ))}
+        {/* {this.props.data.data.items[thisItem].priceFamily &&
                   Object.keys(this.props.data.data.parents).map(
                     (thisParent, i) => (
                       <div key={i}>
@@ -146,9 +160,8 @@ class Events extends Component {
                         <span> xxx EUR</span>
                       </div>
                     )
-                  )}
-
-                {this.props.data &&
+                  )} */}
+        {/* {this.props.data &&
                   !this.props.data.data.items[thisItem].priceFamily &&
                   Object.keys(this.props.data.data.kids).map((thisKid, i) => (
                     <div className="kids" key={i}>
@@ -161,7 +174,6 @@ class Events extends Component {
                             this.props.data.data.items[thisItem].id
                           }
                           className="filled-in checkbox-orange"
-                          // checked="checked"
                         />
                         <label
                           for={
@@ -175,11 +187,7 @@ class Events extends Component {
 
                       <span> xxx EUR</span>
                     </div>
-                  ))}
-              </div>
-              <div class="divider" />
-            </div>
-          ))}
+                  ))} */}
         <br />
       </div>
     );
@@ -202,7 +210,7 @@ function mapStateToProps({ auth, data, selection }) {
 export default connect(
   mapStateToProps
   // , mapDispatchToProps
-)(Events);
+)(Events02);
 
 // Events.propTypes = {
 //   postId: PropTypes.string.isRequired,

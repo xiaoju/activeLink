@@ -85,6 +85,97 @@ force push to heroku:
 - Total price is calculated within the front end, to allow for a fast interface and avoid useless calls to the backend as each checkbox gets toggled.
 - However the payment is based on a value calculated in the backend, based on the selected checkboxes (from frontend) and prices per item (from backend), to ensure the user cannot tinker with the amount to be paid.
 
+
+- redux store format:
+
+
+selectionReducer = {
+  total: 30,
+  kid1: {
+    r1: false,
+    r2: false,
+    r3: false,
+    r4: false,
+    r5: false,
+    r6: false,
+    r7: false
+  },
+  kid2: {
+    r1: false,
+    r2: false,
+    r3: false,
+    r4: false,
+    r5: false,
+    r6: false,
+    r7: false
+  }
+
+authReducer = {
+  parents: {
+    parent1: {
+      id: 'parent1',
+      kids: ['kid1', 'kid2'],
+      firstName: 'Jerome',
+      familyName: 'Obama',
+      hashedPassword: 'qwerty',
+      email: 'obama@xiaoju.io',
+      googleId: '123123123123123'
+    }
+  },
+  kids: {
+    kid1: {
+      id: 'kid1',
+      parents: ['parent1'],
+      firstName: 'Mulan',
+      familyName: 'Obama',
+      grade: 'CE2'
+    },
+    kid2: {
+      id: 'kid2',
+      parents: ['parent1'],
+      firstName: 'Zilan',
+      familyName: 'Trump',
+      grade: 'GS'
+    }
+  },
+  events: {
+    e01: {
+      id: 'e01',
+      name: 'This is the title',
+      items: ['r0', 'r1'],
+      instructions: [
+        'line 1',
+        'line 2',
+      ]
+    }
+  },
+  items: {
+    r0: {
+      id: 'r0',
+      name: 'Registration to the association',
+      description:
+        'The registration to the English Link association is required to join the activities.',
+      priceFamily: 30,
+      mandatory: true
+    },
+    r1: {
+      id: 'r1',
+      name: 'English classes in GS',
+      tags: ['2018-2019', 'class'],
+      position: 1,
+      grades: ['GS'],
+      description:
+        'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family who join the english classes in maternelle or primary.',
+      priceFirstKid: 225,
+      priceSecondKid: 165,
+      teacherName: 'Donald Obama'
+    }
+  }
+}
+
+
+
+
 ## authentication process
 
 ### initial invitation

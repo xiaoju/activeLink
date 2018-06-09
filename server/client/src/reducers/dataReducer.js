@@ -1,8 +1,8 @@
-import { FETCH_EVENTS } from '../actions/types';
+import { LOAD_DATA } from '../actions/types';
 
 export default function(state = null, action) {
   switch (action.type) {
-    case FETCH_EVENTS:
+    case LOAD_DATA:
       return action.payload || '';
     default:
       return state;

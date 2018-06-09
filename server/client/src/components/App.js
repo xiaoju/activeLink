@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import Header from './Header';
-import Events from './Events';
+// import Events from './Events';
+import Events02 from './Events02';
 import Login from './Login';
 import LoginForm from './LoginForm';
-import Test from './Test';
+// import Test from './Test';
 // const Dashboard = () => <h2>Dashboard</h2>;
 // const CreateItem = () => <h2>CreateItem</h2>;
 
@@ -23,7 +24,7 @@ class App extends Component {
           <div>
             <Header />
             {/* <Test /> */}
-            <Route path="/" component={Events} />
+            <Route path="/" component={Events02} />
             <Route path="/login" component={Login} />
             <Route path="/loginform" component={LoginForm} />
             {/* <Route path="/createItem" component={CreateItem} />
