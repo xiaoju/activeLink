@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { FETCH_USER, LOAD_DATA, REVIEW_ORDER } from './types';
+import {
+  FETCH_USER,
+  LOAD_DATA,
+  REVIEW_ORDER,
+  // TOGGLE_CHECKBOX,
+  CHECK_CHECKBOX,
+  UNCHECK_CHECKBOX
+} from './types';
 
 export const fetchUser = () => async dispatch => {
   const thisUser = await axios.get('/api/current_user');
@@ -17,3 +24,27 @@ export const exportSelection = thisSelection => async dispatch => {
   const thisOrder = await axios.post('/api/receive_selection', thisSelection);
   dispatch({ type: REVIEW_ORDER, payload: thisOrder.data });
 };
+
+export function checkCheckbox(userId, itemId) {
+  return {
+    type: CHECK_CHECKBOX,
+    userId,
+    itemId
+  };
+}
+
+export function uncheckCheckbox(userId, itemId) {
+  return {
+    type: UNCHECK_CHECKBOX,
+    userId,
+    itemId
+  };
+}
+
+// export function toggleCheckbox({ userId, itemId }) {
+//   return {
+//     type: TOGGLE_CHECKBOX,
+//     userId,
+//     itemId
+//   };
+// }
