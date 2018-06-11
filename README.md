@@ -82,14 +82,16 @@ force push to heroku:
 
 ## Architecture
 
+###
 - Total price is calculated within the front end, to allow for a fast interface and avoid useless calls to the backend as each checkbox gets toggled.
 - However the payment is based on a value calculated in the backend, based on the selected checkboxes (from frontend) and prices per item (from backend), to ensure the user cannot tinker with the amount to be paid.
 
+### Variables derived from the Redux store
+client is using [reselect](https://github.com/reduxjs/reselect#motivation-for-memoized-selectors), so that the Redux store contains the minimum amount of data possible. Variables that are derived from the redux store aren't stored into the redux store itself, they are managed by selectors (see /client/scr/selectors), as per Redux best practices.
 
-- redux store format:
+### redux store format:
 
-
-selectionReducer = {
+`selectionReducer = {
   total: 30,
   kid1: {
     r1: false,
@@ -171,7 +173,7 @@ authReducer = {
       teacherName: 'Donald Obama'
     }
   }
-}
+}`
 
 
 
