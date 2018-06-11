@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { totalObject } from '../selectors';
 
 class Payments extends Component {
   render() {
@@ -9,18 +9,28 @@ class Payments extends Component {
       <StripeCheckout
         name="English Link"
         description="2018-2019 registrations"
-        amount={25500}
+        amount={this.props.totalObject.total}
         token={token => this.props.handleToken(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
       >
         <a className="waves-effect waves-light btn-large orange lighten-1">
-          <i className="material-icons left">shopping_cart</i>255 &euro;
+          <i className="material-icons left">shopping_cart</i>
+          {this.props.totalObject.total / 100} &euro;
         </a>
       </StripeCheckout>
     );
   }
 }
 
-export default connect(null, actions)(Payments);
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    checked: state.checked,
+    totalObject: totalObject(state)
+  };
+}
 
-// {this.props.registrationForm.totalPrice}
+export default connect(
+  mapStateToProps
+  // mapDispatchToProps
+)(Payments);

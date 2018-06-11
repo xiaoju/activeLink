@@ -61,7 +61,7 @@ module.exports = {
       id: 'r1',
       name: 'English classes in GS',
       description:
-        'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family who join the english classes in maternelle or primary.',
+        'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
       priceFirstKid: 22500,
       priceSecondKid: 16500,
       teacherName: 'Judith Morisset'
@@ -70,7 +70,7 @@ module.exports = {
       id: 'r2',
       name: 'English classes in primary',
       description:
-        'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. The discounted price is applicable starting from the second kid of a same family who join the english classes in maternelle or primary.',
+        'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
       priceFirstKid: 45000,
       priceSecondKid: 39000,
       teacherName: '???'
