@@ -38,22 +38,23 @@ module.exports = {
   },
   event: {
     id: 'e01', // included in export to backend
-    name: 'Registrations for 2018-2019 are open!',
+    name: 'Registration 2018-2019',
     items: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'], // this sets the content and order in the page, through an Array.map()
+    users: ['idClerambault', 'idMulan', 'idZilan'],
     instructions: [
-      'First please update your profile (name of kids, grades in this new year, etc) by clicking onto the top right button.',
-      "After your profile is up-to-date, you can select the activities for each of your kids, below in this page. Note that some activities are restricted to specific grades (CP, CE1, etc.). If your kid's grade doesn't match the required grade for the activity, then the checkbox with your kid s'name won't appear under this activity.",
-      "Finally, confirm registration by paying with the orange button on top of this page. Payments are securely processed by 'Stripe', so that English Link never comes to see credit card numbers neither passwords.",
-      'Any questions? You can contact Catherine Souchard per phone: 06 32 54 91 62 or email: contactsecretary@englishlink.fr'
-    ],
-    total: 3000 // calculated by client to show on page, but not sent to backend
+      // 'First please update your profile (name of kids, grades in this new year, etc) by clicking onto the top right button.',
+      // "After your profile is up-to-date, you can select the activities for each of your kids, below in this page. Note that some activities are restricted to specific grades (CP, CE1, etc.). If your kid's grade doesn't match the required grade for the activity, then the checkbox with your kid s'name won't appear under this activity.",
+      // "Finally, confirm registration by paying with the orange button on top of this page. ",
+      // 'Any questions? You can contact Catherine Souchard per phone: 06 32 54 91 62 or email: contactsecretary@englishlink.fr'
+    ]
+    // total: 3000 // calculated by client to show on page, but not sent to backend
   },
   items: {
     r0: {
       id: 'r0',
       name: 'Registration to the association',
       description:
-        'The registration to the English Link association is required to join the activities.',
+        'The registration to the English Link association is required to join the activities. School year 2018-2019.',
       priceFamily: 3000,
       mandatory: true
     },

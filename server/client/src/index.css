@@ -7,6 +7,12 @@ body {
 .checkbox-orange[type='checkbox'].filled-in:checked + label:after {
   border: 2px solid #ffa726;
   background-color: #ffa726;
+  /* materializecss orange lighten-1 */
+}
+
+.checkbox-orange[type='checkbox'].filled-in + label:after {
+  border: 2px solid #ffa726;
+  background: transparent;
 }
 
 .navbar-fixed nav {
@@ -35,8 +41,33 @@ nav i.material-icons.large {
   line-height: 36px;
 }
 
-label {
-  font: red;
+.usernameCheckbox label {
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: bold;
   /* trying to change the aspect of the kid names in front of checkboxes
   I want them black and bold */
+}
+
+.itemsContainer {
+  border: medium solid #9575cd;
+  /* materializecss deep-purple lighten-2 */
+  margin-bottom: 0.5em;
+}
+
+.itemsContainer button {
+  margin-bottom: 1em;
+}
+
+.itemsContainer h4.stepTitle {
+  color: #9575cd;
+  margin-bottom: 2.2rem;
+}
+
+.itemDetails {
+  border-bottom: thin solid #9575cd;
+  padding-bottom: 0.8em;
+}
+
+.itemDetails:last-child {
+  border-bottom: none;
 }
