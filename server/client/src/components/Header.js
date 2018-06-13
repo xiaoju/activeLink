@@ -11,13 +11,13 @@ class Header extends Component {
       case false:
         return [
           <li key="9">
-            <a href="/auth/google">Login through Google</a>
+            <a href="/auth/google">Login with Google</a>
           </li>,
           // <li key="8">
           //   <a href="/auth/github">Login with Github</a>
           // </li>,
           <li key="7">
-            <a href="/auth/local">Login through username+password</a>
+            <a href="/auth/local">Login with username+password</a>
           </li>
         ];
       default:
@@ -32,10 +32,20 @@ class Header extends Component {
             <a href="/api/profile">
               <i className="medium material-icons">account_box</i>
             </a>
-          </li>
+          </li>,
           // <li key="3">
           //   <a href="/api/logout">Logout</a>
           // </li>
+          // <li key="3">
+          //   <a href="/api/logout" className="medium material-icons">
+          //     power_settings_new
+          //   </a>
+          // </li>,
+          <li key="6">
+            <a href="/api/logout">
+              <i className="medium material-icons">power_settings_new</i>
+            </a>
+          </li>
         ];
     }
   }

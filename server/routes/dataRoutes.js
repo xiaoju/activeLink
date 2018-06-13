@@ -5,6 +5,7 @@ const data = require('../models/draftState');
 
 module.exports = app => {
   app.get('/api/data', requireLogin, (req, res) => {
-    res.send({ data });
+    // res.send({ data });
+    res.send(data);
   });
 };
