@@ -51,7 +51,7 @@ nav i.material-icons.large {
 .itemsContainer {
   border: medium solid #9575cd;
   /* materializecss deep-purple lighten-2 */
-  margin-bottom: 0.5em;
+  margin-bottom: 1.5em;
 }
 
 .itemsContainer button {

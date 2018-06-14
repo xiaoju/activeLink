@@ -2,10 +2,12 @@ import { createSelector } from 'reselect';
 // about 'reselect', see https://github.com/reduxjs/reselect
 // and http://www.bentedder.com/creating-computed-properties-react-redux/
 
-const itemsList = state => state.data.event.items;
-const items = state => state.data.items;
-const checked = state => state.checked;
+const itemsList = state => state.data.event.items; // [r0, r1, r2, ...]
+const items = state => state.data.items; // { r0: {priceFamily: 120, ...}, r1 : {...}, ...}
+const checked = state => state.checked; // {idClerambault: [r0], idMulan: [r1, r3, r5], ...}
+// const users = state => state.data.event.users; // [idClerambault, idMulan, idZilan]
 
+// discountQualifiers should be calculated in backend
 export const discountQualifiers = createSelector(
   [itemsList, items],
   (itemsList, items) => {
@@ -17,7 +19,7 @@ export const discountQualifiers = createSelector(
   }
 );
 
-export const totalObject = createSelector(
+export const applyDiscount = createSelector(
   [discountQualifiers, checked],
   (discountQualifiers, checked) => {
     // B = number of checked checkboxes of this user that are also discountQualifiers.
@@ -33,13 +35,175 @@ export const totalObject = createSelector(
 
     // discount shall apply as soon as at least 2 registrations for qualifying classes
     let applyDiscount = C > 1;
-
-    let total = applyDiscount;
+    console.log('applyDiscount (in index): ', applyDiscount);
+    // let total = applyDiscount;
     // let total = 12300;
 
-    return {
-      applyDiscount,
-      total
-    };
+    return applyDiscount;
   }
 );
+
+export const total = createSelector(
+  [itemsList, items, applyDiscount, checked],
+  (itemsList, items, applyDiscount, checked) => {
+    // use twice Array.reduce to make the sum of
+    // all the values in the adjustedItemPrice 2D array.
+    let total = 12300;
+
+    return total;
+  }
+);
+
+// export const itemsListExport = createSelector(
+//   [itemsList],
+//   itemsList => itemsList
+// );
+
+// export const applicablePriceArray = createSelector(
+//   [items, itemsList],
+//   (items, itemsList) => {
+//     let output2 = 12345;
+//     return output2;
+//   }
+// );
+
+// export const applicablePriceArray = createSelector(
+//   [items, itemsList],
+//   (items, itemsList) => {
+//     // For each itemId, look up within 'items' the applicable price.
+//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
+//     // - if priceFamily exists, just use it.
+//     // - if priceSecondKid exists, use it only if applyDiscount is true.
+//     // - otherwise use priceFirstKid.
+//     // Then, this function, just map it to the array of itemIds: itemsList.
+//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
+//     let output = itemsList.map(itemId => ({
+//       [itemId]:
+//         items[itemId].priceFamily ||
+//         (!items[itemId].priceSecondKid || !applyDiscount
+//           ? items[itemId].priceFirstKid
+//           : items[itemId].priceSecondKid)
+//     }));
+//     return output;
+//   }
+// );
+
+// export const applicablePriceObject = createSelector(
+//   [itemsList, items],
+//   (itemsList, items) => {
+//     // For each itemId, look up within 'items' the applicable price.
+//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
+//     // - if priceFamily exists, just use it.
+//     // - if priceSecondKid exists, use it only if applyDiscount is true.
+//     // - otherwise use priceFirstKid.
+//     // Then, this function, just map it to the array of itemIds: itemsList.
+//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
+//     let output = itemsList.reduce((obj, itemId) => {
+//       obj[itemId] =
+//         items[itemId].priceFamily ||
+//         (!items[itemId].priceSecondKid || !applyDiscount
+//           ? items[itemId].priceFirstKid
+//           : items[itemId].priceSecondKid);
+//       return obj;
+//     }, {});
+//     return output;
+//   }
+// );
+
+// export const applicablePriceObject = createSelector(
+//   [itemsList, items],
+//   (itemsList, items) => {
+//     // For each itemId, look up within 'items' the applicable price.
+//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
+//     // - if priceFamily exists, just use it.
+//     // - if priceSecondKid exists, use it only if applyDiscount is true.
+//     // - otherwise use priceFirstKid.
+//     // Then, this function, just map it to the array of itemIds: itemsList.
+//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
+//     let output = itemsList.reduce((obj, itemId) => {
+//       obj[itemId] =
+//         items[itemId].priceFamily ||
+//         (!!items[itemId].priceSecondKid && applyDiscount
+//           ? items[itemId].priceSecondKid
+//           : items[itemId].priceFirstKid);
+//       return obj;
+//     }, {});
+//     return output;
+//   }
+// );
+
+// export const applicablePriceObject = createSelector(
+//   // For each itemId, look up within 'items' the applicable price.
+//   // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
+//   // - if priceFamily exists, just use it.
+//   // - if priceSecondKid exists, use it only if applyDiscount is true.
+//   // - otherwise use priceFirstKid.
+//   // Then, this function, just reduce it into an object:
+//   // OUTPUT: {{r0: 300}, {r1: 456}, {r3: 324}, ...}
+//   [itemsList, items],
+//   (itemsList, items) =>
+//     itemsList.reduce((obj, itemId) => {
+//       obj[itemId] =
+//         items[itemId].priceFamily ||
+//         (!items[itemId].priceSecondKid || !applyDiscount
+//           ? items[itemId].priceFirstKid
+//           : items[itemId].priceSecondKid);
+//       return { obj, applyDiscount };
+//     }, {})
+// );
+
+// export const applicablePriceObject = createSelector(
+//   // For each itemId, look up within 'items' the applicable price.
+//   // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
+//   // - if priceFamily exists, just use it.
+//   // - if priceSecondKid exists, use it only if applyDiscount is true.
+//   // - otherwise use priceFirstKid.
+//   // Then, this function, just reduce it into an object:
+//   // OUTPUT: {{r0: 300}, {r1: 456}, {r3: 324}, ...}
+//   [itemsList, items],
+//   (itemsList, items) =>
+//     itemsList.reduce((obj, itemId) => {
+//       obj[itemId] =
+//         items[itemId].priceFamily ||
+//         (!!items[itemId].priceSecondKid && applyDiscount
+//           ? items[itemId].priceSecondKid
+//           : items[itemId].priceFirstKid);
+//       return { obj, applyDiscount };
+//     }, {})
+// );
+
+// export const adjustedItemPrice = createSelector(
+//   [items, checked, users],
+//   (items, checked, users) => {
+//     // For this itemId, look up within 'items' the applicable price.
+//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid).
+//     // In short:
+//     // - if priceFamily exists, just use it.
+//     // - if priceSecondKid exists, use it only if applyDiscount is true.
+//     // - otherwise use priceFirstKid.
+//     const applicablePrice = ({ itemId, items }) =>
+//       items[itemId].priceFamily ||
+//       (!items[itemId].priceSecondKid || !applyDiscount
+//         ? items[itemId].priceFirstKid
+//         : items[itemId].priceSecondKid);
+//
+//     // For this user (e.g. idMulan), take the arrow of checked answers (e.g. [r2, r3, r7] ),
+//     // and add to each itemId (e.g. r2, r3 and r7) the applicalble price,
+//     // thus creating an array of objects such as [{r2: 123}, {r3: 450}, {r7: 200}].
+//     const alpha = (userId, checked, itemId) =>
+//       checked.reduce((price, itemId) => {
+//         price[itemId] = applicablePrice(itemId);
+//         return price;
+//       }, {});
+//
+//     // finally, gamma returns an object of arrays,
+//     // where obj[userId][itemId] = Price
+//     const gamma = (items, checked, users) =>
+//       users.reduce((obj, userId) => {
+//         obj[userId] = alpha(userId, checked, itemId);
+//         return obj;
+//       }, {});
+//
+//     return gamma(items, checked, users);
+//   }
+// );

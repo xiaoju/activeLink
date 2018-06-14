@@ -8,7 +8,32 @@
 
 // export to backend will contain users, eventId, timeStamp (calculated at time of export)
 
+// in one go the paiement and the update to the profile are done. No need of an updated profile if you pay nothing!!
+
 module.exports = {
+  standardPrices: {
+    r0: 3000,
+    r1: 22500,
+    r2: 45000,
+    r3: 15000,
+    r4: 18000,
+    r5: 18000,
+    r6: 10500,
+    r7: 25500
+  },
+  discountedPrices: {
+    r0: 3000,
+    r1: 16500,
+    r2: 39000,
+    r3: 15000,
+    r4: 18000,
+    r5: 18000,
+    r6: 10500,
+    r7: 25500
+  },
+  mandatoryItems: ['r0'],
+  familyItems: ['r0'],
+
   checked: {
     // included in export to backend
     idClerambault: ['r0'],
@@ -112,7 +137,7 @@ module.exports = {
       id: 'r7',
       name: 'On Stage!',
       description:
-        'Theater in English for bilingual kids. Work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
+        'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
       priceFirstKid: 25500,
       teacherName: 'Aude d’Allest, tel.: 07 70 40 28 68'
     }
