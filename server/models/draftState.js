@@ -31,6 +31,7 @@ module.exports = {
     r6: 10500,
     r7: 25500
   },
+  discountQualifiers: ['r1', 'r2'],
   mandatoryItems: ['r0'],
   familyItems: ['r0'],
 
@@ -40,24 +41,61 @@ module.exports = {
     idMulan: ['r5', 'r6'],
     idZilan: ['r3']
   },
+
+  // using firstName as ID for the kids, so that
+  // we can add a new user in frontEnd and pay directly,
+  // without waiting for a kidId by the backEnd.
+  family: {
+    idFamily: 'idClerambaultNIng',
+    parents: ['Jerome', 'Fei'],
+    kids: ['Mulan', 'Zilan'],
+    Jerome: {
+      firstName: 'Jerome',
+      familyName: 'Clerambault',
+      title: 'father',
+      address: '11 rue Bellegarde, 31000 Toulouse',
+      mobile: '0695078079',
+      landlinePrivate: '050000000',
+      email: 'jerome.clerambault@outlook.com'
+    },
+    Fei: {
+      firstName: 'Fei',
+      familyName: 'Ning',
+      title: 'mother',
+      mobile: '06111111111',
+      landlinePro: '05232423324',
+      email: 'fei.ning@airbus.com'
+    },
+    Mulan: {
+      firstName: 'Mulan',
+      grade: 'CE2'
+    },
+    Zilan: {
+      firstName: 'Zilan',
+      grade: 'GS'
+    }
+  },
+
   users: {
     // not in same level as events.id/name/etc , so that we can cycle through without knowing the names of the people. then in separate object to reduce nesting levels
     idClerambault: {
       id: 'idClerambault',
       label: 'Clerambault',
-      items: ['r0']
+      items: ['r0'] // to delete
       // checked: ['r0']
     },
     idMulan: {
+      // to delete
       id: 'idMulan',
       label: 'Mulan',
-      items: ['r2', 'r5', 'r6', 'r7']
+      items: ['r2', 'r5', 'r6', 'r7'] // to delete
       // checked: ['r5', 'r6']
     },
     idZilan: {
+      // to delete
       id: 'idZilan',
       label: 'Zilan',
-      items: ['r1', 'r3', 'r6']
+      items: ['r1', 'r3', 'r6'] // to delete
       // checked: ['r3']
     }
   },
@@ -79,17 +117,17 @@ module.exports = {
       id: 'r0',
       name: 'Registration to the association',
       description:
-        'The registration to the English Link association is required to join the activities. School year 2018-2019.',
-      priceFamily: 3000,
-      mandatory: true
+        'The registration to the English Link association is required to join the activities. School year 2018-2019.'
+      // priceFamily: 3000,
+      // mandatory: true
     },
     r1: {
       id: 'r1',
       name: 'English classes in GS',
       description:
         'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
-      priceFirstKid: 22500,
-      priceSecondKid: 16500,
+      // priceFirstKid: 22500,
+      // priceSecondKid: 16500,
       teacherName: 'Judith Morisset'
     },
     r2: {
@@ -97,8 +135,8 @@ module.exports = {
       name: 'English classes in primary',
       description:
         'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
-      priceFirstKid: 45000,
-      priceSecondKid: 39000,
+      // priceFirstKid: 45000,
+      // priceSecondKid: 39000,
       teacherName: '???'
     },
     r3: {
@@ -106,7 +144,7 @@ module.exports = {
       name: 'Munchkin club in maternelle',
       description:
         'Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.',
-      priceFirstKid: 15000,
+      // priceFirstKid: 15000,
       teacherName: '???'
     },
     r4: {
@@ -114,7 +152,7 @@ module.exports = {
       name: 'Mini Kids Club',
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
-      priceFirstKid: 18000,
+      // priceFirstKid: 18000,
       teacherName: 'Judith Morisset'
     },
     r5: {
@@ -122,7 +160,7 @@ module.exports = {
       name: 'Kids Club',
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.',
-      priceFirstKid: 18000,
+      // priceFirstKid: 18000,
       teacherName: 'Judith Morisset'
     },
     r6: {
@@ -130,7 +168,7 @@ module.exports = {
       name: 'Bookworms',
       description:
         'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. For all ages from CP to CM2. Friday 12:30-13:30.',
-      priceFirstKid: 10500,
+      // priceFirstKid: 10500,
       teacherName: '???'
     },
     r7: {
@@ -138,7 +176,7 @@ module.exports = {
       name: 'On Stage!',
       description:
         'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
-      priceFirstKid: 25500,
+      // priceFirstKid: 25500,
       teacherName: 'Aude d’Allest, tel.: 07 70 40 28 68'
     }
   }

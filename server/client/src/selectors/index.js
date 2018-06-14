@@ -2,26 +2,33 @@ import { createSelector } from 'reselect';
 // about 'reselect', see https://github.com/reduxjs/reselect
 // and http://www.bentedder.com/creating-computed-properties-react-redux/
 
-const itemsList = state => state.data.event.items; // [r0, r1, r2, ...]
+const discountQualifiers = state => state.data.discountQualifiers; // ['r1', 'r2']
+const checked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
+
+const itemsList = state => state.data.event.items; // ['r0', 'r1', 'r2', ...]
 const items = state => state.data.items; // { r0: {priceFamily: 120, ...}, r1 : {...}, ...}
-const checked = state => state.checked; // {idClerambault: [r0], idMulan: [r1, r3, r5], ...}
+const standardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
+const discountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
+
 // const users = state => state.data.event.users; // [idClerambault, idMulan, idZilan]
 
 // discountQualifiers should be calculated in backend
-export const discountQualifiers = createSelector(
-  [itemsList, items],
-  (itemsList, items) => {
-    // discountQualifiers: list of items that can qualify for discount.
-    let discountQualifiers = itemsList.filter(
-      thisItemId => items[thisItemId].priceSecondKid
-    );
-    return discountQualifiers;
-  }
-);
+// export const discountQualifiers = createSelector(
+//   [itemsList, items],
+//   (itemsList, items) => {
+//     // discountQualifiers: list of items that can qualify for discount.
+//     let discountQualifiers = itemsList.filter(
+//       thisItemId => items[thisItemId].priceSecondKid
+//     );
+//     return discountQualifiers;
+//   }
+// );
 
 export const applyDiscount = createSelector(
   [discountQualifiers, checked],
   (discountQualifiers, checked) => {
+    console.log('discountQualifiers: ', discountQualifiers);
+
     // B = number of checked checkboxes of this user that are also discountQualifiers.
     const B = thisUserId =>
       checked[thisUserId].filter(checkedItemId =>
@@ -44,8 +51,15 @@ export const applyDiscount = createSelector(
 );
 
 export const total = createSelector(
-  [itemsList, items, applyDiscount, checked],
-  (itemsList, items, applyDiscount, checked) => {
+  [itemsList, items, standardPrices, discountedPrices, applyDiscount, checked],
+  (
+    itemsList,
+    items,
+    standardPrices,
+    discountedPrices,
+    applyDiscount,
+    checked
+  ) => {
     // use twice Array.reduce to make the sum of
     // all the values in the adjustedItemPrice 2D array.
     let total = 12300;

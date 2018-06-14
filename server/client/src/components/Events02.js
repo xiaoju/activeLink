@@ -50,7 +50,7 @@ class Events02 extends Component {
                 </h5>
                 <span />
                 <ul>
-                  <li>mother (select mother/father/legal representative)</li>
+                  <li>mother (select mother/father/custom)</li>
                   <li>First name</li>
                   <li>Family name</li>
                   <li>Adress</li>
