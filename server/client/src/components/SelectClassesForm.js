@@ -18,10 +18,8 @@ class SelectClassesForm extends Component {
               <h5>
                 <strong>{this.props.data.items[thisItemId].name}</strong>
               </h5>
-
               {/* Description of the class */}
               <div>{this.props.data.items[thisItemId].description}</div>
-
               {/* Teacher name */}
               {this.props.data.items[thisItemId].teacherName && (
                 <div>
@@ -29,7 +27,6 @@ class SelectClassesForm extends Component {
                 </div>
               )}
 
-              {/* Prices */}
               <ItemPrices
                 itemId={thisItemId}
                 familyItems={this.props.data.familyItems}
@@ -37,13 +34,19 @@ class SelectClassesForm extends Component {
                 discountedPrices={this.props.data.discountedPrices}
               />
 
-              {/* Checkboxes */}
               <ItemCheckboxes
                 itemId={thisItemId}
+                items={this.props.data.items}
                 users={this.props.data.users}
+                familyItems={this.props.data.familyItems}
+                familyId={[this.props.data.family.id]}
+                familyName={this.props.data.family.name}
+                familyMembers={this.props.data.family.familyMembers}
+                kids={this.props.data.family.kids}
                 checked={this.props.checked}
                 checkCheckbox={this.props.checkCheckbox}
                 uncheckCheckbox={this.props.uncheckCheckbox}
+                mandatoryItems={this.props.data.mandatoryItems}
               />
             </div>
           ))}

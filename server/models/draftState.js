@@ -37,17 +37,19 @@ module.exports = {
 
   checked: {
     // included in export to backend
-    idClerambault: ['r0'],
-    idMulan: ['r5', 'r6'],
-    idZilan: ['r3']
+    idClerambault: ['r0'], // should be 'Polanski-Bush'
+    idMulan: ['r5', 'r6'], // should be 'MulanBush'
+    idZilan: ['r3'] // should be 'ZilanPolanski'
   },
 
   // using firstName as ID for the kids, so that
   // we can add a new user in frontEnd and pay directly,
   // without waiting for a kidId by the backEnd.
   family: {
+    id: 'idClerambault', // should be '6577s6rg8rgdf5rhdfbv478765789o87yt',
+    name: 'Polanski-Bush',
     parents: ['DonaldBush', 'RosemaryPolanski'],
-    familyandkids: ['6577s6rg8rgdf5rhdfbv478765789o87yt', 'Mulan', 'Zilan'],
+    kids: ['idMulan', 'idZilan'], // to delete
     familyMembers: {
       DonaldBush: {
         firstName: 'Donald',
@@ -66,13 +68,14 @@ module.exports = {
         landlinePro: '05232423324',
         email: 'rosemary@xiaoju.io'
       },
-      Mulan: {
-        firstName: 'Mulan',
+      idMulan: {
+        // should  be 'MulanBush'
+        firstName: 'idMulan', // should be 'Mulan'
         familyName: 'Bush',
         kidGrade: 'CE2'
       },
-      Zilan: {
-        firstName: 'Zilan',
+      idZilan: {
+        firstName: 'idZilan',
         familyName: 'Polanski',
         kidGrade: 'GS'
       }
@@ -120,9 +123,10 @@ module.exports = {
       id: 'r0',
       name: 'Registration to the association',
       description:
-        'The registration to the English Link association is required to join the activities. School year 2018-2019.'
+        'The registration to the English Link association is required to join the activities. School year 2018-2019.',
       // priceFamily: 3000,
-      // mandatory: true
+      // mandatory: true,
+      itemGrades: ['PS', 'MS', 'GS', 'CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     r1: {
       id: 'r1',
@@ -131,7 +135,8 @@ module.exports = {
         'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       // priceFirstKid: 22500,
       // priceSecondKid: 16500,
-      teacherName: 'Judith Morisset'
+      teacherName: 'Judith Morisset',
+      itemGrades: ['GS']
     },
     r2: {
       id: 'r2',
@@ -140,7 +145,8 @@ module.exports = {
         'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       // priceFirstKid: 45000,
       // priceSecondKid: 39000,
-      teacherName: '???'
+      teacherName: '???',
+      itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     r3: {
       id: 'r3',
@@ -148,7 +154,8 @@ module.exports = {
       description:
         'Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.',
       // priceFirstKid: 15000,
-      teacherName: '???'
+      teacherName: '???',
+      itemGrades: ['PS', 'MS', 'GS']
     },
     r4: {
       id: 'r4',
@@ -156,7 +163,8 @@ module.exports = {
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
       // priceFirstKid: 18000,
-      teacherName: 'Judith Morisset'
+      teacherName: 'Judith Morisset',
+      itemGrades: ['CP', 'CE1']
     },
     r5: {
       id: 'r5',
@@ -164,7 +172,8 @@ module.exports = {
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.',
       // priceFirstKid: 18000,
-      teacherName: 'Judith Morisset'
+      teacherName: 'Judith Morisset',
+      itemGrades: ['CE2', 'CM1', 'CM2']
     },
     r6: {
       id: 'r6',
@@ -172,7 +181,8 @@ module.exports = {
       description:
         'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. For all ages from CP to CM2. Friday 12:30-13:30.',
       // priceFirstKid: 10500,
-      teacherName: '???'
+      teacherName: '???',
+      itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     r7: {
       id: 'r7',
@@ -180,7 +190,8 @@ module.exports = {
       description:
         'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
       // priceFirstKid: 25500,
-      teacherName: 'Aude d’Allest, tel.: 07 70 40 28 68'
+      teacherName: 'Aude d’Allest, tel.: 07 70 40 28 68',
+      itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     }
   }
 };
