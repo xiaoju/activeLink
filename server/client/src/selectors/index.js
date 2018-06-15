@@ -27,25 +27,17 @@ const discountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, 
 export const applyDiscount = createSelector(
   [discountQualifiers, checked],
   (discountQualifiers, checked) => {
-    console.log('discountQualifiers: ', discountQualifiers);
-
     // B = number of checked checkboxes of this user that are also discountQualifiers.
     const B = thisUserId =>
       checked[thisUserId].filter(checkedItemId =>
         discountQualifiers.includes(checkedItemId)
       ).length;
-
     // C = number of checked classes that add up towards qualifying for discount
     let C = Object.keys(checked)
       .map(thisUserId => B(thisUserId))
       .reduce((total, amount) => total + amount);
-
     // discount shall apply as soon as at least 2 registrations for qualifying classes
     let applyDiscount = C > 1;
-    console.log('applyDiscount (in index): ', applyDiscount);
-    // let total = applyDiscount;
-    // let total = 12300;
-
     return applyDiscount;
   }
 );

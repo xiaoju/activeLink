@@ -37,7 +37,6 @@ class SelectClassesForm extends Component {
               <ItemCheckboxes
                 itemId={thisItemId}
                 items={this.props.data.items}
-                users={this.props.data.users}
                 familyItems={this.props.data.familyItems}
                 familyId={[this.props.data.family.id]}
                 familyName={this.props.data.family.name}

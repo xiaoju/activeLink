@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ItemCheckboxes({
-  users,
   familyItems,
   familyMembers,
   itemId,
@@ -64,7 +63,6 @@ function ItemCheckboxes({
 export default ItemCheckboxes;
 
 ItemCheckboxes.propTypes = {
-  users: PropTypes.object.isRequired,
   familyItems: PropTypes.array.isRequired,
   familyMembers: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
