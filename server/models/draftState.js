@@ -33,7 +33,7 @@ module.exports = {
   },
   discountQualifiers: ['r1', 'r2'],
   mandatoryItems: ['r0'],
-  familyItems: ['r0'],
+  familyItems: ['r0'], // items that are charged once per family, not per kid
 
   checked: {
     // included in export to backend
@@ -46,33 +46,36 @@ module.exports = {
   // we can add a new user in frontEnd and pay directly,
   // without waiting for a kidId by the backEnd.
   family: {
-    idFamily: 'idClerambaultNIng',
-    parents: ['Jerome', 'Fei'],
-    kids: ['Mulan', 'Zilan'],
-    Jerome: {
-      firstName: 'Jerome',
-      familyName: 'Clerambault',
-      title: 'father',
-      address: '11 rue Bellegarde, 31000 Toulouse',
-      mobile: '0695078079',
-      landlinePrivate: '050000000',
-      email: 'jerome.clerambault@outlook.com'
-    },
-    Fei: {
-      firstName: 'Fei',
-      familyName: 'Ning',
-      title: 'mother',
-      mobile: '06111111111',
-      landlinePro: '05232423324',
-      email: 'fei.ning@airbus.com'
-    },
-    Mulan: {
-      firstName: 'Mulan',
-      grade: 'CE2'
-    },
-    Zilan: {
-      firstName: 'Zilan',
-      grade: 'GS'
+    parents: ['DonaldBush', 'RosemaryPolanski'],
+    familyandkids: ['6577s6rg8rgdf5rhdfbv478765789o87yt', 'Mulan', 'Zilan'],
+    familyMembers: {
+      DonaldBush: {
+        firstName: 'Donald',
+        familyName: 'Bush',
+        title: 'father',
+        address: '123 av. des Champs Elysees, 99000 Paris',
+        mobile: '060606060606',
+        landlinePrivate: '050000000',
+        email: 'donald@xiaoju.io'
+      },
+      RosemaryPolanski: {
+        firstName: 'Rosemary',
+        familyName: 'Polanski',
+        title: 'mother',
+        mobile: '06111111111',
+        landlinePro: '05232423324',
+        email: 'rosemary@xiaoju.io'
+      },
+      Mulan: {
+        firstName: 'Mulan',
+        familyName: 'Bush',
+        kidGrade: 'CE2'
+      },
+      Zilan: {
+        firstName: 'Zilan',
+        familyName: 'Polanski',
+        kidGrade: 'GS'
+      }
     }
   },
 
@@ -125,7 +128,7 @@ module.exports = {
       id: 'r1',
       name: 'English classes in GS',
       description:
-        'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
+        'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       // priceFirstKid: 22500,
       // priceSecondKid: 16500,
       teacherName: 'Judith Morisset'
@@ -134,7 +137,7 @@ module.exports = {
       id: 'r2',
       name: 'English classes in primary',
       description:
-        'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. The discounted price is applicable to all kids of a family, as soon as 2 or more of them join the english classes: "English classes in primary" or "English classes in GS".',
+        'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       // priceFirstKid: 45000,
       // priceSecondKid: 39000,
       teacherName: '???'
