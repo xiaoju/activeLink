@@ -36,7 +36,6 @@ export const getApplyDiscount = createSelector(
   [getCheckboxUsers, getDiscountQualifiers, getChecked],
   (checkboxUsers, discountQualifiers, checked) => {
     let output =
-      // Object.keys(checked)
       checkboxUsers
         .map(
           thisUserId =>
