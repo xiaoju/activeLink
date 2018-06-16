@@ -1,16 +1,6 @@
 import { LOAD_DATA, CHECK_CHECKBOX, UNCHECK_CHECKBOX } from '../actions/types';
 
-const empty = {
-  idClerambault: [],
-  idMulan: [],
-  idZilan: []
-};
-
-// checked: {
-//   idClerambault: ['r0'],
-//   idMulan: ['r5', 'r6'],
-//   idZilan: ['r3']
-// }
+const empty = null;
 
 export default function(state = empty, action) {
   switch (action.type) {

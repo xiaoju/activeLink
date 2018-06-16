@@ -1,9 +1,19 @@
 import { LOAD_DATA } from '../actions/types';
 
-// const empty = null;
-
 const empty = {
+  checkboxUsers: [],
+  eventId: '',
+  eventName: '',
+  allItems: [],
+  parents: [],
+  standardPrices: {},
+  discountedPrices: {},
+  discountQualifiers: [],
+  mandatoryItems: [],
+  familyItems: [],
+  familyMembers: {},
   users: {},
+  family: {},
   event: {
     id: '',
     name: '',
