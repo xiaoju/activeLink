@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
-import { total, applyDiscount } from '../selectors';
+import { getTotal, getApplyDiscount } from '../selectors';
 
 class Payments extends Component {
   // componentDidUpdate() {
@@ -31,8 +31,8 @@ function mapStateToProps(state) {
   return {
     data: state.data,
     checked: state.checked,
-    total: total(state),
-    applyDiscount: applyDiscount(state)
+    total: getTotal(state),
+    applyDiscount: getApplyDiscount(state)
   };
 }
 

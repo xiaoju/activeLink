@@ -251,6 +251,16 @@ authReducer = {
 
 ## License
 
-* If you want to use this app or a derivative in production, please inform me per email to `me@xiaoju.io`
+* If you want to use this app or a derivative in production, please inform me per email to `info@xiaoju.io`
 
 ## Contributing
+### Style
+- Following [Udacity style guides](https://udacity.github.io/git-styleguide/). Especially, for Git commits:
+  - feat: a new feature
+  - fix: a bug fix
+  - docs: changes to documentation
+  - style: formatting, missing semi colons, etc; no code change
+  - refactor: refactoring production code
+  - test: adding tests, refactoring test; no production code change
+  - chore: updating build tasks, package manager configs, etc; no production code change
+- Redux selectors are named `selectFoo`.

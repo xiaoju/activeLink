@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import ItemCheckboxes from './ItemCheckboxes';
 import ItemPrices from './ItemPrices';
-import { applyDiscount } from '../selectors';
+import { getApplyDiscount, getChecked } from '../selectors';
 
 class SelectClassesForm extends Component {
   render() {
@@ -56,8 +56,8 @@ class SelectClassesForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    applyDiscount: applyDiscount(state),
-    checked: state.checked,
+    applyDiscount: getApplyDiscount(state),
+    checked: getChecked(state),
     data: state.data
   };
 }

@@ -3,7 +3,6 @@ import {
   FETCH_USER,
   LOAD_DATA,
   REVIEW_ORDER,
-  // TOGGLE_CHECKBOX,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX
 } from './types';
@@ -40,11 +39,3 @@ export function uncheckCheckbox(userId, itemId) {
     itemId
   };
 }
-
-// export function toggleCheckbox({ userId, itemId }) {
-//   return {
-//     type: TOGGLE_CHECKBOX,
-//     userId,
-//     itemId
-//   };
-// }
