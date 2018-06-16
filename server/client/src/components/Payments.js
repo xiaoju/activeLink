@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { total, applyDiscount } from '../selectors';
 
 class Payments extends Component {
-  componentDidUpdate() {
-    console.log('payments: component did update');
-    this.props.data && console.log('applyDiscount: ', this.props.applyDiscount);
-  }
+  // componentDidUpdate() {
+  //   console.log('payments: component did update');
+  //   this.props.data && console.log('applyDiscount: ', this.props.applyDiscount);
+  // }
 
   render() {
     return (

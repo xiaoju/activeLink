@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Payments from './Payments';
 
 class Header extends Component {
   renderContent() {
@@ -22,17 +21,17 @@ class Header extends Component {
         ];
       default:
         return [
-          <li key="1">
-            <Payments />
-          </li>,
+          // <li key="1">
+          //   <Payments />
+          // </li>,
           // <li key="2" style={{ margin: '0 10px' }}>
           //   Credits: {this.props.auth.credits}
           // </li>,
-          <li key="5">
-            <a href="/api/profile">
-              <i className="medium material-icons">account_box</i>
-            </a>
-          </li>,
+          // <li key="5">
+          //   <a href="/api/profile">
+          //     <i className="medium material-icons">account_box</i>
+          //   </a>
+          // </li>,
           // <li key="3">
           //   <a href="/api/logout">Logout</a>
           // </li>
@@ -43,7 +42,7 @@ class Header extends Component {
           // </li>,
           <li key="6">
             <a href="/api/logout">
-              <i className="medium material-icons">power_settings_new</i>
+              <i className="medium material-icons">exit_to_app</i>
             </a>
           </li>
         ];

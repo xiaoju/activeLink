@@ -33,14 +33,14 @@ class ProfileForms extends Component {
           </li>
         </ul>
 
-        <button
+        {/* <button
           className="btn waves-effect waves-light orange lighten-1 z-depth-2"
           type="submit"
           name="action"
         >
           save
           <i className="material-icons right">send</i>
-        </button>
+        </button> */}
       </div>
     );
   }
