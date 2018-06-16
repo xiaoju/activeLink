@@ -255,7 +255,8 @@ authReducer = {
 
 ## Contributing
 ### Style
-- Following [Udacity style guides](https://udacity.github.io/git-styleguide/). Especially, for Git commits:
+- Mostly following [Udacity style guides](https://udacity.github.io/git-styleguide/).
+#### Git commits:
   - feat: a new feature
   - fix: a bug fix
   - docs: changes to documentation
@@ -263,4 +264,8 @@ authReducer = {
   - refactor: refactoring production code
   - test: adding tests, refactoring test; no production code change
   - chore: updating build tasks, package manager configs, etc; no production code change
+#### Linter
+  - using Prettier
+#### Redux
 - Redux selectors are named `selectFoo`.
+- We use fat reducers and thin action creators (i.e. the reducers contain a lot of logic.)

@@ -12,6 +12,10 @@
 
 module.exports = {
   checkboxUsers: ['idClerambault', 'idMulan', 'idZilan'],
+  eventId: 'e01', // included in export to backend
+  eventName: 'Registration 2018-2019',
+  allItems: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'],
+  parents: ['DonaldBush', 'RosemaryPolanski'],
   standardPrices: {
     r0: 3000,
     r1: 22500,
@@ -45,13 +49,50 @@ module.exports = {
   // using firstName as ID for the kids, so that
   // we can add a new user in frontEnd and pay directly,
   // without waiting for a kidId by the backEnd.
+  familyMembers: {
+    DonaldBush: {
+      id: 'DonaldBush',
+      firstName: 'Donald',
+      familyName: 'Bush',
+      title: 'father',
+      address: '123 av. des Champs Elysees, 99000 Paris',
+      mobile: '060606060606',
+      landlinePrivate: '050000000',
+      email: 'donald@xiaoju.io'
+    },
+    RosemaryPolanski: {
+      id: 'RosemaryPolanski',
+      firstName: 'Rosemary',
+      familyName: 'Polanski',
+      title: 'mother',
+      mobile: '06111111111',
+      landlinePro: '05232423324',
+      email: 'rosemary@xiaoju.io'
+    },
+    idMulan: {
+      // should  be 'MulanBush'
+      id: 'idMulan',
+      firstName: 'Mulan', // should be 'Mulan'
+      familyName: 'Bush',
+      kidGrade: 'CE2'
+    },
+    idZilan: {
+      id: 'idZilan',
+      firstName: 'Zilan',
+      familyName: 'Polanski',
+      kidGrade: 'GS'
+    }
+  },
+  // family object to delete, has been redispatched
   family: {
     id: 'idClerambault', // should be '6577s6rg8rgdf5rhdfbv478765789o87yt', // to delete, see state.checkboxUsers[0]
     name: 'Polanski-Bush', // will be derived from state, see getFamilyName selector
-    parents: ['DonaldBush', 'RosemaryPolanski'],
+    parents: ['DonaldBush', 'RosemaryPolanski'], // to delete, moved up
     kids: ['idMulan', 'idZilan'], // to delete, see state.checkboxUsers
     familyMembers: {
+      // move up
       DonaldBush: {
+        id: 'DonaldBush',
         firstName: 'Donald',
         familyName: 'Bush',
         title: 'father',
@@ -61,6 +102,7 @@ module.exports = {
         email: 'donald@xiaoju.io'
       },
       RosemaryPolanski: {
+        id: 'RosemaryPolanski',
         firstName: 'Rosemary',
         familyName: 'Polanski',
         title: 'mother',
@@ -70,11 +112,13 @@ module.exports = {
       },
       idMulan: {
         // should  be 'MulanBush'
+        id: 'idMulan',
         firstName: 'Mulan', // should be 'Mulan'
         familyName: 'Bush',
         kidGrade: 'CE2'
       },
       idZilan: {
+        id: 'idZilan',
         firstName: 'Zilan',
         familyName: 'Polanski',
         kidGrade: 'GS'
@@ -82,10 +126,11 @@ module.exports = {
     }
   },
   event: {
+    // to delete, moved all this stuff up, to eventId, eventName, eventItems
     id: 'e01', // included in export to backend
     name: 'Registration 2018-2019',
     items: ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'], // this sets the content and order in the page, through an Array.map()
-    users: ['idClerambault', 'idMulan', 'idZilan']
+    users: ['idClerambault', 'idMulan', 'idZilan'] // delete, see state.checkboxUsers
   },
   items: {
     r0: {
