@@ -35,12 +35,12 @@ module.exports = {
   mandatoryItems: ['r0'],
   familyItems: ['r0'], // items that are charged once per family, not per kid
 
-  checked: {
-    // included in export to backend
-    idClerambault: ['r0'], // should be 'Polanski-Bush'
-    idMulan: ['r5', 'r6'], // should be 'MulanBush'
-    idZilan: ['r3'] // should be 'ZilanPolanski'
-  },
+  // checked: {
+  //   // included in export to backend
+  //   idClerambault: ['r0'], // should be 'Polanski-Bush'
+  //   idMulan: ['r5', 'r6'], // should be 'MulanBush'
+  //   idZilan: ['r3'] // should be 'ZilanPolanski'
+  // },
 
   // using firstName as ID for the kids, so that
   // we can add a new user in frontEnd and pay directly,
