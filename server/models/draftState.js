@@ -11,6 +11,7 @@
 // in one go the paiement and the update to the profile are done. No need of an updated profile if you pay nothing!!
 
 module.exports = {
+  checkboxUsers: ['idClerambault', 'idMulan', 'idZilan'],
   standardPrices: {
     r0: 3000,
     r1: 22500,
@@ -34,7 +35,6 @@ module.exports = {
   discountQualifiers: ['r1', 'r2'],
   mandatoryItems: ['r0'],
   familyItems: ['r0'], // items that are charged once per family, not per kid
-
   // checked: {
   //   // included in export to backend
   //   idClerambault: ['r0'], // should be 'Polanski-Bush'
@@ -46,10 +46,10 @@ module.exports = {
   // we can add a new user in frontEnd and pay directly,
   // without waiting for a kidId by the backEnd.
   family: {
-    id: 'idClerambault', // should be '6577s6rg8rgdf5rhdfbv478765789o87yt',
-    name: 'Polanski-Bush',
+    id: 'idClerambault', // should be '6577s6rg8rgdf5rhdfbv478765789o87yt', // to delete, see state.checkboxUsers[0]
+    name: 'Polanski-Bush', // will be derived from state, see getFamilyName selector
     parents: ['DonaldBush', 'RosemaryPolanski'],
-    kids: ['idMulan', 'idZilan'], // to delete
+    kids: ['idMulan', 'idZilan'], // to delete, see state.checkboxUsers
     familyMembers: {
       DonaldBush: {
         firstName: 'Donald',
