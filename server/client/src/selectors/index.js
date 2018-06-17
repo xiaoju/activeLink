@@ -15,6 +15,8 @@ export const getItemsPerId = state => state.data.items;
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
+// output an array with the items that open right to discount.
+// Those are the one that have a field `priceSecondKid`
 // export const discountQualifiers = createSelector(
 //   [itemsList, items],
 //   (itemsList, items) => {
@@ -40,7 +42,28 @@ export const getFamilyName = createSelector(
     ].join('-')
 );
 
+export const getCheckedItems = createSelector(
+  // the list of items that are checked by anyone of the users
+  // used by OrderSummary component and getTotal and getCheckedItemsNoDoublons
+  [getCheckboxUsers, getChecked],
+  (checkboxUsers, checked) =>
+    checkboxUsers // [familyId, kid1Id, kid2Id]
+      .map(thisUserId => checked[thisUserId]) // [['r0'], ['r2','r4']], ['r2','r5','r7']]
+      .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []) // ['r0','r2','r4','r2','r5','r7']
+);
+
+export const getCheckedItemsNoDoublons = createSelector(
+  // remove doublons from checkedItems,
+  // for use in OrderSummary component, cycling through these items to show only these.
+  // other way would be run a second reducer in parrallel to checkedReducer,
+  // to populate the state of OrderSummary view.
+  // TODO could sort the array. Currently the first ones are those first clicked.
+  [getCheckedItems],
+  checkedItems => [...new Set(checkedItems)]
+);
+
 export const getApplyDiscount = createSelector(
+  // create the boolean `applyDiscount`. True if discount price is applicable.
   [getCheckboxUsers, getDiscountQualifiers, getChecked],
   (checkboxUsers, discountQualifiers, checked) => {
     let output =
@@ -69,17 +92,9 @@ export const getApplyDiscount = createSelector(
 );
 
 export const getTotal = createSelector(
-  [
-    getCheckboxUsers,
-    getChecked,
-    getApplyDiscount,
-    getStandardPrices,
-    getDiscountedPrices
-  ],
-  (checkboxUsers, checked, applyDiscount, standardPrices, discountedPrices) =>
-    checkboxUsers // [familyId, kid1Id, kid2Id]
-      .map(thisUserId => checked[thisUserId]) // [['r0'], ['r2','r4']], ['r5','r7']]
-      .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []) // ['r0','r2','r4','r5','r7']
+  [getCheckedItems, getApplyDiscount, getStandardPrices, getDiscountedPrices],
+  (checkedItems, applyDiscount, standardPrices, discountedPrices) =>
+    checkedItems // ['r0','r2','r4','r2','r5','r7'] (doublons are kept, e.g. 'r2')
       .map(
         applyDiscount
           ? thisItemId => discountedPrices[thisItemId]

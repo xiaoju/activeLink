@@ -1,18 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+  getCheckedItemsNoDoublons,
+  getApplyDiscount,
+  getChecked,
+  getItemsPerId,
+  getCheckboxUsers,
+  getStandardPrices,
+  getDiscountedPrices,
+  getFamilyName,
+  getTotal,
+  getFamilyMembers
+} from '../selectors';
 
-function OrderSummary(props) {
-  return (
-    <div className="itemsContainer hoverable">
-      <h4 className="stepTitle">③ Review your order</h4>
+class OrderSummary extends Component {
+  render() {
+    const {
+      filteredItems,
+      applyDiscount,
+      checked,
+      itemsPerId,
+      checkboxUsers,
+      standardPrices,
+      discountedPrices,
+      familyName,
+      total,
+      familyMembers
+    } = this.props;
 
-      {/* {props.data &&
-        props.data.event.items.map((thisItemId, i) => (
-          <div className="container itemDetails" key={thisItemId}>
- */}
+    return (
+      <div className="itemsContainer hoverable">
+        <h4 className="stepTitle">③ Review your order</h4>
+        <div className="container orderSummary">
+          {filteredItems.map(itemId => <p>{itemsPerId[itemId].name}</p>)}
 
-      <p>xxx fixed width font, white background color xxx</p>
-    </div>
-  );
+          <p>Total: {total / 100} &euro;</p>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default OrderSummary;
+function mapStateToProps(state) {
+  return {
+    filteredItems: getCheckedItemsNoDoublons(state),
+    applyDiscount: getApplyDiscount(state),
+    checked: getChecked(state),
+    itemsPerId: getItemsPerId(state),
+    checkboxUsers: getCheckboxUsers(state),
+    standardPrices: getStandardPrices(state),
+    discountedPrices: getDiscountedPrices(state),
+    familyName: getFamilyName(state),
+    total: getTotal(state),
+    familyMembers: getFamilyMembers(state)
+  };
+}
+
+export default connect(mapStateToProps)(OrderSummary);
