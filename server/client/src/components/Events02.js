@@ -21,7 +21,7 @@ class Events02 extends Component {
         {this.props.auth &&
           this.props.data && (
             <div>
-              <EventDescription eventName={this.props.data.event.name} />
+              <EventDescription eventName={this.props.data.eventName} />
               <ProfileForm />
               <SelectClassesForm />
               <OrderSummary />

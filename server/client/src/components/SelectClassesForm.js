@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import ItemCheckboxes from './ItemCheckboxes';
 import ItemPrices from './ItemPrices';
-import { getApplyDiscount, getChecked } from '../selectors';
+import { getApplyDiscount, getChecked, getFamilyName } from '../selectors';
 
 class SelectClassesForm extends Component {
   render() {
@@ -12,7 +12,7 @@ class SelectClassesForm extends Component {
       <div className="itemsContainer">
         <h4 className="stepTitle">② Select classes for your kids</h4>
         {this.props.data &&
-          this.props.data.event.items.map((thisItemId, i) => (
+          this.props.data.allItems.map((thisItemId, i) => (
             <div className="container itemDetails" key={thisItemId}>
               {/* Name of the class */}
               <h5>
@@ -38,14 +38,13 @@ class SelectClassesForm extends Component {
                 itemId={thisItemId}
                 items={this.props.data.items}
                 familyItems={this.props.data.familyItems}
-                familyId={[this.props.data.family.id]}
-                familyName={this.props.data.family.name}
-                familyMembers={this.props.data.family.familyMembers}
-                kids={this.props.data.family.kids}
+                familyName={this.props.familyName}
+                familyMembers={this.props.data.familyMembers}
                 checked={this.props.checked}
                 checkCheckbox={this.props.checkCheckbox}
                 uncheckCheckbox={this.props.uncheckCheckbox}
                 mandatoryItems={this.props.data.mandatoryItems}
+                checkboxUsers={this.props.data.checkboxUsers}
               />
             </div>
           ))}
@@ -58,6 +57,7 @@ function mapStateToProps(state) {
   return {
     applyDiscount: getApplyDiscount(state),
     checked: getChecked(state),
+    familyName: getFamilyName(state),
     data: state.data
   };
 }

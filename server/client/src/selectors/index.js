@@ -10,6 +10,9 @@ const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000
 const getCheckboxUsers = state => state.data.checkboxUsers; // ['idClerambault', 'idMulan', 'idZilan']
 const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
 
+const getParents = state => state.data.parents; // ['DonaldBush', 'RosemaryPolanski']
+const getFamilyMembers = state => state.data.familyMembers;
+
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
 // export const discountQualifiers = createSelector(
@@ -28,8 +31,13 @@ export const getChecked = state => state.checked; // {idClerambault: [r0], idMul
 export const getFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
-  [],
-  a => a
+  [getParents, getFamilyMembers],
+  (parents, familyMembers) =>
+    [
+      ...new Set(
+        parents.map(thisParentId => familyMembers[thisParentId].familyName)
+      )
+    ].join('-')
 );
 
 export const getApplyDiscount = createSelector(
