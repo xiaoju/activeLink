@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   getCheckedItemsNoDoublons,
+  getCheckedItems,
   getApplyDiscount,
   getChecked,
   getItemsPerId,
@@ -17,6 +18,7 @@ class OrderSummary extends Component {
   render() {
     const {
       filteredItems,
+      checkedItems,
       applyDiscount,
       checked,
       itemsPerId,
@@ -32,7 +34,12 @@ class OrderSummary extends Component {
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">③ Review your order</h4>
         <div className="container orderSummary">
-          {filteredItems.map(itemId => <p>{itemsPerId[itemId].name}</p>)}
+          {filteredItems.map(itemId => (
+            <div>
+              <p>{itemsPerId[itemId].name}</p>
+              <p>quantity: {checkedItems.filter(x => x === itemId).length}</p>
+            </div>
+          ))}
 
           <p>Total: {total / 100} &euro;</p>
         </div>
@@ -44,6 +51,7 @@ class OrderSummary extends Component {
 function mapStateToProps(state) {
   return {
     filteredItems: getCheckedItemsNoDoublons(state),
+    checkedItems: getCheckedItems(state),
     applyDiscount: getApplyDiscount(state),
     checked: getChecked(state),
     itemsPerId: getItemsPerId(state),
