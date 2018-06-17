@@ -3,7 +3,7 @@ import Payments from './Payments';
 
 function ConfirmStep() {
   return (
-    <div className="itemsContainer">
+    <div className="itemsContainer hoverable">
       <h4 className="stepTitle">④ Confirm and pay</h4>
       <Payments />
       <p>

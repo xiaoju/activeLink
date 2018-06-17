@@ -2,7 +2,7 @@ import React from 'react';
 
 function OrderSummary(props) {
   return (
-    <div className="itemsContainer">
+    <div className="itemsContainer hoverable">
       <h4 className="stepTitle">③ Review your order</h4>
 
       {/* {props.data &&

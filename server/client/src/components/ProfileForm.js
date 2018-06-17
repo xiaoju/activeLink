@@ -6,7 +6,7 @@ import OneParentForm from './OneParentForm';
 class ProfileForms extends Component {
   render() {
     return (
-      <div className="itemsContainer">
+      <div className="itemsContainer hoverable">
         <h4 className="stepTitle">① Update your profile</h4>
 
         <h5>

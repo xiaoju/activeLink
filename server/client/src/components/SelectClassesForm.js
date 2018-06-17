@@ -9,7 +9,7 @@ import { getApplyDiscount, getChecked, getFamilyName } from '../selectors';
 class SelectClassesForm extends Component {
   render() {
     return (
-      <div className="itemsContainer">
+      <div className="itemsContainer hoverable">
         <h4 className="stepTitle">② Select classes for your kids</h4>
         {this.props.data &&
           this.props.data.allItems.map((thisItemId, i) => (

@@ -40,7 +40,7 @@ class Header extends Component {
           //     power_settings_new
           //   </a>
           // </li>,
-          <li key="6">
+          <li key="6" className="hoverable">
             <a href="/api/logout">
               <i className="medium material-icons">exit_to_app</i>
             </a>
