@@ -34,20 +34,18 @@ function ItemCheckboxes({
           <input
             type="checkbox"
             onChange={thisEvent =>
-              checked[thisUserId].includes(itemId)
+              !mandatoryItems.includes(itemId) &&
+              (checked[thisUserId].includes(itemId)
                 ? // if already in array
                   uncheckCheckbox(thisUserId, itemId, thisEvent)
                 : // if not yet in array
-                  checkCheckbox(thisUserId, itemId, thisEvent)
+                  checkCheckbox(thisUserId, itemId, thisEvent))
             }
             id={itemId + '_' + thisUserId}
             className="filled-in checkbox-orange z-depth-2"
             // TODO "z-depth-2" for shadow effect is not working!
             // using the checkbox data from checkedReducer
-            checked={
-              mandatoryItems.includes(itemId) ||
-              (checked[thisUserId].includes(itemId) && 'checked')
-            }
+            checked={checked[thisUserId].includes(itemId) && 'checked'}
           />
 
           {familyItems.includes(itemId) ? (
