@@ -5,11 +5,14 @@
 // export to backend will contain users, eventId, timeStamp (calculated at time of export)
 
 module.exports = {
-  checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'],
+  checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'], // checkboxUsers[0] is the familyId used in backend database
   eventId: 'e01', // included in export to backend
   eventName: 'Registration 2018-2019',
+  eventContactName: 'Catherine Souchard',
+  eventContactPhone: '06 32 54 91 62',
+  eventContactEmail: 'contactsecretary@englishlink.fr',
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
-  parents: ['DonaldBush', 'RosemaryPolanski', 'LegalRepresentative'],
+  parents: ['DonaldBush', 'RosemaryPolanski'],
   standardPrices: {
     aa00: 3000,
     aa01: 22500,
@@ -56,14 +59,8 @@ module.exports = {
       landlinePro: '05232423324',
       email: 'rosemary@xiaoju.io'
     },
-    LegalRepresentative: {
-      id: 'LegalRepresentative',
-      firstName: 'Legal',
-      familyName: 'Representative',
-      title: 'other'
-    },
     MulanBush: {
-      id: 'idMulan',
+      id: 'MulanBush',
       firstName: 'Mulan',
       familyName: 'Bush',
       kidGrade: 'CE2'
