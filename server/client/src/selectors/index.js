@@ -70,20 +70,22 @@ export const getApplyDiscount = createSelector(
 
 export const getTotal = createSelector(
   [
-    getAllItems,
-    getStandardPrices,
-    getDiscountedPrices,
+    getCheckboxUsers,
+    getChecked,
     getApplyDiscount,
-    getChecked
+    getStandardPrices,
+    getDiscountedPrices
   ],
-  (allItems, standardPrices, discountedPrices, applyDiscount, checked) => {
-    console.log('getTotal: running');
-    // use twice Array.reduce to make the sum of
-    // all the values in the adjustedItemPrice 2D array.
-    let total = 12300;
-
-    return total;
-  }
+  (checkboxUsers, checked, applyDiscount, standardPrices, discountedPrices) =>
+    checkboxUsers // [familyId, kid1Id, kid2Id]
+      .map(thisUserId => checked[thisUserId]) // [['r0'], ['r2','r4']], ['r5','r7']]
+      .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []) // ['r0','r2','r4','r5','r7']
+      .map(
+        applyDiscount
+          ? thisItemId => discountedPrices[thisItemId]
+          : thisItemId => standardPrices[thisItemId]
+      ) // [30, 100, 250, 450, 150]
+      .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0) // the total
 );
 
 // export const itemsListExport = createSelector(
