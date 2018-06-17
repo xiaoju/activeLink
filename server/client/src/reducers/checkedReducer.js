@@ -6,7 +6,7 @@ export default function(state = empty, action) {
   switch (action.type) {
     case LOAD_DATA:
       // create initial state:
-      // 1- convert data.checkboxUsers: [familyId, kid1Id, kid2Id] to {familyId: [], kid1Id: [], kid1Id: []}
+      // 1- convert data.checkboxUsers: [familyId, kid1Id, kid2Id] to {familyId: [], kid1Id: [], kid2Id: []}
       return !action.payload
         ? empty // necessary because action.payload is undefined when logged out
         : action.payload.checkboxUsers.reduce(

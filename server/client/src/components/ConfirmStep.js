@@ -12,8 +12,8 @@ function ConfirmStep() {
         neither passwords.
       </p>
       <p>
-        'Any questions? You can contact Catherine Souchard per phone: 06 32 54
-        91 62 or email: contactsecretary@englishlink.fr
+        Any questions? You can contact Catherine Souchard per phone: 06 32 54 91
+        62 or email: contactsecretary@englishlink.fr
       </p>
     </div>
   );

@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import Header from './Header';
-// import Events from './Events';
-import Events02 from './Events02';
+import RegistrationPage from './RegistrationPage';
 import Login from './Login';
 import LoginForm from './LoginForm';
 // import Test from './Test';
@@ -24,7 +23,7 @@ class App extends Component {
           <div>
             <Header />
             {/* <Test /> */}
-            <Route path="/" component={Events02} />
+            <Route path="/" component={RegistrationPage} />
             <Route path="/login" component={Login} />
             <Route path="/loginform" component={LoginForm} />
             {/* <Route path="/createItem" component={CreateItem} />

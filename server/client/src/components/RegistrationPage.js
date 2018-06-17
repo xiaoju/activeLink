@@ -6,7 +6,7 @@ import SelectClassesForm from './SelectClassesForm';
 import ConfirmStep from './ConfirmStep';
 import OrderSummary from './OrderSummary';
 
-class Events02 extends Component {
+class RegistrationPage extends Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
@@ -40,4 +40,4 @@ function mapStateToProps({ auth, data }) {
   };
 }
 
-export default connect(mapStateToProps)(Events02);
+export default connect(mapStateToProps)(RegistrationPage);

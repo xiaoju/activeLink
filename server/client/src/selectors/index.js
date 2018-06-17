@@ -2,14 +2,11 @@ import { createSelector } from 'reselect';
 // about 'reselect', see https://github.com/reduxjs/reselect
 // and http://www.bentedder.com/creating-computed-properties-react-redux/
 
-// const getData = state => state.data;
 const getDiscountQualifiers = state => state.data.discountQualifiers; // ['r1', 'r2']
-// const getItems = state => state.data.items; // { r0: {priceFamily: 120, ...}, r1 : {...}, ...}
 const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 const getCheckboxUsers = state => state.data.checkboxUsers; // ['idClerambault', 'idMulan', 'idZilan']
 const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-
 const getParents = state => state.data.parents; // ['DonaldBush', 'RosemaryPolanski']
 const getFamilyMembers = state => state.data.familyMembers;
 
