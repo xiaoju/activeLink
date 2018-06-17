@@ -71,3 +71,8 @@ nav i.material-icons.large {
 .itemDetails:last-child {
   border-bottom: none;
 }
+
+.formInputsContainer {
+  display: flex;
+  flex-flow: row nowrap;
+}
