@@ -6,11 +6,11 @@
 
 module.exports = {
   checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'], // checkboxUsers[0] is the familyId used in backend database
-  eventId: 'e01', // included in export to backend
+  eventId: 'e0001', // included in export to backend
   eventName: 'Registration 2018-2019',
-  eventContactName: 'Catherine Souchard',
-  eventContactPhone: '06 32 54 91 62',
-  eventContactEmail: 'contactsecretary@englishlink.fr',
+  eventContactName: 'Michelle Obama',
+  eventContactPhone: '06 22 22 22 22',
+  eventContactEmail: 'michelle.obama@xiaoju.io',
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
   parents: ['DonaldBush', 'RosemaryPolanski'],
   standardPrices: {

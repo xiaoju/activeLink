@@ -25,7 +25,11 @@ class RegistrationPage extends Component {
               <ProfileForm />
               <SelectClassesForm />
               <OrderSummary />
-              <ConfirmStep />
+              <ConfirmStep
+                eventContactName={this.props.data.eventContactName}
+                eventContactPhone={this.props.data.eventContactPhone}
+                eventContactEmail={this.props.data.eventContactEmail}
+              />
             </div>
           )}
       </div>

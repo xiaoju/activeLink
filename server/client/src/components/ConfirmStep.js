@@ -1,7 +1,11 @@
 import React from 'react';
 import Payments from './Payments';
 
-function ConfirmStep() {
+function ConfirmStep({
+  eventContactName,
+  eventContactPhone,
+  eventContactEmail
+}) {
   return (
     <div className="itemsContainer hoverable">
       <h4 className="stepTitle">④ Confirm and pay</h4>
@@ -12,8 +16,8 @@ function ConfirmStep() {
         neither passwords.
       </p>
       <p>
-        Any questions? You can contact Catherine Souchard per phone: 06 32 54 91
-        62 or email: contactsecretary@englishlink.fr
+        Any questions? You can contact {eventContactName} per phone:{' '}
+        {eventContactPhone} or email: {eventContactEmail}
       </p>
     </div>
   );
