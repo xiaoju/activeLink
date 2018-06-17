@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 // about 'reselect', see https://github.com/reduxjs/reselect
 // and http://www.bentedder.com/creating-computed-properties-react-redux/
 
-const getDiscountQualifiers = state => state.data.discountQualifiers; // ['r1', 'r2']
 export const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getCheckboxUsers = state => state.data.checkboxUsers; // ['idClerambault', 'idMulan', 'idZilan']
@@ -12,6 +11,7 @@ const getParents = state => state.data.parents; // ['DonaldBush', 'RosemaryPolan
 export const getFamilyMembers = state => state.data.familyMembers;
 export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.items;
+export const getDiscountQualifiers = state => state.data.discountQualifiers;
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend

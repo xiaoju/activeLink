@@ -4,6 +4,7 @@ import {
   getCheckedItemsNoDoublons,
   getCheckedItems,
   getApplyDiscount,
+  getDiscountQualifiers,
   getChecked,
   getItemsPerId,
   getCheckboxUsers,
@@ -20,6 +21,7 @@ class OrderSummary extends Component {
       filteredItems,
       checkedItems,
       applyDiscount,
+      discountQualifiers,
       checked,
       itemsPerId,
       checkboxUsers,
@@ -30,15 +32,39 @@ class OrderSummary extends Component {
       familyMembers
     } = this.props;
 
+    let quantity = itemId => checkedItems.filter(x => x === itemId).length;
+
+    let unitPrice = itemId =>
+      (applyDiscount ? discountedPrices[itemId] : standardPrices[itemId]) / 100;
+
+    let subTotal = itemId => quantity(itemId) * unitPrice(itemId);
+
+    let kidNames = itemId =>
+      checkboxUsers
+        .slice(1)
+        .filter(userId => checked[userId].includes(itemId)) // TODO
+        .map(userId => familyMembers[userId].firstName)
+        .join(', ');
+
+    let discountNotice = itemId =>
+      applyDiscount &&
+      discountQualifiers.includes(itemId) &&
+      'Discount applied. ';
+
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">③ Review your order</h4>
         <div className="container orderSummary">
           {filteredItems.map(itemId => (
-            <div>
-              <p>{itemsPerId[itemId].name}</p>
-              <p>quantity: {checkedItems.filter(x => x === itemId).length}</p>
-            </div>
+            <p>
+              <strong>{itemsPerId[itemId].name}</strong>
+              <br />
+              <span>
+                {quantity(itemId)} x {unitPrice(itemId)} = {subTotal(itemId)}{' '}
+                &euro; {kidNames(itemId)}
+                {discountNotice(itemId)}
+              </span>
+            </p>
           ))}
 
           <p>Total: {total / 100} &euro;</p>
@@ -53,6 +79,7 @@ function mapStateToProps(state) {
     filteredItems: getCheckedItemsNoDoublons(state),
     checkedItems: getCheckedItems(state),
     applyDiscount: getApplyDiscount(state),
+    discountQualifiers: getDiscountQualifiers(state),
     checked: getChecked(state),
     itemsPerId: getItemsPerId(state),
     checkboxUsers: getCheckboxUsers(state),

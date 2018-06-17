@@ -17,7 +17,7 @@ function ConfirmStep({
           neither passwords.
         </p>
         <p>
-          Any questions? You can contact {eventContactName} per phone:{' '}
+          Any questions? Please contact {eventContactName} per phone:{' '}
           {eventContactPhone} or email: {eventContactEmail}
         </p>
       </div>
