@@ -20,43 +20,56 @@ import {
 
 class SelectClassesForm extends Component {
   render() {
+    const {
+      allItems,
+      items,
+      familyItems,
+      familyName,
+      familyMembers,
+      checked,
+      checkCheckbox,
+      uncheckCheckbox,
+      mandatoryItems,
+      checkboxUsers,
+      standardPrices,
+      discountedPrices
+    } = this.props;
+
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">② Select classes for your kids</h4>
-        {this.props.allItems &&
-          this.props.allItems.map((thisItemId, i) => (
+        {allItems &&
+          allItems.map((thisItemId, i) => (
             <div className="container itemDetails" key={thisItemId}>
               {/* Name of the class */}
               <h5>
-                <strong>{this.props.items[thisItemId].name}</strong>
+                <strong>{items[thisItemId].name}</strong>
               </h5>
               {/* Description of the class */}
-              <div>{this.props.items[thisItemId].description}</div>
+              <div>{items[thisItemId].description}</div>
               {/* Teacher name */}
-              {this.props.items[thisItemId].teacherName && (
-                <div>
-                  Animated by {this.props.items[thisItemId].teacherName}
-                </div>
+              {items[thisItemId].teacherName && (
+                <div>Animated by {items[thisItemId].teacherName}</div>
               )}
 
               <ItemPrices
                 itemId={thisItemId}
-                familyItems={this.props.familyItems}
-                standardPrices={this.props.standardPrices}
-                discountedPrices={this.props.discountedPrices}
+                familyItems={familyItems}
+                standardPrices={standardPrices}
+                discountedPrices={discountedPrices}
               />
 
               <ItemCheckboxes
                 itemId={thisItemId}
-                items={this.props.items}
-                familyItems={this.props.familyItems}
-                familyName={this.props.familyName}
-                familyMembers={this.props.familyMembers}
-                checked={this.props.checked}
-                checkCheckbox={this.props.checkCheckbox}
-                uncheckCheckbox={this.props.uncheckCheckbox}
-                mandatoryItems={this.props.mandatoryItems}
-                checkboxUsers={this.props.checkboxUsers}
+                items={items}
+                familyItems={familyItems}
+                familyName={familyName}
+                familyMembers={familyMembers}
+                checked={checked}
+                checkCheckbox={checkCheckbox}
+                uncheckCheckbox={uncheckCheckbox}
+                mandatoryItems={mandatoryItems}
+                checkboxUsers={checkboxUsers}
               />
             </div>
           ))}
