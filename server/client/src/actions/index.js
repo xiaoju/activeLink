@@ -2,7 +2,6 @@ import axios from 'axios';
 import {
   FETCH_USER,
   LOAD_DATA,
-  REVIEW_ORDER,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX
 } from './types';
@@ -19,10 +18,10 @@ export const handleToken = token => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const exportSelection = thisSelection => async dispatch => {
-  const thisOrder = await axios.post('/api/receive_selection', thisSelection);
-  dispatch({ type: REVIEW_ORDER, payload: thisOrder.data });
-};
+// export const exportSelection = thisSelection => async dispatch => {
+//   const thisOrder = await axios.post('/api/receive_selection', thisSelection);
+//   dispatch({ type: REVIEW_ORDER, payload: thisOrder.data });
+// };
 
 export function checkCheckbox(userId, itemId) {
   return {

@@ -13,6 +13,18 @@ module.exports = {
   eventContacts: ['t001', 't002'],
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
   parents: ['DonaldBush', 'RosemaryPolanski'],
+  familyEMails: [
+    // 'it' like in 'this is *it*, the stuff you'be been looking for!'
+    // The first one is the "main" one.
+    { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
+    { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
+  ],
+  familyPhones: [
+    { it: '0600000000', tags: ['mobile', 'Donald'] },
+    { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
+    { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
+    { it: '0633333333', tags: ['landline', 'family'] }
+  ],
   standardPrices: {
     aa00: 3000,
     aa01: 22500,
@@ -36,28 +48,18 @@ module.exports = {
   discountQualifiers: ['aa01', 'aa02'],
   mandatoryItems: ['aa00'],
   familyItems: ['aa00'], // items that are charged once per family, not per kid
-  // using firstName as ID for the kids, so that
-  // we can add a new user in frontEnd and pay directly,
-  // without waiting for a kidId by the backEnd.
   familyMembers: {
+    // using names as IDs so that we can add a new user in frontEnd and pay
+    // directly, without waiting for an id to be created by the backEnd.
     DonaldBush: {
       id: 'DonaldBush',
       firstName: 'Donald',
-      familyName: 'Bush',
-      title: 'father',
-      address: '123 av. des Champs Elysees, 99000 Paris',
-      mobile: '060606060606',
-      landlinePrivate: '050000000',
-      email: 'donald@xiaoju.io'
+      familyName: 'Bush'
     },
     RosemaryPolanski: {
       id: 'RosemaryPolanski',
       firstName: 'Rosemary',
-      familyName: 'Polanski',
-      title: 'mother',
-      mobile: '06111111111',
-      landlinePro: '05232423324',
-      email: 'rosemary@xiaoju.io'
+      familyName: 'Polanski'
     },
     MulanBush: {
       id: 'MulanBush',

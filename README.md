@@ -48,6 +48,7 @@ test credit card number
   `npm install`
 
 - start:
+  `cd server`
   `npm run dev`
 
 - A browser window should automatically open at http://localhost:3000
@@ -82,12 +83,22 @@ force push to heroku:
 
 ## Architecture
 
+### folders structure
+- The (`git`) root folder `/` contains `.gitignore`, `.prettierignore`, `README.md` and `TODO.md` .
+- The app is stored in `/server`
+- The react/redux part of the app is stored in /server/Client
+- Don't mix up the package.json files from server and client. They are distinct:
+  - Scripts in `/server/package.json` manage the app start, and `heroku` postbuild step.
+  - Settings for proxying are in `/server/client/package.json`.
+- To install packages to the client, the console must be opened in `/server/client`.
+
 ###
 - Total price is calculated within the front end, to allow for a fast interface and avoid useless calls to the backend as each checkbox gets toggled.
 - However the payment is based on a value calculated in the backend, based on the selected checkboxes (from frontend) and prices per item (from backend), to ensure the user cannot tinker with the amount to be paid.
 
 ### Variables derived from the Redux store
-client is using [reselect](https://github.com/reduxjs/reselect#motivation-for-memoized-selectors), so that the Redux store contains the minimum amount of data possible. Variables that are derived from the redux store aren't stored into the redux store itself, they are managed by selectors (see /client/scr/selectors), as per Redux best practices.
+- Variables that are derived from the redux store aren't stored into the redux store itself, they are managed by selectors (see /client/scr/selectors).
+- [reselect](https://github.com/reduxjs/reselect#motivation-for-memoized-selectors) is used for memoized selectors.
 
 ### redux store format:
 

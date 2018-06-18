@@ -74,9 +74,11 @@ nav i.material-icons.large {
   border-bottom: none;
 }
 
-.formInputsContainer {
+.formInputsContainer,
+.eventContacts {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
 .orderSummary {
@@ -88,10 +90,4 @@ nav i.material-icons.large {
 
 table.striped > tbody > tr:nth-child(odd) {
   background-color: #eeeeee;
-}
-
-.eventContacts {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
 }

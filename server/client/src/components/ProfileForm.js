@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import OneKidForm from './OneKidForm';
 import OneParentForm from './OneParentForm';
-// import PropTypes from 'prop-types';
+import TelephoneForm from './TelephoneForm';
+import EmailForm from './EmailForm';
 
 class ProfileForms extends Component {
   render() {
@@ -25,6 +26,17 @@ class ProfileForms extends Component {
         <OneParentForm />
         <OneParentForm />
 
+        {/* <h5>
+          <strong>Email</strong>
+        </h5> */}
+
+        <EmailForm />
+
+        {/* <h5>
+          <strong>Telephone</strong>
+        </h5> */}
+
+        <TelephoneForm />
         {/* <button
           className="btn waves-effect waves-light orange lighten-1 z-depth-2"
           type="submit"
@@ -39,7 +51,3 @@ class ProfileForms extends Component {
 }
 
 export default ProfileForms;
-
-// Events.propTypes = {
-//   postId: PropTypes.string.isRequired
-// };
