@@ -42,32 +42,51 @@ class OrderSummary extends Component {
     let kidNames = itemId =>
       checkboxUsers
         .slice(1)
-        .filter(userId => checked[userId].includes(itemId)) // TODO
+        .filter(userId => checked[userId].includes(itemId))
         .map(userId => familyMembers[userId].firstName)
-        .join(', ');
+        .join(' & ');
 
     let discountNotice = itemId =>
-      applyDiscount &&
-      discountQualifiers.includes(itemId) &&
-      'Discount applied. ';
+      applyDiscount && discountQualifiers.includes(itemId) && 'yes';
 
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">③ Review your order</h4>
         <div className="container orderSummary">
-          {filteredItems.map(itemId => (
-            <p>
-              <strong>{itemsPerId[itemId].name}</strong>
-              <br />
-              <span>
-                {quantity(itemId)} x {unitPrice(itemId)} = {subTotal(itemId)}{' '}
-                &euro; {kidNames(itemId)}
-                {discountNotice(itemId)}
-              </span>
-            </p>
-          ))}
-
-          <p>Total: {total / 100} &euro;</p>
+          <table className="striped centered responsive-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Kids names</th>
+                <th>Discount</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredItems.map(itemId => (
+                <tr key={itemId}>
+                  <td>
+                    <strong>{itemsPerId[itemId].name}</strong>
+                  </td>
+                  <td>{quantity(itemId)}</td>
+                  <td>{kidNames(itemId)}</td>
+                  <td>{discountNotice(itemId)}</td>
+                  <td>{unitPrice(itemId)}</td>
+                  <td>{subTotal(itemId)}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colSpan="5">Total :</th>
+                <td>
+                  <strong>{total / 100}&nbsp;&euro;</strong>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     );

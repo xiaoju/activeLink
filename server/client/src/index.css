@@ -85,3 +85,10 @@ nav i.material-icons.large {
   margin-bottom: 2em;
   padding: 2em;
 }
+
+table.striped > tbody > tr:nth-child(odd) {
+  background-color: #eeeeee;
+}
+
+.tableTotal {
+}
