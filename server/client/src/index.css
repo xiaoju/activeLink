@@ -90,5 +90,8 @@ table.striped > tbody > tr:nth-child(odd) {
   background-color: #eeeeee;
 }
 
-.tableTotal {
+.eventContacts {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }

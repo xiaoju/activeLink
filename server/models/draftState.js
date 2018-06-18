@@ -10,9 +10,7 @@ module.exports = {
   // checkboxUsers.slice(1) is the kids.
   eventId: 'e0001', // included in export to backend
   eventName: 'Registration 2018-2019',
-  eventContactName: 'Michelle Obama',
-  eventContactPhone: '06 22 22 22 22',
-  eventContactEmail: 'michelle@xiaoju.io',
+  eventContacts: ['t001', 't002'],
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
   parents: ['DonaldBush', 'RosemaryPolanski'],
   standardPrices: {
@@ -74,6 +72,26 @@ module.exports = {
       kidGrade: 'GS'
     }
   },
+  staff: {
+    t001: {
+      id: 't001',
+      name: "Jeanne d'Arc",
+      email: 'jeanne@xiaoju.io',
+      phone: '04 11 111 111'
+    },
+    t002: {
+      id: 't002',
+      name: 'Simone Weil',
+      email: 'simone@xiaoju.io',
+      phone: '06 01 01 01 01'
+    },
+    t003: {
+      id: 't003',
+      name: 'Michelle Obama',
+      email: 'michelle@xiaoju.io',
+      phone: '06 06 06 06 06'
+    }
+  },
   items: {
     aa00: {
       id: 'r0',
@@ -83,59 +101,56 @@ module.exports = {
       itemGrades: ['PS', 'MS', 'GS', 'CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     aa01: {
-      id: 'r1',
+      id: 'aa01',
       name: 'English classes in GS',
       description:
         'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
-      teacherName: 'Judith Morisset',
+      contacts: ['t001'],
       itemGrades: ['GS']
     },
     aa02: {
-      id: 'r2',
+      id: 'aa02',
       name: 'English classes in primary',
       description:
         'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
-      teacherName: '???',
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     aa03: {
-      id: 'r3',
+      id: 'aa03',
       name: 'Munchkin club in maternelle',
       description:
         'Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.',
-      teacherName: '???',
       itemGrades: ['PS', 'MS', 'GS']
     },
     aa04: {
-      id: 'r4',
+      id: 'aa04',
       name: 'Mini Kids Club',
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
-      teacherName: 'Judith Morisset',
+      contacts: ['t002'],
       itemGrades: ['CP', 'CE1']
     },
     aa05: {
-      id: 'r5',
+      id: 'aa05',
       name: 'Kids Club',
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.',
-      teacherName: 'Judith Morisset',
+      contacts: ['t001'],
       itemGrades: ['CE2', 'CM1', 'CM2']
     },
     aa06: {
-      id: 'r6',
+      id: 'aa06',
       name: 'Bookworms',
       description:
         'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. For all ages from CP to CM2. Friday 12:30-13:30.',
-      teacherName: '???',
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     aa07: {
-      id: 'r7',
+      id: 'aa07',
       name: 'On Stage!',
       description:
         'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
-      teacherName: 'Aude d’Allest, tel.: 07 70 40 28 68',
+      contacts: ['t002', 't003'],
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     }
   }

@@ -2,7 +2,7 @@ import { LOAD_DATA } from '../actions/types';
 
 const empty = {
   checkboxUsers: [],
-  eventId: '',
+  // eventId: '', // using eventId to detect if data arrived yet or not from api call
   eventName: '',
   allItems: [],
   parents: [],
@@ -14,6 +14,7 @@ const empty = {
   familyMembers: {},
   users: {},
   family: {},
+  staff: {},
   event: {
     id: '',
     name: '',

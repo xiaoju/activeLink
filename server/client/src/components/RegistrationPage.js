@@ -18,18 +18,21 @@ class RegistrationPage extends Component {
           </h5>
         )}
 
+        {this.props.auth && !this.props.data.eventId && <h5>Loading...</h5>
+        // cannot user `this.props.data` because dataReducer creates an empty
+        // `this.props.data` object by initialization. Using instead
+        // `this.props.data.eventId` to detect if data arrived from api
+        }
+
         {this.props.auth &&
-          this.props.data && (
+          this.props.data.eventId && (
+            //
             <div>
               <EventDescription eventName={this.props.data.eventName} />
               <ProfileForm />
               <SelectClassesForm />
               <OrderSummary />
-              <ConfirmStep
-                eventContactName={this.props.data.eventContactName}
-                eventContactPhone={this.props.data.eventContactPhone}
-                eventContactEmail={this.props.data.eventContactEmail}
-              />
+              <ConfirmStep />
             </div>
           )}
       </div>
