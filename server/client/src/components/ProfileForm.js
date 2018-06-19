@@ -20,7 +20,7 @@ class ProfileForm extends Component {
           <OneKidForm
             firstName={profile.familyMembers[userId].firstName}
             familyName={profile.familyMembers[userId].familyName}
-            schoolGrade={profile.familyMembers[userId].schoolGrade}
+            schoolGrade={profile.familyMembers[userId].kidGrade}
           />
         ))}
         <h5>

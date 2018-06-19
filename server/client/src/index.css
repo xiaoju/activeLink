@@ -114,14 +114,17 @@ nav i.material-icons.large {
   min-width: 3em;
 }
 
-/* .twoNamesContainer {
-  width: 75%;
-  margin-left: 10%;
-  margin-right: auto;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-} */
+.schoolGrade > select {
+  background-color: #ede7f6;
+  border: 2px solid #ffa726;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
+
+.schoolGrade label > select:focus {
+  background-color: #d1c4e9;
+  border: 2px solid #ffa726;
+}
 
 .eventContacts {
   display: flex;
@@ -171,18 +174,6 @@ table.striped > tbody > tr:nth-child(odd) {
 /* label.active::after {
   border: none;
 } */
-
-.schoolGrade label > select {
-  background-color: #ede7f6;
-  border: 2px solid #ffa726;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 500;
-}
-
-.schoolGrade label > select:focus {
-  background-color: #d1c4e9;
-  border: 2px solid #ffa726;
-}
 
 /* label focus color */
 .input-field input:focus + label {
