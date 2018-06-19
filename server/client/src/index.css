@@ -74,11 +74,36 @@ nav i.material-icons.large {
   border-bottom: none;
 }
 
+.OnePhoneContainer {
+  border-top: thin solid #9575cd;
+  padding-bottom: 0.8em;
+}
+
 .formInputsContainer,
 .eventContacts {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+}
+
+.myIconContainer {
+  margin: auto 1em auto 1em;
+}
+
+.categoryIcon {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  margin-top: 2em;
+  border-top: thin solid #9575cd;
+}
+
+.myContactsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
 }
 
 .orderSummary {

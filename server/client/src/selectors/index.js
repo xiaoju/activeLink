@@ -12,6 +12,8 @@ export const getFamilyMembers = state => state.data.familyMembers;
 export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.items;
 export const getDiscountQualifiers = state => state.data.discountQualifiers;
+export const getStaff = state => state.data.staff;
+export const getEventContacts = state => state.data.eventContacts;
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
