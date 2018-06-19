@@ -15,6 +15,13 @@ export const getDiscountQualifiers = state => state.data.discountQualifiers;
 export const getStaff = state => state.data.staff;
 export const getEventContacts = state => state.data.eventContacts;
 
+export const getUserFamilyName = (state, props) =>
+  state.profile.familyMembers[props.userId].familyName;
+export const getFirstName = (state, props) =>
+  state.profile.familyMembers[props.userId].firstName;
+export const getKidGrade = (state, props) =>
+  state.profile.familyMembers[props.userId].kidGrade;
+
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
 // output an array with the items that open right to discount.
@@ -32,7 +39,7 @@ export const getEventContacts = state => state.data.eventContacts;
 
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
-export const getFamilyName = createSelector(
+export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
   [getParents, getFamilyMembers],

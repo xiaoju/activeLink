@@ -16,28 +16,23 @@ class ProfileForm extends Component {
         <h5>
           <strong>Kids</strong>
         </h5>
-        {kids.map(userId => (
-          <OneKidForm
-            firstName={profile.familyMembers[userId].firstName}
-            familyName={profile.familyMembers[userId].familyName}
-            schoolGrade={profile.familyMembers[userId].kidGrade}
-          />
-        ))}
+        {kids.map(userId => <OneKidForm key={userId} userId={userId} />)}
         <h5>
           <strong>Parents</strong>
         </h5>
         {parents.map(userId => (
           <OneParentForm
+            key={userId}
             firstName={profile.familyMembers[userId].firstName}
             familyName={profile.familyMembers[userId].familyName}
           />
         ))}
-        {familyEmails.map((emailId, index) => (
-          <OneEmailForm emailItem={profile.familyEmails[index]} />
+        {familyEmails.map(emailObject => (
+          <OneEmailForm key={emailObject.it} emailObject={emailObject} />
         ))}
 
-        {familyPhones.map((phoneId, index) => (
-          <OnePhoneForm phoneItem={profile.familyPhones[index]} />
+        {familyPhones.map(phoneObject => (
+          <OnePhoneForm key={phoneObject.it} phoneObject={phoneObject} />
         ))}
 
         {/* <button
@@ -69,6 +64,6 @@ ProfileForm.propTypes = {
   profile: PropTypes.object.isRequired,
   parents: PropTypes.array.isRequired,
   kids: PropTypes.array.isRequired,
-  familyEmails: PropTypes.object.isRequired,
-  familyPhones: PropTypes.object.isRequired
+  familyEmails: PropTypes.array.isRequired,
+  familyPhones: PropTypes.array.isRequired
 };

@@ -10,7 +10,7 @@ import {
   getCheckboxUsers,
   getStandardPrices,
   getDiscountedPrices,
-  getFamilyName,
+  // getMergedFamilyName,
   getTotal,
   getFamilyMembers
 } from '../selectors';
@@ -27,7 +27,7 @@ class OrderSummary extends Component {
       checkboxUsers,
       standardPrices,
       discountedPrices,
-      familyName,
+      // mergedFamilyName,
       total,
       familyMembers
     } = this.props;
@@ -104,7 +104,7 @@ function mapStateToProps(state) {
     checkboxUsers: getCheckboxUsers(state),
     standardPrices: getStandardPrices(state),
     discountedPrices: getDiscountedPrices(state),
-    familyName: getFamilyName(state),
+    // mergedFamilyName: getMergedFamilyName(state),
     total: getTotal(state),
     familyMembers: getFamilyMembers(state)
   };

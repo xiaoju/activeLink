@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function OneEmailForm({ emailItem }) {
+function OneEmailForm({ emailObject }) {
   return (
     <form className="formInputsContainer OnePhoneContainer">
       <div className="input-field twoNamesContainer">
@@ -10,13 +10,13 @@ function OneEmailForm({ emailItem }) {
           id="email"
           type="email"
           className="validate"
-          value={emailItem.it}
+          value={emailObject.it}
         />
       </div>
 
       <div className="columnContainer schoolGrade">
-        {emailItem.tags.map(tag => (
-          <div className="chip">
+        {emailObject.tags.map(tag => (
+          <div key={tag} className="chip">
             {tag}
             <i className="close material-icons">close</i>
           </div>
@@ -29,5 +29,5 @@ function OneEmailForm({ emailItem }) {
 export default OneEmailForm;
 
 OneEmailForm.propTypes = {
-  emailItem: PropTypes.object.isRequired
+  emailObject: PropTypes.object.isRequired
 };

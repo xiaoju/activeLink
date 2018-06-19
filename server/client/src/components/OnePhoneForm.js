@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function OnePhoneForm({ phoneItem }) {
+function OnePhoneForm({ phoneObject }) {
   return (
     <form className="formInputsContainer OnePhoneContainer">
       <div className="input-field twoNamesContainer">
         <i className="material-icons prefix">phone</i>
         <input
-          id={phoneItem.it}
+          id={phoneObject.it}
           type="tel"
           className="validate"
-          value={phoneItem.it}
+          value={phoneObject.it}
         />
-        <label htmlFor={phoneItem.it} className="active">
+        <label htmlFor={phoneObject.it} className="active">
           {/* Telephone */}
         </label>
       </div>
@@ -33,8 +33,8 @@ function OnePhoneForm({ phoneItem }) {
       </div> */}
 
       <div className="columnContainer schoolGrade">
-        {phoneItem.tags.map(tag => (
-          <div className="chip">
+        {phoneObject.tags.map(tag => (
+          <div key={tag} className="chip">
             {tag}
             <i className="close material-icons">close</i>
           </div>
@@ -47,5 +47,5 @@ function OnePhoneForm({ phoneItem }) {
 export default OnePhoneForm;
 
 OnePhoneForm.propTypes = {
-  phoneItem: PropTypes.object.isRequired
+  phoneObject: PropTypes.object.isRequired
 };
