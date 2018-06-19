@@ -87,7 +87,7 @@ const outputDraft = {
       kidGrade: 'GS'
     }
   },
-  familyEMails: [
+  familyEmails: [
     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
   ],
@@ -105,15 +105,16 @@ export default function(state = empty, action) {
       let {
         checkboxUsers,
         parents,
-        familyEMails,
+        familyEmails,
         familyPhones,
         familyMembers
       } = action.payload;
       let output = {
         kids: checkboxUsers.slice(1),
         parents,
-        familyEMails,
-        familyPhones
+        familyEmails,
+        familyPhones,
+        familyMembers
       };
 
       return output;

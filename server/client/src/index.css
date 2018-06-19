@@ -24,6 +24,12 @@ body {
   color: #9e9e9e;
 }
 
+.columnContainer {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
 .navbar-fixed nav {
   right: 0;
 }
@@ -76,10 +82,48 @@ nav i.material-icons.large {
 
 .OnePhoneContainer {
   border-top: thin solid #9575cd;
-  padding-bottom: 0.8em;
+  padding: 0.8em;
 }
 
-.formInputsContainer,
+.formInputsContainer {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.twoNamesContainer {
+  margin-left: 10%;
+  margin-right: 10%;
+  display: flex;
+  flex-flow: row wrap;
+  flex-grow: 1;
+}
+
+.firstName {
+  display: flex;
+  flex-grow: 1;
+}
+
+.familyName {
+  display: flex;
+  flex-grow: 2;
+}
+
+.schoolGrade {
+  margin-right: 7%;
+  min-width: 3em;
+}
+
+/* .twoNamesContainer {
+  width: 75%;
+  margin-left: 10%;
+  margin-right: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+} */
+
 .eventContacts {
   display: flex;
   flex-flow: row wrap;
@@ -88,6 +132,14 @@ nav i.material-icons.large {
 
 .myIconContainer {
   margin: auto 1em auto 1em;
+}
+
+.chip {
+  background-color: #d1c4e9;
+}
+
+.redred {
+  background-color: red;
 }
 
 .categoryIcon {
@@ -115,4 +167,30 @@ nav i.material-icons.large {
 
 table.striped > tbody > tr:nth-child(odd) {
   background-color: #eeeeee;
+}
+
+/* label.active::after {
+  border: none;
+} */
+
+.schoolGrade label > select {
+  background-color: #ede7f6;
+  border: 2px solid #ffa726;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
+
+.schoolGrade label > select:focus {
+  background-color: #d1c4e9;
+  border: 2px solid #ffa726;
+}
+
+/* label focus color */
+.input-field input:focus + label {
+  color: #9575cd !important;
+}
+/* label underline focus color */
+.input-field input:focus {
+  border-bottom: 1px solid #9575cd !important;
+  box-shadow: 0 1px 0 0 #9575cd !important;
 }

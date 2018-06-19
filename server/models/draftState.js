@@ -13,7 +13,7 @@ module.exports = {
   eventContacts: ['t001', 't002'],
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
   parents: ['DonaldBush', 'RosemaryPolanski'],
-  familyEMails: [
+  familyEmails: [
     // 'it' like in 'this is *it*, the stuff you'be been looking for!'
     // The first one is the "main" one.
     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
