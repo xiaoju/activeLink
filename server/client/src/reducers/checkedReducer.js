@@ -9,8 +9,9 @@ export default function(state = empty, action) {
       // 1- convert data.checkboxUsers: [familyId, kid1Id, kid2Id] to {familyId: [], kid1Id: [], kid2Id: []}
       return !action.payload
         ? empty // necessary because action.payload is undefined when logged out
-        : action.payload.checkboxUsers.reduce(
-            (obj, thisUserId, currentIndex) => {
+        : [action.payload.familyId] // ['familyId']
+            .concat(action.payload.kids) // ['familyId', 'kidId1', 'kidId2']
+            .reduce((obj, thisUserId, currentIndex) => {
               obj[thisUserId] = action.payload.allItems
                 // 2- the array will be empty excepted if this item is a mandatory item (it's always checked)
                 .filter(thisItemId =>
@@ -28,9 +29,7 @@ export default function(state = empty, action) {
                       !action.payload.familyItems.includes(thisMandatoryItemId))
                 );
               return obj;
-            },
-            {}
-          );
+            }, {});
 
     case CHECK_CHECKBOX:
       return {

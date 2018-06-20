@@ -19,7 +19,13 @@ import {
   // EDIT_PARENT
 } from '../actions/types';
 
-const empty = {};
+const empty = {
+  kids: [],
+  parents: [],
+  familyEMails: [],
+  familyPhones: [],
+  familyMembers: {}
+};
 
 // receive from action.payload:
 // const input = {
@@ -103,21 +109,15 @@ const empty = {};
 export default function(state = empty, action) {
   switch (action.type) {
     case LOAD_DATA:
-      let {
-        checkboxUsers,
-        parents,
-        familyEmails,
-        familyPhones,
-        familyMembers
-      } = action.payload;
-      let output = {
-        kids: checkboxUsers.slice(1),
-        parents,
-        familyEmails,
-        familyPhones,
-        familyMembers
-      };
-      return output;
+      return !action.payload
+        ? empty // necessary because action.payload is undefined when logged out
+        : {
+            kids: action.payload.kids,
+            parents: action.payload.parents,
+            familyEmails: action.payload.familyEmails,
+            familyPhones: action.payload.familyPhones,
+            familyMembers: action.payload.familyMembers
+          };
 
     case SET_KID_GRADE:
       return {

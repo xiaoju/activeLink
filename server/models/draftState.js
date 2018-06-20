@@ -5,9 +5,8 @@
 // export to backend will contain users, eventId, timeStamp (calculated at time of export)
 
 module.exports = {
-  checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'],
-  // checkboxUsers[0] is the familyId used in backend database
-  // checkboxUsers.slice(1) is the kids.
+  familyId: '7jhfbasd8jfhbeas8',
+  kids: ['MulanBush', 'ZilanPolanski'],
   eventId: 'e0001', // included in export to backend
   eventName: 'Registration 2018-2019',
   eventContacts: ['t001', 't002'],
