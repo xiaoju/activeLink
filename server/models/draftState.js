@@ -93,7 +93,7 @@ module.exports = {
       phone: '06 06 06 06 06'
     }
   },
-  items: {
+  itemsPerId: {
     aa00: {
       id: 'r0',
       name: 'Registration to the association',

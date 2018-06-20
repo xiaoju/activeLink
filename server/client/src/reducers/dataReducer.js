@@ -11,18 +11,10 @@ const empty = {
   discountQualifiers: [],
   mandatoryItems: [],
   familyItems: [],
-  familyMembers: {},
   users: {},
   family: {},
   staff: {},
-  event: {
-    id: '',
-    name: '',
-    items: [],
-    instructions: [],
-    users: []
-  },
-  items: {}
+  itemsPerId: {}
 };
 
 export default function(state = empty, action) {

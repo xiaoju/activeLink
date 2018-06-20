@@ -22,7 +22,7 @@ class SelectClassesForm extends Component {
   render() {
     const {
       allItems,
-      items,
+      itemsPerId,
       familyItems,
       mergedFamilyName,
       familyMembers,
@@ -43,13 +43,13 @@ class SelectClassesForm extends Component {
             <div className="container itemDetails" key={thisItemId}>
               {/* Name of the class */}
               <h5>
-                <strong>{items[thisItemId].name}</strong>
+                <strong>{itemsPerId[thisItemId].name}</strong>
               </h5>
               {/* Description of the class */}
-              <div>{items[thisItemId].description}</div>
+              <div>{itemsPerId[thisItemId].description}</div>
               {/* Teacher name */}
-              {items[thisItemId].teacherName && (
-                <div>Animated by {items[thisItemId].teacherName}</div>
+              {itemsPerId[thisItemId].teacherName && (
+                <div>Animated by {itemsPerId[thisItemId].teacherName}</div>
               )}
 
               <ItemPrices
@@ -61,7 +61,7 @@ class SelectClassesForm extends Component {
 
               <ItemCheckboxes
                 itemId={thisItemId}
-                items={items}
+                itemsPerId={itemsPerId}
                 familyItems={familyItems}
                 mergedFamilyName={mergedFamilyName}
                 familyMembers={familyMembers}
@@ -86,7 +86,7 @@ function mapStateToProps(state) {
     familyMembers: getFamilyMembers(state),
     familyItems: getFamilyItems(state),
     allItems: getAllItems(state),
-    items: getItemsPerId(state),
+    itemsPerId: getItemsPerId(state),
     mandatoryItems: getMandatoryItems(state),
     checkboxUsers: getCheckboxUsers(state),
     standardPrices: getStandardPrices(state),

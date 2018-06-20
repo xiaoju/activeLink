@@ -18,7 +18,7 @@ export const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', '
 const getParents = state => state.data.parents; // ['DonaldBush', 'RosemaryPolanski']
 export const getFamilyMembers = state => state.profile.familyMembers;
 export const getFamilyItems = state => state.data.familyItems;
-export const getItemsPerId = state => state.data.items;
+export const getItemsPerId = state => state.data.itemsPerId;
 export const getDiscountQualifiers = state => state.data.discountQualifiers;
 export const getStaff = state => state.data.staff;
 export const getEventContacts = state => state.data.eventContacts;
