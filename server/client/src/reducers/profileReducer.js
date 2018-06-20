@@ -106,21 +106,29 @@ const empty = {
 //   ]
 // };
 
-export default function(state = empty, action) {
-  switch (action.type) {
+export default function(state = empty, { type, payload, userId, kidGrade }) {
+  switch (type) {
     case LOAD_DATA:
-      return !action.payload
-        ? empty // necessary because action.payload is undefined when logged out
-        : {
-            kids: action.payload.kids,
-            parents: action.payload.parents,
-            familyEmails: action.payload.familyEmails,
-            familyPhones: action.payload.familyPhones,
-            familyMembers: action.payload.familyMembers
-          };
+      if (!payload) return empty;
+      else {
+        // necessary because action.payload is undefined when logged out
+        let {
+          kids,
+          parents,
+          familyEmails,
+          familyPhones,
+          familyMembers
+        } = payload;
+        return {
+          kids,
+          parents,
+          familyEmails,
+          familyPhones,
+          familyMembers
+        };
+      }
 
     case SET_KID_GRADE:
-      let { kidGrade, userId } = action;
       return {
         ...state,
         familyMembers: {
