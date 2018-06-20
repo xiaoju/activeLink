@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
 class Header extends Component {
   renderContent() {
@@ -58,7 +59,7 @@ class Header extends Component {
               to={this.props.auth ? '/dashboard' : '/'}
               className="left brand-logo"
             >
-              English Link
+              <img src={englishLinkLogo} alt="logo" />
             </Link>
             <ul className="right">{this.renderContent()}</ul>
           </div>

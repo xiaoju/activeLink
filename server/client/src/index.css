@@ -184,3 +184,17 @@ table.striped > tbody > tr:nth-child(odd) {
   border-bottom: 1px solid #9575cd !important;
   box-shadow: 0 1px 0 0 #9575cd !important;
 }
+
+.nav-wrapper > a,
+.nav-wrapper > a > img {
+  height: 100%;
+}
+
+.nav-wrapper > a > img {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.card-title {
+  color: white;
+}
