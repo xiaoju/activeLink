@@ -3,7 +3,8 @@ import {
   FETCH_USER,
   LOAD_DATA,
   CHECK_CHECKBOX,
-  UNCHECK_CHECKBOX
+  UNCHECK_CHECKBOX,
+  SET_KID_GRADE
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -36,5 +37,13 @@ export function uncheckCheckbox(userId, itemId) {
     type: UNCHECK_CHECKBOX,
     userId,
     itemId
+  };
+}
+
+export function setKidGrade(userId, kidGrade) {
+  return {
+    type: SET_KID_GRADE,
+    userId,
+    kidGrade
   };
 }

@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { getFirstName, getUserFamilyName, getKidGrade } from '../selectors';
+import { setKidGrade } from '../actions/index';
 
 class OneKidForm extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.props.setKidGrade(this.props.userId, event.target.value);
+  }
+
   render() {
     const { firstName, userFamilyName, kidGrade } = this.props;
 
@@ -35,13 +46,12 @@ class OneKidForm extends Component {
             </label>
           </div>
         </div>
-        {/* <form onSubmit={this.handleSubmit}> */}
         <div className="schoolGrade">
           <label>Grade</label>
           <select
             className="browser-default"
             value={kidGrade}
-            // onChange={this.handleChange}
+            onChange={this.handleChange}
           >
             <option value="PS">PS</option>
             <option value="MS">MS</option>
@@ -69,7 +79,16 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps)(OneKidForm);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      setKidGrade: setKidGrade
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);
 
 OneKidForm.propTypes = {
   userId: PropTypes.string.isRequired,
