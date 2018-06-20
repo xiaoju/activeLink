@@ -120,13 +120,14 @@ export default function(state = empty, action) {
           };
 
     case SET_KID_GRADE:
+      let { kidGrade, userId } = action;
       return {
         ...state,
         familyMembers: {
           ...state.familyMembers,
-          [action.userId]: {
-            ...state.familyMembers[action.userId],
-            kidGrade: action.kidGrade
+          [userId]: {
+            ...state.familyMembers[userId],
+            kidGrade
           }
         }
       };
