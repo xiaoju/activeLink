@@ -25,7 +25,7 @@ class MediaForm extends Component {
     const { mediaObject, index } = this.props;
 
     return (
-      <form className="formInputsContainer OnePhoneContainer">
+      <form className="formInputsContainer">
         <div className="input-field twoNamesContainer">
           <i className="material-icons prefix">{this.media}</i>
           <input

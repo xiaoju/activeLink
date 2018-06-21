@@ -20,6 +20,9 @@ class ProfileForm extends Component {
           <strong>Parents</strong>
         </h5>
         {allParents.map(userId => <OneKidForm key={userId} userId={userId} />)}
+        <h5>
+          <strong>Phones & Emails</strong>
+        </h5>
         {familyMedia.map((mediaObject, index) => (
           <MediaForm key={index} index={index} mediaObject={mediaObject} />
         ))}
