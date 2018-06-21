@@ -23,10 +23,10 @@ import {
 import * as Immutable from '../utils/Immutable';
 
 const empty = {
-  kids: [],
-  parents: [],
+  allKids: [],
+  allParents: [],
   familyMedia: [],
-  familyMembers: {}
+  familyPerId: {}
 };
 
 // receive from action.payload:
@@ -117,22 +117,22 @@ export default function(
       if (!payload) return empty;
       else {
         // necessary because action.payload is undefined when logged out
-        let { kids, parents, familyMedia, familyMembers } = payload;
+        let { allKids, allParents, familyMedia, familyPerId } = payload;
         return {
-          kids,
-          parents,
+          allKids,
+          allParents,
           familyMedia,
-          familyMembers
+          familyPerId
         };
       }
 
     case MODIFY_USER:
       return {
         ...state,
-        familyMembers: {
-          ...state.familyMembers,
+        familyPerId: {
+          ...state.familyPerId,
           [userId]: {
-            ...state.familyMembers[userId],
+            ...state.familyPerId[userId],
             [fieldName]: value
           }
         }

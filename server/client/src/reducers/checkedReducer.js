@@ -11,9 +11,15 @@ export default function(state = empty, { type, payload, userId, itemId }) {
         return empty;
       } else {
         // necessary because action.payload is undefined when logged out
-        let { familyId, kids, allItems, mandatoryItems, familyItems } = payload;
+        let {
+          familyId,
+          allKids,
+          allItems,
+          mandatoryItems,
+          familyItems
+        } = payload;
         return [familyId] // ['familyId']
-          .concat(kids) // ['familyId', 'kidId1', 'kidId2']
+          .concat(allKids) // ['familyId', 'kidId1', 'kidId2']
           .reduce((obj, thisUserId, currentIndex) => {
             obj[thisUserId] = allItems
               // 2- the array will be empty excepted if this item is a mandatory item (it's always checked)

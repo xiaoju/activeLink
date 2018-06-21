@@ -8,7 +8,7 @@ import {
   getApplyDiscount,
   getChecked,
   getMergedFamilyName,
-  getFamilyMembers,
+  getFamilyPerId,
   getFamilyItems,
   getAllItems,
   getItemsPerId,
@@ -25,7 +25,7 @@ class SelectClassesForm extends Component {
       itemsPerId,
       familyItems,
       mergedFamilyName,
-      familyMembers,
+      familyPerId,
       checked,
       checkCheckbox,
       uncheckCheckbox,
@@ -64,7 +64,7 @@ class SelectClassesForm extends Component {
                 itemsPerId={itemsPerId}
                 familyItems={familyItems}
                 mergedFamilyName={mergedFamilyName}
-                familyMembers={familyMembers}
+                familyPerId={familyPerId}
                 checked={checked}
                 checkCheckbox={checkCheckbox}
                 uncheckCheckbox={uncheckCheckbox}
@@ -83,7 +83,7 @@ function mapStateToProps(state) {
     applyDiscount: getApplyDiscount(state),
     checked: getChecked(state),
     mergedFamilyName: getMergedFamilyName(state),
-    familyMembers: getFamilyMembers(state),
+    familyPerId: getFamilyPerId(state),
     familyItems: getFamilyItems(state),
     allItems: getAllItems(state),
     itemsPerId: getItemsPerId(state),

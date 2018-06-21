@@ -10,7 +10,7 @@ const empty = {
   discountQualifiers: [],
   mandatoryItems: [],
   familyItems: [],
-  staff: {},
+  staffPerId: {},
   itemsPerId: {}
 };
 
@@ -32,7 +32,7 @@ export default function(state = empty, { type, payload }) {
           discountQualifiers,
           mandatoryItems,
           familyItems,
-          staff,
+          staffPerId,
           itemsPerId
         } = payload;
         return {
@@ -46,7 +46,7 @@ export default function(state = empty, { type, payload }) {
           discountQualifiers,
           mandatoryItems,
           familyItems,
-          staff,
+          staffPerId,
           itemsPerId
         };
       }

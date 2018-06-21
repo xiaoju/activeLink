@@ -12,7 +12,7 @@ import {
   getDiscountedPrices,
   // getMergedFamilyName,
   getTotal,
-  getFamilyMembers
+  getFamilyPerId
 } from '../selectors';
 
 class OrderSummary extends Component {
@@ -29,7 +29,7 @@ class OrderSummary extends Component {
       discountedPrices,
       // mergedFamilyName,
       total,
-      familyMembers
+      familyPerId
     } = this.props;
 
     let quantity = itemId => checkedItems.filter(x => x === itemId).length;
@@ -43,7 +43,7 @@ class OrderSummary extends Component {
       checkboxUsers
         .slice(1)
         .filter(userId => checked[userId].includes(itemId))
-        .map(userId => familyMembers[userId].firstName)
+        .map(userId => familyPerId[userId].firstName)
         .join(' & ');
 
     let discountNotice = itemId =>
@@ -58,7 +58,7 @@ class OrderSummary extends Component {
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
-                <th>Kids names</th>
+                <th>Kids</th>
                 <th>Discount</th>
                 <th>Unit Price</th>
                 <th>Total</th>
@@ -106,7 +106,7 @@ function mapStateToProps(state) {
     discountedPrices: getDiscountedPrices(state),
     // mergedFamilyName: getMergedFamilyName(state),
     total: getTotal(state),
-    familyMembers: getFamilyMembers(state)
+    familyPerId: getFamilyPerId(state)
   };
 }
 

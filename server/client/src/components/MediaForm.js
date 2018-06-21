@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { getMediaObject } from '../selectors';
 import { modifyMedia } from '../actions/index';
 
-class OneEmailForm extends Component {
+class MediaForm extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -60,9 +60,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ modifyMedia }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OneEmailForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MediaForm);
 
-OneEmailForm.propTypes = {
+MediaForm.propTypes = {
   mediaObject: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
 };

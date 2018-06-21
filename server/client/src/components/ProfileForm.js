@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getParents, getKids, getFamilyMedia } from '../selectors';
+import { getAllParents, getAllKids, getFamilyMedia } from '../selectors';
 import OneKidForm from './OneKidForm';
-import OneEmailForm from './OneEmailForm';
+import MediaForm from './MediaForm';
 
 class ProfileForm extends Component {
   render() {
-    const { parents, kids, familyMedia } = this.props;
+    const { allParents, allKids, familyMedia } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -15,13 +15,13 @@ class ProfileForm extends Component {
         <h5>
           <strong>Kids</strong>
         </h5>
-        {kids.map(userId => <OneKidForm key={userId} userId={userId} />)}
+        {allKids.map(userId => <OneKidForm key={userId} userId={userId} />)}
         <h5>
           <strong>Parents</strong>
         </h5>
-        {parents.map(userId => <OneKidForm key={userId} userId={userId} />)}
+        {allParents.map(userId => <OneKidForm key={userId} userId={userId} />)}
         {familyMedia.map((mediaObject, index) => (
-          <OneEmailForm key={index} index={index} mediaObject={mediaObject} />
+          <MediaForm key={index} index={index} mediaObject={mediaObject} />
         ))}
       </div>
     );
@@ -30,8 +30,8 @@ class ProfileForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    parents: getParents(state),
-    kids: getKids(state),
+    allParents: getAllParents(state),
+    allKids: getAllKids(state),
     familyMedia: getFamilyMedia(state)
   };
 }
@@ -39,7 +39,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ProfileForm);
 
 ProfileForm.propTypes = {
-  parents: PropTypes.array.isRequired,
-  kids: PropTypes.array.isRequired,
+  allParents: PropTypes.array.isRequired,
+  allKids: PropTypes.array.isRequired,
   familyMedia: PropTypes.array.isRequired
 };

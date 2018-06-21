@@ -6,12 +6,12 @@
 
 module.exports = {
   familyId: '7jhfbasd8jfhbeas8',
-  kids: ['MulanBush', 'ZilanPolanski'],
+  allKids: ['MulanBush', 'ZilanPolanski'],
   eventId: 'e0001', // included in export to backend
   eventName: 'Registration 2018-2019',
   eventContacts: ['t001', 't002'],
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
-  parents: ['DonaldBush', 'RosemaryPolanski'],
+  allParents: ['DonaldBush', 'RosemaryPolanski'],
   familyMedia: [
     { email: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
     { email: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] },
@@ -43,9 +43,8 @@ module.exports = {
   discountQualifiers: ['aa01', 'aa02'],
   mandatoryItems: ['aa00'],
   familyItems: ['aa00'], // items that are charged once per family, not per kid
-  familyMembers: {
-    // TODO rename to familyPerId
-    // using names as IDs so that we can add a new user in frontEnd and pay
+  familyPerId: {
+    // NB using names as IDs so that we can add a new user in frontEnd and pay
     // directly, without waiting for an id to be created by the backEnd.
     DonaldBush: {
       id: 'DonaldBush',
@@ -70,8 +69,7 @@ module.exports = {
       kidGrade: 'GS'
     }
   },
-  staff: {
-    // TODO rename to staffPerId
+  staffPerId: {
     t001: {
       id: 't001',
       name: "Jeanne d'Arc",

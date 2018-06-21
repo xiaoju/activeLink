@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getStaff, getEventContacts } from '../selectors';
+import { getStaffPerId, getEventContacts } from '../selectors';
 import Payments from './Payments';
 
 class ConfirmStep extends Component {
   render() {
-    const { staff, eventContacts } = this.props;
+    const { staffPerId, eventContacts } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -27,9 +27,9 @@ class ConfirmStep extends Component {
               <span>Any questions? Please contact us!</span>
               {eventContacts.map(contactId => (
                 <div key={contactId} className="eventContacts">
-                  <span>{staff[contactId].name}</span>
-                  <span>{staff[contactId].phone}</span>
-                  <span>{staff[contactId].email}</span>
+                  <span>{staffPerId[contactId].name}</span>
+                  <span>{staffPerId[contactId].phone}</span>
+                  <span>{staffPerId[contactId].email}</span>
                 </div>
               ))}
             </div>
@@ -42,7 +42,7 @@ class ConfirmStep extends Component {
 
 function mapStateToProps(state) {
   return {
-    staff: getStaff(state),
+    staffPerId: getStaffPerId(state),
     eventContacts: getEventContacts(state)
   };
 }
@@ -50,6 +50,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ConfirmStep);
 
 ConfirmStep.propTypes = {
-  staff: PropTypes.object,
+  staffPerId: PropTypes.object,
   eventContacts: PropTypes.array
 };

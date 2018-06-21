@@ -1,37 +1,37 @@
 import { createSelector } from 'reselect';
 
 export const getFamilyId = state => state.data.familyId;
-export const getKids = state => state.profile.kids;
+export const getAllKids = state => state.profile.allKids;
 export const getFamilyMedia = state => state.profile.familyMedia;
 export const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getMandatoryItems = state => state.data.mandatoryItems;
 export const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-export const getParents = state => state.profile.parents; // ['DonaldBush', 'RosemaryPolanski']
-export const getFamilyMembers = state => state.profile.familyMembers;
+export const getAllParents = state => state.profile.allParents; // ['DonaldBush', 'RosemaryPolanski']
+export const getFamilyPerId = state => state.profile.familyPerId;
 export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.itemsPerId;
 export const getDiscountQualifiers = state => state.data.discountQualifiers;
-export const getStaff = state => state.data.staff;
+export const getStaffPerId = state => state.data.staffPerId;
 export const getEventContacts = state => state.data.eventContacts;
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
 export const getUserFamilyName = (state, props) =>
-  state.profile.familyMembers[props.userId].familyName;
+  state.profile.familyPerId[props.userId].familyName;
 
 export const getFirstName = (state, props) =>
-  state.profile.familyMembers[props.userId].firstName;
+  state.profile.familyPerId[props.userId].firstName;
 
 export const getKidGrade = (state, props) =>
-  state.profile.familyMembers[props.userId].kidGrade;
+  state.profile.familyPerId[props.userId].kidGrade;
 
 export const getMediaObject = (state, props) =>
   state.profile.familyMedia[props.index];
 
 export const getCheckboxUsers = createSelector(
   // ['idClerambault', 'idMulan', 'idZilan']
-  [getFamilyId, getKids],
-  (familyId, Kids) => [familyId].concat(Kids)
+  [getFamilyId, getAllKids],
+  (familyId, allKids) => [familyId].concat(allKids)
 );
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
@@ -52,11 +52,11 @@ export const getCheckboxUsers = createSelector(
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
-  [getParents, getFamilyMembers],
-  (parents, familyMembers) =>
+  [getAllParents, getFamilyPerId],
+  (allParents, familyPerId) =>
     [
       ...new Set(
-        parents.map(thisParentId => familyMembers[thisParentId].familyName)
+        allParents.map(thisParentId => familyPerId[thisParentId].familyName)
       )
     ].join('-')
 );

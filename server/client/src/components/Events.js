@@ -115,7 +115,7 @@ class Events extends Component {
                   )}
 
                 {this.props.data.data.items[thisItem].priceFamily &&
-                  Object.keys(this.props.data.data.parents).map(
+                  Object.keys(this.props.data.data.allParents).map(
                     (thisParent, i) => (
                       <div key={i}>
                         <div>
@@ -123,7 +123,7 @@ class Events extends Component {
                             type="checkbox"
                             onChange={this.toggle}
                             id={
-                              this.props.data.data.parents[thisParent]
+                              this.props.data.data.allParents[thisParent]
                                 .familyName +
                               this.props.data.data.items[thisItem].id
                             }
@@ -132,13 +132,13 @@ class Events extends Component {
                           />
                           <label
                             for={
-                              this.props.data.data.parents[thisParent]
+                              this.props.data.data.allParents[thisParent]
                                 .familyName +
                               this.props.data.data.items[thisItem].id
                             }
                           >
                             {
-                              this.props.data.data.parents[thisParent]
+                              this.props.data.data.allParents[thisParent]
                                 .familyName
                             }
                           </label>
@@ -150,32 +150,34 @@ class Events extends Component {
 
                 {this.props.data &&
                   !this.props.data.data.items[thisItem].priceFamily &&
-                  Object.keys(this.props.data.data.kids).map((thisKid, i) => (
-                    <div className="kids" key={i}>
-                      <div>
-                        <input
-                          type="checkbox"
-                          onChange={this.toggle}
-                          id={
-                            this.props.data.data.kids[thisKid].firstName +
-                            this.props.data.data.items[thisItem].id
-                          }
-                          className="filled-in checkbox-orange"
-                          // checked="checked"
-                        />
-                        <label
-                          for={
-                            this.props.data.data.kids[thisKid].firstName +
-                            this.props.data.data.items[thisItem].id
-                          }
-                        >
-                          {this.props.data.data.kids[thisKid].firstName}
-                        </label>
-                      </div>
+                  Object.keys(this.props.data.data.allKids).map(
+                    (thisKid, i) => (
+                      <div className="kids" key={i}>
+                        <div>
+                          <input
+                            type="checkbox"
+                            onChange={this.toggle}
+                            id={
+                              this.props.data.data.allKids[thisKid].firstName +
+                              this.props.data.data.items[thisItem].id
+                            }
+                            className="filled-in checkbox-orange"
+                            // checked="checked"
+                          />
+                          <label
+                            for={
+                              this.props.data.data.allKids[thisKid].firstName +
+                              this.props.data.data.items[thisItem].id
+                            }
+                          >
+                            {this.props.data.data.allKids[thisKid].firstName}
+                          </label>
+                        </div>
 
-                      <span> xxx EUR</span>
-                    </div>
-                  ))}
+                        <span> xxx EUR</span>
+                      </div>
+                    )
+                  )}
               </div>
               <div class="divider" />
             </div>
