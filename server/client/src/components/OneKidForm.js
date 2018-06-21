@@ -26,7 +26,9 @@ class OneKidForm extends Component {
       <form className="formInputsContainer">
         <div className="twoNamesContainer">
           <div className="input-field firstName">
-            <i className="material-icons prefix">face</i>
+            <i className="material-icons prefix">
+              {!!kidGrade ? 'face' : 'account_circle'}
+            </i>
             <input
               name="firstName"
               id="icon_prefix"
@@ -54,27 +56,30 @@ class OneKidForm extends Component {
             </label>
           </div>
         </div>
-        <div className="schoolGrade">
-          <label>Grade</label>
-          <select
-            name="kidGrade"
-            className="browser-default"
-            value={kidGrade}
-            onChange={this.handleChange}
-          >
-            <option value="PS">PS</option>
-            <option value="MS">MS</option>
-            <option value="GS">GS</option>
-            <option disabled>──</option>
-            <option value="CP">CP</option>
-            <option value="CE1">CE1</option>
-            <option value="CE2">CE2</option>
-            <option value="CM1">CM1</option>
-            <option value="CM2">CM2</option>
-            <option disabled>──</option>
-            <option value="older">older</option>
-          </select>
-        </div>
+
+        {!!kidGrade && (
+          <div className="schoolGrade">
+            <label>Grade</label>
+            <select
+              name="kidGrade"
+              className="browser-default"
+              value={kidGrade}
+              onChange={this.handleChange}
+            >
+              <option value="PS">PS</option>
+              <option value="MS">MS</option>
+              <option value="GS">GS</option>
+              <option disabled>──</option>
+              <option value="CP">CP</option>
+              <option value="CE1">CE1</option>
+              <option value="CE2">CE2</option>
+              <option value="CM1">CM1</option>
+              <option value="CM2">CM2</option>
+              <option disabled>──</option>
+              <option value="older">older</option>
+            </select>
+          </div>
+        )}
       </form>
     );
   }
@@ -89,12 +94,7 @@ function mapStateToProps(state, props) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      modifyUser: modifyUser
-    },
-    dispatch
-  );
+  return bindActionCreators({ modifyUser }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);

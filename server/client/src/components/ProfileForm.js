@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import OneKidForm from './OneKidForm';
-import OneParentForm from './OneParentForm';
 import OnePhoneForm from './OnePhoneForm';
 import OneEmailForm from './OneEmailForm';
 
@@ -20,13 +19,9 @@ class ProfileForm extends Component {
         <h5>
           <strong>Parents</strong>
         </h5>
-        {parents.map(userId => (
-          <OneParentForm
-            key={userId}
-            firstName={profile.familyMembers[userId].firstName}
-            familyName={profile.familyMembers[userId].familyName}
-          />
-        ))}
+
+        {parents.map(userId => <OneKidForm key={userId} userId={userId} />)}
+
         {familyEmails.map(emailObject => (
           <OneEmailForm key={emailObject.it} emailObject={emailObject} />
         ))}
