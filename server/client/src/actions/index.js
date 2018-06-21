@@ -4,6 +4,7 @@ import {
   LOAD_DATA,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
+  MODIFY_MEDIA,
   MODIFY_USER
 } from './types';
 
@@ -45,6 +46,15 @@ export function modifyUser({ userId, fieldName, value }) {
     type: MODIFY_USER,
     userId,
     fieldName,
+    value
+  };
+}
+
+export function modifyMedia({ media, index, value }) {
+  return {
+    type: MODIFY_MEDIA,
+    media,
+    index,
     value
   };
 }

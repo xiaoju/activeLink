@@ -5,24 +5,52 @@ const empty = {
   eventId: null, // using eventId to detect if data arrived yet or not from api call
   eventName: '',
   allItems: [],
-  parents: [],
   standardPrices: {},
   discountedPrices: {},
   discountQualifiers: [],
   mandatoryItems: [],
   familyItems: [],
-  users: {},
-  family: {},
   staff: {},
   itemsPerId: {}
 };
 
-export default function(state = empty, action) {
-  switch (action.type) {
+export default function(state = empty, { type, payload }) {
+  switch (type) {
     case LOAD_DATA:
-      return action.payload || empty;
-    // `|| empty` is required in case action.payload is undefined,
-    // which is the case when not logged in.
+      if (!payload)
+        // action.payload is undefined when logged out
+        return empty;
+      else {
+        let {
+          familyId,
+          eventId,
+          eventName,
+          eventContacts,
+          allItems,
+          standardPrices,
+          discountedPrices,
+          discountQualifiers,
+          mandatoryItems,
+          familyItems,
+          staff,
+          itemsPerId
+        } = payload;
+        return {
+          familyId,
+          eventId,
+          eventName,
+          eventContacts,
+          allItems,
+          standardPrices,
+          discountedPrices,
+          discountQualifiers,
+          mandatoryItems,
+          familyItems,
+          staff,
+          itemsPerId
+        };
+      }
+
     default:
       return state;
   }

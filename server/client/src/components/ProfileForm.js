@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getParents, getKids, getFamilyMedia } from '../selectors';
 import OneKidForm from './OneKidForm';
-import OnePhoneForm from './OnePhoneForm';
 import OneEmailForm from './OneEmailForm';
 
 class ProfileForm extends Component {
   render() {
-    const { parents, kids, familyEmails, familyPhones, profile } = this.props;
+    const { parents, kids, familyMedia } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -19,25 +19,10 @@ class ProfileForm extends Component {
         <h5>
           <strong>Parents</strong>
         </h5>
-
         {parents.map(userId => <OneKidForm key={userId} userId={userId} />)}
-
-        {familyEmails.map(emailObject => (
-          <OneEmailForm key={emailObject.it} emailObject={emailObject} />
+        {familyMedia.map((mediaObject, index) => (
+          <OneEmailForm key={index} index={index} mediaObject={mediaObject} />
         ))}
-
-        {familyPhones.map(phoneObject => (
-          <OnePhoneForm key={phoneObject.it} phoneObject={phoneObject} />
-        ))}
-
-        {/* <button
-          className="btn waves-effect waves-light orange lighten-1 z-depth-2"
-          type="submit"
-          name="action"
-        >
-          save
-          <i className="material-icons right">send</i>
-        </button> */}
       </div>
     );
   }
@@ -45,20 +30,16 @@ class ProfileForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    profile: state.profile,
-    parents: state.profile.parents,
-    kids: state.profile.kids,
-    familyEmails: state.profile.familyEmails,
-    familyPhones: state.profile.familyPhones
+    parents: getParents(state),
+    kids: getKids(state),
+    familyMedia: getFamilyMedia(state)
   };
 }
 
 export default connect(mapStateToProps)(ProfileForm);
 
 ProfileForm.propTypes = {
-  profile: PropTypes.object.isRequired,
   parents: PropTypes.array.isRequired,
   kids: PropTypes.array.isRequired,
-  familyEmails: PropTypes.array.isRequired,
-  familyPhones: PropTypes.array.isRequired
+  familyMedia: PropTypes.array.isRequired
 };

@@ -12,17 +12,13 @@ module.exports = {
   eventContacts: ['t001', 't002'],
   allItems: ['aa00', 'aa01', 'aa02', 'aa03', 'aa04', 'aa05', 'aa06', 'aa07'],
   parents: ['DonaldBush', 'RosemaryPolanski'],
-  familyEmails: [
-    // 'it' like in 'this is *it*, the stuff you'be been looking for!'
-    // The first one is the "main" one.
-    { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-    { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
-  ],
-  familyPhones: [
-    { it: '0600000000', tags: ['mobile', 'Donald'] },
-    { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
-    { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
-    { it: '0633333333', tags: ['landline', 'family'] }
+  familyMedia: [
+    { email: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
+    { email: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] },
+    { phone: '0600000000', tags: ['mobile', 'Donald'] },
+    { phone: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
+    { phone: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
+    { phone: '0633333333', tags: ['landline', 'family'] }
   ],
   standardPrices: {
     aa00: 3000,
@@ -48,6 +44,7 @@ module.exports = {
   mandatoryItems: ['aa00'],
   familyItems: ['aa00'], // items that are charged once per family, not per kid
   familyMembers: {
+    // TODO rename to familyPerId
     // using names as IDs so that we can add a new user in frontEnd and pay
     // directly, without waiting for an id to be created by the backEnd.
     DonaldBush: {
@@ -74,6 +71,7 @@ module.exports = {
     }
   },
   staff: {
+    // TODO rename to staffPerId
     t001: {
       id: 't001',
       name: "Jeanne d'Arc",

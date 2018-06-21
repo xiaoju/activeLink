@@ -1,34 +1,38 @@
 import { createSelector } from 'reselect';
-// about 'reselect', see https://github.com/reduxjs/reselect
-// and http://www.bentedder.com/creating-computed-properties-react-redux/
 
 export const getFamilyId = state => state.data.familyId;
 export const getKids = state => state.profile.kids;
-
-export const getCheckboxUsers = createSelector(
-  // ['idClerambault', 'idMulan', 'idZilan']
-  [getFamilyId, getKids],
-  (familyId, Kids) => [familyId].concat(Kids)
-);
-
+export const getFamilyMedia = state => state.profile.familyMedia;
 export const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getMandatoryItems = state => state.data.mandatoryItems;
 export const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-const getParents = state => state.data.parents; // ['DonaldBush', 'RosemaryPolanski']
+export const getParents = state => state.profile.parents; // ['DonaldBush', 'RosemaryPolanski']
 export const getFamilyMembers = state => state.profile.familyMembers;
 export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.itemsPerId;
 export const getDiscountQualifiers = state => state.data.discountQualifiers;
 export const getStaff = state => state.data.staff;
 export const getEventContacts = state => state.data.eventContacts;
+export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
 export const getUserFamilyName = (state, props) =>
   state.profile.familyMembers[props.userId].familyName;
+
 export const getFirstName = (state, props) =>
   state.profile.familyMembers[props.userId].firstName;
+
 export const getKidGrade = (state, props) =>
   state.profile.familyMembers[props.userId].kidGrade;
+
+export const getMediaObject = (state, props) =>
+  state.profile.familyMedia[props.index];
+
+export const getCheckboxUsers = createSelector(
+  // ['idClerambault', 'idMulan', 'idZilan']
+  [getFamilyId, getKids],
+  (familyId, Kids) => [familyId].concat(Kids)
+);
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
@@ -44,8 +48,6 @@ export const getKidGrade = (state, props) =>
 //     return discountQualifiers;
 //   }
 // );
-
-export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out

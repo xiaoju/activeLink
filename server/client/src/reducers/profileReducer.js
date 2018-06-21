@@ -1,5 +1,6 @@
 import {
   LOAD_DATA,
+  MODIFY_MEDIA,
   MODIFY_USER
   // //
   // ADD_PHONE,
@@ -19,11 +20,12 @@ import {
   // EDIT_PARENT
 } from '../actions/types';
 
+import * as Immutable from '../utils/Immutable';
+
 const empty = {
   kids: [],
   parents: [],
-  familyEMails: [],
-  familyPhones: [],
+  familyMedia: [],
   familyMembers: {}
 };
 
@@ -108,25 +110,18 @@ const empty = {
 
 export default function(
   state = empty,
-  { type, payload, userId, kidGrade, fieldName, value }
+  { type, payload, userId, kidGrade, fieldName, index, media, value }
 ) {
   switch (type) {
     case LOAD_DATA:
       if (!payload) return empty;
       else {
         // necessary because action.payload is undefined when logged out
-        let {
-          kids,
-          parents,
-          familyEmails,
-          familyPhones,
-          familyMembers
-        } = payload;
+        let { kids, parents, familyMedia, familyMembers } = payload;
         return {
           kids,
           parents,
-          familyEmails,
-          familyPhones,
+          familyMedia,
           familyMembers
         };
       }
@@ -141,6 +136,18 @@ export default function(
             [fieldName]: value
           }
         }
+      };
+
+    case MODIFY_MEDIA:
+      return {
+        ...state,
+        familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
+          index: index,
+          item: {
+            [media]: value,
+            tags: state.familyMedia[index].tags
+          }
+        })
       };
 
     default:
