@@ -1,6 +1,6 @@
 import {
   LOAD_DATA,
-  SET_KID_GRADE
+  MODIFY_USER
   // //
   // ADD_PHONE,
   // REMOVE_PHONE,
@@ -106,7 +106,10 @@ const empty = {
 //   ]
 // };
 
-export default function(state = empty, { type, payload, userId, kidGrade }) {
+export default function(
+  state = empty,
+  { type, payload, userId, kidGrade, fieldName, value }
+) {
   switch (type) {
     case LOAD_DATA:
       if (!payload) return empty;
@@ -128,14 +131,14 @@ export default function(state = empty, { type, payload, userId, kidGrade }) {
         };
       }
 
-    case SET_KID_GRADE:
+    case MODIFY_USER:
       return {
         ...state,
         familyMembers: {
           ...state.familyMembers,
           [userId]: {
             ...state.familyMembers[userId],
-            kidGrade
+            [fieldName]: value
           }
         }
       };

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { getFirstName, getUserFamilyName, getKidGrade } from '../selectors';
-import { setKidGrade } from '../actions/index';
+import { modifyUser } from '../actions/index';
 
 class OneKidForm extends Component {
   constructor(props) {
@@ -12,7 +12,11 @@ class OneKidForm extends Component {
   }
 
   handleChange(event) {
-    this.props.setKidGrade(this.props.userId, event.target.value);
+    this.props.modifyUser({
+      userId: this.props.userId,
+      fieldName: event.target.name,
+      value: event.target.value
+    });
   }
 
   render() {
@@ -24,10 +28,12 @@ class OneKidForm extends Component {
           <div className="input-field firstName">
             <i className="material-icons prefix">face</i>
             <input
+              name="firstName"
               id="icon_prefix"
               type="text"
               className="validate"
               value={firstName}
+              onChange={this.handleChange}
             />
             <label htmlFor="icon_prefix" className="active">
               First Name
@@ -36,10 +42,12 @@ class OneKidForm extends Component {
 
           <div className="input-field familyName">
             <input
+              name="familyName"
               id="icon_prefix"
               type="text"
               className="validate"
               value={userFamilyName}
+              onChange={this.handleChange}
             />
             <label htmlFor="icon_prefix" className="active">
               Family Name
@@ -49,6 +57,7 @@ class OneKidForm extends Component {
         <div className="schoolGrade">
           <label>Grade</label>
           <select
+            name="kidGrade"
             className="browser-default"
             value={kidGrade}
             onChange={this.handleChange}
@@ -82,7 +91,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      setKidGrade: setKidGrade
+      modifyUser: modifyUser
     },
     dispatch
   );
