@@ -86,11 +86,10 @@ nav i.material-icons.large {
 
 .formInputsContainer {
   width: 100%;
-  height: 6em;
+  min-height: 6em;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
-  padding: 0.8em;
 }
 
 .twoNamesContainer {
@@ -122,6 +121,7 @@ nav i.material-icons.large {
   border: 2px solid #ffa726;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 500;
+  width: 5em;
 }
 
 .schoolGrade label > select:focus {
