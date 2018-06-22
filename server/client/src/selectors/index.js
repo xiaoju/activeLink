@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 export const getFamilyId = state => state.data.familyId;
-export const getAllKids = state => state.profile.allKids;
+export const getAllKids = state => state.profile.allKids; // [k1, k2, k3]
 export const getFamilyMedia = state => state.profile.familyMedia;
 export const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
@@ -25,13 +25,15 @@ export const getFirstName = (state, props) =>
 export const getKidGrade = (state, props) =>
   state.profile.familyPerId[props.userId].kidGrade;
 
-export const getMediaObject = (state, props) =>
-  state.profile.familyMedia[props.index];
+export const getMediaObject = (state, { index }) =>
+  state.profile.familyMedia[index];
 
 export const getCheckboxUsers = createSelector(
-  // ['idClerambault', 'idMulan', 'idZilan']
   [getFamilyId, getAllKids],
-  (familyId, allKids) => [familyId].concat(allKids)
+  (familyId, allKids) =>
+    [familyId]
+      .concat(allKids) // ['familyId', 'k0', 'k1', 'k2']
+      .slice(0, -1) // ['familyId', 'k0', 'k1']
 );
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
@@ -56,7 +58,9 @@ export const getMergedFamilyName = createSelector(
   (allParents, familyPerId) =>
     [
       ...new Set(
-        allParents.map(thisParentId => familyPerId[thisParentId].familyName)
+        allParents
+          .slice(0, -1) // remove item from the 'create new parent' field
+          .map(thisParentId => familyPerId[thisParentId].familyName)
       )
     ].join('-')
 );

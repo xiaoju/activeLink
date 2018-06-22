@@ -19,7 +19,7 @@ export default function(state = empty, { type, payload, userId, itemId }) {
           familyItems
         } = payload;
         return [familyId] // ['familyId']
-          .concat(allKids) // ['familyId', 'kidId1', 'kidId2']
+          .concat(allKids) // ['familyId', 'k0', 'k1']
           .reduce((obj, thisUserId, currentIndex) => {
             obj[thisUserId] = allItems
               // 2- the array will be empty excepted if this item is a mandatory item (it's always checked)

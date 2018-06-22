@@ -118,11 +118,30 @@ export default function(
       else {
         // necessary because action.payload is undefined when logged out
         let { allKids, allParents, familyMedia, familyPerId } = payload;
+        const newParentId = 'p' + allParents.length;
+        const newKidId = 'k' + allKids.length;
         return {
-          allKids,
-          allParents,
-          familyMedia,
-          familyPerId
+          allKids: allKids.concat(newKidId),
+          allParents: allParents.concat(newParentId),
+          familyMedia: familyMedia.concat({
+            media: 'more_horiz', // phone, email or any other cssmaterialize icon name
+            value: '', // 012345678 or abc@gmail.com
+            tags: ['zero']
+          }),
+          familyPerId: {
+            ...familyPerId,
+            [newKidId]: {
+              id: newKidId,
+              firstName: '',
+              familyName: '',
+              kidGrade: ' '
+            },
+            [newParentId]: {
+              id: newParentId,
+              firstName: '',
+              familyName: ''
+            }
+          }
         };
       }
 
@@ -139,12 +158,14 @@ export default function(
       };
 
     case MODIFY_MEDIA:
+      // beware familyMedia is an array of objects!
       return {
         ...state,
         familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
           index: index,
           item: {
-            [media]: value,
+            media,
+            value,
             tags: state.familyMedia[index].tags
           }
         })

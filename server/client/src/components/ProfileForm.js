@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAllParents, getAllKids, getFamilyMedia } from '../selectors';
 import OneKidForm from './OneKidForm';
-import MediaForm from './MediaForm';
+import OneMediaForm from './OneMediaForm';
 
 class ProfileForm extends Component {
   render() {
@@ -21,10 +21,10 @@ class ProfileForm extends Component {
         </h5>
         {allParents.map(userId => <OneKidForm key={userId} userId={userId} />)}
         <h5>
-          <strong>Phones & Emails</strong>
+          <strong>Contacts</strong>
         </h5>
         {familyMedia.map((mediaObject, index) => (
-          <MediaForm key={index} index={index} mediaObject={mediaObject} />
+          <OneMediaForm key={mediaObject.value} index={index} />
         ))}
       </div>
     );

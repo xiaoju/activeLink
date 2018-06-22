@@ -218,3 +218,7 @@ input[type='search']:not(.browser-default),
 textarea.materialize-textarea {
   border-bottom: 1px solid #ffa726;
 }
+
+i.icon-orange {
+  color: #ffa726;
+}

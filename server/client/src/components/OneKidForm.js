@@ -8,10 +8,10 @@ import { modifyUser } from '../actions/index';
 class OneKidForm extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleChange(event) {
+  handleInputChange(event) {
     this.props.modifyUser({
       userId: this.props.userId,
       fieldName: event.target.name,
@@ -26,7 +26,13 @@ class OneKidForm extends Component {
       <form className="formInputsContainer">
         <div className="twoNamesContainer">
           <div className="input-field firstName">
-            <i className="material-icons prefix">
+            {/* <i className="material-icons prefix icon-orange"> */}
+            <i
+              className={
+                'material-icons prefix ' +
+                (!firstName || !userFamilyName ? 'icon-orange' : '')
+              }
+            >
               {!!kidGrade ? 'face' : 'account_circle'}
             </i>
             <input
@@ -35,7 +41,7 @@ class OneKidForm extends Component {
               type="text"
               className="validate"
               value={firstName}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             />
             <label htmlFor="icon_prefix" className="active">
               First Name
@@ -49,7 +55,7 @@ class OneKidForm extends Component {
               type="text"
               className="validate"
               value={userFamilyName}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             />
             <label htmlFor="icon_prefix" className="active">
               Family Name
@@ -64,8 +70,9 @@ class OneKidForm extends Component {
               name="kidGrade"
               className="browser-default"
               value={kidGrade}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             >
+              <option value=" "> </option>
               <option value="PS">PS</option>
               <option value="MS">MS</option>
               <option value="GS">GS</option>
@@ -75,8 +82,6 @@ class OneKidForm extends Component {
               <option value="CE2">CE2</option>
               <option value="CM1">CM1</option>
               <option value="CM2">CM2</option>
-              <option disabled>──</option>
-              <option value="older">older</option>
             </select>
           </div>
         )}

@@ -5,40 +5,42 @@ import PropTypes from 'prop-types';
 import { getMediaObject } from '../selectors';
 import { modifyMedia } from '../actions/index';
 
-class MediaForm extends Component {
+class OneMediaForm extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleMediaChange = this.handleMediaChange.bind(this);
   }
 
-  media = !!this.props.mediaObject.email ? 'email' : 'phone';
-
-  handleChange(event) {
+  handleMediaChange(event) {
     this.props.modifyMedia({
       index: this.props.index,
-      media: this.media,
+      media: event.target.name,
       value: event.target.value
     });
   }
 
   render() {
-    const { mediaObject, index } = this.props;
+    const { index, mediaObject: { media, value, tags } } = this.props;
 
     return (
       <form className="formInputsContainer">
         <div className="input-field twoNamesContainer">
-          <i className="material-icons prefix">{this.media}</i>
+          <i
+            className={'material-icons prefix ' + (!value ? 'icon-orange' : '')}
+          >
+            {media}
+          </i>
           <input
-            id={this.media + index}
-            name={this.media}
+            id={media + index}
+            name={media}
             className="validate"
-            value={mediaObject[this.media]}
-            onChange={this.handleChange}
+            value={value}
+            onChange={this.handleMediaChange}
           />
         </div>
 
         <div className="columnContainer schoolGrade">
-          {mediaObject.tags.map(tag => (
+          {tags.map(tag => (
             <div key={tag} className="chip">
               {tag}
               <i className="close material-icons">close</i>
@@ -60,9 +62,12 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ modifyMedia }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MediaForm);
+export default connect(mapStateToProps, mapDispatchToProps)(OneMediaForm);
 
-MediaForm.propTypes = {
+OneMediaForm.propTypes = {
   mediaObject: PropTypes.object.isRequired,
+  media: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  tags: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired
 };
