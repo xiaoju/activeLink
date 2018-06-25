@@ -14,8 +14,7 @@ class OneMediaForm extends Component {
   handleMediaChange(event) {
     this.props.modifyMedia({
       index: this.props.index,
-      media: event.target.name,
-      value: event.target.value
+      value: event.target.value.toLowerCase()
     });
   }
 
@@ -26,7 +25,10 @@ class OneMediaForm extends Component {
       <form className="formInputsContainer">
         <div className="input-field twoNamesContainer">
           <i
-            className={'material-icons prefix ' + (!value ? 'icon-orange' : '')}
+            className={
+              'material-icons prefix ' +
+              (media === 'more_horiz' ? 'icon-orange' : '')
+            }
           >
             {media}
           </i>
@@ -66,8 +68,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(OneMediaForm);
 
 OneMediaForm.propTypes = {
   mediaObject: PropTypes.object.isRequired,
-  media: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  tags: PropTypes.array.isRequired,
+  media: PropTypes.string,
+  value: PropTypes.string,
+  tags: PropTypes.array,
   index: PropTypes.number.isRequired
 };

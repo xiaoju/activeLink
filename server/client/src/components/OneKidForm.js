@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { getFirstName, getUserFamilyName, getKidGrade } from '../selectors';
+import {
+  getInvalidUsers,
+  getFirstName,
+  getUserFamilyName,
+  getKidGrade
+} from '../selectors';
 import { modifyUser } from '../actions/index';
 
 class OneKidForm extends Component {
@@ -20,7 +25,13 @@ class OneKidForm extends Component {
   }
 
   render() {
-    const { firstName, userFamilyName, kidGrade } = this.props;
+    const {
+      userId,
+      firstName,
+      userFamilyName,
+      kidGrade,
+      invalidUsers
+    } = this.props;
 
     return (
       <form className="formInputsContainer">
@@ -28,9 +39,18 @@ class OneKidForm extends Component {
           <div className="input-field firstName">
             {/* <i className="material-icons prefix icon-orange"> */}
             <i
+              // className={
+              //   'material-icons prefix ' +
+              //   (!firstName ||
+              //   !userFamilyName ||
+              //   (!!kidGrade && kidGrade === ' ') //  This is a kid (kidGrade exists) and grade isn't set.
+              //     ? 'icon-orange'
+              //     : '')
+              // }
+
               className={
                 'material-icons prefix ' +
-                (!firstName || !userFamilyName ? 'icon-orange' : '')
+                (invalidUsers[userId] ? 'icon-orange' : '')
               }
             >
               {!!kidGrade ? 'face' : 'account_circle'}
@@ -92,6 +112,7 @@ class OneKidForm extends Component {
 
 function mapStateToProps(state, props) {
   return {
+    invalidUsers: getInvalidUsers(state, props),
     firstName: getFirstName(state, props),
     userFamilyName: getUserFamilyName(state, props),
     kidGrade: getKidGrade(state, props)
@@ -105,8 +126,9 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);
 
 OneKidForm.propTypes = {
+  invalidUsers: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   userFamilyName: PropTypes.string.isRequired,
-  kidGrade: PropTypes.string.isRequired
+  kidGrade: PropTypes.string
 };

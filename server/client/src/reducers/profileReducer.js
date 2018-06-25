@@ -21,6 +21,7 @@ import {
 } from '../actions/types';
 
 import * as Immutable from '../utils/Immutable';
+import * as Validation from '../utils/Validation';
 
 const empty = {
   allKids: [],
@@ -124,7 +125,7 @@ export default function(
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
           familyMedia: familyMedia.concat({
-            media: 'more_horiz', // phone, email or any other cssmaterialize icon name
+            media: 'more_horiz', // cssmaterialize icon names: 'phone', 'email', 'more_horiz'
             value: '', // 012345678 or abc@gmail.com
             tags: ['zero']
           }),
@@ -164,7 +165,9 @@ export default function(
         familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
           index: index,
           item: {
-            media,
+            media: Validation.validateEmail(value)
+              ? 'email'
+              : Validation.validateNumber(value) ? 'phone' : 'more_horiz',
             value,
             tags: state.familyMedia[index].tags
           }

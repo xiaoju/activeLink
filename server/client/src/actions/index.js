@@ -50,10 +50,9 @@ export function modifyUser({ userId, fieldName, value }) {
   };
 }
 
-export function modifyMedia({ media, index, value }) {
+export function modifyMedia({ index, value }) {
   return {
     type: MODIFY_MEDIA,
-    media,
     index,
     value
   };

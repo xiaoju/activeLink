@@ -1,13 +1,13 @@
 import { createSelector } from 'reselect';
 
 export const getFamilyId = state => state.data.familyId;
-export const getAllKids = state => state.profile.allKids; // [k1, k2, k3]
+export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
+export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
 export const getFamilyMedia = state => state.profile.familyMedia;
 export const getStandardPrices = state => state.data.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.data.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getMandatoryItems = state => state.data.mandatoryItems;
 export const getAllItems = state => state.data.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-export const getAllParents = state => state.profile.allParents; // ['DonaldBush', 'RosemaryPolanski']
 export const getFamilyPerId = state => state.profile.familyPerId;
 export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.itemsPerId;
@@ -28,6 +28,11 @@ export const getKidGrade = (state, props) =>
 export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
 
+export const getAllUsers = createSelector(
+  [getAllKids, getAllParents],
+  (allKids, allParents) => allKids.concat(allParents) // ['k0', 'k1', 'k2', 'p0', 'p1', 'p2']
+);
+
 export const getCheckboxUsers = createSelector(
   [getFamilyId, getAllKids],
   (familyId, allKids) =>
@@ -35,6 +40,93 @@ export const getCheckboxUsers = createSelector(
       .concat(allKids) // ['familyId', 'k0', 'k1', 'k2']
       .slice(0, -1) // ['familyId', 'k0', 'k1']
 );
+
+export const getInvalidUsers = createSelector(
+  [getAllUsers, getFamilyPerId],
+  (allUsers, familyPerId) => {
+    const isInvalidGrade = function isInvalidGrade(userId) {
+      return (
+        !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade === ' '
+        // user is a kid (this field is a thing ) AND grade is not set
+      );
+    };
+
+    const isInvalidFamilyName = function isInvalidFamilyName(userId) {
+      return (
+        familyPerId[userId].familyName === ''
+        // familyName is not set
+      );
+    };
+
+    const isInvalidFirstName = function isInvalidFirstName(userId) {
+      return familyPerId[userId].firstName === '';
+      // firstName is not set
+    };
+
+    const isInvalidUser = function isInvalidUser(userId) {
+      return (
+        isInvalidFirstName(userId) ||
+        isInvalidFamilyName(userId) ||
+        isInvalidGrade(userId)
+      );
+    };
+
+    return allUsers.reduce((obj, userId) => {
+      obj[userId] = isInvalidUser(userId);
+      return obj;
+    }, {});
+  }
+);
+
+// export const getValidKids = createSelector(
+//   [getAllKids, getFamilyPerId],
+//   (allKids, familyPerId) =>
+//     // condition for 'not validated': no first name, or no family name,
+//     // or (if this is a kid, which is true if it has a kidGrade property)
+//     // empty kidGrade
+//     // !(!firstName || !familytName || (!!kidGrade && kidGrade === ' ') )
+//     // condition for 'validated': got first name AND got family name and
+//     // (if this is a kid, which is true if it has a kidGrade property)
+//     // got non empty kidGrade
+//     // !!firstName && !!familytName && (!!kidGrade && kidGrade !== ' ')
+//     allKids.map(
+//       kidId =>
+//         // {firstName, parentId, kidGrade} = familyPerId[kidId];
+//         ({
+//           firstNameCondition: !!familyPerId[kidId].firstName,
+//           familyNameCondition: !!familyPerId[kidId].familytName,
+//           kidGradeCondition:
+//             !!familyPerId[kidId].kidGrade && familyPerId[kidId].kidGrade !== ' '
+//         })
+//
+//       // !!familyPerId[kidId].firstName &&
+//       // !!familyPerId[kidId].familytName &&
+//       // (!!familyPerId[kidId].kidGrade && familyPerId[kidId].kidGrade !== ' ')
+//     )
+// );
+
+// export const getValidParents = createSelector (
+//   [getAllParents],
+//   (allKids) => allKids.map((kidId)=>(
+//         const {firstName, parentId, kidGrade} = familyPerId[kidId]
+//         return (!!firstName && !!familytName && (!!kidGrade && kidGrade !== ' '))
+//     )
+// );
+//
+// export const getAllParentsValid = createSelector(
+//   [getAllParents, getValidParents],
+//   (allParents, validParents) => allParents.length === validParents.length
+// );
+// export const getAllParentsValid = createSelector(
+//   [getAllParents, getValidKids],
+//   (allKids, validKids) =>
+//     console.log('validKids: ', validKids) && allKids.length === validKids.length
+// );
+//
+//
+//
+//
+///// END FORM VALIDATION ///
 
 // DON'T DELETE, THIS CODE WILL BE REUSED IN BACKEND
 // discountQualifiers should be calculated in backend
@@ -125,157 +217,3 @@ export const getTotal = createSelector(
       ) // [30, 100, 250, 450, 150]
       .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0) // the total
 );
-
-// export const itemsListExport = createSelector(
-//   [itemsList],
-//   itemsList => itemsList
-// );
-
-// export const applicablePriceArray = createSelector(
-//   [items, itemsList],
-//   (items, itemsList) => {
-//     let output2 = 12345;
-//     return output2;
-//   }
-// );
-
-// export const applicablePriceArray = createSelector(
-//   [items, itemsList],
-//   (items, itemsList) => {
-//     // For each itemId, look up within 'items' the applicable price.
-//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
-//     // - if priceFamily exists, just use it.
-//     // - if priceSecondKid exists, use it only if applyDiscount is true.
-//     // - otherwise use priceFirstKid.
-//     // Then, this function, just map it to the array of itemIds: itemsList.
-//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
-//     let output = itemsList.map(itemId => ({
-//       [itemId]:
-//         items[itemId].priceFamily ||
-//         (!items[itemId].priceSecondKid || !applyDiscount
-//           ? items[itemId].priceFirstKid
-//           : items[itemId].priceSecondKid)
-//     }));
-//     return output;
-//   }
-// );
-
-// export const applicablePriceObject = createSelector(
-//   [itemsList, items],
-//   (itemsList, items) => {
-//     // For each itemId, look up within 'items' the applicable price.
-//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
-//     // - if priceFamily exists, just use it.
-//     // - if priceSecondKid exists, use it only if applyDiscount is true.
-//     // - otherwise use priceFirstKid.
-//     // Then, this function, just map it to the array of itemIds: itemsList.
-//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
-//     let output = itemsList.reduce((obj, itemId) => {
-//       obj[itemId] =
-//         items[itemId].priceFamily ||
-//         (!items[itemId].priceSecondKid || !applyDiscount
-//           ? items[itemId].priceFirstKid
-//           : items[itemId].priceSecondKid);
-//       return obj;
-//     }, {});
-//     return output;
-//   }
-// );
-
-// export const applicablePriceObject = createSelector(
-//   [itemsList, items],
-//   (itemsList, items) => {
-//     // For each itemId, look up within 'items' the applicable price.
-//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
-//     // - if priceFamily exists, just use it.
-//     // - if priceSecondKid exists, use it only if applyDiscount is true.
-//     // - otherwise use priceFirstKid.
-//     // Then, this function, just map it to the array of itemIds: itemsList.
-//     // OUTPUT: [{r0: 300}, {r1: 456}, {r3: 324}, ...]
-//     let output = itemsList.reduce((obj, itemId) => {
-//       obj[itemId] =
-//         items[itemId].priceFamily ||
-//         (!!items[itemId].priceSecondKid && applyDiscount
-//           ? items[itemId].priceSecondKid
-//           : items[itemId].priceFirstKid);
-//       return obj;
-//     }, {});
-//     return output;
-//   }
-// );
-
-// export const applicablePriceObject = createSelector(
-//   // For each itemId, look up within 'items' the applicable price.
-//   // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
-//   // - if priceFamily exists, just use it.
-//   // - if priceSecondKid exists, use it only if applyDiscount is true.
-//   // - otherwise use priceFirstKid.
-//   // Then, this function, just reduce it into an object:
-//   // OUTPUT: {{r0: 300}, {r1: 456}, {r3: 324}, ...}
-//   [itemsList, items],
-//   (itemsList, items) =>
-//     itemsList.reduce((obj, itemId) => {
-//       obj[itemId] =
-//         items[itemId].priceFamily ||
-//         (!items[itemId].priceSecondKid || !applyDiscount
-//           ? items[itemId].priceFirstKid
-//           : items[itemId].priceSecondKid);
-//       return { obj, applyDiscount };
-//     }, {})
-// );
-
-// export const applicablePriceObject = createSelector(
-//   // For each itemId, look up within 'items' the applicable price.
-//   // Possible prices are priceFamily, priceFirstKid and priceSecondKid. In short:
-//   // - if priceFamily exists, just use it.
-//   // - if priceSecondKid exists, use it only if applyDiscount is true.
-//   // - otherwise use priceFirstKid.
-//   // Then, this function, just reduce it into an object:
-//   // OUTPUT: {{r0: 300}, {r1: 456}, {r3: 324}, ...}
-//   [itemsList, items],
-//   (itemsList, items) =>
-//     itemsList.reduce((obj, itemId) => {
-//       obj[itemId] =
-//         items[itemId].priceFamily ||
-//         (!!items[itemId].priceSecondKid && applyDiscount
-//           ? items[itemId].priceSecondKid
-//           : items[itemId].priceFirstKid);
-//       return { obj, applyDiscount };
-//     }, {})
-// );
-
-// export const adjustedItemPrice = createSelector(
-//   [items, checked, users],
-//   (items, checked, users) => {
-//     // For this itemId, look up within 'items' the applicable price.
-//     // Possible prices are priceFamily, priceFirstKid and priceSecondKid).
-//     // In short:
-//     // - if priceFamily exists, just use it.
-//     // - if priceSecondKid exists, use it only if applyDiscount is true.
-//     // - otherwise use priceFirstKid.
-//     const applicablePrice = ({ itemId, items }) =>
-//       items[itemId].priceFamily ||
-//       (!items[itemId].priceSecondKid || !applyDiscount
-//         ? items[itemId].priceFirstKid
-//         : items[itemId].priceSecondKid);
-//
-//     // For this user (e.g. idMulan), take the arrow of checked answers (e.g. [r2, r3, r7] ),
-//     // and add to each itemId (e.g. r2, r3 and r7) the applicalble price,
-//     // thus creating an array of objects such as [{r2: 123}, {r3: 450}, {r7: 200}].
-//     const alpha = (userId, checked, itemId) =>
-//       checked.reduce((price, itemId) => {
-//         price[itemId] = applicablePrice(itemId);
-//         return price;
-//       }, {});
-//
-//     // finally, gamma returns an object of arrays,
-//     // where obj[userId][itemId] = Price
-//     const gamma = (items, checked, users) =>
-//       users.reduce((obj, userId) => {
-//         obj[userId] = alpha(userId, checked, itemId);
-//         return obj;
-//       }, {});
-//
-//     return gamma(items, checked, users);
-//   }
-// );
