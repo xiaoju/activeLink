@@ -27,7 +27,7 @@ class ProfileForm extends Component {
         </h5>
         {allParents.map(userId => <OneKidForm key={userId} userId={userId} />)}
         <h5>
-          <i className="material-icons small">phone</i> {' / '}
+          <i className="material-icons small">phone</i> &nbsp; &nbsp;
           <i className="material-icons small">email</i>
         </h5>
         {familyMedia.map((mediaObject, index) => (

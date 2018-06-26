@@ -33,19 +33,25 @@ class OneMediaForm extends Component {
             {media}
           </i>
           <input
-            id={media + index}
+            id={'media' + index}
             name={media}
             className="validate"
             value={value}
             onChange={this.handleMediaChange}
           />
+          <label htmlFor={'media' + index} className="active">
+            Email or phone number
+          </label>
         </div>
 
-        <div className="columnContainer schoolGrade">
+        <div className="columnContainer tagsContainer">
+          {/* <label htmlFor={'tag'} className="active">
+            Tags
+          </label> */}
           {tags.map(tag => (
             <div key={tag} className="chip">
               {tag}
-              <i className="close material-icons">close</i>
+              {/* <i className="close material-icons">close</i> */}
             </div>
           ))}
         </div>

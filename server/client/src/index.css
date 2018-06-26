@@ -31,7 +31,7 @@ body {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .navbar-fixed nav {
@@ -110,10 +110,22 @@ nav i.material-icons.large {
   flex-grow: 2;
 }
 
+.tagsContainer {
+  height: 80%;
+  min-width: 3em;
+  border: thin solid #ffa726;
+  border-radius: 5px;
+  padding: 0.8em 0em 0.8em 0.5em;
+  margin: 0.5em 7% 0.5em -3em;
+}
+
 .schoolGrade {
   margin-right: 7%;
   min-width: 3em;
   height: 80%;
+  /* border: thin solid #ffa726;
+  padding: 0.8em 0em 0.8em 0.5em;
+  margin: 0.5em 7% 0.5em -3em; */
 }
 
 .schoolGrade > select {

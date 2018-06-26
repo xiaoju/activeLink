@@ -37,17 +37,7 @@ class OneKidForm extends Component {
       <form className="formInputsContainer">
         <div className="twoNamesContainer">
           <div className="input-field firstName">
-            {/* <i className="material-icons prefix icon-orange"> */}
             <i
-              // className={
-              //   'material-icons prefix ' +
-              //   (!firstName ||
-              //   !userFamilyName ||
-              //   (!!kidGrade && kidGrade === ' ') //  This is a kid (kidGrade exists) and grade isn't set.
-              //     ? 'icon-orange'
-              //     : '')
-              // }
-
               className={
                 'material-icons prefix ' +
                 (invalidUsers[userId] ? 'icon-orange' : '')
