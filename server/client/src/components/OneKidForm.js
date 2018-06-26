@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import {
+  getAllKidsValid,
   getInvalidUsers,
   getFirstName,
   getUserFamilyName,
   getKidGrade
 } from '../selectors';
-import { modifyUser } from '../actions/index';
+import { modifyUser, addKidRow } from '../actions/index';
 
 class OneKidForm extends Component {
   constructor(props) {
@@ -16,16 +17,36 @@ class OneKidForm extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  // componentDidMount() {
+  //   console.log(
+  //     'OneKidForm: component did mount. this.props.userId: ',
+  //     this.props.userId
+  //   );
+  // }
+  //
+  // componentDidUpdate() {
+  //   console.log('OneKidForm: component did update. props: ', this.props);
+  // }
+
   handleInputChange(event) {
     this.props.modifyUser({
       userId: this.props.userId,
       fieldName: event.target.name,
       value: event.target.value
     });
+    // .then(() =>
+    //   console.log('this.props.allKidsValid: ', this.props.allKidsValid)
+    // );
+    // console.log('this.props.allKidsValid: ', this.props.allKidsValid);
+    // this.props.addKidRow();
   }
+
+  // if typing this made the row valid, then should add a new row,
+  // by dispatching add_kid_row
 
   render() {
     const {
+      allKidsValid,
       userId,
       firstName,
       userFamilyName,
@@ -52,6 +73,10 @@ class OneKidForm extends Component {
               className="validate"
               value={firstName}
               onChange={this.handleInputChange}
+              // onChange={event => {
+              //   this.handleInputChange(event);
+              //   allKidsValid && this.props.addKidRow();
+              // }}
             />
             <label htmlFor="icon_prefix" className="active">
               First Name
@@ -102,6 +127,7 @@ class OneKidForm extends Component {
 
 function mapStateToProps(state, props) {
   return {
+    allKidsValid: getAllKidsValid(state),
     invalidUsers: getInvalidUsers(state, props),
     firstName: getFirstName(state, props),
     userFamilyName: getUserFamilyName(state, props),
@@ -110,12 +136,14 @@ function mapStateToProps(state, props) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ modifyUser }, dispatch);
+  return bindActionCreators({ modifyUser, addKidRow }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);
 
 OneKidForm.propTypes = {
+  addKidRow: PropTypes.func.isRequired,
+  allKidsValid: PropTypes.bool.isRequired,
   invalidUsers: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,

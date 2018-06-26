@@ -5,7 +5,9 @@ import {
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   MODIFY_MEDIA,
-  MODIFY_USER
+  MODIFY_USER,
+  ADD_KID_ROW,
+  ADD_PARENT_ROW
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -55,5 +57,17 @@ export function modifyMedia({ index, value }) {
     type: MODIFY_MEDIA,
     index,
     value
+  };
+}
+
+export function addKidRow() {
+  return {
+    type: ADD_KID_ROW
+  };
+}
+
+export function addParentRow() {
+  return {
+    type: ADD_PARENT_ROW
   };
 }

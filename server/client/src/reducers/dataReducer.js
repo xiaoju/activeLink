@@ -1,3 +1,5 @@
+// this reducer is the data that comes from backend and cannot be modified by client
+
 import { LOAD_DATA } from '../actions/types';
 
 const empty = {

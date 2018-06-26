@@ -1,4 +1,10 @@
-import { LOAD_DATA, CHECK_CHECKBOX, UNCHECK_CHECKBOX } from '../actions/types';
+import {
+  LOAD_DATA,
+  CHECK_CHECKBOX,
+  UNCHECK_CHECKBOX,
+  ADD_KID_ROW,
+  ADD_PARENT_ROW
+} from '../actions/types';
 
 const empty = null;
 
@@ -36,6 +42,13 @@ export default function(state = empty, { type, payload, userId, itemId }) {
             return obj;
           }, {});
       }
+
+    case ADD_KID_ROW:
+      const newKidId = 'k' + (Object.keys(state).length - 1);
+      return {
+        ...state,
+        [newKidId]: []
+      };
 
     case CHECK_CHECKBOX:
       return {

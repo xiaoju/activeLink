@@ -1,23 +1,12 @@
+// this reducer is the data that client can modify
+
 import {
   LOAD_DATA,
   MODIFY_MEDIA,
-  MODIFY_USER
-  // //
-  // ADD_PHONE,
-  // REMOVE_PHONE,
-  // EDIT_PHONE,
-  // //
-  // ADD_EMAIL,
-  // EDIT_EMAIL,
-  // REMOVE_PHONE,
-  // //
-  // ADD_KID,
-  // REMOVE_KID,
-  // EDIT_KID,
-  // //
-  // ADD_PARENT,
-  // REMOVE_PARENT,
-  // EDIT_PARENT
+  MODIFY_USER,
+  // ADD_MEDIA_ROW,
+  ADD_KID_ROW,
+  ADD_PARENT_ROW
 } from '../actions/types';
 
 import * as Immutable from '../utils/Immutable';
@@ -154,6 +143,39 @@ export default function(
           [userId]: {
             ...state.familyPerId[userId],
             [fieldName]: value
+          }
+        }
+      };
+
+    case ADD_KID_ROW:
+      const { allKids } = state;
+      const newKidId = 'k' + allKids.length;
+      return {
+        ...state,
+        allKids: allKids.concat(newKidId),
+        familyPerId: {
+          ...state.familyPerId,
+          [newKidId]: {
+            id: newKidId,
+            firstName: '',
+            familyName: '',
+            kidGrade: ' '
+          }
+        }
+      };
+
+    case ADD_PARENT_ROW:
+      const { allParents } = state;
+      const newParentId = 'p' + allParents.length;
+      return {
+        ...state,
+        allParents: allParents.concat(newParentId),
+        familyPerId: {
+          ...state.familyPerId,
+          [newParentId]: {
+            id: newParentId,
+            firstName: '',
+            familyName: ''
           }
         }
       };

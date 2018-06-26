@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+// import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
+
 export const getFamilyId = state => state.data.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
@@ -75,8 +77,46 @@ export const getInvalidUsers = createSelector(
       obj[userId] = isInvalidUser(userId);
       return obj;
     }, {});
+    // { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
   }
 );
+
+export const getAllParentsValid = createSelector(
+  [getInvalidUsers, getAllParents, getAllUsers],
+  (invalidUsers, allParents) => false
+);
+
+export const getAllKidsValid = createSelector(
+  [getInvalidUsers, getAllKids],
+  (invalidUsers, allKids) => {
+    //   console.log('allKids: ', allKids);
+    //   console.log('map: ', allKids.map(userId => invalidUsers[userId] * 1));
+    //   console.log(
+    //     'reduce: ',
+    //     allKids
+    //       .map(userId => invalidUsers[userId] * 1)
+    //       .reduce((total, item) => total + item, 0)
+    //   );
+    //   console.log(
+    //     'test: ',
+    //     allKids
+    //       .map(userId => invalidUsers[userId] * 1)
+    //       .reduce((total, item) => total + item, 0) === 0
+    //   );
+    let output =
+      allKids // ['k0', 'k1', 'k2']
+        .map(userId => invalidUsers[userId] * 1) // [0,0,1]
+        .reduce((total, item) => total + item, 0) === 0; // 1
+    console.log('output of getAllKidsValid: ', output);
+    // return output;
+    return output;
+  }
+);
+
+// export const getAllParentsValid = createSelector(
+//   [getAllParents, getValidParents],
+//   (allParents, validParents) => allParents.length === validParents.length
+// );
 
 // export const getValidKids = createSelector(
 //   [getAllKids, getFamilyPerId],
@@ -201,7 +241,6 @@ export const getApplyDiscount = createSelector(
     //   .map(thisUserId => B(thisUserId))
     //   .reduce((total, amount) => total + amount);
     // discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
-    console.log('getApplyDiscount: running. Ouput: ', output);
     return output;
   }
 );
