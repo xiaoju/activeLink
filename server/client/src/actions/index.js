@@ -6,6 +6,8 @@ import {
   UNCHECK_CHECKBOX,
   MODIFY_MEDIA,
   MODIFY_USER,
+  ADD_ROW,
+  ADD_MEDIA_ROW,
   ADD_KID_ROW,
   ADD_PARENT_ROW
 } from './types';
@@ -60,6 +62,13 @@ export function modifyMedia({ index, value }) {
   };
 }
 
+// export function addRow({ payload }) {
+//   return {
+//     type: ADD_ROW,
+//     payload
+//   };
+// }
+
 export function addKidRow() {
   return {
     type: ADD_KID_ROW
@@ -69,5 +78,11 @@ export function addKidRow() {
 export function addParentRow() {
   return {
     type: ADD_PARENT_ROW
+  };
+}
+
+export function addMediaRow() {
+  return {
+    type: ADD_MEDIA_ROW
   };
 }

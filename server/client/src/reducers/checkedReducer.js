@@ -2,8 +2,7 @@ import {
   LOAD_DATA,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
-  ADD_KID_ROW,
-  ADD_PARENT_ROW
+  ADD_KID_ROW
 } from '../actions/types';
 
 const empty = null;

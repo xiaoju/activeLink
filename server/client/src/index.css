@@ -234,3 +234,9 @@ textarea.materialize-textarea {
 i.icon-orange {
   color: #ffa726;
 }
+
+.title_and_button {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
