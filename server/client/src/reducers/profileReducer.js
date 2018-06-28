@@ -2,6 +2,7 @@
 
 import {
   LOAD_DATA,
+  UPDATE_TAGS,
   MODIFY_MEDIA,
   MODIFY_USER,
   ADD_MEDIA_ROW,
@@ -20,88 +21,9 @@ const empty = {
   familyPerId: {}
 };
 
-// receive from action.payload:
-// const input = {
-//   checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'],
-//   parents: ['DonaldBush', 'RosemaryPolanski'],
-//   familyEMails: [
-//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
-//   ],
-//   familyPhones: [
-//     { it: '0600000000', tags: ['mobile', 'Donald'] },
-//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
-//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
-//     { it: '0633333333', tags: ['landline', 'family'] }
-//   ],
-//   familyMembers: {
-//     DonaldBush: {
-//       id: 'DonaldBush',
-//       firstName: 'Donald',
-//       familyName: 'Bush'
-//     },
-//     RosemaryPolanski: {
-//       id: 'RosemaryPolanski',
-//       firstName: 'Rosemary',
-//       familyName: 'Polanski'
-//     },
-//     MulanBush: {
-//       id: 'MulanBush',
-//       firstName: 'Mulan',
-//       familyName: 'Bush',
-//       kidGrade: 'CE2'
-//     },
-//     ZilanPolanski: {
-//       id: 'ZilanPolanski',
-//       firstName: 'Zilan',
-//       familyName: 'Polanski',
-//       kidGrade: 'GS'
-//     }
-//   }
-// };
-//
-// const outputDraft = {
-//   kids: ['MulanBush', 'ZilanPolanski'],
-//   parents: ['DonaldBush', 'RosemaryPolanski'],
-//   familyMembers: {
-//     DonaldBush: {
-//       id: 'DonaldBush',
-//       firstName: 'Donald',
-//       familyName: 'Bush'
-//     },
-//     RosemaryPolanski: {
-//       id: 'RosemaryPolanski',
-//       firstName: 'Rosemary',
-//       familyName: 'Polanski'
-//     },
-//     MulanBush: {
-//       id: 'MulanBush',
-//       firstName: 'Mulan',
-//       familyName: 'Bush',
-//       kidGrade: 'CE2'
-//     },
-//     ZilanPolanski: {
-//       id: 'ZilanPolanski',
-//       firstName: 'Zilan',
-//       familyName: 'Polanski',
-//       kidGrade: 'GS'
-//     }
-//   },
-//   familyEmails: [
-//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
-//   ],
-//   familyPhones: [
-//     { it: '0600000000', tags: ['mobile', 'Donald'] },
-//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
-//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
-//     { it: '0633333333', tags: ['landline', 'family'] }
-//   ]
-// };
-
 export default function(
   state = empty,
-  { type, payload, userId, kidGrade, fieldName, index, media, value }
+  { type, payload, userId, kidGrade, fieldName, index, media, value, tags }
 ) {
   switch (type) {
     case LOAD_DATA:
@@ -118,11 +40,7 @@ export default function(
           familyMedia: familyMedia.concat({
             media: 'more_horiz', // cssmaterialize icon names: 'phone', 'email', 'more_horiz'
             value: '', // 012345678 or abc@gmail.com
-            tags: [
-              !!familyPerId['p0'] && familyPerId['p0'].firstName,
-              'private',
-              'mobile'
-            ]
+            tags: ['private']
           }),
           familyPerId: {
             ...familyPerId,
@@ -151,22 +69,6 @@ export default function(
             [fieldName]: value
           }
         }
-      };
-
-    case MODIFY_MEDIA:
-      // beware familyMedia is an array of objects!
-      return {
-        ...state,
-        familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
-          index: index,
-          item: {
-            media: Validation.validateEmail(value)
-              ? 'email'
-              : Validation.validateNumber(value) ? 'phone' : 'more_horiz',
-            value,
-            tags: state.familyMedia[index].tags
-          }
-        })
       };
 
     // case ADD_ROW:
@@ -257,7 +159,118 @@ export default function(
         })
       };
 
+    case MODIFY_MEDIA:
+      // beware familyMedia is an array of objects!
+      // let { familyMedia } = state;
+      return {
+        ...state,
+        familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
+          index,
+          item: {
+            media: Validation.validateEmail(value)
+              ? 'email'
+              : Validation.validateNumber(value) ? 'phone' : 'more_horiz',
+            value,
+            tags: state.familyMedia[index].tags
+          }
+        })
+      };
+
+    case UPDATE_TAGS:
+      // familyMedia is an array of mediaObjects.
+      // index is the index of the mediaObject we want to update with new tags.
+      // let { familyMedia } = state;
+      return {
+        ...state,
+        familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
+          index,
+          item: {
+            ...state.familyMedia[index],
+            tags
+          }
+        })
+      };
+
     default:
       return state;
   }
 }
+
+// receive from action.payload:
+// const input = {
+//   checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'],
+//   parents: ['DonaldBush', 'RosemaryPolanski'],
+//   familyEMails: [
+//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
+//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
+//   ],
+//   familyPhones: [
+//     { it: '0600000000', tags: ['mobile', 'Donald'] },
+//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
+//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
+//     { it: '0633333333', tags: ['landline', 'family'] }
+//   ],
+//   familyMembers: {
+//     DonaldBush: {
+//       id: 'DonaldBush',
+//       firstName: 'Donald',
+//       familyName: 'Bush'
+//     },
+//     RosemaryPolanski: {
+//       id: 'RosemaryPolanski',
+//       firstName: 'Rosemary',
+//       familyName: 'Polanski'
+//     },
+//     MulanBush: {
+//       id: 'MulanBush',
+//       firstName: 'Mulan',
+//       familyName: 'Bush',
+//       kidGrade: 'CE2'
+//     },
+//     ZilanPolanski: {
+//       id: 'ZilanPolanski',
+//       firstName: 'Zilan',
+//       familyName: 'Polanski',
+//       kidGrade: 'GS'
+//     }
+//   }
+// };
+//
+// const outputDraft = {
+//   kids: ['MulanBush', 'ZilanPolanski'],
+//   parents: ['DonaldBush', 'RosemaryPolanski'],
+//   familyMembers: {
+//     DonaldBush: {
+//       id: 'DonaldBush',
+//       firstName: 'Donald',
+//       familyName: 'Bush'
+//     },
+//     RosemaryPolanski: {
+//       id: 'RosemaryPolanski',
+//       firstName: 'Rosemary',
+//       familyName: 'Polanski'
+//     },
+//     MulanBush: {
+//       id: 'MulanBush',
+//       firstName: 'Mulan',
+//       familyName: 'Bush',
+//       kidGrade: 'CE2'
+//     },
+//     ZilanPolanski: {
+//       id: 'ZilanPolanski',
+//       firstName: 'Zilan',
+//       familyName: 'Polanski',
+//       kidGrade: 'GS'
+//     }
+//   },
+//   familyEmails: [
+//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
+//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
+//   ],
+//   familyPhones: [
+//     { it: '0600000000', tags: ['mobile', 'Donald'] },
+//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
+//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
+//     { it: '0633333333', tags: ['landline', 'family'] }
+//   ]
+// };

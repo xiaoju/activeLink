@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Select, { components } from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 import * as Animated from 'react-select/lib/animated';
+import { getMediaObject, getAllParents, getFamilyPerId } from '../selectors';
+import { updateTags } from '../actions/index';
 import PropTypes from 'prop-types';
 
 class SelectComponentStyled extends Component {
@@ -11,20 +15,44 @@ class SelectComponentStyled extends Component {
   }
 
   handleChange(event) {
-    console.log('TESTTESTEST');
+    // console.log('event: ', event.map(object => object.value));
+    this.props.updateTags({
+      index: this.props.index,
+      tags: event.map(object => object.value)
+    });
   }
 
   render() {
-    const options = [
-      { value: 'Donald', label: 'Donald' },
-      { value: 'Rosemary', label: 'Rosemary' },
-      { value: 'private', label: 'private' },
-      { value: 'pro', label: 'pro' },
-      { value: 'mobile', label: 'mobile' },
-      { value: 'landline', label: 'landline' }
-    ];
+    const {
+      index,
+      mediaObject,
+      mediaObject: { media, value, tags },
+      allParents,
+      familyPerId
+    } = this.props;
 
-    // styling main code:
+    const options = allParents // ['p1', 'p2', 'p3']
+      .map(parentId => familyPerId[parentId].firstName) // ['Donald', 'Rosemary', '']
+      .filter(firstName => !!firstName) // ['Donald', 'Rosemary']
+      .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
+      .concat([
+        { value: 'family', label: 'family' },
+        { value: 'private', label: 'private' },
+        { value: 'pro', label: 'pro' },
+        { value: 'mobile', label: 'mobile' },
+        { value: 'landline', label: 'landline' }
+      ]);
+    // [
+    //   { value: 'Donald', label: 'Donald' },
+    //   { value: 'Rosemary', label: 'Rosemary' },
+    //   { value: 'family', label: 'family' },
+    //   { value: 'private', label: 'private' },
+    //   { value: 'pro', label: 'pro' },
+    //   { value: 'mobile', label: 'mobile' },
+    //   { value: 'landline', label: 'landline' }
+    // ];
+
+    // source code for styling:
     // https://github.com/JedWatson/react-select/blob/v2/src/styles.js
 
     const colourStyles = {
@@ -33,9 +61,6 @@ class SelectComponentStyled extends Component {
         ...styles,
         backgroundColor: 'transparent',
         border: 0,
-        // borderWidth: '1px',
-        // borderRadius: '5px',
-        // borderColor: isSelected ? '#9575cd' : isFocused ? '#9575cd' : '#ffa726',
         boxShadow: null,
         '&:hover': {
           borderColor: '#9575cd'
@@ -51,17 +76,31 @@ class SelectComponentStyled extends Component {
           // boxShadow as per materializecss "z-depth-2"
         };
       },
-
-      // valueContainer: (styles, { data }) => {
-      //   return {
-      //     ...styles,
-      //     padding: 0
-      //   };
-      // },
-      indicatorSeparator: (styles, { data }) => {
+      input: styles => {
+        return {
+          ...styles,
+          minWidth: '3em',
+          color: 'rgba(0, 0, 0, 0.6)',
+          border: 'thin solid #d1c4e9',
+          borderRadius: '15px',
+          // padding: '0em',
+          margin: '0 0.5em',
+          paddingBottom: '15px !important',
+          textAlign: 'center !important',
+          height: '1.8em'
+        };
+      },
+      valueContainer: styles => {
+        return {
+          ...styles,
+          padding: 0
+        };
+      },
+      indicatorSeparator: styles => {
         return {
           ...styles,
           backgroundColor: '#d1c4e9'
+          // display: 'hidden'
         };
       },
       option: (
@@ -87,7 +126,7 @@ class SelectComponentStyled extends Component {
           // #9575cd, dark purple
           // #ede7f6: light purple
           // #ccc: light grey
-          // #f50057: bright pink
+          // #f50057: bright pink (for tests!)
           // #2684ff: standard blue
         };
       },
@@ -143,19 +182,41 @@ class SelectComponentStyled extends Component {
         className="SelectComponent"
         closeMenuOnSelect={false}
         components={Animated}
-        defaultValue={[options[1], options[3], options[5]]}
+        // defaultValue={[
+        //   { value: 'private', label: 'private' },
+        //   { value: 'mobile', label: 'mobile' }
+        // ]}
         isMulti
         options={options}
         styles={colourStyles}
         isClearable={false}
-        // value = {}
-        // onChange={handleChange}
+        value={mediaObject.tags.map(tag => ({ value: tag, label: tag }))}
+        // converting `mediaObject.tags` from ['mobile', 'landline']
+        // to [
+        //   { value: 'mobile', label: 'mobile' },
+        //   { value: 'landline', label: 'landline' }
+        // ]
+        onChange={this.handleChange}
       />
     );
   }
 }
 
-export default SelectComponentStyled;
+function mapStateToProps(state, props) {
+  return {
+    mediaObject: getMediaObject(state, props),
+    allParents: getAllParents(state),
+    familyPerId: getFamilyPerId(state)
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ updateTags }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  SelectComponentStyled
+);
 
 SelectComponentStyled.propTypes = {
   index: PropTypes.number.isRequired

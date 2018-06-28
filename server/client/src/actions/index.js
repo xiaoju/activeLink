@@ -4,6 +4,7 @@ import {
   LOAD_DATA,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
+  UPDATE_TAGS,
   MODIFY_MEDIA,
   MODIFY_USER,
   ADD_ROW,
@@ -84,5 +85,13 @@ export function addParentRow() {
 export function addMediaRow() {
   return {
     type: ADD_MEDIA_ROW
+  };
+}
+
+export function updateTags({ index, tags }) {
+  return {
+    type: UPDATE_TAGS,
+    index,
+    tags
   };
 }
