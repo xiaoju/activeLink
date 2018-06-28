@@ -67,7 +67,7 @@ nav i.material-icons.large {
 }
 
 .itemsContainer button {
-  margin-bottom: 1em;
+  margin: 0.5em;
 }
 
 .itemsContainer h4.stepTitle {
@@ -187,18 +187,19 @@ table.striped > tbody > tr:nth-child(odd) {
   background-color: #eeeeee;
 }
 
-/* label.active::after {
-  border: none;
-} */
+input:not([type]) {
+  border-bottom: thin solid #9575cd;
+}
 
 /* label focus color */
+.schoolGrade select:focus + label,
 .input-field input:focus + label {
   color: #9575cd !important;
 }
 /* label underline focus color */
 .input-field input:focus {
-  border-bottom: 1px solid #9575cd !important;
-  box-shadow: 0 1px 0 0 #9575cd !important;
+  border-bottom: 3px solid #9575cd !important;
+  box-shadow: none !important;
 }
 
 .nav-wrapper > a,
@@ -215,22 +216,6 @@ table.striped > tbody > tr:nth-child(odd) {
   color: white;
 }
 
-input:not([type]),
-input[type='text']:not(.browser-default),
-input[type='password']:not(.browser-default),
-input[type='email']:not(.browser-default),
-input[type='url']:not(.browser-default),
-input[type='time']:not(.browser-default),
-input[type='date']:not(.browser-default),
-input[type='datetime']:not(.browser-default),
-input[type='datetime-local']:not(.browser-default),
-input[type='tel']:not(.browser-default),
-input[type='number']:not(.browser-default),
-input[type='search']:not(.browser-default),
-textarea.materialize-textarea {
-  border-bottom: 1px solid #ffa726;
-}
-
 i.icon-orange {
   color: #ffa726;
 }
@@ -239,4 +224,10 @@ i.icon-orange {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+}
+
+.SelectComponent {
+  /* width: 30%; */
+  /* margin: 1em 6% 1em 1em; */
+  margin-right: 6%;
 }

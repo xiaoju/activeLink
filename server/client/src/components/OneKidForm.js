@@ -69,7 +69,6 @@ class OneKidForm extends Component {
             <input
               name="firstName"
               id="icon_prefix"
-              type="text"
               className="validate"
               value={firstName}
               onChange={this.handleInputChange}
@@ -87,7 +86,6 @@ class OneKidForm extends Component {
             <input
               name="familyName"
               id="icon_prefix"
-              type="text"
               className="validate"
               value={userFamilyName}
               onChange={this.handleInputChange}

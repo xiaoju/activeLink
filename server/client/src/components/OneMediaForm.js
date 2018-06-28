@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { getMediaObject } from '../selectors';
 import { modifyMedia } from '../actions/index';
+import SelectComponentStyled from './SelectComponentStyled';
 
 class OneMediaForm extends Component {
   constructor(props) {
@@ -43,18 +44,10 @@ class OneMediaForm extends Component {
             Email or phone number
           </label>
         </div>
+        <SelectComponentStyled index={index} />
+        {/* <div className="columnContainer tagsContainer">
 
-        <div className="columnContainer tagsContainer">
-          {/* <label htmlFor={'tag'} className="active">
-            Tags
-          </label> */}
-          {tags.map(tag => (
-            <div key={tag} className="chip">
-              {tag}
-              {/* <i className="close material-icons">close</i> */}
-            </div>
-          ))}
-        </div>
+        </div> */}
       </form>
     );
   }
