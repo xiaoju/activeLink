@@ -68,8 +68,8 @@ class OneKidForm extends Component {
             </i>
             <input
               name="firstName"
-              id="icon_prefix"
-              className="validate"
+              id={userId + '-firstName'}
+              className={!firstName ? 'pasValide' : ' '}
               value={firstName}
               onChange={this.handleInputChange}
               // onChange={event => {
@@ -77,7 +77,7 @@ class OneKidForm extends Component {
               //   allKidsValid && this.props.addKidRow();
               // }}
             />
-            <label htmlFor="icon_prefix" className="active">
+            <label htmlFor={userId + '-familyName'} className="active">
               First Name
             </label>
           </div>
@@ -85,12 +85,12 @@ class OneKidForm extends Component {
           <div className="input-field familyName">
             <input
               name="familyName"
-              id="icon_prefix"
-              className="validate"
+              id={userId + '-familyName'}
+              className={!userFamilyName ? 'pasValide' : ''}
               value={userFamilyName}
               onChange={this.handleInputChange}
             />
-            <label htmlFor="icon_prefix" className="active">
+            <label htmlFor={userId + '-familyName'} className="active">
               Family Name
             </label>
           </div>
@@ -101,7 +101,12 @@ class OneKidForm extends Component {
             <label>Grade</label>
             <select
               name="kidGrade"
-              className="browser-default"
+              className={
+                kidGrade === ' '
+                  ? 'browser-default pasValide'
+                  : 'browser-default'
+              }
+              // className="browser-default"
               value={kidGrade}
               onChange={this.handleInputChange}
             >

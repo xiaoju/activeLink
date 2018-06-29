@@ -36,7 +36,8 @@ class OneMediaForm extends Component {
           <input
             id={'media' + index}
             name={media}
-            className="validate"
+            className={!value ? 'pasValide' : ' '}
+            // className="validate"
             value={value}
             onChange={this.handleMediaChange}
           />

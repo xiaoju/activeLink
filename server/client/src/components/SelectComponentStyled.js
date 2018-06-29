@@ -42,6 +42,7 @@ class SelectComponentStyled extends Component {
         { value: 'mobile', label: 'mobile' },
         { value: 'landline', label: 'landline' }
       ]);
+    // and here the output:
     // [
     //   { value: 'Donald', label: 'Donald' },
     //   { value: 'Rosemary', label: 'Rosemary' },
@@ -56,7 +57,7 @@ class SelectComponentStyled extends Component {
     // https://github.com/JedWatson/react-select/blob/v2/src/styles.js
 
     const colourStyles = {
-      control: (styles, { isDisabled, isFocused, isSelected }) => ({
+      control: styles => ({
         // this is the biggest box
         ...styles,
         backgroundColor: 'transparent',
@@ -67,6 +68,7 @@ class SelectComponentStyled extends Component {
         }
       }),
       menuList: (styles, { data }) => {
+        // this is the popup with the list of options
         return {
           ...styles,
           backgroundColor: '#d1c4e9',
@@ -76,12 +78,16 @@ class SelectComponentStyled extends Component {
           // boxShadow as per materializecss "z-depth-2"
         };
       },
-      input: styles => {
+      input: (styles, { isFocused, isSelected }) => {
+        // this is the empty chip where you type your own tags
         return {
           ...styles,
           minWidth: '3em',
           color: 'rgba(0, 0, 0, 0.6)',
-          border: 'thin solid #d1c4e9',
+          // border: 'thin solid #d1c4e9',
+          borderWidth: 'thin',
+          borderStyle: 'solid',
+          borderColor: isSelected ? '#9575cd' : '#ffa726',
           borderRadius: '15px',
           // padding: '0em',
           margin: '0 0.5em',
@@ -98,9 +104,9 @@ class SelectComponentStyled extends Component {
       },
       indicatorSeparator: styles => {
         return {
-          ...styles,
-          backgroundColor: '#d1c4e9'
-          // display: 'hidden'
+          // ...styles,
+          // backgroundColor: '#d1c4e9'
+          display: 'none'
         };
       },
       option: (
@@ -130,25 +136,28 @@ class SelectComponentStyled extends Component {
           // #2684ff: standard blue
         };
       },
-      dropdownIndicator: (
-        styles,
-        { data, isFocused, isDisabled, isSelected }
-      ) => {
-        return {
-          ...styles,
-          borderRadius: '50%',
-          color: isDisabled
-            ? null
-            : isSelected ? 'white' : isFocused ? 'white' : '#9575cd',
-          backgroundColor: isDisabled
-            ? null
-            : isSelected ? '#9575cd' : isFocused ? '#9575cd' : 'transparent',
-          ':hover': {
-            color: 'white',
-            backgroundColor: '#9575cd'
-          }
-        };
-      },
+      dropdownIndicator: () => ({
+        display: 'none'
+      }),
+      // dropdownIndicator: (
+      //   styles,
+      //   { data, isFocused, isDisabled, isSelected }
+      // ) => {
+      //   return {
+      //     ...styles,
+      //     borderRadius: '50%',
+      //     color: isDisabled
+      //       ? null
+      //       : isSelected ? 'white' : isFocused ? 'white' : '#9575cd',
+      //     backgroundColor: isDisabled
+      //       ? null
+      //       : isSelected ? '#9575cd' : isFocused ? '#9575cd' : 'transparent',
+      //     ':hover': {
+      //       color: 'white',
+      //       backgroundColor: '#9575cd'
+      //     }
+      //   };
+      // },
       multiValue: (styles, { data }) => {
         return {
           ...styles,

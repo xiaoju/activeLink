@@ -44,6 +44,7 @@ export const getCheckboxUsers = createSelector(
 );
 
 export const getInvalidUsers = createSelector(
+  // format of the output: { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
   [getAllUsers, getFamilyPerId],
   (allUsers, familyPerId) => {
     const isInvalidGrade = function isInvalidGrade(userId) {
@@ -77,38 +78,25 @@ export const getInvalidUsers = createSelector(
       obj[userId] = isInvalidUser(userId);
       return obj;
     }, {});
-    // { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
   }
 );
 
 export const getAllParentsValid = createSelector(
   [getInvalidUsers, getAllParents, getAllUsers],
-  (invalidUsers, allParents) => false
+  (invalidUsers, allParents) =>
+    allParents // ['p0', 'p1']
+      .map(userId => invalidUsers[userId] * 1) // [0, 0]
+      .reduce((total, item) => total + item, 0) === 0 // 0
 );
 
 export const getAllKidsValid = createSelector(
   [getInvalidUsers, getAllKids],
   (invalidUsers, allKids) => {
-    //   console.log('allKids: ', allKids);
-    //   console.log('map: ', allKids.map(userId => invalidUsers[userId] * 1));
-    //   console.log(
-    //     'reduce: ',
-    //     allKids
-    //       .map(userId => invalidUsers[userId] * 1)
-    //       .reduce((total, item) => total + item, 0)
-    //   );
-    //   console.log(
-    //     'test: ',
-    //     allKids
-    //       .map(userId => invalidUsers[userId] * 1)
-    //       .reduce((total, item) => total + item, 0) === 0
-    //   );
     let output =
       allKids // ['k0', 'k1', 'k2']
         .map(userId => invalidUsers[userId] * 1) // [0,0,1]
         .reduce((total, item) => total + item, 0) === 0; // 1
-    console.log('output of getAllKidsValid: ', output);
-    // return output;
+    // console.log('output of getAllKidsValid: ', output);
     return output;
   }
 );

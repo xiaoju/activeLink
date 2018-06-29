@@ -133,14 +133,23 @@ nav i.material-icons.large {
 
 .schoolGrade > select {
   background-color: #ede7f6;
-  border: 2px solid #ffa726;
+  border: 1px solid #9575cd;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 500;
   width: 5em;
 }
 
-.schoolGrade label > select:focus {
-  background-color: #d1c4e9;
+.schoolGrade > select.pasValide {
+  border: 1px solid #ffa726;
+}
+
+.schoolGrade > select:focus {
+  outline: none;
+  border: 2px solid #9575cd;
+}
+
+.schoolGrade > select.pasValide:focus {
+  outline: none;
   border: 2px solid #ffa726;
 }
 
@@ -153,15 +162,11 @@ nav i.material-icons.large {
 .myIconContainer {
   margin: auto 1em auto 1em;
 }
-
+/*
 .chip {
   background-color: #d1c4e9;
   margin-bottom: 1px;
-}
-
-.redred {
-  background-color: red;
-}
+} */
 
 .categoryIcon {
   display: flex;
@@ -190,8 +195,12 @@ table.striped > tbody > tr:nth-child(odd) {
   background-color: #eeeeee;
 }
 
-input:not([type]) {
+/* input:not([type]) {
   border-bottom: thin solid #9575cd;
+} */
+
+input:not([type]).pasValide {
+  border-bottom-color: #ffa726;
 }
 
 /* remove materializecss decorations for react-select*/
@@ -207,9 +216,19 @@ input:not([type]) {
 .input-field input:focus + label {
   color: #9575cd !important;
 }
+
 /* label underline focus color */
+.input-field input {
+  border-bottom: 1px solid #9575cd !important;
+  box-shadow: none !important;
+}
+
+.input-field input.pasValide {
+  border-bottom-color: #ffa726 !important;
+}
+
 .input-field input:focus {
-  border-bottom: 3px solid #9575cd !important;
+  border-bottom-width: 2px !important;
   box-shadow: none !important;
 }
 
