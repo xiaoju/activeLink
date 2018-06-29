@@ -61,6 +61,7 @@ class Header extends Component {
             >
               <img src={englishLinkLogo} alt="logo" />
             </Link>
+            <span className="center brand-logo">{this.props.eventName}</span>
             <ul className="right">{this.renderContent()}</ul>
           </div>
         </nav>
@@ -69,8 +70,11 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({ auth, data }) {
+  return {
+    auth,
+    eventName: data.eventName
+  };
 }
 
 export default connect(mapStateToProps)(Header);

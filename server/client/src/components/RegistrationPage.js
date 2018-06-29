@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EventDescription from './EventDescription';
 import ProfileForm from './ProfileForm';
 import SelectClassesForm from './SelectClassesForm';
 import ConfirmStep from './ConfirmStep';
@@ -28,7 +27,6 @@ class RegistrationPage extends Component {
           this.props.data.eventId && (
             //
             <div>
-              <EventDescription eventName={this.props.data.eventName} />
               <ProfileForm />
               <SelectClassesForm />
               <OrderSummary />
