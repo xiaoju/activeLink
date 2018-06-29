@@ -4,6 +4,10 @@ body {
   /* materializecss deep-purple lighten-5 */
 }
 
+.SelectComponent__value-container > div:focus-within {
+  border-width: 2px;
+}
+
 .innerContainer {
   margin: 0 9%;
 }
