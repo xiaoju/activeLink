@@ -116,6 +116,27 @@ export const getValidKids = createSelector(
   }
 );
 
+export const getValidParents = createSelector(
+  [getAllParents, getFamilyPerId],
+  (allParents, familyPerId) => {
+    const isValidFamilyName = function isValidFamilyName(userId) {
+      return (
+        familyPerId[userId].familyName !== '' // familyName is set
+      );
+    };
+
+    const isValidFirstName = function isValidFirstName(userId) {
+      return familyPerId[userId].firstName !== ''; // firstName is set
+    };
+
+    const isValidUser = function isValidUser(userId) {
+      return isValidFirstName(userId) && isValidFamilyName(userId);
+    };
+
+    return allParents.filter(isValidUser); // ['p0', 'p1']
+  }
+);
+
 export const getAllParentsValid = createSelector(
   [getInvalidUsers, getAllParents, getAllUsers],
   (invalidUsers, allParents) =>
@@ -218,12 +239,13 @@ export const getFamilyAndValidKids = createSelector(
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
-  [getAllParents, getFamilyPerId],
-  (allParents, familyPerId) =>
+  [getValidParents, getFamilyPerId],
+  (validParents, familyPerId) =>
     [
       ...new Set(
-        allParents
-          .slice(0, -1) // remove item from the 'create new parent' field
+        // allParents
+        validParents
+          // .slice(0, -1) // remove item from the 'create new parent' field
           .map(thisParentId => familyPerId[thisParentId].familyName)
       )
     ].join('-')
