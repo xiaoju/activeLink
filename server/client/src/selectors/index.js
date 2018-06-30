@@ -35,14 +35,6 @@ export const getAllUsers = createSelector(
   (allKids, allParents) => allKids.concat(allParents) // ['k0', 'k1', 'k2', 'p0', 'p1', 'p2']
 );
 
-export const getCheckboxUsers = createSelector(
-  [getFamilyId, getAllKids],
-  (familyId, allKids) =>
-    [familyId]
-      .concat(allKids) // ['familyId', 'k0', 'k1', 'k2']
-      .slice(0, -1) // ['familyId', 'k0', 'k1']
-);
-
 export const getInvalidUsers = createSelector(
   // format of the output: { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
   [getAllUsers, getFamilyPerId],
@@ -78,6 +70,48 @@ export const getInvalidUsers = createSelector(
       obj[userId] = isInvalidUser(userId);
       return obj;
     }, {});
+  }
+);
+
+export const getValidKids = createSelector(
+  [getAllKids, getFamilyPerId],
+  (allKids, familyPerId) => {
+    const isValidGrade = function isInvalidGrade(userId) {
+      return (
+        // !!familyPerId[userId].kidGrade &&
+        familyPerId[userId].kidGrade !== ' '
+        // user is a kid (this field is a thing ) AND grade is not set
+        // NB just running this on allKids, then no need check if kidGrade exists.
+      );
+    };
+
+    const isValidFamilyName = function isValidFamilyName(userId) {
+      return (
+        familyPerId[userId].familyName !== ''
+        // familyName is not set
+      );
+    };
+
+    const isValidFirstName = function isValidFirstName(userId) {
+      return familyPerId[userId].firstName !== '';
+      // firstName is not set
+    };
+
+    const isValidUser = function isValidUser(userId) {
+      return (
+        isValidFirstName(userId) &&
+        isValidFamilyName(userId) &&
+        isValidGrade(userId)
+      );
+    };
+
+    // return allKids.reduce((obj, userId) => {
+    //   obj[userId] = isValidUser(userId);
+    //   return obj;
+    // }, {});
+    // format of the output: { 'k0': true, 'k1': true, 'k2': false}
+
+    return allKids.filter(isValidUser); // ['k0', 'k1']
   }
 );
 
@@ -171,6 +205,15 @@ export const getAllKidsValid = createSelector(
 //   }
 // );
 
+export const getFamilyAndValidKids = createSelector(
+  [getFamilyId, getValidKids],
+  (familyId, validKids) =>
+    [familyId] // ['familyId']
+      // .concat(allKids) // ['familyId', 'k0', 'k1', 'k2']
+      // .slice(0, -1) // ['familyId', 'k0', 'k1']
+      .concat(validKids) // ['familyId', 'k0', 'k1']
+);
+
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
@@ -188,9 +231,9 @@ export const getMergedFamilyName = createSelector(
 export const getCheckedItems = createSelector(
   // the list of items that are checked by anyone of the users
   // used by OrderSummary component and getTotal and getCheckedItemsNoDoublons
-  [getCheckboxUsers, getChecked],
-  (checkboxUsers, checked) =>
-    checkboxUsers // [familyId, kid1Id, kid2Id]
+  [getFamilyAndValidKids, getChecked],
+  (familyAndValidKids, checked) =>
+    familyAndValidKids // [familyId, 'k0', 'k1']
       .map(thisUserId => checked[thisUserId]) // [['r0'], ['r2','r4']], ['r2','r5','r7']]
       .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []) // ['r0','r2','r4','r2','r5','r7']
 );
@@ -207,10 +250,10 @@ export const getCheckedItemsNoDoublons = createSelector(
 
 export const getApplyDiscount = createSelector(
   // create the boolean `applyDiscount`. True if discount price is applicable.
-  [getCheckboxUsers, getDiscountQualifiers, getChecked],
-  (checkboxUsers, discountQualifiers, checked) => {
+  [getFamilyAndValidKids, getDiscountQualifiers, getChecked],
+  (familyAndValidKids, discountQualifiers, checked) => {
     let output =
-      checkboxUsers
+      familyAndValidKids
         .map(
           thisUserId =>
             checked[thisUserId].filter(checkedItemId =>

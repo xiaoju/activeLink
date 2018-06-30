@@ -7,7 +7,7 @@ import {
   getDiscountQualifiers,
   getChecked,
   getItemsPerId,
-  getCheckboxUsers,
+  getFamilyAndValidKids,
   getStandardPrices,
   getDiscountedPrices,
   // getMergedFamilyName,
@@ -24,7 +24,7 @@ class OrderSummary extends Component {
       discountQualifiers,
       checked,
       itemsPerId,
-      checkboxUsers,
+      familyAndValidKids,
       standardPrices,
       discountedPrices,
       // mergedFamilyName,
@@ -40,8 +40,8 @@ class OrderSummary extends Component {
     let subTotal = itemId => quantity(itemId) * unitPrice(itemId);
 
     let kidNames = itemId =>
-      checkboxUsers
-        .slice(1)
+      familyAndValidKids // [familyId,'k0', 'k1' ]
+        .slice(1) // ['k0', 'k1']
         .filter(userId => checked[userId].includes(itemId))
         .map(userId => familyPerId[userId].firstName)
         .join(' & ');
@@ -101,7 +101,7 @@ function mapStateToProps(state) {
     discountQualifiers: getDiscountQualifiers(state),
     checked: getChecked(state),
     itemsPerId: getItemsPerId(state),
-    checkboxUsers: getCheckboxUsers(state),
+    familyAndValidKids: getFamilyAndValidKids(state),
     standardPrices: getStandardPrices(state),
     discountedPrices: getDiscountedPrices(state),
     // mergedFamilyName: getMergedFamilyName(state),

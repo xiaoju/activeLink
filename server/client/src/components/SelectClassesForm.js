@@ -13,9 +13,10 @@ import {
   getAllItems,
   getItemsPerId,
   getMandatoryItems,
-  getCheckboxUsers,
+  getFamilyId,
   getStandardPrices,
-  getDiscountedPrices
+  getDiscountedPrices,
+  getValidKids
 } from '../selectors';
 
 class SelectClassesForm extends Component {
@@ -30,9 +31,10 @@ class SelectClassesForm extends Component {
       checkCheckbox,
       uncheckCheckbox,
       mandatoryItems,
-      checkboxUsers,
+      familyId,
       standardPrices,
-      discountedPrices
+      discountedPrices,
+      validKids
     } = this.props;
 
     return (
@@ -69,7 +71,8 @@ class SelectClassesForm extends Component {
                 checkCheckbox={checkCheckbox}
                 uncheckCheckbox={uncheckCheckbox}
                 mandatoryItems={mandatoryItems}
-                checkboxUsers={checkboxUsers}
+                familyId={familyId}
+                validKids={validKids}
               />
             </div>
           ))}
@@ -88,9 +91,10 @@ function mapStateToProps(state) {
     allItems: getAllItems(state),
     itemsPerId: getItemsPerId(state),
     mandatoryItems: getMandatoryItems(state),
-    checkboxUsers: getCheckboxUsers(state),
+    familyId: getFamilyId(state),
     standardPrices: getStandardPrices(state),
-    discountedPrices: getDiscountedPrices(state)
+    discountedPrices: getDiscountedPrices(state),
+    validKids: getValidKids(state)
   };
 }
 

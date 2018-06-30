@@ -11,16 +11,17 @@ function ItemCheckboxes({
   uncheckCheckbox,
   checkCheckbox,
   mandatoryItems,
-  checkboxUsers
+  familyId,
+  validKids
 }) {
   return (
-    // this component creates one checkbox per kid, or one for the family in
-    // case of pricing per family
+    // this component creates one checkbox per kid, or
+    // one only, for the family, in case of pricing per family
     <div>
       {(familyItems.includes(itemId)
         ? // handle separately items that are priced per family vs priced per kid
-          [checkboxUsers[0]] // [familyId]
-        : checkboxUsers.slice(1)
+          [familyId] // [familyId]
+        : validKids
       ).map(thisUserId => (
         <div
           className={
@@ -82,5 +83,6 @@ ItemCheckboxes.propTypes = {
   uncheckCheckbox: PropTypes.func.isRequired,
   checkCheckbox: PropTypes.func.isRequired,
   mandatoryItems: PropTypes.array.isRequired,
-  checkboxUsers: PropTypes.array.isRequired
+  familyId: PropTypes.string.isRequired,
+  validKids: PropTypes.array.isRequired
 };
