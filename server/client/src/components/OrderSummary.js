@@ -10,7 +10,6 @@ import {
   getFamilyAndValidKids,
   getStandardPrices,
   getDiscountedPrices,
-  // getMergedFamilyName,
   getTotal,
   getFamilyPerId
 } from '../selectors';
@@ -27,7 +26,6 @@ class OrderSummary extends Component {
       familyAndValidKids,
       standardPrices,
       discountedPrices,
-      // mergedFamilyName,
       total,
       familyPerId
     } = this.props;
@@ -52,7 +50,7 @@ class OrderSummary extends Component {
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">③ Review your order</h4>
-        <div className="container orderSummary">
+        <div className="orderSummary" style={{ margin: '2%' }}>
           <table className="striped centered responsive-table">
             <thead>
               <tr>
@@ -104,7 +102,6 @@ function mapStateToProps(state) {
     familyAndValidKids: getFamilyAndValidKids(state),
     standardPrices: getStandardPrices(state),
     discountedPrices: getDiscountedPrices(state),
-    // mergedFamilyName: getMergedFamilyName(state),
     total: getTotal(state),
     familyPerId: getFamilyPerId(state)
   };
