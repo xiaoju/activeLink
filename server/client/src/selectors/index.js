@@ -143,10 +143,26 @@ export const getAllKidsValid = createSelector(
     let output =
       allKids // ['k0', 'k1', 'k2']
         .map(userId => invalidUsers[userId] * 1) // [0,0,1]
-        .reduce((total, item) => total + item, 0) === 0; // 1
+        .reduce((total, item) => total + item, 0) === 0; // sum : 1 // output: true
     // console.log('output of getAllKidsValid: ', output);
     return output;
   }
+);
+
+export const getOneKidMini = createSelector(
+  [getInvalidUsers, getAllKids],
+  (invalidUsers, allKids) =>
+    allKids // ['k0', 'k1', 'k2']
+      .map(userId => !invalidUsers[userId] * 1) // [1,1,0]
+      .reduce((total, item) => total + item, 0) > 0 // sum: 2, output: true
+);
+
+export const getOneParentMini = createSelector(
+  [getInvalidUsers, getAllParents],
+  (invalidUsers, allParents) =>
+    allParents // ['p0', 'p1']
+      .map(userId => !invalidUsers[userId] * 1) // [1,1]
+      .reduce((total, item) => total + item, 0) > 0 // sum: 2, output: true
 );
 
 export const getAllParentsValid = createSelector(
@@ -315,4 +331,31 @@ export const getTotal = createSelector(
           : thisItemId => standardPrices[thisItemId]
       ) // [30, 100, 250, 450, 150]
       .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0) // the total
+);
+
+export const getFormIsValid = createSelector(
+  [getTotal, getFamilyMedia, getOneKidMini, getOneParentMini],
+  (total, familyMedia, oneKidMini, oneParentMini) => {
+    const totalNotZero = total > 0;
+    const onePhoneMini =
+      familyMedia.filter(mediaObject => mediaObject.media === 'phone').length >
+      0;
+    const oneEmailMini =
+      familyMedia.filter(mediaObject => mediaObject.media === 'email').length >
+      0;
+    const formIsValid =
+      totalNotZero &&
+      onePhoneMini &&
+      oneEmailMini &&
+      oneKidMini &&
+      oneParentMini;
+    return {
+      totalNotZero,
+      oneEmailMini,
+      onePhoneMini,
+      oneParentMini,
+      oneKidMini,
+      formIsValid
+    };
+  }
 );

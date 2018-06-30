@@ -261,3 +261,7 @@ i.icon-orange {
 input[type='text']:not(.browser-default) {
   height: 1em;
 }
+
+.validationMessage > p {
+  color: red;
+}
