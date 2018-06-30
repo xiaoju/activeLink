@@ -35,7 +35,6 @@ class OneKidForm extends Component {
 
   render() {
     const {
-      allKidsValid,
       userId,
       firstName,
       userFamilyName,

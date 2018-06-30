@@ -6,7 +6,6 @@ import {
   MODIFY_MEDIA,
   MODIFY_USER,
   ADD_MEDIA_ROW,
-  ADD_ROW,
   ADD_KID_ROW,
   ADD_PARENT_ROW
 } from '../actions/types';

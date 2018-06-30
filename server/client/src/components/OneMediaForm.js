@@ -25,7 +25,7 @@ class OneMediaForm extends Component {
   }
 
   render() {
-    const { index, mediaObject: { media, value, tags } } = this.props;
+    const { index, mediaObject: { media, value } } = this.props;
 
     return (
       <form className="formInputsContainer">

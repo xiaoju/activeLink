@@ -6,10 +6,6 @@ import OneKidForm from './OneKidForm';
 import OneMediaForm from './OneMediaForm';
 
 class ProfileForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { allParents, allKids, familyMedia } = this.props;
 

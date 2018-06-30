@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Select, { components } from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 import * as Animated from 'react-select/lib/animated';
 import { getMediaObject, getAllParents, getFamilyPerId } from '../selectors';
@@ -23,13 +22,7 @@ class SelectComponentStyled extends Component {
   }
 
   render() {
-    const {
-      index,
-      mediaObject,
-      mediaObject: { media, value, tags },
-      allParents,
-      familyPerId
-    } = this.props;
+    const { mediaObject, allParents, familyPerId } = this.props;
 
     const options = allParents // ['p1', 'p2', 'p3']
       .map(parentId => familyPerId[parentId].firstName) // ['Donald', 'Rosemary', '']
