@@ -61,7 +61,7 @@ class Header extends Component {
               to={this.props.auth ? '/dashboard' : '/'}
               className="left brand-logo"
             >
-              <img src={englishLinkLogo} alt="logo" />
+              <img src={englishLinkLogo} alt="logo" className="hoverable" />
             </Link>
             <span className="center brand-logo">{this.props.eventName}</span>
             <ul className="right">{this.renderContent()}</ul>

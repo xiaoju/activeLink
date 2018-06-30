@@ -239,11 +239,9 @@ input:not([type]).pasValide {
 .nav-wrapper > a,
 .nav-wrapper > a > img {
   height: 100%;
-}
-
-.nav-wrapper > a > img {
   padding-top: 5px;
   padding-bottom: 5px;
+  margin-left: 1%;
 }
 
 .card-title {
