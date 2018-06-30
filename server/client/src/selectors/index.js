@@ -137,14 +137,6 @@ export const getValidParents = createSelector(
   }
 );
 
-export const getAllParentsValid = createSelector(
-  [getInvalidUsers, getAllParents, getAllUsers],
-  (invalidUsers, allParents) =>
-    allParents // ['p0', 'p1']
-      .map(userId => invalidUsers[userId] * 1) // [0, 0]
-      .reduce((total, item) => total + item, 0) === 0 // 0
-);
-
 export const getAllKidsValid = createSelector(
   [getInvalidUsers, getAllKids],
   (invalidUsers, allKids) => {
@@ -155,6 +147,20 @@ export const getAllKidsValid = createSelector(
     // console.log('output of getAllKidsValid: ', output);
     return output;
   }
+);
+
+export const getAllParentsValid = createSelector(
+  [getInvalidUsers, getAllParents, getAllUsers],
+  (invalidUsers, allParents) =>
+    allParents // ['p0', 'p1']
+      .map(userId => invalidUsers[userId] * 1) // [0, 0]
+      .reduce((total, item) => total + item, 0) === 0 // 0
+);
+
+export const getLastMediaValid = createSelector(
+  // checking that 'last media in the view got a valid value (email or phone)'
+  [getFamilyMedia],
+  familyMedia => familyMedia[familyMedia.length - 1].media !== 'more_horiz'
 );
 
 // export const getAllParentsValid = createSelector(

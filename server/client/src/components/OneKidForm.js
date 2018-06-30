@@ -4,29 +4,26 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import {
   getAllKidsValid,
+  getAllParentsValid,
   getInvalidUsers,
   getFirstName,
   getUserFamilyName,
   getKidGrade
 } from '../selectors';
-import { modifyUser, addKidRow } from '../actions/index';
+import { modifyUser, addKidRow, addParentRow } from '../actions/index';
 
 class OneKidForm extends Component {
   constructor(props) {
     super(props);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleOnBlurEvent = this.handleOnBlurEvent.bind(this);
   }
 
-  // componentDidMount() {
-  //   console.log(
-  //     'OneKidForm: component did mount. this.props.userId: ',
-  //     this.props.userId
-  //   );
-  // }
-  //
-  // componentDidUpdate() {
-  //   console.log('OneKidForm: component did update. props: ', this.props);
-  // }
+  handleOnBlurEvent(event) {
+    this.props.allKidsValid
+      ? this.props.addKidRow()
+      : this.props.allParentsValid && this.props.addParentRow();
+  }
 
   handleInputChange(event) {
     this.props.modifyUser({
@@ -34,15 +31,7 @@ class OneKidForm extends Component {
       fieldName: event.target.name,
       value: event.target.value
     });
-    // .then(() =>
-    //   console.log('this.props.allKidsValid: ', this.props.allKidsValid)
-    // );
-    // console.log('this.props.allKidsValid: ', this.props.allKidsValid);
-    // this.props.addKidRow();
   }
-
-  // if typing this made the row valid, then should add a new row,
-  // by dispatching add_kid_row
 
   render() {
     const {
@@ -72,10 +61,7 @@ class OneKidForm extends Component {
               className={!firstName ? 'pasValide' : ' '}
               value={firstName}
               onChange={this.handleInputChange}
-              // onChange={event => {
-              //   this.handleInputChange(event);
-              //   allKidsValid && this.props.addKidRow();
-              // }}
+              onBlur={this.handleOnBlurEvent}
             />
             <label htmlFor={userId + '-familyName'} className="active">
               First Name
@@ -89,6 +75,7 @@ class OneKidForm extends Component {
               className={!userFamilyName ? 'pasValide' : ''}
               value={userFamilyName}
               onChange={this.handleInputChange}
+              onBlur={this.handleOnBlurEvent}
             />
             <label htmlFor={userId + '-familyName'} className="active">
               Family Name
@@ -106,9 +93,9 @@ class OneKidForm extends Component {
                   ? 'browser-default pasValide'
                   : 'browser-default'
               }
-              // className="browser-default"
               value={kidGrade}
               onChange={this.handleInputChange}
+              onBlur={this.handleOnBlurEvent}
             >
               <option value=" "> </option>
               <option value="PS">PS</option>
@@ -131,6 +118,7 @@ class OneKidForm extends Component {
 function mapStateToProps(state, props) {
   return {
     allKidsValid: getAllKidsValid(state),
+    allParentsValid: getAllParentsValid(state),
     invalidUsers: getInvalidUsers(state, props),
     firstName: getFirstName(state, props),
     userFamilyName: getUserFamilyName(state, props),
@@ -139,7 +127,7 @@ function mapStateToProps(state, props) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ modifyUser, addKidRow }, dispatch);
+  return bindActionCreators({ modifyUser, addKidRow, addParentRow }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);
@@ -147,6 +135,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(OneKidForm);
 OneKidForm.propTypes = {
   addKidRow: PropTypes.func.isRequired,
   allKidsValid: PropTypes.bool.isRequired,
+  allParentsValid: PropTypes.bool.isRequired,
   invalidUsers: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,

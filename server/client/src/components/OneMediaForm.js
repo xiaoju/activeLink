@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { getMediaObject } from '../selectors';
-import { modifyMedia } from '../actions/index';
+import { getMediaObject, getLastMediaValid } from '../selectors';
+import { modifyMedia, addMediaRow } from '../actions/index';
 import SelectComponentStyled from './SelectComponentStyled';
 
 class OneMediaForm extends Component {
   constructor(props) {
     super(props);
     this.handleMediaChange = this.handleMediaChange.bind(this);
+    this.handleOnBlurEvent = this.handleOnBlurEvent.bind(this);
+  }
+
+  handleOnBlurEvent(event) {
+    this.props.lastMediaValid && this.props.addMediaRow();
   }
 
   handleMediaChange(event) {
@@ -39,6 +44,7 @@ class OneMediaForm extends Component {
             className={!value ? 'pasValide' : ' '}
             value={value}
             onChange={this.handleMediaChange}
+            onBlur={this.handleOnBlurEvent}
           />
           <label htmlFor={'media' + index} className="active">
             Email or phone number
@@ -52,12 +58,13 @@ class OneMediaForm extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    mediaObject: getMediaObject(state, props)
+    mediaObject: getMediaObject(state, props),
+    lastMediaValid: getLastMediaValid(state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ modifyMedia }, dispatch);
+  return bindActionCreators({ modifyMedia, addMediaRow }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneMediaForm);

@@ -15,7 +15,7 @@ import {
 
 export const fetchUser = () => async dispatch => {
   const thisUser = await axios.get('/api/current_user');
-  // TODO dispatch something is there is no answer from api or from google
+  // TODO dispatch something if there is no answer from api or from google
   // so that user knows where it's going wrong
   dispatch({ type: FETCH_USER, payload: thisUser.data });
   const thisData = thisUser.data && (await axios.get('/api/data'));
@@ -64,13 +64,6 @@ export function modifyMedia({ index, value }) {
     value
   };
 }
-
-// export function addRow({ payload }) {
-//   return {
-//     type: ADD_ROW,
-//     payload
-//   };
-// }
 
 export function addKidRow() {
   return {
