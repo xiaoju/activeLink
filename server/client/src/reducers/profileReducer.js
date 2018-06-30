@@ -34,6 +34,7 @@ export default function(
         const newParentId = 'p' + allParents.length;
         const newKidId = 'k' + allKids.length;
         return {
+          // we add one new (invalid) kid and parent, as field for user to type.
           ...state,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
@@ -195,82 +196,3 @@ export default function(
       return state;
   }
 }
-
-// receive from action.payload:
-// const input = {
-//   checkboxUsers: ['7jhfbasd8jfhbeas8', 'MulanBush', 'ZilanPolanski'],
-//   parents: ['DonaldBush', 'RosemaryPolanski'],
-//   familyEMails: [
-//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
-//   ],
-//   familyPhones: [
-//     { it: '0600000000', tags: ['mobile', 'Donald'] },
-//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
-//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
-//     { it: '0633333333', tags: ['landline', 'family'] }
-//   ],
-//   familyMembers: {
-//     DonaldBush: {
-//       id: 'DonaldBush',
-//       firstName: 'Donald',
-//       familyName: 'Bush'
-//     },
-//     RosemaryPolanski: {
-//       id: 'RosemaryPolanski',
-//       firstName: 'Rosemary',
-//       familyName: 'Polanski'
-//     },
-//     MulanBush: {
-//       id: 'MulanBush',
-//       firstName: 'Mulan',
-//       familyName: 'Bush',
-//       kidGrade: 'CE2'
-//     },
-//     ZilanPolanski: {
-//       id: 'ZilanPolanski',
-//       firstName: 'Zilan',
-//       familyName: 'Polanski',
-//       kidGrade: 'GS'
-//     }
-//   }
-// };
-//
-// const outputDraft = {
-//   kids: ['MulanBush', 'ZilanPolanski'],
-//   parents: ['DonaldBush', 'RosemaryPolanski'],
-//   familyMembers: {
-//     DonaldBush: {
-//       id: 'DonaldBush',
-//       firstName: 'Donald',
-//       familyName: 'Bush'
-//     },
-//     RosemaryPolanski: {
-//       id: 'RosemaryPolanski',
-//       firstName: 'Rosemary',
-//       familyName: 'Polanski'
-//     },
-//     MulanBush: {
-//       id: 'MulanBush',
-//       firstName: 'Mulan',
-//       familyName: 'Bush',
-//       kidGrade: 'CE2'
-//     },
-//     ZilanPolanski: {
-//       id: 'ZilanPolanski',
-//       firstName: 'Zilan',
-//       familyName: 'Polanski',
-//       kidGrade: 'GS'
-//     }
-//   },
-//   familyEmails: [
-//     { it: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-//     { it: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] }
-//   ],
-//   familyPhones: [
-//     { it: '0600000000', tags: ['mobile', 'Donald'] },
-//     { it: '0611111111', tags: ['mobile', 'pro', 'Rosemary'] },
-//     { it: '0622222222', tags: ['mobile', 'private', 'Rosemary'] },
-//     { it: '0633333333', tags: ['landline', 'family'] }
-//   ]
-// };

@@ -84,7 +84,6 @@ class SelectComponentStyled extends Component {
           ...styles,
           minWidth: '3em',
           color: 'rgba(0, 0, 0, 0.6)',
-          // border: 'thin solid #d1c4e9',
           borderWidth: 'thin',
           borderStyle: 'solid',
           borderColor: isSelected ? '#9575cd' : '#ffa726',

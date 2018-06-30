@@ -43,6 +43,7 @@ export const getInvalidUsers = createSelector(
       return (
         !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade === ' '
         // user is a kid (this field is a thing ) AND grade is not set
+        // NB could just run this on allKids, then no need check if kidGrade exists.
       );
     };
 

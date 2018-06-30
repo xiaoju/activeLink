@@ -37,7 +37,6 @@ class OneMediaForm extends Component {
             id={'media' + index}
             name={media}
             className={!value ? 'pasValide' : ' '}
-            // className="validate"
             value={value}
             onChange={this.handleMediaChange}
           />
@@ -46,9 +45,6 @@ class OneMediaForm extends Component {
           </label>
         </div>
         <SelectComponentStyled index={index} />
-        {/* <div className="columnContainer tagsContainer">
-
-        </div> */}
       </form>
     );
   }

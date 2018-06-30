@@ -9,6 +9,8 @@ class Header extends Component {
       case null:
         return;
       case false:
+        // case null:
+        // case false:
         return [
           <li key="9">
             <a href="/auth/google">Login with Google</a>

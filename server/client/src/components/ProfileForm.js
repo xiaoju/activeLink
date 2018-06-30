@@ -44,7 +44,7 @@ class ProfileForm extends Component {
               <strong>Kids</strong>
             </h5>
             <button
-              class="btn-floating btn-small waves-effect waves-light orange lighten-1"
+              className="btn-floating btn-small waves-effect waves-light orange lighten-1"
               onClick={this.handleKidClick}
             >
               <i className="material-icons" name="kid">
@@ -60,7 +60,7 @@ class ProfileForm extends Component {
             </h5>
             <button
               onClick={this.handleParentClick}
-              class="btn-floating btn-small waves-effect waves-light orange lighten-1"
+              className="btn-floating btn-small waves-effect waves-light orange lighten-1"
               name="parent"
             >
               <i className="material-icons">add</i>
@@ -75,7 +75,7 @@ class ProfileForm extends Component {
               <i className="material-icons small">email</i>
             </h5>
             <button
-              class="btn-floating btn-small waves-effect waves-light orange lighten-1"
+              className="btn-floating btn-small waves-effect waves-light orange lighten-1"
               onClick={this.handleMediaClick}
               name="media"
             >
