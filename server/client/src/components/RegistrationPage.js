@@ -16,8 +16,27 @@ class RegistrationPage extends Component {
             <strong>Please log in to show the members area.</strong>
           </h5>
         )}
-
-        {this.props.auth && !this.props.data.eventId && <h5>Loading...</h5>
+        {this.props.auth &&
+          !this.props.data.eventId && (
+            <div>
+              <br />
+              <h5 className="stepTitle">Loading...</h5>
+              <br />
+              <div class="preloader-wrapper active">
+                <div class="spinner-layer spinner-red-only">
+                  <div class="circle-clipper left">
+                    <div class="circle" />
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle" />
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
         // cannot user `this.props.data` because dataReducer creates an empty
         // `this.props.data` object by initialization. Using instead
         // `this.props.data.eventId` to detect if data arrived from api
@@ -25,7 +44,6 @@ class RegistrationPage extends Component {
 
         {this.props.auth &&
           this.props.data.eventId && (
-            //
             <div>
               <ProfileForm />
               <SelectClassesForm />

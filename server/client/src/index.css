@@ -8,6 +8,10 @@ body {
   border-width: 2px;
 }
 
+.circle-clipper .circle {
+  border-color: #9575cd;
+}
+
 .innerContainer {
   margin: 0 9%;
 }
@@ -77,7 +81,7 @@ nav i.material-icons.large {
   margin: 0.5em;
 }
 
-.itemsContainer h4.stepTitle {
+.stepTitle {
   color: #9575cd;
   margin-bottom: 2.2rem;
 }
