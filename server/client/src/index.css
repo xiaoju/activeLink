@@ -266,11 +266,10 @@ input[type='text']:not(.browser-default) {
   height: 1em;
 }
 
-.validationMessage {
-  border-radius: 15px;
-  margin: 1em auto;
-}
-
 .validationMessage > p {
   color: white;
+}
+
+.validationMessage:empty {
+  display: none;
 }
