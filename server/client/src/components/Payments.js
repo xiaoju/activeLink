@@ -26,7 +26,7 @@ class Payments extends Component {
             {this.props.total / 100} &euro;
           </a>
         )}
-        <div className="validationMessage">
+        <div className="card-panel orange lighten-1 validationMessage">
           {!this.props.formIsValid.totalNotZero && (
             <p>
               Please select the items you want to purchase by clicking on the
@@ -34,21 +34,21 @@ class Payments extends Component {
             </p>
           )}
           {!this.props.formIsValid.oneEmailMini && (
-            <p>At minimum, please enter one valid Email in section 1.</p>
+            <p>Please enter at least one valid Email in section 1.</p>
           )}
           {!this.props.formIsValid.onePhoneMini && (
-            <p>At minimum, please enter one valid phone number in section 1.</p>
+            <p>Please enter at least one valid phone number (section 1).</p>
           )}
           {!this.props.formIsValid.oneKidMini && (
             <p>
-              At minimum, please enter in section 1 the data for 1 kid: first
-              name, family name and school grade.
+              Please enter in section 1 the data for at least 1 kid: first name,
+              family name and school grade.
             </p>
           )}
           {!this.props.formIsValid.oneParentMini && (
             <p>
-              At minimum, please enter in section 1 the data for 1 parent: first
-              name and family name.
+              In section 1, please enter first name and family name for at least
+              1 parent.
             </p>
           )}
         </div>
