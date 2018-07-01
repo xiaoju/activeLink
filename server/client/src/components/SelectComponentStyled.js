@@ -181,6 +181,7 @@ class SelectComponentStyled extends Component {
       <CreatableSelect
         placeholder=""
         className="SelectComponent"
+        classNamePrefix="SelectComponent"
         closeMenuOnSelect={false}
         components={Animated}
         // defaultValue={[
