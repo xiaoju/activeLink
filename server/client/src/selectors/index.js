@@ -30,49 +30,49 @@ export const getKidGrade = (state, { userId }) =>
 export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
 
-export const getAllUsers = createSelector(
-  [getAllKids, getAllParents],
-  (allKids, allParents) => allKids.concat(allParents) // ['k0', 'k1', 'k2', 'p0', 'p1', 'p2']
-);
+// export const getAllUsers = createSelector(
+//   [getAllKids, getAllParents],
+//   (allKids, allParents) => allKids.concat(allParents) // ['k0', 'k1', 'k2', 'p0', 'p1', 'p2']
+// );
 
-export const getInvalidUsers = createSelector(
-  // format of the output: { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
-  [getAllUsers, getFamilyPerId],
-  (allUsers, familyPerId) => {
-    const isInvalidGrade = function isInvalidGrade(userId) {
-      return (
-        !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade === ' '
-        // user is a kid (this field is a thing ) AND grade is not set
-        // NB could just run this on allKids, then no need check if kidGrade exists.
-      );
-    };
-
-    const isInvalidFamilyName = function isInvalidFamilyName(userId) {
-      return (
-        familyPerId[userId].familyName === ''
-        // familyName is not set
-      );
-    };
-
-    const isInvalidFirstName = function isInvalidFirstName(userId) {
-      return familyPerId[userId].firstName === '';
-      // firstName is not set
-    };
-
-    const isInvalidUser = function isInvalidUser(userId) {
-      return (
-        isInvalidFirstName(userId) ||
-        isInvalidFamilyName(userId) ||
-        isInvalidGrade(userId)
-      );
-    };
-
-    return allUsers.reduce((obj, userId) => {
-      obj[userId] = isInvalidUser(userId);
-      return obj;
-    }, {});
-  }
-);
+// export const getInvalidUsers = createSelector(
+//   // format of the output: { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
+//   [getAllUsers, getFamilyPerId],
+//   (allUsers, familyPerId) => {
+//     const isInvalidGrade = function isInvalidGrade(userId) {
+//       return (
+//         !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade === ' '
+//         // user is a kid (this field is a thing ) AND grade is not set
+//         // NB could just run this on allKids, then no need check if kidGrade exists.
+//       );
+//     };
+//
+//     const isInvalidFamilyName = function isInvalidFamilyName(userId) {
+//       return (
+//         familyPerId[userId].familyName === ''
+//         // familyName is not set
+//       );
+//     };
+//
+//     const isInvalidFirstName = function isInvalidFirstName(userId) {
+//       return familyPerId[userId].firstName === '';
+//       // firstName is not set
+//     };
+//
+//     const isInvalidUser = function isInvalidUser(userId) {
+//       return (
+//         isInvalidFirstName(userId) ||
+//         isInvalidFamilyName(userId) ||
+//         isInvalidGrade(userId)
+//       );
+//     };
+//
+//     return allUsers.reduce((obj, userId) => {
+//       obj[userId] = isInvalidUser(userId);
+//       return obj;
+//     }, {});
+//   }
+// );
 
 export const getValidKids = createSelector(
   [getAllKids, getFamilyPerId],
@@ -106,12 +106,6 @@ export const getValidKids = createSelector(
       );
     };
 
-    // return allKids.reduce((obj, userId) => {
-    //   obj[userId] = isValidUser(userId);
-    //   return obj;
-    // }, {});
-    // format of the output: { 'k0': true, 'k1': true, 'k2': false}
-
     return allKids.filter(isValidUser); // ['k0', 'k1']
   }
 );
@@ -135,6 +129,11 @@ export const getValidParents = createSelector(
 
     return allParents.filter(isValidUser); // ['p0', 'p1']
   }
+);
+
+export const getValidUsers = createSelector(
+  [getValidParents, getValidKids],
+  (validParents, validKids) => validKids.concat(validParents)
 );
 
 // export const getAllKidsValid = createSelector(

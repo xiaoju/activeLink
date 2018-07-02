@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   getAllKidsValid,
   getAllParentsValid,
-  getInvalidUsers,
+  getValidUsers,
   getFirstName,
   getUserFamilyName,
   getKidGrade
@@ -39,7 +39,7 @@ class OneKidForm extends Component {
       firstName,
       userFamilyName,
       kidGrade,
-      invalidUsers
+      validUsers
     } = this.props;
 
     return (
@@ -49,7 +49,7 @@ class OneKidForm extends Component {
             <i
               className={
                 'material-icons prefix ' +
-                (invalidUsers[userId] ? 'icon-orange' : '')
+                (validUsers.includes(userId) ? '' : 'icon-orange')
               }
             >
               {!!kidGrade ? 'face' : 'account_circle'}
@@ -118,7 +118,7 @@ function mapStateToProps(state, props) {
   return {
     allKidsValid: getAllKidsValid(state),
     allParentsValid: getAllParentsValid(state),
-    invalidUsers: getInvalidUsers(state, props),
+    validUsers: getValidUsers(state),
     firstName: getFirstName(state, props),
     userFamilyName: getUserFamilyName(state, props),
     kidGrade: getKidGrade(state, props)
@@ -135,7 +135,7 @@ OneKidForm.propTypes = {
   addKidRow: PropTypes.func.isRequired,
   allKidsValid: PropTypes.bool.isRequired,
   allParentsValid: PropTypes.bool.isRequired,
-  invalidUsers: PropTypes.object.isRequired,
+  validUsers: PropTypes.array.isRequired,
   userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   userFamilyName: PropTypes.string.isRequired,
