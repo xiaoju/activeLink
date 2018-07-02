@@ -2,12 +2,16 @@ import {
   LOAD_DATA,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
+  MODIFY_USER,
   ADD_KID_ROW
 } from '../actions/types';
 
 const empty = null;
 
-export default function(state = empty, { type, payload, userId, itemId }) {
+export default function(
+  state = empty,
+  { type, payload, userId, itemId, fieldName, value }
+) {
   switch (type) {
     case LOAD_DATA:
       // create initial state:
@@ -66,6 +70,12 @@ export default function(state = empty, { type, payload, userId, itemId }) {
       return {
         ...state,
         [userId]: state[userId].filter(thisBox => itemId !== thisBox)
+      };
+
+    case MODIFY_USER:
+      return {
+        ...state,
+        [userId]: fieldName === 'kidGrade' ? [] : state[userId]
       };
 
     default:
