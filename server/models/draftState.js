@@ -14,19 +14,7 @@ module.exports = {
   allParents: ['p0', 'p1'],
   familyMedia: [
     { media: 'email', value: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
-    { media: 'email', value: 'rosemary@xiaoju.io', tags: ['Rosemary', 'pro'] },
-    { media: 'phone', value: '0600000000', tags: ['mobile', 'Donald'] },
-    {
-      media: 'phone',
-      value: '0611111111',
-      tags: ['mobile', 'pro', 'Rosemary']
-    },
-    {
-      media: 'phone',
-      value: '0622222222',
-      tags: ['mobile', 'private', 'Rosemary']
-    },
-    { media: 'phone', value: '0633333333', tags: ['landline', 'family'] }
+    { media: 'phone', value: '0600000000', tags: ['mobile', 'Donald'] }
   ],
   standardPrices: {
     i0: 3000,

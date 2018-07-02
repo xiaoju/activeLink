@@ -25,26 +25,31 @@ class ValidationPanel extends Component {
       >
         {!totalNotZero && (
           <p>
-            Please select the items you want to purchase by clicking on the
-            orange checkboxes (see "step 2" section).
+            <strong>Items:</strong> please select the items you want to purchase
+            by clicking on the orange checkboxes.
           </p>
         )}
         {!oneEmailMini && (
-          <p>Please enter at least one valid Email in section 1.</p>
+          <p>
+            <strong>Emails:</strong> please enter at least one valid email.
+          </p>
         )}
         {!onePhoneMini && (
-          <p>Please enter at least one valid phone number (section 1).</p>
+          <p>
+            <strong>Phone numbers:</strong> please enter at least one valid
+            phone number.
+          </p>
         )}
         {!oneKidMini && (
           <p>
-            Please enter in section 1 the data for at least 1 kid: first name,
-            family name and school grade.
+            <strong>Kids:</strong> please enter first name, family name and
+            school grade for at least 1 kid.
           </p>
         )}
         {!oneParentMini && (
           <p>
-            In section 1, please enter first name and family name for at least 1
-            parent.
+            <strong>Parents:</strong> please enter first name and family name
+            for at least 1 parent.
           </p>
         )}
       </div>

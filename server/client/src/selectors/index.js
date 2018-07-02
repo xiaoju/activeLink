@@ -333,29 +333,47 @@ export const getTotal = createSelector(
       .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0) // the total
 );
 
+export const getTotalNotZero = createSelector([getTotal], total => total > 0);
+
+export const getOnePhoneMini = createSelector(
+  [getFamilyMedia],
+  familyMedia =>
+    familyMedia.filter(mediaObject => mediaObject.media === 'phone').length > 0
+);
+
+export const getOneEmailMini = createSelector(
+  [getFamilyMedia],
+  familyMedia =>
+    familyMedia.filter(mediaObject => mediaObject.media === 'email').length > 0
+);
+
 export const getFormIsValid = createSelector(
-  [getTotal, getFamilyMedia, getOneKidMini, getOneParentMini],
-  (total, familyMedia, oneKidMini, oneParentMini) => {
-    const totalNotZero = total > 0;
-    const onePhoneMini =
-      familyMedia.filter(mediaObject => mediaObject.media === 'phone').length >
-      0;
-    const oneEmailMini =
-      familyMedia.filter(mediaObject => mediaObject.media === 'email').length >
-      0;
-    const formIsValid =
+  [
+    getFamilyMedia,
+    getTotalNotZero,
+    getOnePhoneMini,
+    getOneEmailMini,
+    getOneKidMini,
+    getOneParentMini
+  ],
+  (
+    familyMedia,
+    totalNotZero,
+    onePhoneMini,
+    oneEmailMini,
+    oneKidMini,
+    oneParentMini
+  ) => ({
+    totalNotZero,
+    oneEmailMini,
+    onePhoneMini,
+    oneParentMini,
+    oneKidMini,
+    formIsValid:
       totalNotZero &&
       onePhoneMini &&
       oneEmailMini &&
       oneKidMini &&
-      oneParentMini;
-    return {
-      totalNotZero,
-      oneEmailMini,
-      onePhoneMini,
-      oneParentMini,
-      oneKidMini,
-      formIsValid
-    };
-  }
+      oneParentMini
+  })
 );
