@@ -18,14 +18,14 @@ export const getStaffPerId = state => state.data.staffPerId;
 export const getEventContacts = state => state.data.eventContacts;
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
-export const getUserFamilyName = (state, props) =>
-  state.profile.familyPerId[props.userId].familyName;
+export const getUserFamilyName = (state, { userId }) =>
+  state.profile.familyPerId[userId].familyName;
 
-export const getFirstName = (state, props) =>
-  state.profile.familyPerId[props.userId].firstName;
+export const getFirstName = (state, { userId }) =>
+  state.profile.familyPerId[userId].firstName;
 
-export const getKidGrade = (state, props) =>
-  state.profile.familyPerId[props.userId].kidGrade;
+export const getKidGrade = (state, { userId }) =>
+  state.profile.familyPerId[userId].kidGrade;
 
 export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
@@ -77,7 +77,7 @@ export const getInvalidUsers = createSelector(
 export const getValidKids = createSelector(
   [getAllKids, getFamilyPerId],
   (allKids, familyPerId) => {
-    const isValidGrade = function isInvalidGrade(userId) {
+    const isValidGrade = function isValidGrade(userId) {
       return (
         // !!familyPerId[userId].kidGrade &&
         familyPerId[userId].kidGrade !== ' '
@@ -137,40 +137,44 @@ export const getValidParents = createSelector(
   }
 );
 
+// export const getAllKidsValid = createSelector(
+//   [getInvalidUsers, getAllKids],
+//   (invalidUsers, allKids) => {
+//     let output =
+//       allKids // ['k0', 'k1', 'k2']
+//         .map(userId => invalidUsers[userId] * 1) // [0,0,1]
+//         .reduce((total, item) => total + item, 0) === 0; // sum : 1 // output: true
+//     // console.log('output of getAllKidsValid: ', output);
+//     return output;
+//   }
+// );
+
 export const getAllKidsValid = createSelector(
-  [getInvalidUsers, getAllKids],
-  (invalidUsers, allKids) => {
-    let output =
-      allKids // ['k0', 'k1', 'k2']
-        .map(userId => invalidUsers[userId] * 1) // [0,0,1]
-        .reduce((total, item) => total + item, 0) === 0; // sum : 1 // output: true
-    // console.log('output of getAllKidsValid: ', output);
-    return output;
-  }
+  [getAllKids, getValidKids],
+  (allKids, validKids) => allKids.length === validKids.length
 );
 
 export const getOneKidMini = createSelector(
-  [getInvalidUsers, getAllKids],
-  (invalidUsers, allKids) =>
-    allKids // ['k0', 'k1', 'k2']
-      .map(userId => !invalidUsers[userId] * 1) // [1,1,0]
-      .reduce((total, item) => total + item, 0) > 0 // sum: 2, output: true
+  [getValidKids],
+  validKids => validKids.length > 0
 );
 
 export const getOneParentMini = createSelector(
-  [getInvalidUsers, getAllParents],
-  (invalidUsers, allParents) =>
-    allParents // ['p0', 'p1']
-      .map(userId => !invalidUsers[userId] * 1) // [1,1]
-      .reduce((total, item) => total + item, 0) > 0 // sum: 2, output: true
+  [getValidParents],
+  validParents => validParents.length > 0
 );
 
+// export const getAllParentsValid = createSelector(
+//   [getInvalidUsers, getAllParents, getAllUsers],
+//   (invalidUsers, allParents) =>
+//     allParents // ['p0', 'p1']
+//       .map(userId => invalidUsers[userId] * 1) // [0, 0]
+//       .reduce((total, item) => total + item, 0) === 0 // 0
+// );
+
 export const getAllParentsValid = createSelector(
-  [getInvalidUsers, getAllParents, getAllUsers],
-  (invalidUsers, allParents) =>
-    allParents // ['p0', 'p1']
-      .map(userId => invalidUsers[userId] * 1) // [0, 0]
-      .reduce((total, item) => total + item, 0) === 0 // 0
+  [getAllParents, getValidParents],
+  (allParents, validParents) => allParents.length === validParents.length
 );
 
 export const getLastMediaValid = createSelector(
@@ -286,8 +290,6 @@ export const getCheckedItems = createSelector(
 export const getCheckedItemsNoDoublons = createSelector(
   // remove doublons from checkedItems,
   // for use in OrderSummary component, cycling through these items to show only these.
-  // other way would be run a second reducer in parrallel to checkedReducer,
-  // to populate the state of OrderSummary view.
   // TODO could sort the array. Currently the first ones are those first clicked.
   [getCheckedItems],
   checkedItems => [...new Set(checkedItems)]
@@ -296,29 +298,26 @@ export const getCheckedItemsNoDoublons = createSelector(
 export const getApplyDiscount = createSelector(
   // create the boolean `applyDiscount`. True if discount price is applicable.
   [getFamilyAndValidKids, getDiscountQualifiers, getChecked],
-  (familyAndValidKids, discountQualifiers, checked) => {
-    let output =
-      familyAndValidKids
-        .map(
-          thisUserId =>
-            checked[thisUserId].filter(checkedItemId =>
-              discountQualifiers.includes(checkedItemId)
-            ).length
-        )
-        .reduce((total, amount) => total + amount, 0) > 1;
-    // Here a detailed breakdown of the logic:
-    // B is number of checked checkboxes of this user that are also discountQualifiers.
-    // B = thisUserId =>
-    //   checked[thisUserId].filter(checkedItemId =>
-    //     discountQualifiers.includes(checkedItemId)
-    //   ).length;
-    // C is number of checked classes that add up towards qualifying for discount
-    // C = Object.keys(checked)
-    //   .map(thisUserId => B(thisUserId))
-    //   .reduce((total, amount) => total + amount);
-    // discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
-    return output;
-  }
+  (familyAndValidKids, discountQualifiers, checked) =>
+    familyAndValidKids
+      .map(
+        userId =>
+          checked[userId].filter(checkedItemId =>
+            discountQualifiers.includes(checkedItemId)
+          ).length
+      )
+      .reduce((total, amount) => total + amount, 0) > 1
+  // Here a detailed breakdown of the logic:
+  // B is number of checked checkboxes of this user that are also discountQualifiers.
+  // B = thisUserId =>
+  //   checked[thisUserId].filter(checkedItemId =>
+  //     discountQualifiers.includes(checkedItemId)
+  //   ).length;
+  // C is number of checked classes that add up towards qualifying for discount
+  // C = Object.keys(checked)
+  //   .map(thisUserId => B(thisUserId))
+  //   .reduce((total, amount) => total + amount);
+  // discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
 );
 
 export const getTotal = createSelector(
@@ -349,21 +348,13 @@ export const getOneEmailMini = createSelector(
 
 export const getFormIsValid = createSelector(
   [
-    getFamilyMedia,
     getTotalNotZero,
     getOnePhoneMini,
     getOneEmailMini,
     getOneKidMini,
     getOneParentMini
   ],
-  (
-    familyMedia,
-    totalNotZero,
-    onePhoneMini,
-    oneEmailMini,
-    oneKidMini,
-    oneParentMini
-  ) => ({
+  (totalNotZero, onePhoneMini, oneEmailMini, oneKidMini, oneParentMini) => ({
     totalNotZero,
     oneEmailMini,
     onePhoneMini,
