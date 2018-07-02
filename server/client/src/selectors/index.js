@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
-
+export const getEventId = state => state.data.eventId;
 export const getFamilyId = state => state.data.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
@@ -256,8 +256,6 @@ export const getFamilyAndValidKids = createSelector(
   [getFamilyId, getValidKids],
   (familyId, validKids) =>
     [familyId] // ['familyId']
-      // .concat(allKids) // ['familyId', 'k0', 'k1', 'k2']
-      // .slice(0, -1) // ['familyId', 'k0', 'k1']
       .concat(validKids) // ['familyId', 'k0', 'k1']
 );
 
@@ -359,11 +357,32 @@ export const getFormIsValid = createSelector(
     onePhoneMini,
     oneParentMini,
     oneKidMini,
-    formIsValid:
+    consolidated:
       totalNotZero &&
       onePhoneMini &&
       oneEmailMini &&
       oneKidMini &&
       oneParentMini
   })
+);
+
+export const getValidFamilyPerId = createSelector(
+  [getValidUsers, getFamilyPerId],
+  (validUsers, familyPerId) => validUsers.map(userId => familyPerId[userId])
+);
+
+export const getValidMedia = createSelector([getFamilyMedia], familyMedia =>
+  familyMedia.filter(
+    mediaObject =>
+      mediaObject.media === 'phone' || mediaObject.media === 'email'
+  )
+);
+
+export const getValidChecked = createSelector(
+  [getFamilyAndValidKids, getChecked],
+  (familyAndValidKids, checked) =>
+    familyAndValidKids.reduce((obj, id) => {
+      obj[id] = checked[id];
+      return obj;
+    }, {})
 );
