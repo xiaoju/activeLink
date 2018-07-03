@@ -5,6 +5,7 @@ import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import ItemCheckboxes from './ItemCheckboxes';
 import ItemPrices from './ItemPrices';
 import {
+  getStaffPerId,
   getApplyDiscount,
   getChecked,
   getMergedFamilyName,
@@ -22,6 +23,7 @@ import {
 class SelectClassesForm extends Component {
   render() {
     const {
+      staffPerId,
       allItems,
       itemsPerId,
       familyItems,
@@ -50,8 +52,12 @@ class SelectClassesForm extends Component {
               {/* Description of the class */}
               <div>{itemsPerId[thisItemId].description}</div>
               {/* Teacher name */}
-              {itemsPerId[thisItemId].teacherName && (
-                <div>Animated by {itemsPerId[thisItemId].teacherName}</div>
+              {itemsPerId[thisItemId].staff && (
+                <div>
+                  Animated by{' '}
+                  {staffPerId[itemsPerId[thisItemId].staff[0]].firstName}{' '}
+                  {staffPerId[itemsPerId[thisItemId].staff[0]].familyName}.
+                </div>
               )}
 
               <ItemPrices
@@ -83,6 +89,7 @@ class SelectClassesForm extends Component {
 
 function mapStateToProps(state) {
   return {
+    staffPerId: getStaffPerId(state),
     applyDiscount: getApplyDiscount(state),
     checked: getChecked(state),
     mergedFamilyName: getMergedFamilyName(state),

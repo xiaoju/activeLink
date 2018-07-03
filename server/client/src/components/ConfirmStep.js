@@ -23,8 +23,8 @@ class ConfirmStep extends Component {
             </div>
             <div className="myContactsContainer">
               <span>
-                Payments are securely processed by an external company called
-                'Stripe' and uses the '3D-Secure' technology.
+                Payments are securely processed by 'stripe.com' following
+                '3D-Secure' authentication.
               </span>
               <span>The connections to the servers are encrypted.</span>
               <span>
@@ -35,7 +35,10 @@ class ConfirmStep extends Component {
               <span>Any questions? Please contact us!</span>
               {eventContacts.map(contactId => (
                 <div key={contactId} className="eventContacts">
-                  <span>{staffPerId[contactId].name}</span>
+                  <span>
+                    {staffPerId[contactId].firstName}{' '}
+                    {staffPerId[contactId].familyName}
+                  </span>
                   <span>{staffPerId[contactId].phone}</span>
                   <span>{staffPerId[contactId].email}</span>
                 </div>

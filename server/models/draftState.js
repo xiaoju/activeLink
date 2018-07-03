@@ -1,13 +1,13 @@
-// NB if admin changes the price of item, then will not know how much user has paid, if was before or after the change.
+// NB if admin changes the price of item, then will not know how much user has
+// paid, if was before or after the change.
 // Will only know that is has been successfully registered to the class -> OK
-// then will need to check date of paiement, date of price change, Stripe paiement records...
-
-// export to backend will contain users, eventId, timeStamp (calculated at time of export)
+// then will need to check date of paiement, date of price change, Stripe
+// paiement records...
 
 module.exports = {
   familyId: '7jhfbasd8jfhbeas8',
   allKids: ['k0', 'k1'],
-  eventId: 'e1', // included in export to backend
+  eventId: 'e1',
   eventName: 'Registration 2018-2019',
   eventProviderName: 'English Link',
   eventContacts: ['s1', 's2'],
@@ -41,8 +41,6 @@ module.exports = {
   mandatoryItems: ['i0'],
   familyItems: ['i0'], // items that are charged once per family, not per kid
   familyPerId: {
-    // NB using names as IDs so that we can add a new user in frontEnd and pay
-    // directly, without waiting for an id to be created by the backEnd.
     p0: {
       id: 'p0',
       firstName: 'Donald',
@@ -69,27 +67,42 @@ module.exports = {
   staffPerId: {
     s0: {
       id: 's0',
+      firstName: 'Michelle',
+      familyName: 'Obama',
       name: 'Michelle Obama',
       email: 'michelle@xiaoju.io',
       phone: '06 06 06 06 06'
     },
     s1: {
       id: 's1',
+      firstName: 'Jeanne',
+      familyName: "d'Arc",
       name: "Jeanne d'Arc",
       email: 'jeanne@xiaoju.io',
       phone: '04 11 111 111'
     },
     s2: {
       id: 's2',
+      firstName: 'Simone',
+      familyName: 'Weil',
       name: 'Simone Weil',
       email: 'simone@xiaoju.io',
       phone: '06 01 01 01 01'
+    },
+    s3: {
+      id: 's3',
+      firstName: 'Jacques',
+      familyName: 'Prévert',
+      name: 'Jacques Prévert',
+      email: 'jacques@xiaoju.io',
+      phone: '06 03 03 03 03'
     }
   },
   itemsPerId: {
     i0: {
       id: 'i0',
       name: 'Registration to the association',
+      staff: ['s0'],
       description:
         'The registration to the English Link association is required to join the activities. School year 2018-2019.',
       itemGrades: ['PS', 'MS', 'GS', 'CP', 'CE1', 'CE2', 'CM1', 'CM2']
@@ -97,6 +110,7 @@ module.exports = {
     i1: {
       id: 'i1',
       name: 'English classes in GS',
+      staff: ['s1'],
       description:
         'English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       contacts: ['s1'],
@@ -105,6 +119,7 @@ module.exports = {
     i2: {
       id: 'i2',
       name: 'English classes in primary',
+      staff: ['s2'],
       description:
         'English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join "English classes in primary" or "English classes in GS".',
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
@@ -112,6 +127,7 @@ module.exports = {
     i3: {
       id: 'i3',
       name: 'Munchkin club in maternelle',
+      staff: ['s3'],
       description:
         'Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.',
       itemGrades: ['PS', 'MS', 'GS']
@@ -119,6 +135,7 @@ module.exports = {
     i4: {
       id: 'i4',
       name: 'Mini Kids Club',
+      staff: ['s0'],
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
       contacts: ['s2'],
@@ -127,6 +144,7 @@ module.exports = {
     i5: {
       id: 'i5',
       name: 'Kids Club',
+      staff: ['s2'],
       description:
         'Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.',
       contacts: ['s1'],
@@ -135,16 +153,18 @@ module.exports = {
     i6: {
       id: 'i6',
       name: 'Bookworms',
+      staff: ['s3'],
       description:
-        'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. For all ages from CP to CM2. Friday 12:30-13:30.',
+        'The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. From CP to CM2. Friday 12:30-13:30.',
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     },
     i7: {
       id: 'i7',
       name: 'On Stage!',
+      staff: ['s1'],
       description:
         'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
-      contacts: ['s2', 's0'],
+      contacts: ['s2'],
       itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
     }
   }
