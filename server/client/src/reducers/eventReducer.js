@@ -3,7 +3,7 @@
 import { LOAD_DATA } from '../actions/types';
 
 const empty = {
-  familyId: null,
+  // familyId: null,
   eventId: null, // using eventId to detect if data arrived yet or not from api call
   eventName: '',
   eventProviderName: '',
@@ -24,8 +24,8 @@ export default function(state = empty, { type, payload }) {
         // action.payload is undefined when logged out
         return empty;
       else {
-        let {
-          familyId,
+        const {
+          // familyId,
           eventId,
           eventName,
           eventProviderName,
@@ -40,7 +40,7 @@ export default function(state = empty, { type, payload }) {
           itemsPerId
         } = payload;
         return {
-          familyId,
+          // familyId,
           eventId,
           eventName,
           eventProviderName,

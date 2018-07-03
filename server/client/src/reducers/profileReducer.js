@@ -15,6 +15,7 @@ import * as Immutable from '../utils/Immutable';
 import * as Validation from '../utils/Validation';
 
 const empty = {
+  familyId: null,
   allKids: [],
   allParents: [],
   familyMedia: [],
@@ -33,12 +34,19 @@ export default function(
       if (!payload) return empty;
       else {
         // necessary because action.payload is undefined when logged out
-        let { allKids, allParents, familyMedia, familyPerId } = payload;
+        const {
+          familyId,
+          allKids,
+          allParents,
+          familyMedia,
+          familyPerId
+        } = payload;
         const newParentId = 'p' + allParents.length;
         const newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
           ...state,
+          familyId,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
           familyMedia: familyMedia.concat({

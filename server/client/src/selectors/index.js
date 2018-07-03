@@ -5,7 +5,7 @@ export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
 export const getEventProviderName = state => state.event.eventProviderName;
 export const getEventContacts = state => state.event.eventContacts;
-export const getFamilyId = state => state.event.familyId;
+export const getFamilyId = state => state.profile.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
 export const getFamilyMedia = state => state.profile.familyMedia;
