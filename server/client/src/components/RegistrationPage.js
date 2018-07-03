@@ -11,12 +11,12 @@ class RegistrationPage extends Component {
       <div style={{ textAlign: 'center' }}>
         {/* <p>Credits: {this.props.auth && this.props.auth.credits}</p> */}
         {/* ①②③④⑤⑥⑦⑧⑨⑩ */}
-        {!this.props.auth && (
+        {!this.props.profile && (
           <h5>
             <strong>Please log in to show the members area.</strong>
           </h5>
         )}
-        {this.props.auth &&
+        {this.props.profile &&
           !this.props.data.eventId && (
             <div>
               <br />
@@ -42,7 +42,7 @@ class RegistrationPage extends Component {
         // `this.props.data.eventId` to detect if data arrived from api
         }
 
-        {this.props.auth &&
+        {this.props.profile &&
           this.props.data.eventId && (
             <div>
               <ProfileForm />
@@ -56,9 +56,9 @@ class RegistrationPage extends Component {
   }
 }
 
-function mapStateToProps({ auth, data }) {
+function mapStateToProps({ profile, data }) {
   return {
-    auth,
+    profile,
     data
   };
 }

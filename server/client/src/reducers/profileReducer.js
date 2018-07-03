@@ -1,6 +1,7 @@
 // this reducer is the data that client can modify
 
 import {
+  FETCH_USER,
   LOAD_DATA,
   UPDATE_TAGS,
   MODIFY_MEDIA,
@@ -25,6 +26,9 @@ export default function(
   { type, payload, userId, kidGrade, fieldName, index, media, value, tags }
 ) {
   switch (type) {
+    case FETCH_USER:
+      return payload || false;
+
     case LOAD_DATA:
       if (!payload) return empty;
       else {
