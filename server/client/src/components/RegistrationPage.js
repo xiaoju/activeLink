@@ -17,14 +17,14 @@ class RegistrationPage extends Component {
             <strong>Please log in to show the members area.</strong>
           </h5>
         )}
-        {this.props.profile && !this.props.data.eventId && <SpinnerWrapper />
+        {this.props.profile && !this.props.event.eventId && <SpinnerWrapper />
         // cannot user `this.props.data` because dataReducer creates an empty
         // `this.props.data` object by initialization. Using instead
         // `this.props.data.eventId` to detect if data arrived from api
         }
 
         {this.props.profile &&
-          this.props.data.eventId && (
+          this.props.event.eventId && (
             <div>
               <ProfileForm />
               <SelectClassesForm />
@@ -37,10 +37,10 @@ class RegistrationPage extends Component {
   }
 }
 
-function mapStateToProps({ profile, data }) {
+function mapStateToProps({ profile, event }) {
   return {
     profile,
-    data
+    event
   };
 }
 

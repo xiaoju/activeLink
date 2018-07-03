@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getProfile, getEventName } from '../selectors';
 import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
 class Header extends Component {
@@ -29,17 +30,15 @@ class Header extends Component {
   }
 
   render() {
+    const { profile, eventName } = this.props;
     return (
       <div className="navbar-fixed">
         <nav>
           <div className="nav-wrapper deep-purple lighten-2">
-            <Link
-              to={this.props.profile ? '/dashboard' : '/'}
-              className="left brand-logo"
-            >
+            <Link to={profile ? '/dashboard' : '/'} className="left brand-logo">
               <img src={englishLinkLogo} alt="logo" className="hoverable" />
             </Link>
-            <span className="center brand-logo">{this.props.eventName}</span>
+            <span className="center brand-logo">{eventName}</span>
             <ul className="right">{this.renderContent()}</ul>
           </div>
         </nav>
@@ -48,10 +47,10 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ profile, data }) {
+function mapStateToProps(state) {
   return {
-    profile,
-    eventName: data.eventName
+    profile: getProfile(state),
+    eventName: getEventName(state)
   };
 }
 

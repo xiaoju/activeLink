@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import dataReducer from './dataReducer';
+import eventReducer from './eventReducer';
 import profileReducer from './profileReducer';
 import checkedReducer from './checkedReducer';
 
 export default combineReducers({
-  data: dataReducer,
+  event: eventReducer,
   profile: profileReducer,
   checked: checkedReducer
 });
