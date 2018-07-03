@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getStaffPerId, getEventContacts } from '../selectors';
+import {
+  getStaffPerId,
+  getEventProviderName,
+  getEventContacts
+} from '../selectors';
 import Payments from './Payments';
 
 class ConfirmStep extends Component {
   render() {
-    const { staffPerId, eventContacts } = this.props;
+    const { staffPerId, eventProviderName, eventContacts } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -18,10 +22,14 @@ class ConfirmStep extends Component {
               <i className="small material-icons prefix">help_outline</i>
             </div>
             <div className="myContactsContainer">
-              <span>Payments are securely processed by 'Stripe'.</span>
-              <span>The connection to the servers is encrypted.</span>
               <span>
-                English Link doesn't see credit card numbers neither passwords.
+                Payments are securely processed by an external company called
+                'Stripe' and uses the '3D-Secure' technology.
+              </span>
+              <span>The connections to the servers are encrypted.</span>
+              <span>
+                {eventProviderName} doesn't see credit card numbers neither
+                passwords.
               </span>
               <br />
               <span>Any questions? Please contact us!</span>
@@ -43,6 +51,7 @@ class ConfirmStep extends Component {
 function mapStateToProps(state) {
   return {
     staffPerId: getStaffPerId(state),
+    eventProviderName: getEventProviderName(state),
     eventContacts: getEventContacts(state)
   };
 }
@@ -50,6 +59,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ConfirmStep);
 
 ConfirmStep.propTypes = {
-  staffPerId: PropTypes.object,
-  eventContacts: PropTypes.array
+  staffPerId: PropTypes.object.isRequired,
+  eventProviderName: PropTypes.string.isRequired,
+  eventContacts: PropTypes.array.isRequired
 };

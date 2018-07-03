@@ -9,6 +9,7 @@ module.exports = {
   allKids: ['k0', 'k1'],
   eventId: 'e1', // included in export to backend
   eventName: 'Registration 2018-2019',
+  eventProviderName: 'English Link',
   eventContacts: ['s1', 's2'],
   allItems: ['i0', 'i1', 'i2', 'i3', 'i4', 'i5', 'i6', 'i7'],
   allParents: ['p0', 'p1'],

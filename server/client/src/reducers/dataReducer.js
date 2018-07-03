@@ -6,6 +6,7 @@ const empty = {
   familyId: null,
   eventId: null, // using eventId to detect if data arrived yet or not from api call
   eventName: '',
+  eventProviderName: '',
   allItems: [],
   standardPrices: {},
   discountedPrices: {},
@@ -27,6 +28,7 @@ export default function(state = empty, { type, payload }) {
           familyId,
           eventId,
           eventName,
+          eventProviderName,
           eventContacts,
           allItems,
           standardPrices,
@@ -41,6 +43,7 @@ export default function(state = empty, { type, payload }) {
           familyId,
           eventId,
           eventName,
+          eventProviderName,
           eventContacts,
           allItems,
           standardPrices,

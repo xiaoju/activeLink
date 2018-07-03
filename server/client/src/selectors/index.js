@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
 export const getEventId = state => state.data.eventId;
+export const getEventName = state => state.data.eventName;
+export const getEventProviderName = state => state.data.eventProviderName;
+export const getEventContacts = state => state.data.eventContacts;
 export const getFamilyId = state => state.data.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
@@ -15,7 +18,6 @@ export const getFamilyItems = state => state.data.familyItems;
 export const getItemsPerId = state => state.data.itemsPerId;
 export const getDiscountQualifiers = state => state.data.discountQualifiers;
 export const getStaffPerId = state => state.data.staffPerId;
-export const getEventContacts = state => state.data.eventContacts;
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
 export const getUserFamilyName = (state, { userId }) =>
@@ -368,7 +370,12 @@ export const getFormIsValid = createSelector(
 
 export const getValidFamilyPerId = createSelector(
   [getValidUsers, getFamilyPerId],
-  (validUsers, familyPerId) => validUsers.map(userId => familyPerId[userId])
+  // (validUsers, familyPerId) => validUsers.map(userId => familyPerId[userId])
+  (validUsers, familyPerId) =>
+    validUsers.reduce((obj, userId) => {
+      obj[userId] = familyPerId[userId];
+      return obj;
+    }, {})
 );
 
 export const getValidMedia = createSelector([getFamilyMedia], familyMedia =>
@@ -385,4 +392,10 @@ export const getValidChecked = createSelector(
       obj[id] = checked[id];
       return obj;
     }, {})
+);
+
+export const getMainEmail = createSelector(
+  [getFamilyMedia],
+  familyMedia =>
+    familyMedia.find(mediaObject => mediaObject.media === 'email').value
 );

@@ -78,7 +78,7 @@ class OrderSummary extends Component {
             </tbody>
             <tfoot>
               <tr>
-                <th colSpan="5">Total :</th>
+                <th colSpan="5">Total (for 1 year) :</th>
                 <td>
                   <strong>{total / 100}&nbsp;&euro;</strong>
                 </td>
