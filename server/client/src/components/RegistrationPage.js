@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import SpinnerWrapper from './SpinnerWrapper';
 import ProfileForm from './ProfileForm';
 import SelectClassesForm from './SelectClassesForm';
 import ConfirmStep from './ConfirmStep';
@@ -16,27 +17,7 @@ class RegistrationPage extends Component {
             <strong>Please log in to show the members area.</strong>
           </h5>
         )}
-        {this.props.profile &&
-          !this.props.data.eventId && (
-            <div>
-              <br />
-              <h5 className="stepTitle">Loading...</h5>
-              <br />
-              <div className="preloader-wrapper active">
-                <div className="spinner-layer spinner-red-only">
-                  <div className="circle-clipper left">
-                    <div className="circle" />
-                  </div>
-                  <div className="gap-patch">
-                    <div className="circle" />
-                  </div>
-                  <div className="circle-clipper right">
-                    <div className="circle" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
+        {this.props.profile && !this.props.data.eventId && <SpinnerWrapper />
         // cannot user `this.props.data` because dataReducer creates an empty
         // `this.props.data` object by initialization. Using instead
         // `this.props.data.eventId` to detect if data arrived from api
