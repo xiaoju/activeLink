@@ -54,7 +54,7 @@ export default function(
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
           ...state,
-          // req_user,
+          req_user,
           googleId,
           _id,
           credits,

@@ -4,7 +4,7 @@ const requireLogin = require('../middlewares/requireLogin');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
-    // console.log('req.body: ', req.body);
+    console.log('req.body: ', req.body);
 
     // first should update the profiles database with
     //   familyId
@@ -13,14 +13,49 @@ module.exports = app => {
     //   validMedia
     //   validFamilyPerId
 
+    // extract required info from database:
+    // prices (standard/discounted), discount qualifiers, etc etc
+
+    // test if all madatory items are well checked
+    // test if kidGrades match classGrades
+    // calculate if discount applies
+
     // then calculate the invoiceTotal, based on
-    // req.body.exportData.validChecked
-    // req.body.exportData.eventId (to get the prices)
-    const chargeTotal = 12300;
+    // req.body.validChecked
+    // req.body.eventId (to get the prices)
+    //   eventId: 'e0',
+    //   validChecked: { '7jhfbasd8jfhbeas8': [ 'i0' ]
+    // standardPrices: {
+    //   i0: 3000,
+    //   i1: 22500,
+    //   i2: 45000,
+    //   i3: 15000,
+    //   i4: 18000,
+    //   i5: 18000,
+    //   i6: 10500,
+    //   i7: 25500
+    // },
+    // discountedPrices: {
+    //   i0: 3000,
+    //   i1: 16500,
+    //   i2: 39000,
+    //   i3: 15000,
+    //   i4: 18000,
+    //   i5: 18000,
+    //   i6: 10500,
+    //   i7: 25500
+    // },
+    // discountQualifiers: ['i1', 'i2'],
+    // mandatoryItems: ['i0'],
+    // familyItems: ['i0'],
 
-    // exportData -> eventId -> check that event is opened for registration -> eventName
-    const chargeDescription = 'abcdef';
+    // TODO check that total from client is same as calculating locally in backend
+    const chargeTotal = req.body.total;
 
+    // TODO get eventId from payload -> check that event is opened for registration -> eventName
+    const chargeDescription = req.body.eventId;
+
+    // TODO
     // ( test if kids fulfill the classGrades conditions) && (error.wrongGrade)
     // ( test if event is open for booking) && (error.closedEvent = true)
     // (chargeTotal !== exportData.total) && (error.totalMismatch = true)
@@ -36,10 +71,16 @@ module.exports = app => {
       });
       // console.log('stripeCharge: ', stripeCharge);
 
-      // save stripeCharge to database for future reference.
+      // TODO save stripeCharge to database for future reference.
 
-      // save the paid classes to the user in database,
-      // then extract the most recent payment receipt,
+      // TODO check that payment succeeded
+      const chargeStatus = stripeCharge.status;
+      const last4 = stripeCharge.source.last4;
+      const receiptTimeStamp = stripeCharge.created;
+      console.log('status of the StripeCharge: ', chargeStatus);
+
+      // TODO save the paid classes to the user in database,
+      // TODO then extract the most recent payment receipt,
       // which will look like this:
       const paymentReceipt = {
         familyName: 'Bush-Polanski',
@@ -47,9 +88,9 @@ module.exports = app => {
         eventId: 'e0',
         eventName: 'Registration 2018-2019',
         invoiceTotal: 543200,
-        receiptTimeStamp: 1530696643, // from stripeCharge result: .created
-        lastDigits: 4242, // from stripeCharge result: .source.xxxxxx
-        paymentStatus: 'succeeded', // from stripeCharge result: .status
+        receiptTimeStamp: 1530696643,
+        last4: 4242,
+        paymentStatus: 'succeeded',
         purchasedItems: [
           {
             id: 'i0',

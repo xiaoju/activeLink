@@ -401,32 +401,3 @@ export const getMainEmail = createSelector([getFamilyMedia], familyMedia => {
   );
   return !foundMediaObject ? '' : foundMediaObject.value;
 });
-
-export const getExportData = createSelector(
-  [
-    getFamilyId,
-    getEventId,
-    getValidKids,
-    getValidParents,
-    getValidMedia,
-    getValidFamilyPerId,
-    getValidChecked
-  ],
-  (
-    familyId,
-    eventId,
-    validKids,
-    validParents,
-    validMedia,
-    validFamilyPerId,
-    validChecked
-  ) => ({
-    familyId,
-    eventId,
-    validKids,
-    validParents,
-    validMedia,
-    validFamilyPerId,
-    validChecked
-  })
-);

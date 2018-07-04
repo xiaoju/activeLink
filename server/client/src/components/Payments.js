@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import {
-  getExportData,
+  getFamilyId,
+  getEventId,
+  getValidKids,
+  getValidParents,
+  getValidMedia,
+  getValidFamilyPerId,
+  getValidChecked,
   getTotal,
   getFormIsValid,
   getMainEmail,
@@ -17,15 +23,13 @@ import ValidationPanel from './ValidationPanel';
 class Payments extends Component {
   render() {
     const {
-      exportData: {
-        familyId,
-        eventId,
-        validKids,
-        validParents,
-        validMedia,
-        validFamilyPerId,
-        validChecked
-      },
+      familyId,
+      eventId,
+      validKids,
+      validParents,
+      validMedia,
+      validFamilyPerId,
+      validChecked,
       total,
       formIsValid,
       mainEmail,
@@ -54,7 +58,8 @@ class Payments extends Component {
                 validParents,
                 validMedia,
                 validFamilyPerId,
-                validChecked
+                validChecked,
+                total
               });
             }}
           >
@@ -77,7 +82,13 @@ class Payments extends Component {
 
 function mapStateToProps(state) {
   return {
-    exportData: getExportData(state),
+    familyId: getFamilyId(state),
+    eventId: getEventId(state),
+    validKids: getValidKids(state),
+    validParents: getValidParents(state),
+    validMedia: getValidMedia(state),
+    validFamilyPerId: getValidFamilyPerId(state),
+    validChecked: getValidChecked(state),
     total: getTotal(state),
     formIsValid: getFormIsValid(state),
     mainEmail: getMainEmail(state),
@@ -93,9 +104,15 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
 
 Payments.propTypes = {
-  exportData: PropTypes.object.isRequired,
-  handlePayment: PropTypes.func.isRequired,
+  familyId: PropTypes.string.isRequired,
+  eventId: PropTypes.string.isRequired,
+  validKids: PropTypes.array.isRequired,
+  validParents: PropTypes.array.isRequired,
+  validMedia: PropTypes.array.isRequired,
+  validFamilyPerId: PropTypes.object.isRequired,
+  validChecked: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
+  handlePayment: PropTypes.func.isRequired,
   formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired,
   mainEmail: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
