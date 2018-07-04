@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   FETCH_USER,
-  // LOAD_DATA,
+  LOAD_RECEIPT,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   UPDATE_TAGS,
@@ -16,22 +16,19 @@ export const fetchUser = () => async dispatch => {
   const thisUser = await axios.get('/api/current_user');
   // TODO dispatch something if there is no answer from api or from google
   // so that user knows where it's going wrong
-  console.log('thisUser: ', thisUser);
+  console.log('action: FETCH_USER. thisUser: ', thisUser);
   dispatch({ type: FETCH_USER, payload: thisUser.data });
-  // const thisData = thisUser.data && (await axios.get('/api/data'));
-  // dispatch({ type: LOAD_DATA, payload: thisData.data });
 };
 
-export const handleToken = payload => async dispatch => {
-  const res = await axios.post('/api/stripe', payload);
-  console.log('res.data: ', res.data);
-  dispatch({ type: FETCH_USER, payload: res.data });
+export const handlePayment = payload => async dispatch => {
+  const res = await axios.post('/api/payment', payload);
+  // console.log(
+  //   'ACTION: handlePayment function, before LOAD_RECEIPT action. paymentReceipt: ',
+  //   paymentReceipt
+  // );
+  console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
+  dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
 };
-
-// export const exportSelection = thisSelection => async dispatch => {
-//   const thisOrder = await axios.post('/api/receive_selection', thisSelection);
-//   dispatch({ type: REVIEW_ORDER, payload: thisOrder.data });
-// };
 
 export function checkCheckbox(userId, itemId) {
   return {

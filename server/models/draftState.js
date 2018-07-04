@@ -7,7 +7,7 @@
 module.exports = {
   familyId: '7jhfbasd8jfhbeas8',
   allKids: ['k0', 'k1'],
-  eventId: 'e1',
+  eventId: 'e0',
   eventName: 'Registration 2018-2019',
   eventProviderName: 'English Link',
   eventContacts: ['s1', 's2'],
