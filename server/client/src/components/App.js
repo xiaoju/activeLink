@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../actions';
 import Header from './Header';
 import RegistrationPage from './RegistrationPage';
@@ -13,17 +14,13 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <BrowserRouter>
-          <div>
-            <Header />
-            <Route path="/register" component={RegistrationPage} />
-            <Route path="/thanks" component={Thanks} />
-          </div>
-        </BrowserRouter>
+      <div>
+        <Header />
+        <Route path="/register" component={RegistrationPage} />
+        <Route path="/thanks" component={Thanks} />
       </div>
     );
   }
 }
 
-export default connect(null, actions)(App);
+export default withRouter(connect(null, actions)(App));

@@ -4,6 +4,14 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
+
+import { createBrowserHistory } from 'history';
+import {
+  connectRouter,
+  routerMiddleware,
+  ConnectedRouter
+} from 'connected-react-router';
+
 import './index.css';
 
 import App from './components/App';
@@ -11,16 +19,28 @@ import reducers from './reducers';
 
 import unregister from './registerServiceWorker';
 
+const history = createBrowserHistory();
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
-  reducers,
+  connectRouter(history)(reducers),
   {},
-  composeEnhancers(applyMiddleware(reduxThunk))
+  composeEnhancers(
+    applyMiddleware(
+      routerMiddleware(history), // for dispatching history actions
+      reduxThunk
+    )
+  )
 );
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <div className="container">
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </div>
   </Provider>,
   document.querySelector('#root')
 );

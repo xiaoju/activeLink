@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'connected-react-router';
 import {
   FETCH_USER,
   LOAD_RECEIPT,
@@ -26,7 +27,9 @@ export const handlePayment = payload => async dispatch => {
   //   'ACTION: handlePayment function, before LOAD_RECEIPT action. paymentReceipt: ',
   //   paymentReceipt
   // );
+  dispatch(push('/thanks'));
   console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
+
   dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
 };
 
