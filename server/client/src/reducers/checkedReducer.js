@@ -1,5 +1,6 @@
 import {
-  LOAD_DATA,
+  // LOAD_DATA,
+  FETCH_USER,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   MODIFY_USER,
@@ -13,7 +14,8 @@ export default function(
   { type, payload, userId, itemId, fieldName, value }
 ) {
   switch (type) {
-    case LOAD_DATA:
+    // case LOAD_DATA:
+    case FETCH_USER:
       // create initial state:
       // 1- convert data.familyAndValidKids, from
       // [familyId, 'k0', 'k1']

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   FETCH_USER,
-  LOAD_DATA,
+  // LOAD_DATA,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   UPDATE_TAGS,
@@ -16,13 +16,15 @@ export const fetchUser = () => async dispatch => {
   const thisUser = await axios.get('/api/current_user');
   // TODO dispatch something if there is no answer from api or from google
   // so that user knows where it's going wrong
+  console.log('thisUser: ', thisUser);
   dispatch({ type: FETCH_USER, payload: thisUser.data });
-  const thisData = thisUser.data && (await axios.get('/api/data'));
-  dispatch({ type: LOAD_DATA, payload: thisData.data });
+  // const thisData = thisUser.data && (await axios.get('/api/data'));
+  // dispatch({ type: LOAD_DATA, payload: thisData.data });
 };
 
-export const handleToken = token => async dispatch => {
-  const res = await axios.post('/api/stripe', token);
+export const handleToken = payload => async dispatch => {
+  const res = await axios.post('/api/stripe', payload);
+  console.log('res.data: ', res.data);
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 

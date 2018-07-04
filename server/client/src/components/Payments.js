@@ -4,18 +4,19 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import {
+  getExportData,
   getTotal,
   getFormIsValid,
   getMainEmail,
-  getFamilyId,
-  getEventId,
+  // getFamilyId,
+  // getEventId,
   getEventName,
-  getEventProviderName,
-  getValidKids,
-  getValidParents,
-  getValidMedia,
-  getValidFamilyPerId,
-  getValidChecked
+  getEventProviderName
+  // getValidKids,
+  // getValidParents,
+  // getValidMedia,
+  // getValidFamilyPerId,
+  // getValidChecked
 } from '../selectors';
 import { handleToken } from '../actions/index';
 import ValidationPanel from './ValidationPanel';
@@ -32,28 +33,29 @@ class Payments extends Component {
 
   render() {
     const {
+      exportData,
       total,
       formIsValid,
       mainEmail,
-      familyId,
-      eventId,
+      // familyId,
+      // eventId,
       eventName,
-      eventProviderName,
-      validKids,
-      validParents,
-      validMedia,
-      validFamilyPerId,
-      validChecked
+      eventProviderName
+      // validKids,
+      // validParents,
+      // validMedia,
+      // validFamilyPerId,
+      // validChecked
     } = this.props;
-    let exportData = {
-      familyId,
-      eventId,
-      validKids,
-      validParents,
-      validMedia,
-      validFamilyPerId,
-      validChecked
-    };
+    // let exportData = {
+    //   familyId,
+    //   eventId,
+    //   validKids,
+    //   validParents,
+    //   validMedia,
+    //   validFamilyPerId,
+    //   validChecked
+    // };
 
     return (
       <div>
@@ -67,7 +69,7 @@ class Payments extends Component {
             currency="EUR"
             token={token => {
               // console.log('Stripe token: ', token);
-              this.props.handleToken(token);
+              this.props.handleToken({ token, exportData });
             }}
             // token={token => console.log(token)}
             // opened={this.handleOnOpened}
@@ -100,18 +102,19 @@ class Payments extends Component {
 
 function mapStateToProps(state) {
   return {
+    exportData: getExportData(state),
     total: getTotal(state),
     formIsValid: getFormIsValid(state),
     mainEmail: getMainEmail(state),
-    familyId: getFamilyId(state),
-    eventId: getEventId(state),
+    // familyId: getFamilyId(state),
+    // eventId: getEventId(state),
     eventName: getEventName(state),
-    eventProviderName: getEventProviderName(state),
-    validKids: getValidKids(state),
-    validParents: getValidParents(state),
-    validMedia: getValidMedia(state),
-    validFamilyPerId: getValidFamilyPerId(state),
-    validChecked: getValidChecked(state)
+    eventProviderName: getEventProviderName(state)
+    // validKids: getValidKids(state),
+    // validParents: getValidParents(state),
+    // validMedia: getValidMedia(state),
+    // validFamilyPerId: getValidFamilyPerId(state),
+    // validChecked: getValidChecked(state)
   };
 }
 
@@ -122,17 +125,18 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
 
 Payments.propTypes = {
+  exportData: PropTypes.object.isRequired,
   handleToken: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
   formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired,
   mainEmail: PropTypes.string.isRequired,
-  familyId: PropTypes.string.isRequired,
-  eventId: PropTypes.string.isRequired,
+  // familyId: PropTypes.string.isRequired,
+  // eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
-  eventProviderName: PropTypes.string.isRequired,
-  validKids: PropTypes.array.isRequired,
-  validParents: PropTypes.array.isRequired,
-  validMedia: PropTypes.array.isRequired,
-  validFamilyPerId: PropTypes.object.isRequired,
-  validChecked: PropTypes.object.isRequired
+  eventProviderName: PropTypes.string.isRequired
+  // validKids: PropTypes.array.isRequired,
+  // validParents: PropTypes.array.isRequired,
+  // validMedia: PropTypes.array.isRequired,
+  // validFamilyPerId: PropTypes.object.isRequired,
+  // validChecked: PropTypes.object.isRequired
 };

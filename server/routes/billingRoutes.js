@@ -8,9 +8,9 @@ module.exports = app => {
       amount: 12300,
       currency: 'eur',
       description: '123 EUR for order xxx.', // backend message
-      source: req.body.id
+      source: req.body.token.id
     });
-    console.log('BACKEND, received token: ', req.body);
+    console.log('BACKEND, received payload: ', req.body);
     // req.user.credits += 5;
     const user = await req.user.save();
     res.send(user);

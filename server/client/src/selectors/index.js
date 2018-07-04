@@ -395,8 +395,38 @@ export const getValidChecked = createSelector(
     }, {})
 );
 
-export const getMainEmail = createSelector(
-  [getFamilyMedia],
-  familyMedia =>
-    familyMedia.find(mediaObject => mediaObject.media === 'email').value
+export const getMainEmail = createSelector([getFamilyMedia], familyMedia => {
+  const foundMediaObject = familyMedia.find(
+    mediaObject => mediaObject.media === 'email'
+  );
+  return !foundMediaObject ? '' : foundMediaObject.value;
+});
+
+export const getExportData = createSelector(
+  [
+    getFamilyId,
+    getEventId,
+    getValidKids,
+    getValidParents,
+    getValidMedia,
+    getValidFamilyPerId,
+    getValidChecked
+  ],
+  (
+    familyId,
+    eventId,
+    validKids,
+    validParents,
+    validMedia,
+    validFamilyPerId,
+    validChecked
+  ) => ({
+    familyId,
+    eventId,
+    validKids,
+    validParents,
+    validMedia,
+    validFamilyPerId,
+    validChecked
+  })
 );

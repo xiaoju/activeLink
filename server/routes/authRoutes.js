@@ -1,4 +1,26 @@
 const passport = require('passport');
+const {
+  familyId,
+  allKids,
+  eventId,
+  eventName,
+  eventProviderName,
+  eventContacts,
+  allItems,
+  allParents,
+  familyMedia,
+  allRegistered,
+  registeredPerId,
+  paymentsHistory,
+  standardPrices,
+  discountedPrices,
+  discountQualifiers,
+  mandatoryItems,
+  familyItems,
+  familyPerId,
+  staffPerId,
+  itemsPerId
+} = require('../models/draftState');
 
 module.exports = app => {
   app.get(
@@ -11,10 +33,10 @@ module.exports = app => {
   //   passport.authenticate('github', { scope: ['user:email'] })
   // );
 
-  app.get(
-    '/auth/local',
-    passport.authenticate('local', { scope: ['user:email'] })
-  );
+  // app.get(
+  //   '/auth/local',
+  //   passport.authenticate('local', { scope: ['user:email'] })
+  // );
 
   app.get(
     '/auth/google/callback',
@@ -38,6 +60,33 @@ module.exports = app => {
   });
 
   app.get('/api/current_user', (req, res) => {
-    res.send(req.user);
+    // res.send(req.user);
+    // console.log('req.user: ', req.user);
+    res.send({
+      _id: req.user._id,
+      googleId: req.user.googleId, // is undefined!!
+      credits: req.user.credits,
+      req_user: req.user,
+      familyId,
+      allKids,
+      eventId,
+      eventName,
+      eventProviderName,
+      eventContacts,
+      allItems,
+      allParents,
+      familyMedia,
+      allRegistered,
+      registeredPerId,
+      paymentsHistory,
+      standardPrices,
+      discountedPrices,
+      discountQualifiers,
+      mandatoryItems,
+      familyItems,
+      familyPerId,
+      staffPerId,
+      itemsPerId
+    });
   });
 };

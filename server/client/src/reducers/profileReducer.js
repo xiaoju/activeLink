@@ -2,7 +2,7 @@
 
 import {
   FETCH_USER,
-  LOAD_DATA,
+  // LOAD_DATA,
   UPDATE_TAGS,
   MODIFY_MEDIA,
   MODIFY_USER,
@@ -19,7 +19,10 @@ const empty = {
   allKids: [],
   allParents: [],
   familyMedia: [],
-  familyPerId: {}
+  familyPerId: {},
+  allRegistered: [],
+  registeredPerId: {},
+  paymentsHistory: []
 };
 
 export default function(
@@ -28,25 +31,37 @@ export default function(
 ) {
   switch (type) {
     case FETCH_USER:
-      return payload || false;
-
-    case LOAD_DATA:
+      //   return payload || false; // payload should contain familyId, allKids, allParents, etc etc
+      //
+      // case LOAD_DATA:
       if (!payload) return empty;
       else {
         // necessary because action.payload is undefined when logged out
         const {
+          req_user: { req_user, googleId, _id },
+          credits,
           familyId,
           allKids,
           allParents,
           familyMedia,
-          familyPerId
+          familyPerId,
+          allRegistered,
+          registeredPerId,
+          paymentsHistory
         } = payload;
         const newParentId = 'p' + allParents.length;
         const newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
           ...state,
+          // req_user,
+          googleId,
+          _id,
+          credits,
           familyId,
+          allRegistered,
+          registeredPerId,
+          paymentsHistory,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
           familyMedia: familyMedia.concat({
