@@ -2,7 +2,7 @@
 
 import {
   FETCH_USER,
-  // LOAD_DATA,
+  LOAD_RECEIPT,
   UPDATE_TAGS,
   MODIFY_MEDIA,
   MODIFY_USER,
@@ -14,54 +14,21 @@ import {
 import * as Immutable from '../utils/Immutable';
 import * as Validation from '../utils/Validation';
 
-const empty = {
-  familyId: null,
-  allKids: [],
-  allParents: [],
-  familyMedia: [],
-  familyPerId: {},
-  allRegistered: [],
-  registeredPerId: {},
-  paymentsHistory: []
-};
-
-export default function(
-  state = empty,
-  { type, payload, userId, kidGrade, fieldName, index, media, value, tags }
-) {
+export default function(state = null, { type, payload }) {
   switch (type) {
-    case FETCH_USER:
-      //   return payload || false; // payload should contain familyId, allKids, allParents, etc etc
-      //
-      // case LOAD_DATA:
-      if (!payload) return empty;
+    case FETCH_USER: {
+      console.log('FETCH_USER action. payload: ', payload);
+      // if null, Header will show the login button
+      if (!payload) return null;
       else {
-        // necessary because action.payload is undefined when logged out
-        const {
-          req_user: { req_user, googleId, _id },
-          credits,
-          familyId,
-          allKids,
-          allParents,
-          familyMedia,
-          familyPerId,
-          allRegistered,
-          registeredPerId,
-          paymentsHistory
-        } = payload;
-        const newParentId = 'p' + allParents.length;
-        const newKidId = 'k' + allKids.length;
+        // payload is undefined when logged out
+        // if (!payload) return empty;
+        let { allKids, allParents, familyMedia, familyPerId } = payload;
+        let newParentId = 'p' + allParents.length;
+        let newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
-          ...state,
-          req_user,
-          googleId,
-          _id,
-          credits,
-          familyId,
-          allRegistered,
-          registeredPerId,
-          paymentsHistory,
+          ...payload,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
           familyMedia: familyMedia.concat({
@@ -85,8 +52,30 @@ export default function(
           }
         };
       }
+    }
 
-    case MODIFY_USER:
+    case LOAD_RECEIPT: {
+      let {
+        allKids,
+        allParents,
+        allRegistered,
+        itemsPerId,
+        familyPerId,
+        familyMedia
+      } = payload;
+      return {
+        ...state,
+        allKids,
+        allParents,
+        allRegistered,
+        itemsPerId,
+        familyPerId,
+        familyMedia
+      };
+    }
+
+    case MODIFY_USER: {
+      let { userId, fieldName, value } = payload;
       return {
         ...state,
         familyPerId: {
@@ -97,7 +86,7 @@ export default function(
           }
         }
       };
-
+    }
     // case ADD_ROW:
     //   switch (payload) {
     //     case 'kid':
@@ -138,12 +127,11 @@ export default function(
     //       return state;
     //   }
 
-    case ADD_KID_ROW:
-      const { allKids } = state;
-      const newKidId = 'k' + allKids.length;
+    case ADD_KID_ROW: {
+      let newKidId = 'k' + state.allKids.length;
       return {
         ...state,
-        allKids: allKids.concat(newKidId),
+        allKids: state.allKids.concat(newKidId),
         familyPerId: {
           ...state.familyPerId,
           [newKidId]: {
@@ -154,13 +142,13 @@ export default function(
           }
         }
       };
+    }
 
-    case ADD_PARENT_ROW:
-      const { allParents } = state;
-      const newParentId = 'p' + allParents.length;
+    case ADD_PARENT_ROW: {
+      let newParentId = 'p' + state.allParents.length;
       return {
         ...state,
-        allParents: allParents.concat(newParentId),
+        allParents: state.allParents.concat(newParentId),
         familyPerId: {
           ...state.familyPerId,
           [newParentId]: {
@@ -170,25 +158,26 @@ export default function(
           }
         }
       };
+    }
 
-    case ADD_MEDIA_ROW:
-      const { familyPerId, familyMedia } = state;
+    case ADD_MEDIA_ROW: {
       return {
         ...state,
-        familyMedia: familyMedia.concat({
+        familyMedia: state.familyMedia.concat({
           media: 'more_horiz',
           value: '',
           tags: [
-            !!familyPerId['p0'] && familyPerId['p0'].firstName,
+            !!state.familyPerId['p0'] && state.familyPerId['p0'].firstName,
             'private',
             'mobile'
           ]
         })
       };
+    }
 
-    case MODIFY_MEDIA:
+    case MODIFY_MEDIA: {
       // beware familyMedia is an array of objects!
-      // let { familyMedia } = state;
+      let { index, value } = payload;
       return {
         ...state,
         familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
@@ -202,11 +191,13 @@ export default function(
           }
         })
       };
+    }
 
-    case UPDATE_TAGS:
+    case UPDATE_TAGS: {
       // familyMedia is an array of mediaObjects.
       // index is the index of the mediaObject we want to update with new tags.
       // let { familyMedia } = state;
+      let { index, tags } = payload;
       return {
         ...state,
         familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
@@ -217,6 +208,7 @@ export default function(
           }
         })
       };
+    }
 
     default:
       return state;

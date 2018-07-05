@@ -91,28 +91,99 @@ module.exports = app => {
         receiptTimeStamp: 1530696643,
         last4: 4242,
         paymentStatus: 'succeeded',
-        purchasedItems: [
+        allPurchasedToday: [
           {
             id: 'i0',
             name: 'Registration to the association',
             period: '2018-2019',
             paidPrice: 3000,
-            beneficiaries: ['Mulan', 'Zilan']
+            beneficiaries: ['Bush-Polanski']
           },
           {
             id: 'i4',
             name: 'Mini Kids Club',
             period: '2018-2019',
             paidPrice: 36000,
-            beneficiaries: ['Bush-Polanski']
+            beneficiaries: ['Mulan', 'Zilan']
           },
           {
             id: 'i7',
             name: 'On Stage!',
             period: '2018-2019',
             paidPrice: 25500,
-            beneficiaries: ['Bush-Polanski']
+            beneficiaries: ['Mulan']
           }
+        ],
+        // following are not 'paymentReceipt', however sent together
+        allKids: ['k0', 'k1'],
+        allParents: ['p0', 'p1'],
+        allRegistered: [
+          { userId: 'family', items: ['i0'] },
+          { userId: 'k0', items: ['i4', 'i7'] },
+          { userId: 'k1', items: ['i4'] }
+        ],
+        itemsPerId: {
+          i0: {
+            id: 'i0',
+            name: 'Registration to the association',
+            period: '2018-2019',
+            teacherName: 'Michelle Obama',
+            description:
+              'The registration to the English Link association is required to join the activities. School year 2018-2019.',
+            itemGrades: ['PS', 'MS', 'GS', 'CP', 'CE1', 'CE2', 'CM1', 'CM2']
+          },
+          i4: {
+            id: 'i4',
+            name: 'Mini Kids Club',
+            period: '2018-2019',
+            teacherName: 'Michelle Obama',
+            description:
+              'Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.',
+            contacts: ['s2'],
+            itemGrades: ['CP', 'CE1']
+          },
+          i7: {
+            id: 'i7',
+            name: 'On Stage!',
+            period: '2018-2019',
+            teacherName: "Jeanne d'Arc",
+            description:
+              'Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.',
+            contacts: ['s2'],
+            itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
+          }
+        },
+        familyPerId: {
+          p0: {
+            id: 'p0',
+            firstName: 'Donald',
+            familyName: 'Bush'
+          },
+          p1: {
+            id: 'p1',
+            firstName: 'Rosemary',
+            familyName: 'Polanski'
+          },
+          k0: {
+            id: 'k0',
+            firstName: 'Mulan',
+            familyName: 'Bush',
+            kidGrade: 'CE2'
+          },
+          k1: {
+            id: 'k1',
+            firstName: 'Zilan',
+            familyName: 'Polanski',
+            kidGrade: 'GS'
+          }
+        },
+        familyMedia: [
+          {
+            media: 'email',
+            value: 'donald@xiaoju.io',
+            tags: ['Donald', 'private']
+          },
+          { media: 'phone', value: '0600000000', tags: ['mobile', 'Donald'] }
         ]
       };
       res.send({ paymentReceipt });

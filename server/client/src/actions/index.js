@@ -14,22 +14,17 @@ import {
 } from './types';
 
 export const fetchUser = () => async dispatch => {
-  const thisUser = await axios.get('/api/current_user');
+  const fetched = await axios.get('/api/current_user');
   // TODO dispatch something if there is no answer from api or from google
   // so that user knows where it's going wrong
-  console.log('action: FETCH_USER. thisUser: ', thisUser);
-  dispatch({ type: FETCH_USER, payload: thisUser.data });
+  console.log('action: FETCH_USER. fetched: ', fetched);
+  dispatch({ type: FETCH_USER, payload: fetched.data });
 };
 
 export const handlePayment = payload => async dispatch => {
-  const res = await axios.post('/api/payment', payload);
-  // console.log(
-  //   'ACTION: handlePayment function, before LOAD_RECEIPT action. paymentReceipt: ',
-  //   paymentReceipt
-  // );
   dispatch(push('/thanks'));
+  const res = await axios.post('/api/payment', payload);
   console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
-
   dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
 };
 

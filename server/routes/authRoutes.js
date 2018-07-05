@@ -42,7 +42,7 @@ module.exports = app => {
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
-      res.redirect('/dashboard');
+      res.redirect('/registerEvent');
     }
   );
 
@@ -60,33 +60,38 @@ module.exports = app => {
   });
 
   app.get('/api/current_user', (req, res) => {
+    console.log('authRoute.js - req.user: ', req.user);
     // res.send(req.user);
-    // console.log('req.user: ', req.user);
-    res.send({
-      _id: req.user._id,
-      googleId: req.user.googleId, // is undefined!!
-      credits: req.user.credits,
-      req_user: req.user,
-      familyId,
-      allKids,
-      eventId,
-      eventName,
-      eventProviderName,
-      eventContacts,
-      allItems,
-      allParents,
-      familyMedia,
-      allRegistered,
-      registeredPerId,
-      paymentsHistory,
-      standardPrices,
-      discountedPrices,
-      discountQualifiers,
-      mandatoryItems,
-      familyItems,
-      familyPerId,
-      staffPerId,
-      itemsPerId
-    });
+
+    if (!req.user) {
+      res.send(null);
+    } else {
+      let { _id, googleId, credits } = req.user;
+      res.send({
+        _id,
+        googleId,
+        credits,
+        familyId,
+        allKids,
+        eventId,
+        eventName,
+        eventProviderName,
+        eventContacts,
+        allItems,
+        allParents,
+        familyMedia,
+        allRegistered,
+        registeredPerId,
+        paymentsHistory,
+        standardPrices,
+        discountedPrices,
+        discountQualifiers,
+        mandatoryItems,
+        familyItems,
+        familyPerId,
+        staffPerId,
+        itemsPerId
+      });
+    }
   });
 };

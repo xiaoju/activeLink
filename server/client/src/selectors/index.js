@@ -1,37 +1,36 @@
 import { createSelector } from 'reselect';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
+export const getEvent = state => state.event;
 export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
 export const getEventProviderName = state => state.event.eventProviderName;
 export const getEventContacts = state => state.event.eventContacts;
-export const getFamilyId = state => state.profile.familyId;
-export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
-export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
-export const getFamilyMedia = state => state.profile.familyMedia;
 export const getStandardPrices = state => state.event.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.event.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getMandatoryItems = state => state.event.mandatoryItems;
 export const getAllItems = state => state.event.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-export const getFamilyPerId = state => state.profile.familyPerId;
 export const getFamilyItems = state => state.event.familyItems;
 export const getItemsPerId = state => state.event.itemsPerId;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
 export const getStaffPerId = state => state.event.staffPerId;
-export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
-export const getProfile = state => state.profile;
 
+export const getProfile = state => state.profile;
+export const getFamilyMedia = state => state.profile.familyMedia;
+export const getFamilyId = state => state.profile.familyId;
+export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
+export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
+export const getFamilyPerId = state => state.profile.familyPerId;
 export const getUserFamilyName = (state, { userId }) =>
   state.profile.familyPerId[userId].familyName;
-
 export const getFirstName = (state, { userId }) =>
   state.profile.familyPerId[userId].firstName;
-
 export const getKidGrade = (state, { userId }) =>
   state.profile.familyPerId[userId].kidGrade;
-
 export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
+
+export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
 // export const getAllUsers = createSelector(
 //   [getAllKids, getAllParents],

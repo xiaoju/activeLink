@@ -17,7 +17,12 @@ module.exports = {
     { media: 'email', value: 'donald@xiaoju.io', tags: ['Donald', 'private'] },
     { media: 'phone', value: '0600000000', tags: ['mobile', 'Donald'] }
   ],
-  allRegistered: [], // all the items that have been purchased by this family and kids
+  allRegistered: [
+    // all the items that have been purchased by this family and kids
+    { userId: 'family', items: [] },
+    { userId: 'k0', items: [] },
+    { userId: 'k1', items: [] }
+  ],
   registeredPerId: {}, // same
   paymentsHistory: [],
   standardPrices: {

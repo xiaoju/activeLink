@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../actions';
 import Header from './Header';
-import RegistrationPage from './RegistrationPage';
+import Home from './Home';
+import RegisterEvent from './RegisterEvent';
 import Thanks from './Thanks';
 
 class App extends Component {
@@ -16,7 +17,8 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <Route path="/register" component={RegistrationPage} />
+        <Route exact path="/" component={Home} />
+        <Route path="/registerEvent" component={RegisterEvent} />
         <Route path="/thanks" component={Thanks} />
       </div>
     );

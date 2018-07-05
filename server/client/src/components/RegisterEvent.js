@@ -6,7 +6,7 @@ import SelectClassesForm from './SelectClassesForm';
 import ConfirmStep from './ConfirmStep';
 import OrderSummary from './OrderSummary';
 
-class RegistrationPage extends Component {
+class RegisterEvent extends Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
@@ -17,14 +17,16 @@ class RegistrationPage extends Component {
             <strong>Please log in to show the members area.</strong>
           </h5>
         )}
-        {this.props.profile && !this.props.event.eventId && <SpinnerWrapper />
+        {this.props.profile && !this.props.event && <SpinnerWrapper />
         // cannot user `this.props.data` because dataReducer creates an empty
         // `this.props.data` object by initialization. Using instead
         // `this.props.data.eventId` to detect if data arrived from api
         }
 
+        {/* TODO test if user has paid 'i0'. If no, show registration below stuff. If yes, show other stuff.  */}
+
         {this.props.profile &&
-          this.props.event.eventId && (
+          this.props.event && (
             <div>
               <ProfileForm />
               <SelectClassesForm />
@@ -44,4 +46,4 @@ function mapStateToProps({ profile, event }) {
   };
 }
 
-export default connect(mapStateToProps)(RegistrationPage);
+export default connect(mapStateToProps)(RegisterEvent);
