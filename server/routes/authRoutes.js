@@ -66,13 +66,21 @@ module.exports = app => {
     if (!req.user) {
       res.send(null);
     } else {
-      let { _id, googleId, credits } = req.user;
+      // openEvents  // events currently open for registration
+      //   .map((eventId)=>(!allRegistered.includes(eventId))) // that user hasn't registered yet
+      //   .map(eventId=> ...eventObject(eventId)... )   // [pseudo code] pull the event information from database
+      //   .reduce(  gather all the objects into one    )    // useful only if someday several events at same time!
+      //         // { e0: {}, e1: {}, e2: {} }
+      // let { _id, googleId } = req.user;
       res.send({
-        _id,
-        googleId,
-        credits,
+        _id: req.user._id,
+        googleId: req.user.googleId,
         familyId,
         allKids,
+        // eventsById: {e0: {id, name, providerName, ...}, e1: {...}, e2: {...}}
+        // allEvents,  // ['e0', 'e1', 'e2']
+        //  These are the events currently open for registration, and
+        // not registered yet by this user
         eventId,
         eventName,
         eventProviderName,
