@@ -9,6 +9,7 @@ class Header extends Component {
     switch (this.props.profile) {
       case null:
       // return;
+      // falls through
       case false:
         return [
           <li key="1">
@@ -30,12 +31,12 @@ class Header extends Component {
   }
 
   render() {
-    const { profile, event, eventName } = this.props;
+    const { profile, event } = this.props;
     return (
       <div className="navbar-fixed">
         <nav>
           <div className="nav-wrapper deep-purple lighten-2">
-            <Link to={profile ? '/dashboard' : '/'} className="left brand-logo">
+            <Link to="/" className="left brand-logo">
               <img src={englishLinkLogo} alt="logo" className="hoverable" />
             </Link>
             <span className="center brand-logo">

@@ -3,6 +3,7 @@ const {
   familyId,
   allKids,
   eventId,
+  allEvents,
   eventName,
   eventProviderName,
   eventContacts,
@@ -42,7 +43,7 @@ module.exports = app => {
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
-      res.redirect('/registerEvent');
+      res.redirect('/');
     }
   );
 
@@ -66,39 +67,37 @@ module.exports = app => {
     if (!req.user) {
       res.send(null);
     } else {
-      // openEvents  // events currently open for registration
-      //   .map((eventId)=>(!allRegistered.includes(eventId))) // that user hasn't registered yet
-      //   .map(eventId=> ...eventObject(eventId)... )   // [pseudo code] pull the event information from database
-      //   .reduce(  gather all the objects into one    )    // useful only if someday several events at same time!
-      //         // { e0: {}, e1: {}, e2: {} }
-      // let { _id, googleId } = req.user;
       res.send({
-        _id: req.user._id,
-        googleId: req.user.googleId,
-        familyId,
-        allKids,
-        // eventsById: {e0: {id, name, providerName, ...}, e1: {...}, e2: {...}}
-        // allEvents,  // ['e0', 'e1', 'e2']
-        //  These are the events currently open for registration, and
-        // not registered yet by this user
-        eventId,
-        eventName,
-        eventProviderName,
-        eventContacts,
-        allItems,
-        allParents,
-        familyMedia,
-        allRegistered,
-        registeredPerId,
-        paymentsHistory,
-        standardPrices,
-        discountedPrices,
-        discountQualifiers,
-        mandatoryItems,
-        familyItems,
-        familyPerId,
-        staffPerId,
-        itemsPerId
+        profile: {
+          _id: req.user._id,
+          googleId: req.user.googleId,
+          familyId,
+          allKids,
+          allParents,
+          familyPerId,
+          familyMedia,
+          allRegistered, // (these are items)
+          registeredPerId, // (these are items)
+          paymentsHistory,
+          allEvents
+        },
+        eventsById: {
+          e0: {
+            // this all goes to the eventReducer
+            eventId,
+            eventName,
+            eventProviderName,
+            eventContacts,
+            allItems,
+            standardPrices,
+            discountedPrices,
+            discountQualifiers,
+            mandatoryItems,
+            familyItems,
+            staffPerId,
+            itemsPerId
+          }
+        }
       });
     }
   });

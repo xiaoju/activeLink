@@ -27,9 +27,8 @@ export default function(state = empty, { type, payload }) {
           familyItems,
           staffPerId,
           itemsPerId
-        } = payload;
+        } = payload.eventsById.e0;
         return {
-          // familyId,
           eventId,
           eventName,
           eventProviderName,

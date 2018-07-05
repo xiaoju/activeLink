@@ -20,7 +20,9 @@ export const getFamilyMedia = state => state.profile.familyMedia;
 export const getFamilyId = state => state.profile.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
+export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
 export const getFamilyPerId = state => state.profile.familyPerId;
+export const getEventsById = state => state.profile.eventsById;
 export const getUserFamilyName = (state, { userId }) =>
   state.profile.familyPerId[userId].familyName;
 export const getFirstName = (state, { userId }) =>
@@ -31,6 +33,8 @@ export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
 
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
+
+export const getReceipt = state => state.receipt;
 
 // export const getAllUsers = createSelector(
 //   [getAllKids, getAllParents],

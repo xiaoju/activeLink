@@ -12,11 +12,11 @@ class RegisterEvent extends Component {
       <div style={{ textAlign: 'center' }}>
         {/* <p>Credits: {this.props.auth && this.props.auth.credits}</p> */}
         {/* ①②③④⑤⑥⑦⑧⑨⑩ */}
-        {!this.props.profile && (
+        {/* {!this.props.profile && (
           <h5>
             <strong>Please log in to show the members area.</strong>
           </h5>
-        )}
+        )} */}
         {this.props.profile && !this.props.event && <SpinnerWrapper />
         // cannot user `this.props.data` because dataReducer creates an empty
         // `this.props.data` object by initialization. Using instead

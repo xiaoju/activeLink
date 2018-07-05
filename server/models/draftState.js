@@ -12,6 +12,7 @@ module.exports = {
   eventProviderName: 'English Link',
   eventContacts: ['s1', 's2'],
   allItems: ['i0', 'i1', 'i2', 'i3', 'i4', 'i5', 'i6', 'i7'],
+  allEvents: ['e0'], // ['e0'] These are the events open for registration, and not yet register by this user
   allParents: ['p0', 'p1'],
   familyMedia: [
     { media: 'email', value: 'donald@xiaoju.io', tags: ['Donald', 'private'] },

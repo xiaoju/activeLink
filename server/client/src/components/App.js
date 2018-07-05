@@ -18,7 +18,8 @@ class App extends Component {
       <div>
         <Header />
         <Route exact path="/" component={Home} />
-        <Route path="/registerEvent" component={RegisterEvent} />
+        {/* <Route path="/register/:eventId" component={RegisterEvent} /> */}
+        <Route path="/register" component={RegisterEvent} />
         <Route path="/thanks" component={Thanks} />
       </div>
     );

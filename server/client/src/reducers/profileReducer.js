@@ -22,13 +22,12 @@ export default function(state = null, { type, payload }) {
       if (!payload) return null;
       else {
         // payload is undefined when logged out
-        // if (!payload) return empty;
-        let { allKids, allParents, familyMedia, familyPerId } = payload;
+        let { allKids, allParents, familyMedia, familyPerId } = payload.profile;
         let newParentId = 'p' + allParents.length;
         let newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
-          ...payload,
+          ...payload.profile,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
           familyMedia: familyMedia.concat({
@@ -61,7 +60,8 @@ export default function(state = null, { type, payload }) {
         allRegistered,
         itemsPerId,
         familyPerId,
-        familyMedia
+        familyMedia,
+        allEvents
       } = payload;
       return {
         ...state,
@@ -70,7 +70,8 @@ export default function(state = null, { type, payload }) {
         allRegistered,
         itemsPerId,
         familyPerId,
-        familyMedia
+        familyMedia,
+        allEvents
       };
     }
 

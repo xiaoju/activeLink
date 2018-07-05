@@ -1,4 +1,5 @@
 import {
+  LOAD_RECEIPT,
   FETCH_USER,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
@@ -13,7 +14,11 @@ export default function(
   { type, payload, userId, itemId, fieldName, value }
 ) {
   switch (type) {
-    case FETCH_USER:
+    case LOAD_RECEIPT: {
+      return empty;
+    }
+
+    case FETCH_USER: {
       // create initial state:
       // 1- convert data.familyAndValidKids, from
       // [familyId, 'k0', 'k1']
@@ -23,14 +28,9 @@ export default function(
         return empty;
       } else {
         // necessary because action.payload is undefined when logged out
-        let {
-          familyId,
-          allKids,
-          allItems,
-          mandatoryItems,
-          familyItems
-        } = payload;
-        const newKidId = 'k' + allKids.length;
+        let { familyId, allKids } = payload.profile;
+        let { allItems, mandatoryItems, familyItems } = payload.eventsById.e0;
+        let newKidId = 'k' + allKids.length;
         return [familyId] // ['familyId']
           .concat(allKids) // ['familyId', 'k0', 'k1']
           .concat(newKidId) // ['familyId', 'k0', 'k1', 'k2']
@@ -51,32 +51,37 @@ export default function(
             return obj;
           }, {});
       }
+    }
 
-    case ADD_KID_ROW:
-      const newKidId = 'k' + (Object.keys(state).length - 1);
+    case ADD_KID_ROW: {
+      let newKidId = 'k' + (Object.keys(state).length - 1);
       return {
         ...state,
         [newKidId]: []
       };
+    }
 
-    case CHECK_CHECKBOX:
+    case CHECK_CHECKBOX: {
       // when a checkbox has just been checked
       return {
         ...state,
         [userId]: [].concat(state[userId], itemId)
       };
+    }
 
-    case UNCHECK_CHECKBOX:
+    case UNCHECK_CHECKBOX: {
       return {
         ...state,
         [userId]: state[userId].filter(thisBox => itemId !== thisBox)
       };
+    }
 
-    case MODIFY_USER:
+    case MODIFY_USER: {
       return {
         ...state,
         [userId]: fieldName === 'kidGrade' ? [] : state[userId]
       };
+    }
 
     default:
       return state;

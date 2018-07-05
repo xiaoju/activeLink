@@ -117,6 +117,7 @@ module.exports = app => {
         // following are not 'paymentReceipt', however sent together
         allKids: ['k0', 'k1'],
         allParents: ['p0', 'p1'],
+        allEvents: [],
         allRegistered: [
           { userId: 'family', items: ['i0'] },
           { userId: 'k0', items: ['i4', 'i7'] },
