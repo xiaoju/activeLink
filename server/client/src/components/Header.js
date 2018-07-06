@@ -6,7 +6,8 @@ import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
 class Header extends Component {
   renderContent() {
-    switch (this.props.profile) {
+    const { profile } = this.props;
+    switch (profile) {
       case null:
       // return;
       // falls through
@@ -31,7 +32,7 @@ class Header extends Component {
   }
 
   render() {
-    const { profile, event } = this.props;
+    const { event } = this.props;
     return (
       <div className="navbar-fixed">
         <nav>

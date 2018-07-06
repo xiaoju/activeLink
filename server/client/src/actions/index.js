@@ -15,49 +15,57 @@ import {
 
 export const fetchUser = () => async dispatch => {
   const fetched = await axios.get('/api/current_user');
-  // TODO dispatch something if there is no answer from api or from google
+  // TODO dispatch something if there is no answer from backend or from google
   // so that user knows where it's going wrong
-  console.log('action: FETCH_USER. fetched: ', fetched);
+  // console.log('action: FETCH_USER. fetched: ', fetched);
   dispatch({ type: FETCH_USER, payload: fetched.data });
 };
 
 export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   const res = await axios.post('/api/payment', payload);
-  console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
+  // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
   dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
 };
 
 export function checkCheckbox(userId, itemId) {
   return {
     type: CHECK_CHECKBOX,
-    userId,
-    itemId
+    payload: {
+      userId,
+      itemId
+    }
   };
 }
 
 export function uncheckCheckbox(userId, itemId) {
   return {
     type: UNCHECK_CHECKBOX,
-    userId,
-    itemId
+    payload: {
+      userId,
+      itemId
+    }
   };
 }
 
 export function modifyUser({ userId, fieldName, value }) {
   return {
     type: MODIFY_USER,
-    userId,
-    fieldName,
-    value
+    payload: {
+      userId,
+      fieldName,
+      value
+    }
   };
 }
 
 export function modifyMedia({ index, value }) {
   return {
     type: MODIFY_MEDIA,
-    index,
-    value
+    payload: {
+      index,
+      value
+    }
   };
 }
 
@@ -82,7 +90,9 @@ export function addMediaRow() {
 export function updateTags({ index, tags }) {
   return {
     type: UPDATE_TAGS,
-    index,
-    tags
+    payload: {
+      index,
+      tags
+    }
   };
 }

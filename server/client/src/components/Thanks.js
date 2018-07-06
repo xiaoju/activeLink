@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { getReceipt } from '../selectors';
 import SpinnerWrapper from './SpinnerWrapper';
 import OrderReceipt from './OrderReceipt';
@@ -36,7 +35,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Thanks);
-
-Thanks.propTypes = {
-  receipt: PropTypes.object.isRequired
-};

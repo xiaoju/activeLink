@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class CallForVolunteers extends Component {
   render() {
@@ -70,6 +70,7 @@ class CallForVolunteers extends Component {
           <p>Thank you! We'll call you back!</p>
           <p>The English Link does not exist without the support of parents!</p>
           <p>Looking forward to hearing from you.</p>
+          <p>Carmen</p>
         </div>
       </div>
     );
@@ -84,6 +85,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(CallForVolunteers);
 
-CallForVolunteers.propTypes = {
-  formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired
-};
+// CallForVolunteers.propTypes = {
+// formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired
+// };

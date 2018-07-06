@@ -3,9 +3,7 @@ import React from 'react';
 function OrderReceipt(props) {
   let {
     allPurchasedToday,
-    eventId,
     eventName,
-    familyId,
     familyName,
     invoiceTotal,
     last4,
@@ -22,12 +20,16 @@ function OrderReceipt(props) {
       Name: {familyName}
       <br />
       {allPurchasedToday.map(obj => (
-        <ul>
+        <ul key={obj.id}>
           <li>
             Item: {obj.name}, {obj.period}
           </li>
           <li>Price: {obj.paidPrice / 100} &euro;</li>
-          <li>{obj.beneficiaries.map(name => <span>{name} </span>)}</li>
+          <li>
+            {obj.beneficiaries.map((name, index) => (
+              <span key={index}>{name} </span>
+            ))}
+          </li>
         </ul>
       ))}
       <br />

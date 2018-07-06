@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreatableSelect from 'react-select/lib/Creatable';
 import * as Animated from 'react-select/lib/animated';
-import { getMediaObject, getAllParents, getFamilyPerId } from '../selectors';
+import {
+  getMediaObject,
+  getAllParents,
+  getValidParents,
+  getFamilyPerId
+} from '../selectors';
 import { updateTags } from '../actions/index';
 import PropTypes from 'prop-types';
 
@@ -22,9 +27,9 @@ class SelectComponentStyled extends Component {
   }
 
   render() {
-    const { mediaObject, allParents, familyPerId } = this.props;
+    const { mediaObject, validParents, familyPerId } = this.props;
 
-    const options = allParents // ['p1', 'p2', 'p3']
+    const options = validParents // ['p1', 'p3']
       .map(parentId => familyPerId[parentId].firstName) // ['Donald', 'Rosemary', '']
       .filter(firstName => !!firstName) // ['Donald', 'Rosemary']
       .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
@@ -208,6 +213,7 @@ function mapStateToProps(state, props) {
   return {
     mediaObject: getMediaObject(state, props),
     allParents: getAllParents(state),
+    validParents: getValidParents(state),
     familyPerId: getFamilyPerId(state)
   };
 }

@@ -4,7 +4,7 @@ const requireLogin = require('../middlewares/requireLogin');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
-    console.log('req.body: ', req.body);
+    // console.log('req.body: ', req.body);
 
     // first should update the profiles database with
     //   familyId
@@ -77,7 +77,7 @@ module.exports = app => {
       const chargeStatus = stripeCharge.status;
       const last4 = stripeCharge.source.last4;
       const receiptTimeStamp = stripeCharge.created;
-      console.log('status of the StripeCharge: ', chargeStatus);
+      // console.log('status of the StripeCharge: ', chargeStatus);
 
       // TODO save the paid classes to the user in database,
       // TODO then extract the most recent payment receipt,

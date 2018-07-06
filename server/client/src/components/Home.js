@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { getEvent, getProfile } from '../selectors';
-import SpinnerWrapper from './SpinnerWrapper';
 
 class Home extends Component {
   render() {
@@ -30,16 +28,6 @@ class Home extends Component {
             </div>
           </div>
         )}
-
-        {/* <ul>
-          {allEvents.map(eventId => (
-            <li>
-              <Link to={`/register/${eventId}`}>
-                {eventsById[eventId].name}
-              </Link>
-            </li>
-          ))}
-        </ul> */}
       </div>
     );
   }
@@ -53,7 +41,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Home);
-
-Home.propTypes = {
-  allEvents: PropTypes.array.isRequired
-};

@@ -17,7 +17,7 @@ import * as Validation from '../utils/Validation';
 export default function(state = null, { type, payload }) {
   switch (type) {
     case FETCH_USER: {
-      console.log('FETCH_USER action. payload: ', payload);
+      // console.log('FETCH_USER action. payload: ', payload);
       // if null, Header will show the login button
       if (!payload) return null;
       else {

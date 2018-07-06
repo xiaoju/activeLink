@@ -9,10 +9,7 @@ import {
 
 const empty = null;
 
-export default function(
-  state = empty,
-  { type, payload, userId, itemId, fieldName, value }
-) {
+export default function(state = empty, { type, payload }) {
   switch (type) {
     case LOAD_RECEIPT: {
       return empty;
@@ -62,7 +59,7 @@ export default function(
     }
 
     case CHECK_CHECKBOX: {
-      // when a checkbox has just been checked
+      let { itemId, userId } = payload;
       return {
         ...state,
         [userId]: [].concat(state[userId], itemId)
@@ -70,6 +67,7 @@ export default function(
     }
 
     case UNCHECK_CHECKBOX: {
+      let { itemId, userId } = payload;
       return {
         ...state,
         [userId]: state[userId].filter(thisBox => itemId !== thisBox)
@@ -77,6 +75,7 @@ export default function(
     }
 
     case MODIFY_USER: {
+      let { userId, fieldName } = payload;
       return {
         ...state,
         [userId]: fieldName === 'kidGrade' ? [] : state[userId]

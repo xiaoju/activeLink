@@ -61,7 +61,7 @@ module.exports = app => {
   });
 
   app.get('/api/current_user', (req, res) => {
-    console.log('authRoute.js - req.user: ', req.user);
+    // console.log('authRoute.js - req.user: ', req.user);
     // res.send(req.user);
 
     if (!req.user) {

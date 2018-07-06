@@ -46,6 +46,7 @@ class Payments extends Component {
             allowRememberMe={false}
             amount={total}
             email={mainEmail}
+            receipt_email={mainEmail}
             currency="EUR"
             stripeKey={process.env.REACT_APP_STRIPE_KEY}
             token={stripeToken => {
