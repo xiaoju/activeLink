@@ -207,3 +207,5 @@ force push to heroku:
 #### Redux
 - Redux selectors are named `selectFoo`.
 - We use fat reducers and thin action creators (i.e. the reducers contain a lot of logic.)
+#### Resources
+①②③④⑤⑥⑦⑧⑨⑩
