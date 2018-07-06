@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getReceipt } from '../selectors';
 import SpinnerWrapper from './SpinnerWrapper';
+import OrderReceipt from './OrderReceipt';
+import CallForVolunteers from './CallForVolunteers';
 
 class Thanks extends Component {
   render() {
@@ -17,7 +19,10 @@ class Thanks extends Component {
             <SpinnerWrapper />
           </div>
         ) : (
-          <h4>Thank you for your registration!</h4>
+          <div>
+            <OrderReceipt receipt={receipt} />
+            <CallForVolunteers />
+          </div>
         )}
       </div>
     );

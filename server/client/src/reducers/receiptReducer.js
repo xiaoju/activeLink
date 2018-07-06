@@ -1,35 +1,25 @@
 import { LOAD_RECEIPT } from '../actions/types';
 
-export default function(
-  state = null,
-  { type, action } // {
-) //   type,
-//   familyName,
-//   familyId,
-//   eventId,
-//   eventName,
-//   invoiceTotal,
-//   receiptTimeStamp,
-//   last4,
-//   paymentStatus,
-//   allPurchasedToday
-// }
-{
+export default function(state = null, { type, payload }) {
   switch (type) {
     case LOAD_RECEIPT: {
-      // console.log('RECEIPT REDUCER, payload: ', payload);
+      let {
+        familyName,
+        eventName,
+        invoiceTotal,
+        receiptTimeStamp,
+        last4,
+        paymentStatus,
+        allPurchasedToday
+      } = payload;
       return {
-        state
-        // ...state,
-        // familyName,
-        // familyId,
-        // eventId,
-        // eventName,
-        // invoiceTotal,
-        // receiptTimeStamp,
-        // last4,
-        // paymentStatus,
-        // allPurchasedToday
+        familyName,
+        eventName,
+        invoiceTotal,
+        receiptTimeStamp,
+        last4,
+        paymentStatus,
+        allPurchasedToday
       };
     }
 
