@@ -178,7 +178,7 @@ nav i.material-icons.large {
 
 .categoryIcon {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   padding-bottom: 1em;
   padding-top: 1em;

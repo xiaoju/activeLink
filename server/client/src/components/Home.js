@@ -14,11 +14,16 @@ class Home extends Component {
             <strong>Please log in to see the members area.</strong>
           </h5>
         ) : !!event ? (
-          <div>
-            <h4>Members</h4>
-            <br />
-            <h5>Event open for registration:</h5>
-            <Link to={`/register`}>{event.eventName}</Link>
+          <div className="itemsContainer hoverable">
+            <div className="innerContainer">
+              <h4 className="stepTitle">Members Area</h4>
+              <div className="title_and_button">
+                <strong>
+                  <h5>Event open for registration:</h5>
+                </strong>
+                <Link to={`/register`}>{event.eventName}</Link>
+              </div>
+            </div>
           </div>
         ) : (
           <div>
