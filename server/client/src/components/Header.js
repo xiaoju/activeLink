@@ -12,11 +12,12 @@ class Header extends Component {
         <nav>
           <div id="logo" className="nav-wrapper deep-purple lighten-2">
             <Link to="/" className="left brand-logo">
-              <img src={englishLinkLogo} className="hoverable" />
+              <img src={englishLinkLogo} className="hoverable" alt="logo" />
             </Link>
 
-            <a href="#" class="brand-logo center">
-              {!event ? 'English Link' : event.eventName}
+            <a href="/" className="brand-logo center">
+              English Link
+              {/* {!event ? 'English Link' : event.eventName} */}
             </a>
 
             <ul id="nav-mobile" className="right">
