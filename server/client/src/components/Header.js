@@ -19,7 +19,7 @@ class Header extends Component {
               {!event ? 'English Link' : event.eventName}
             </a>
 
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <ul id="nav-mobile" className="right">
               <li>
                 {!profile ? (
                   <a href="/auth/google">Login with Google</a>
