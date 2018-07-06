@@ -5,45 +5,31 @@ import { getProfile, getEvent } from '../selectors';
 import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
 class Header extends Component {
-  renderContent() {
-    const { profile } = this.props;
-    switch (profile) {
-      case null:
-      // return;
-      // falls through
-      case false:
-        return [
-          <li key="1">
-            <a href="/auth/google">Login with Google</a>
-          </li>
-          // <li key="2">
-          //   <a href="/auth/local">Login with username+password</a>
-          // </li>
-        ];
-      default:
-        return [
-          <li key="3" className="hoverable">
-            <a href="/api/logout">
-              <i className="medium material-icons">exit_to_app</i>
-            </a>
-          </li>
-        ];
-    }
-  }
-
   render() {
-    const { event } = this.props;
+    const { event, profile } = this.props;
     return (
       <div className="navbar-fixed">
         <nav>
-          <div className="nav-wrapper deep-purple lighten-2">
+          <div id="logo" className="nav-wrapper deep-purple lighten-2">
             <Link to="/" className="left brand-logo">
-              <img src={englishLinkLogo} alt="logo" className="hoverable" />
+              <img src={englishLinkLogo} className="hoverable" />
             </Link>
-            <span className="center brand-logo">
+
+            <a href="#" class="brand-logo center">
               {!event ? 'English Link' : event.eventName}
-            </span>
-            <ul className="right">{this.renderContent()}</ul>
+            </a>
+
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li>
+                {!profile ? (
+                  <a href="/auth/google">Login with Google</a>
+                ) : (
+                  <a href="/api/logout">
+                    <i className="medium material-icons">exit_to_app</i>
+                  </a>
+                )}
+              </li>
+            </ul>
           </div>
         </nav>
       </div>

@@ -4,6 +4,14 @@ body {
   /* materializecss deep-purple lighten-5 */
 }
 
+div {
+  text-align: center;
+}
+
+div #logo {
+  text-align: left;
+}
+
 .SelectComponent__value-container > div:focus-within {
   border-width: 2px;
 }
