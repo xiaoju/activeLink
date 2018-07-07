@@ -30,7 +30,16 @@ passport.use(
       if (existingUser) {
         return done(null, existingUser);
       } else {
-        const newUser = await new User({ googleId: profile.id }).save();
+        const newUser = await new User({
+          googleId: profile.id
+          // allKids:
+          // allParents:,
+          // familyMedia:,
+          // allRegistered:,
+          // registeredPerId:,
+          // paymentsHistory:,
+          // familyPerId:,
+        }).save();
         done(null, newUser);
       }
     }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getProfile, getEvent } from '../selectors';
+import { getProfile } from '../selectors';
 import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
 class Header extends Component {
   render() {
-    const { event, profile } = this.props;
+    const { profile } = this.props;
     return (
       <div className="navbar-fixed">
         <nav>
@@ -40,7 +40,6 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    event: getEvent(state),
     profile: getProfile(state)
   };
 }

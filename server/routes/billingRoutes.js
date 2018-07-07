@@ -4,7 +4,27 @@ const requireLogin = require('../middlewares/requireLogin');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
-    // console.log('req.body: ', req.body);
+    console.log('/api/payment (post), req.body: ', req.body);
+
+    // req.user.allKids = req.body.validKids;
+    // req.user.req.validParents = body.validParents;
+    // req.user.validMedia = req.body.validMedia;
+    // req.user.validFamilyPerId = req.body.validFamilyPerId;
+    //
+    // await req.user.validKids.save();
+    // await req.user.validParents.save();
+    // await req.user.validMedia.save();
+    // const user = await req.user.save();
+
+    req.user.allKids = ['k0', 'k1', 'k2', 'k3'];
+    // req.user.allParents = ['p0', 'p1'];
+    const user = await req.user.save();
+
+    // req.user.allKids = req.body.validKids;
+    // req.user.allParents = req.body.validParents;
+    // req.user.familyMedia = req.body.validMedia;
+    // req.user.familyPerId = req.body.validFamilyPerId;
+    // const user = await req.user.save();
 
     // first should update the profiles database with
     //   familyId

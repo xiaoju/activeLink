@@ -1,24 +1,24 @@
 const passport = require('passport');
 const {
-  familyId,
-  allKids,
+  // familyId,
+  // allKids,
   eventId,
   allEvents,
   eventName,
   eventProviderName,
   eventContacts,
   allItems,
-  allParents,
-  familyMedia,
-  allRegistered,
-  registeredPerId,
-  paymentsHistory,
+  // allParents,
+  // familyMedia,
+  // allRegistered,
+  // registeredPerId,
+  // paymentsHistory,
   standardPrices,
   discountedPrices,
   discountQualifiers,
   mandatoryItems,
   familyItems,
-  familyPerId,
+  // familyPerId,
   staffPerId,
   itemsPerId
 } = require('../models/draftState');
@@ -71,15 +71,15 @@ module.exports = app => {
         profile: {
           _id: req.user._id,
           googleId: req.user.googleId,
-          familyId,
-          allKids,
-          allParents,
-          familyPerId,
-          familyMedia,
-          allRegistered, // (these are items)
-          registeredPerId, // (these are items)
-          paymentsHistory,
-          allEvents
+          familyId: req.user.familyId,
+          allKids: req.user.allKids,
+          allParents: req.user.allParents,
+          familyPerId: req.user.familyPerId,
+          familyMedia: req.user.familyMedia,
+          allRegistered: req.user.allRegistered, // TODO rename to allRegisteredItems
+          registeredPerId: req.user.registeredPerId, // TODO rename to registeredItemsById
+          paymentsHistory: req.user.paymentsHistory,
+          allEvents: req.user.allEvents
         },
         eventsById: {
           e0: {
