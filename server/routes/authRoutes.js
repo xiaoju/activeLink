@@ -1,27 +1,5 @@
 const passport = require('passport');
-const {
-  // familyId,
-  // allKids,
-  eventId,
-  allEvents,
-  eventName,
-  eventProviderName,
-  eventContacts,
-  allItems,
-  // allParents,
-  // familyMedia,
-  // allRegistered,
-  // registeredPerId,
-  // paymentsHistory,
-  standardPrices,
-  discountedPrices,
-  discountQualifiers,
-  mandatoryItems,
-  familyItems,
-  // familyPerId,
-  staffPerId,
-  itemsPerId
-} = require('../models/draftState');
+const { eventsById } = require('../models/draftState');
 
 module.exports = app => {
   app.get(
@@ -81,23 +59,7 @@ module.exports = app => {
           paymentsHistory: req.user.paymentsHistory,
           allEvents: req.user.allEvents
         },
-        eventsById: {
-          e0: {
-            // this all goes to the eventReducer
-            eventId,
-            eventName,
-            eventProviderName,
-            eventContacts,
-            allItems,
-            standardPrices,
-            discountedPrices,
-            discountQualifiers,
-            mandatoryItems,
-            familyItems,
-            staffPerId,
-            itemsPerId
-          }
-        }
+        eventsById // this goes to the eventReducer
       });
     }
   });

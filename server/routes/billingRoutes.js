@@ -6,32 +6,11 @@ module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
     console.log('/api/payment (post), req.body: ', req.body);
 
-    // req.user.allKids = req.body.validKids;
-    // req.user.req.validParents = body.validParents;
-    // req.user.validMedia = req.body.validMedia;
-    // req.user.validFamilyPerId = req.body.validFamilyPerId;
-    //
-    // await req.user.validKids.save();
-    // await req.user.validParents.save();
-    // await req.user.validMedia.save();
-    // const user = await req.user.save();
-
-    req.user.allKids = ['k0', 'k1', 'k2', 'k3'];
-    // req.user.allParents = ['p0', 'p1'];
+    req.user.allKids = req.body.validKids;
+    req.user.allParents = req.body.validParents;
+    req.user.familyMedia = req.body.validMedia;
+    req.user.familyPerId = req.body.validFamilyPerId;
     const user = await req.user.save();
-
-    // req.user.allKids = req.body.validKids;
-    // req.user.allParents = req.body.validParents;
-    // req.user.familyMedia = req.body.validMedia;
-    // req.user.familyPerId = req.body.validFamilyPerId;
-    // const user = await req.user.save();
-
-    // first should update the profiles database with
-    //   familyId
-    //   validKids
-    //   validParents
-    //   validMedia
-    //   validFamilyPerId
 
     // extract required info from database:
     // prices (standard/discounted), discount qualifiers, etc etc
@@ -107,7 +86,7 @@ module.exports = app => {
         familyId: '7jhfbasd8jfhbeas8',
         eventId: 'e0',
         eventName: 'Registration 2018-2019',
-        invoiceTotal: 543200,
+        invoiceTotal: chargeTotal, // TODO recalculate the total within backend
         receiptTimeStamp: 1530696643,
         last4: 4242,
         paymentStatus: 'succeeded',
@@ -135,10 +114,13 @@ module.exports = app => {
           }
         ],
         // following are not 'paymentReceipt', however sent together
-        allKids: ['k0', 'k1'],
-        allParents: ['p0', 'p1'],
+        allKids: req.user.allKids,
+        allParents: req.user.allParents,
+        familyPerId: req.user.familyPerId,
+        familyMedia: req.user.familyMedia,
         allEvents: [],
-        allRegistered: [
+        bookedEvents: ['e0'],
+        allRegisteredItems: [
           { userId: 'family', items: ['i0'] },
           { userId: 'k0', items: ['i4', 'i7'] },
           { userId: 'k1', items: ['i4'] }
@@ -173,39 +155,7 @@ module.exports = app => {
             contacts: ['s2'],
             itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
           }
-        },
-        familyPerId: {
-          p0: {
-            id: 'p0',
-            firstName: 'Donald',
-            familyName: 'Bush'
-          },
-          p1: {
-            id: 'p1',
-            firstName: 'Rosemary',
-            familyName: 'Polanski'
-          },
-          k0: {
-            id: 'k0',
-            firstName: 'Mulan',
-            familyName: 'Bush',
-            kidGrade: 'CE2'
-          },
-          k1: {
-            id: 'k1',
-            firstName: 'Zilan',
-            familyName: 'Polanski',
-            kidGrade: 'GS'
-          }
-        },
-        familyMedia: [
-          {
-            media: 'email',
-            value: 'donald@xiaoju.io',
-            tags: ['Donald', 'private']
-          },
-          { media: 'phone', value: '0600000000', tags: ['mobile', 'Donald'] }
-        ]
+        }
       };
       res.send({ paymentReceipt });
     } catch (e) {

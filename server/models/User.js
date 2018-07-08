@@ -19,6 +19,7 @@ const userSchema = new Schema({
     type: Array,
     default: [{ media: 'email', value: '', tags: ['private'] }]
   },
+  bookedEvents: { type: Array, default: [] },
   allRegistered: { type: Array, default: [] },
   registeredPerId: { type: Object, default: {} },
   paymentsHistory: { type: Array, default: [] },

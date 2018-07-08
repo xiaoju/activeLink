@@ -59,6 +59,7 @@ export default function(state = null, { type, payload }) {
         allParents,
         allRegistered,
         itemsPerId,
+        bookedEvents,
         familyPerId,
         familyMedia,
         allEvents
@@ -69,6 +70,7 @@ export default function(state = null, { type, payload }) {
         allParents,
         allRegistered,
         itemsPerId,
+        bookedEvents,
         familyPerId,
         familyMedia,
         allEvents

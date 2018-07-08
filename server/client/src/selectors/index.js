@@ -299,29 +299,35 @@ export const getCheckedItemsNoDoublons = createSelector(
 );
 
 export const getApplyDiscount = createSelector(
-  // create the boolean `applyDiscount`. True if discount price is applicable.
-  [getFamilyAndValidKids, getDiscountQualifiers, getChecked],
-  (familyAndValidKids, discountQualifiers, checked) =>
-    familyAndValidKids
-      .map(
-        userId =>
-          checked[userId].filter(checkedItemId =>
-            discountQualifiers.includes(checkedItemId)
-          ).length
-      )
-      .reduce((total, amount) => total + amount, 0) > 1
-  // Here a detailed breakdown of the logic:
-  // B is number of checked checkboxes of this user that are also discountQualifiers.
-  // B = thisUserId =>
-  //   checked[thisUserId].filter(checkedItemId =>
-  //     discountQualifiers.includes(checkedItemId)
-  //   ).length;
-  // C is number of checked classes that add up towards qualifying for discount
-  // C = Object.keys(checked)
-  //   .map(thisUserId => B(thisUserId))
-  //   .reduce((total, amount) => total + amount);
-  // discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
+  [getCheckedItems, getDiscountQualifiers],
+  (checkedItems, discountQualifiers) =>
+    checkedItems.filter(item => discountQualifiers.includes(item)).length > 1
 );
+
+// export const getApplyDiscount2 = createSelector(
+//   // create the boolean `applyDiscount`. True if discount price is applicable.
+//   [getFamilyAndValidKids, getDiscountQualifiers, getChecked],
+//   (familyAndValidKids, discountQualifiers, checked) =>
+//     familyAndValidKids
+//       .map(
+//         userId =>
+//           checked[userId].filter(checkedItemId =>
+//             discountQualifiers.includes(checkedItemId)
+//           ).length
+//       )
+//       .reduce((total, amount) => total + amount, 0) > 1
+// );
+// Here a detailed breakdown of the logic:
+// B is number of checked checkboxes of this user that are also discountQualifiers.
+// B = thisUserId =>
+//   checked[thisUserId].filter(checkedItemId =>
+//     discountQualifiers.includes(checkedItemId)
+//   ).length;
+// C is number of checked classes that add up towards qualifying for discount
+// C = Object.keys(checked)
+//   .map(thisUserId => B(thisUserId))
+//   .reduce((total, amount) => total + amount);
+// discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
 
 export const getTotal = createSelector(
   [getCheckedItems, getApplyDiscount, getStandardPrices, getDiscountedPrices],
