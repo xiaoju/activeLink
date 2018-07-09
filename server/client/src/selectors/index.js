@@ -259,11 +259,17 @@ export const getLastMediaValid = createSelector(
 // );
 
 export const getFamilyAndValidKids = createSelector(
-  [getFamilyId, getValidKids],
-  (familyId, validKids) =>
-    [familyId] // ['familyId']
-      .concat(validKids) // ['familyId', 'k0', 'k1']
+  [getValidKids],
+  validKids =>
+    ['family'] // ['family']
+      .concat(validKids) // ['family', 'k0', 'k1']
 );
+// export const getFamilyAndValidKids = createSelector(
+//   [getFamilyId, getValidKids],
+//   (familyId, validKids) =>
+//     [familyId] // ['familyId']
+//       .concat(validKids) // ['familyId', 'k0', 'k1']
+// );
 
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out

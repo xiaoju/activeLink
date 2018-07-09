@@ -25,10 +25,11 @@ export default function(state = empty, { type, payload }) {
         return empty;
       } else {
         // necessary because action.payload is undefined when logged out
-        let { familyId, allKids } = payload.profile;
+        let { allKids } = payload.profile;
         let { allItems, mandatoryItems, familyItems } = payload.eventsById.e0;
         let newKidId = 'k' + allKids.length;
-        return [familyId] // ['familyId']
+        // return [familyId] // ['familyId']
+        return ['family']
           .concat(allKids) // ['familyId', 'k0', 'k1']
           .concat(newKidId) // ['familyId', 'k0', 'k1', 'k2']
           .reduce((obj, thisUserId, currentIndex) => {

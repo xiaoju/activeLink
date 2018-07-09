@@ -20,7 +20,8 @@ function ItemCheckboxes({
     <div>
       {(familyItems.includes(itemId)
         ? // handle separately items that are priced per family vs priced per kid
-          [familyId] // [familyId]
+          // [familyId] // [familyId]
+          ['family']
         : validKids
       ).map(thisUserId => (
         <div
