@@ -3,34 +3,34 @@
 // need to check the family items got their cross from 'family' and only him (but can have no cross)
 
 module.exports = ({
+  frontendAllKids,
   frontendTotal,
-  allKids,
-  familyPerId,
+  frontendFamilyById,
+  frontendChecked,
   discountQualifiers,
   standardPrices,
-  discountedPrices,
-  checked
+  discountedPrices
 }) => {
-  const isValidGrade = (familyPerId, userId) =>
-    familyPerId[userId].kidGrade !== ' ';
+  const isValidGrade = (familyById, userId) =>
+    familyById[userId].kidGrade !== ' ';
 
-  const isValidFirstName = (familyPerId, userId) =>
-    familyPerId[userId].firstName !== '';
+  const isValidFirstName = (familyById, userId) =>
+    familyById[userId].firstName !== '';
 
-  const isValidFamilyName = (familyPerId, userId) =>
-    familyPerId[userId].familyName !== '';
+  const isValidFamilyName = (familyById, userId) =>
+    familyById[userId].familyName !== '';
 
   const isValidUser = userId =>
-    isValidFirstName(familyPerId, userId) &&
-    isValidFamilyName(familyPerId, userId) &&
-    isValidGrade(familyPerId, userId);
+    isValidFirstName(frontendFamilyById, userId) &&
+    isValidFamilyName(frontendFamilyById, userId) &&
+    isValidGrade(frontendFamilyById, userId);
 
-  const validKids = allKids.filter(isValidUser);
+  const validKids = frontendAllKids.filter(isValidUser);
 
   const familyAndValidKids = ['family'].concat(validKids);
 
   const checkedItems = familyAndValidKids
-    .map(thisUserId => checked[thisUserId])
+    .map(thisUserId => frontendChecked[thisUserId])
     .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []);
 
   const applyDiscount =

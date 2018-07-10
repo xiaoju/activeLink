@@ -10,8 +10,15 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
 
-// mongoose.connect(keys.mongoURI);
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+// .then(
+//   () => {
+//     /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
+//   },
+//   err => {
+//     console.log('Mongoose connect error: '), err, '********************';
+//   }
+// );
 
 const app = express();
 
