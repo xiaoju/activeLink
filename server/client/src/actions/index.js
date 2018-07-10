@@ -23,9 +23,14 @@ export const fetchUser = () => async dispatch => {
 
 export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
-  const res = await axios.post('/api/payment', payload);
-  // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
-  dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
+  try {
+    const res = await axios.post('/api/payment', payload);
+    // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
+    dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
+  } catch (error) {
+    console.error(error);
+    dispatch(push('/sorry'));
+  }
 };
 
 export function checkCheckbox(userId, itemId) {

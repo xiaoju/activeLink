@@ -148,14 +148,17 @@ module.exports = app => {
               contacts: ['s2'],
               itemGrades: ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
             }
+    try {
           }
-        };
 
-        res.send({ paymentReceipt });
-      } catch (error) {
-        console.error('An error occured: ', error);
-      }
+      res.send({ paymentReceipt });
+    } catch (error) {
+      console.log('An error occured: ', error);
+      res.status(500).send({ error: 'boo:(' });
+      // res.render('error', { error });
+      // res.send({ error });
     }
+    // }
 
     // console.log('BACKEND, received payload: ', req.body);
     // req.user.credits += 5;
