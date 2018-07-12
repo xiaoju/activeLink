@@ -1,5 +1,6 @@
 module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
-  // handle the case if there is no mandatory item:
+  // TODO handle the case if there is no mandatory item:
+  // TODO review this whole logic!
   // if (!mandatoryItems.length) {errorMandatory = false};
 
   //  MANDATORY AND FAMILY
@@ -8,7 +9,7 @@ module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
   const mandatoryFamilyItems = mandatoryItems.filter(item =>
     familyItems.includes(item)
   );
-  console.log('mandatoryFamilyItems: ', mandatoryFamilyItems);
+  // console.log('mandatoryFamilyItems: ', mandatoryFamilyItems);
 
   // handle the case where there is no family item that is mandatory
   // if (!mandatoryFamilyItems.length) {
@@ -21,14 +22,14 @@ module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
     (acc, item) => acc && checked.family.includes(item),
     true
   );
-  console.log('testFamilyMandatory: ', testFamilyMandatory);
+  // console.log('testFamilyMandatory: ', testFamilyMandatory);
 
   // MANDATORY AND NON-FAMILY
   // the items that are "mandatory" but not "family Items":
   mandatoryNonFamilyItems = mandatoryItems.filter(
     item => !familyItems.includes(item)
   );
-  console.log('mandatoryNonFamilyItems: ', mandatoryNonFamilyItems);
+  // console.log('mandatoryNonFamilyItems: ', mandatoryNonFamilyItems);
 
   // TODO handle case where above array is empty (that is when no kid item is mandatory)
   if (!mandatoryNonFamilyItems.length) {
@@ -41,17 +42,17 @@ module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
         true
       )
     ); // [[true, true, true], [false, true]]
-    console.log('testNonFamilyMandatoryArray: ', testNonFamilyMandatoryArray);
+    // console.log('testNonFamilyMandatoryArray: ', testNonFamilyMandatoryArray);
 
     // then we consolidate the results we got for each kid, into one value.
     testNonFamilyMandatory = testNonFamilyMandatoryArray
       .map(smallArray => smallArray.reduce((acc, bool) => acc && bool, true))
       .reduce((acc, bool) => acc && bool, true);
-    console.log('testNonFamilyMandatory: ', testNonFamilyMandatory);
+    // console.log('testNonFamilyMandatory: ', testNonFamilyMandatory);
   }
   // PUT TOGETHER NON-FAMILY and FAMILY
   const errorMandatory = !testFamilyMandatory || !testNonFamilyMandatory;
-  console.log('errorMandatory: ', errorMandatory);
+  // console.log('errorMandatory: ', errorMandatory);
 
   return errorMandatory;
 };

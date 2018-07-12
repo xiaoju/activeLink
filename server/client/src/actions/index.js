@@ -25,12 +25,17 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     const res = await axios.post('/api/payment', payload);
-    // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
+    // console.log('res: ', res);
     dispatch({ type: LOAD_RECEIPT, payload: res.data.paymentReceipt });
   } catch (error) {
-    console.error(error);
+    console.log(
+      'error in axios POST /api/payment or LOAD_RECEIPT dispatch: ',
+      error
+    );
     dispatch(push('/sorry'));
   }
+
+  // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
 };
 
 export function checkCheckbox(userId, itemId) {
