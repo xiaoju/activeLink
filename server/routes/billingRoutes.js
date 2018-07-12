@@ -2,14 +2,15 @@ const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
 const requireLogin = require('../middlewares/requireLogin');
 
-const { eventsById } = require('../models/draftState');
+const mongoose = require('mongoose');
+const Asso = mongoose.model('assos');
+
 const paymentReceiptDraft = require('../models/paymentReceiptDraft');
 const validateCharge = require('../utils/validateCharge');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
-    // try {
-    // console.log('/api/payment (post), req.body: ', req.body);
+    let user; // this will contain the user data, after pulling it from database
 
     // rename the variables from frontend, for clarity:
     const frontendCharge = {
@@ -21,45 +22,41 @@ module.exports = app => {
       frontendChecked: req.body.validChecked
     };
 
-    // look up the event details, from backend "database"
-    const thisEvent = eventsById.e0;
+    // look up the event details, from backend database
+    const thisAsso = await Asso.findOne({ id: 'a0' });
+    const thisEvent = thisAsso.eventsById.e0;
 
-    // check that the charge request received from frontend is valid
+    // ######## form validation ########
     // TODO move this to a middleware
-    // console.log('validateCharge function: ', validateCharge);
+    // check that the charge request received from frontend is valid
     const chargeErrors = validateCharge({
       frontendCharge,
       thisEvent
     });
-    // console.log('chargeErrors: ', chargeErrors);
 
     if (chargeErrors.length) {
       res.status(500).send({
         error:
           'There was something wrong with the data received from the form, so we cancelled the payment.'
       });
-      // this custom error text is actually not shown in my client app
+      // NB this custom error text is actually not shown in my client app
     } else {
-      // if (testTotal.errorTotal) {
-      //   paymentReceipt = {
-      //     error:
-      //       'Mismatch of total price calculated by frontend vs calculated by backEnd'
-      //   };
-      // } else {
-      // try {
+      // ######## form validation ########
 
-      // save data from frontend into database:
+      // save update profile data from frontend into database:
       req.user.allKids = frontendCharge.frontendAllKids;
       req.user.allParents = frontendCharge.frontendAllParents;
       req.user.familyMedia = frontendCharge.frontendMedia;
       req.user.familyPerId = frontendCharge.frontendFamilyById;
-      const user = await req.user.save();
+      user = await req.user.save();
 
-      const chargeDescription = req.body.eventId;
+      const chargeDescription =
+        req.body.familyId + '-' + req.body.eventId + '-';
 
+      // execute the paiement
       let stripeCharge;
       try {
-        stripeCharge = await stripe.charges.create({
+        stripeReceipt = await stripe.charges.create({
           amount: frontendCharge.frontendTotal,
           currency: 'eur',
           description: chargeDescription,
@@ -69,21 +66,32 @@ module.exports = app => {
         console.log('Error while connecting to Stripe server: ', error);
       }
 
-      // console.log('stripeCharge: ', stripeCharge);
-      // TODO save stripeCharge to database for future reference.
-
-      // TODO check that payment succeeded
-      const chargeStatus = stripeCharge.status;
-      const last4 = stripeCharge.source.last4;
-      const receiptTimeStamp = stripeCharge.created;
-
-      // TODO save the paid classes to the user in database,
-
-      // TODO then extract the most recent payment receipt,
-      // which will look like `paymentReceiptDraft`
-
-      // TODO send the order confirmation to frontEnd:
+      // TODO build a correct paymentReceipt
       res.send(paymentReceiptDraft);
+
+      // save stripeCharge receipt into database for future reference:
+      try {
+        ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt);
+        user = await req.user.save();
+      } catch (error) {
+        console.log('Error while saving stripeCharge to database: ', error);
+      }
+
+      if (stripeReceipt.status === 'succeeded') {
+        try {
+          console.log('I should be saving the paid classes to database!');
+          // save the paid classes to user profile in database
+          // and to allUsers database
+          // TODO write code!!
+          // registeredCount = req.user.registeredCount.push();
+          // registeredPerId;
+          // user = await req.user.save();
+        } catch (error) {
+          console.log('Error while saving the paid classes to database');
+        }
+      }
+
+      // send the payment receipt to front end:
     }
 
     // } catch (error) {

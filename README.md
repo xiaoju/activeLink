@@ -114,7 +114,8 @@ force push to heroku:
 
 `/api/logout `          log out!
 
-
+## initial seeding of Database
+- using a mongoDB GUI like MongoHub or Robo3T, add one `association` record, including one event and its items, as per example file `/server/models/assoDraft.js`.
 
 ## authentication process
 

@@ -32,13 +32,6 @@ passport.use(
       } else {
         const newUser = await new User({
           googleId: profile.id
-          // allKids:
-          // allParents:,
-          // familyMedia:,
-          // allRegistered:,
-          // registeredPerId:,
-          // paymentsHistory:,
-          // familyPerId:,
         }).save();
         done(null, newUser);
       }
