@@ -123,7 +123,7 @@ module.exports = {
     e0: {
       eventId: 'e0',
       eventName: 'Registration 2018-2019',
-      eventProviderName: 'English Link',
+      // eventProviderName: 'English Link',
       eventContacts: ['s1', 's2'],
       bookingStartDate: '',
       bookingEndDate: '',

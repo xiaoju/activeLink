@@ -6,12 +6,12 @@ import {
   getApplyDiscount,
   getDiscountQualifiers,
   getChecked,
-  getItemsPerId,
+  getItemsById,
   getFamilyAndValidKids,
   getStandardPrices,
   getDiscountedPrices,
   getTotal,
-  getFamilyPerId
+  getFamilyById
 } from '../selectors';
 
 class OrderSummary extends Component {
@@ -22,12 +22,12 @@ class OrderSummary extends Component {
       applyDiscount,
       discountQualifiers,
       checked,
-      itemsPerId,
+      itemsById,
       familyAndValidKids,
       standardPrices,
       discountedPrices,
       total,
-      familyPerId
+      familyById
     } = this.props;
 
     let quantity = itemId => checkedItems.filter(x => x === itemId).length;
@@ -41,7 +41,7 @@ class OrderSummary extends Component {
       familyAndValidKids // [familyId,'k0', 'k1' ]
         .slice(1) // ['k0', 'k1']
         .filter(userId => checked[userId].includes(itemId))
-        .map(userId => familyPerId[userId].firstName)
+        .map(userId => familyById[userId].firstName)
         .join(' & ');
 
     let discountNotice = itemId =>
@@ -66,7 +66,7 @@ class OrderSummary extends Component {
               {filteredItems.map(itemId => (
                 <tr key={itemId}>
                   <td>
-                    <strong>{itemsPerId[itemId].name}</strong>
+                    <strong>{itemsById[itemId].name}</strong>
                   </td>
                   <td>{quantity(itemId)}</td>
                   <td>{kidNames(itemId)}</td>
@@ -98,12 +98,12 @@ function mapStateToProps(state) {
     applyDiscount: getApplyDiscount(state),
     discountQualifiers: getDiscountQualifiers(state),
     checked: getChecked(state),
-    itemsPerId: getItemsPerId(state),
+    itemsById: getItemsById(state),
     familyAndValidKids: getFamilyAndValidKids(state),
     standardPrices: getStandardPrices(state),
     discountedPrices: getDiscountedPrices(state),
     total: getTotal(state),
-    familyPerId: getFamilyPerId(state)
+    familyById: getFamilyById(state)
   };
 }
 

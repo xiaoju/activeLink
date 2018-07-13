@@ -1,9 +1,9 @@
 module.exports = ({
   validKids,
   validChecked,
-  validFamilyPerId,
+  validFamilyById,
   allItems,
-  itemsPerId
+  itemsById
 }) => {
   // TODO write the code here!!!
 

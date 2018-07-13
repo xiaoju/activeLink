@@ -1,5 +1,8 @@
 const passport = require('passport');
-const { eventsById } = require('../models/draftState');
+// const { eventsById } = require('../models/draftState');
+
+const mongoose = require('mongoose');
+const Asso = mongoose.model('assos');
 
 module.exports = app => {
   app.get(
@@ -38,9 +41,20 @@ module.exports = app => {
     res.redirect('/');
   });
 
-  app.get('/api/current_user', (req, res) => {
+  app.get('/api/current_user', async (req, res) => {
     // console.log('authRoute.js - req.user: ', req.user);
     // res.send(req.user);
+
+    let thisAsso;
+    try {
+      thisAsso = await Asso.findOne({ id: 'a0' });
+    } catch (error) {
+      console.log(
+        "/api/current_user (get) error, couldn't access event in database ",
+        error
+      );
+    }
+    // console.log('authRoutes (get), thisAsso: ', thisAsso);
 
     if (!req.user) {
       res.send(null);
@@ -52,14 +66,22 @@ module.exports = app => {
           familyId: req.user.familyId,
           allKids: req.user.allKids,
           allParents: req.user.allParents,
-          familyPerId: req.user.familyPerId,
+          familyById: req.user.familyById,
           familyMedia: req.user.familyMedia,
           allRegistered: req.user.allRegistered, // TODO rename to allRegisteredItems
-          registeredPerId: req.user.registeredPerId, // TODO rename to registeredItemsById
-          paymentsHistory: req.user.paymentsHistory,
+          registeredById: req.user.registeredById, // TODO rename to registeredItemsById
+          paymentReceipts: req.user.paymentReceipts,
           allEvents: req.user.allEvents
         },
-        eventsById // this goes to the eventReducer
+        thisEvent: {
+          // this goes to the eventReducer
+          ...thisAsso.eventsById.e0,
+          eventProviderName: thisAsso.name,
+          itemsById: thisAsso.itemsById,
+          assoAdress: thisAsso.assoAdress,
+          allStaff: thisAsso.allStaff,
+          staffById: thisAsso.staffById
+        }
       });
     }
   });

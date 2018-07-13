@@ -35,7 +35,7 @@ module.exports = {
 
     allKids: ['k0', 'k1', 'k2'],
     allParents: ['p0'],
-    familyPerId: {
+    familyById: {
       k0: {
         id: 'k0',
         firstName: 'a',
@@ -80,7 +80,7 @@ module.exports = {
       { userId: 'k0', items: ['i4', 'i7'] },
       { userId: 'k1', items: ['i4'] }
     ],
-    itemsPerId: {
+    itemsById: {
       i0: {
         id: 'i0',
         name: 'Registration to the association',

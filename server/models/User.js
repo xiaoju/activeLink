@@ -21,9 +21,9 @@ const userSchema = new Schema({
   },
   bookedEvents: { type: Array, default: [] },
   allRegistered: { type: Array, default: [] },
-  registeredPerId: { type: Object, default: {} },
+  registeredById: { type: Object, default: {} },
   paymentReceipts: { type: Array, default: [] },
-  familyPerId: {
+  familyById: {
     type: Object,
     default: {
       p0: {

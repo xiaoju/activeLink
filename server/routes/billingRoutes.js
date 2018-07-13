@@ -17,12 +17,13 @@ module.exports = app => {
       frontendAllKids: req.body.validKids,
       frontendAllParents: req.body.validParents,
       frontendMedia: req.body.validMedia,
-      frontendFamilyById: req.body.validFamilyPerId,
+      frontendFamilyById: req.body.validFamilyById,
       frontendTotal: req.body.total,
       frontendChecked: req.body.validChecked
     };
 
     // look up the event details, from backend database
+    // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
     const thisAsso = await Asso.findOne({ id: 'a0' });
     const thisEvent = thisAsso.eventsById.e0;
 
@@ -47,7 +48,7 @@ module.exports = app => {
       req.user.allKids = frontendCharge.frontendAllKids;
       req.user.allParents = frontendCharge.frontendAllParents;
       req.user.familyMedia = frontendCharge.frontendMedia;
-      req.user.familyPerId = frontendCharge.frontendFamilyById;
+      req.user.familyById = frontendCharge.frontendFamilyById;
       user = await req.user.save();
 
       const chargeDescription =
@@ -84,7 +85,7 @@ module.exports = app => {
           // and to allUsers database
           // TODO write code!!
           // registeredCount = req.user.registeredCount.push();
-          // registeredPerId;
+          // registeredById;
           // user = await req.user.save();
         } catch (error) {
           console.log('Error while saving the paid classes to database');

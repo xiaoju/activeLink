@@ -22,7 +22,7 @@ export default function(state = null, { type, payload }) {
       if (!payload) return null;
       else {
         // payload is undefined when logged out
-        let { allKids, allParents, familyMedia, familyPerId } = payload.profile;
+        let { allKids, allParents, familyMedia, familyById } = payload.profile;
         let newParentId = 'p' + allParents.length;
         let newKidId = 'k' + allKids.length;
         return {
@@ -35,8 +35,8 @@ export default function(state = null, { type, payload }) {
             value: '', // 012345678 or abc@gmail.com
             tags: ['private']
           }),
-          familyPerId: {
-            ...familyPerId,
+          familyById: {
+            ...familyById,
             [newKidId]: {
               id: newKidId,
               firstName: '',
@@ -58,9 +58,9 @@ export default function(state = null, { type, payload }) {
         allKids,
         allParents,
         allRegistered,
-        itemsPerId,
+        itemsById,
         bookedEvents,
-        familyPerId,
+        familyById,
         familyMedia,
         allEvents
       } = payload;
@@ -69,9 +69,9 @@ export default function(state = null, { type, payload }) {
         allKids,
         allParents,
         allRegistered,
-        itemsPerId,
+        itemsById,
         bookedEvents,
-        familyPerId,
+        familyById,
         familyMedia,
         allEvents
       };
@@ -81,10 +81,10 @@ export default function(state = null, { type, payload }) {
       let { userId, fieldName, value } = payload;
       return {
         ...state,
-        familyPerId: {
-          ...state.familyPerId,
+        familyById: {
+          ...state.familyById,
           [userId]: {
-            ...state.familyPerId[userId],
+            ...state.familyById[userId],
             [fieldName]: value
           }
         }
@@ -98,8 +98,8 @@ export default function(state = null, { type, payload }) {
     //       return {
     //         ...state,
     //         allKids: allKids.concat(newKidId),
-    //         familyPerId: {
-    //           ...state.familyPerId,
+    //         familyById: {
+    //           ...state.familyById,
     //           [newKidId]: {
     //             id: newKidId,
     //             firstName: '',
@@ -114,8 +114,8 @@ export default function(state = null, { type, payload }) {
     //       return {
     //         ...state,
     //         allParents: allParents.concat(newParentId),
-    //         familyPerId: {
-    //           ...state.familyPerId,
+    //         familyById: {
+    //           ...state.familyById,
     //           [newParentId]: {
     //             id: newParentId,
     //             firstName: '',
@@ -135,8 +135,8 @@ export default function(state = null, { type, payload }) {
       return {
         ...state,
         allKids: state.allKids.concat(newKidId),
-        familyPerId: {
-          ...state.familyPerId,
+        familyById: {
+          ...state.familyById,
           [newKidId]: {
             id: newKidId,
             firstName: '',
@@ -152,8 +152,8 @@ export default function(state = null, { type, payload }) {
       return {
         ...state,
         allParents: state.allParents.concat(newParentId),
-        familyPerId: {
-          ...state.familyPerId,
+        familyById: {
+          ...state.familyById,
           [newParentId]: {
             id: newParentId,
             firstName: '',
@@ -170,7 +170,7 @@ export default function(state = null, { type, payload }) {
           media: 'more_horiz',
           value: '',
           tags: [
-            !!state.familyPerId['p0'] && state.familyPerId['p0'].firstName,
+            !!state.familyById['p0'] && state.familyById['p0'].firstName,
             'private',
             'mobile'
           ]

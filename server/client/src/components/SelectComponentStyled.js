@@ -7,7 +7,7 @@ import {
   getMediaObject,
   getAllParents,
   getValidParents,
-  getFamilyPerId
+  getFamilyById
 } from '../selectors';
 import { updateTags } from '../actions/index';
 import PropTypes from 'prop-types';
@@ -27,10 +27,10 @@ class SelectComponentStyled extends Component {
   }
 
   render() {
-    const { mediaObject, validParents, familyPerId } = this.props;
+    const { mediaObject, validParents, familyById } = this.props;
 
     const options = validParents // ['p1', 'p3']
-      .map(parentId => familyPerId[parentId].firstName) // ['Donald', 'Rosemary', '']
+      .map(parentId => familyById[parentId].firstName) // ['Donald', 'Rosemary', '']
       .filter(firstName => !!firstName) // ['Donald', 'Rosemary']
       .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
       .concat([
@@ -214,7 +214,7 @@ function mapStateToProps(state, props) {
     mediaObject: getMediaObject(state, props),
     allParents: getAllParents(state),
     validParents: getValidParents(state),
-    familyPerId: getFamilyPerId(state)
+    familyById: getFamilyById(state)
   };
 }
 

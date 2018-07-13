@@ -5,6 +5,7 @@ import { LOAD_RECEIPT, FETCH_USER } from '../actions/types';
 const empty = null;
 
 export default function(state = empty, { type, payload }) {
+  // console.log('eventReducer, payload: ', payload);
   switch (type) {
     case LOAD_RECEIPT:
       return empty;
@@ -25,9 +26,9 @@ export default function(state = empty, { type, payload }) {
           discountQualifiers,
           mandatoryItems,
           familyItems,
-          staffPerId,
-          itemsPerId
-        } = payload.eventsById.e0;
+          staffById,
+          itemsById
+        } = payload.thisEvent;
         return {
           eventId,
           eventName,
@@ -39,8 +40,8 @@ export default function(state = empty, { type, payload }) {
           discountQualifiers,
           mandatoryItems,
           familyItems,
-          staffPerId,
-          itemsPerId
+          staffById,
+          itemsById
         };
       }
 

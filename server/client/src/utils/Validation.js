@@ -21,17 +21,17 @@ export function validateNumber(string) {
 // }
 //
 // export function isValidGrade(userId) {
-//   return !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade !== '_';
+//   return !!familyById[userId].kidGrade && familyById[userId].kidGrade !== '_';
 // }
 //
 // export function isValidFamilyName(userId) {
 //   return (
-//     !!familyPerId[userId].familyName && familyPerId[userId].familyName !== ''
+//     !!familyById[userId].familyName && familyById[userId].familyName !== ''
 //   );
 // }
 //
 // export function isValidFirstName(userId) {
 //   return (
-//     !!familyPerId[userId].firstName && familyPerId[userId].firstName !== ''
+//     !!familyById[userId].firstName && familyById[userId].firstName !== ''
 //   );
 // }

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 function ItemCheckboxes({
   familyItems,
-  familyPerId,
+  familyById,
   itemId,
   mergedFamilyName,
-  itemsPerId,
+  itemsById,
   checked,
   uncheckCheckbox,
   checkCheckbox,
@@ -27,8 +27,8 @@ function ItemCheckboxes({
         <div
           className={
             !familyItems.includes(itemId) && // familyItems don't have requiredGrades but still should not be disabled!
-            !itemsPerId[itemId].itemGrades.includes(
-              familyPerId[thisUserId].kidGrade
+            !itemsById[itemId].itemGrades.includes(
+              familyById[thisUserId].kidGrade
             )
               ? 'usernameCheckboxDisabled'
               : 'usernameCheckbox'
@@ -51,8 +51,8 @@ function ItemCheckboxes({
             checked={checked[thisUserId].includes(itemId) && 'checked'}
             disabled={
               !familyItems.includes(itemId) &&
-              !itemsPerId[itemId].itemGrades.includes(
-                familyPerId[thisUserId].kidGrade
+              !itemsById[itemId].itemGrades.includes(
+                familyById[thisUserId].kidGrade
               ) &&
               'disabled'
             }
@@ -63,7 +63,7 @@ function ItemCheckboxes({
             </label>
           ) : (
             <label htmlFor={itemId + '_' + thisUserId}>
-              {familyPerId[thisUserId].firstName}
+              {familyById[thisUserId].firstName}
             </label>
           )}
         </div>
@@ -76,10 +76,10 @@ export default ItemCheckboxes;
 
 ItemCheckboxes.propTypes = {
   familyItems: PropTypes.array.isRequired,
-  familyPerId: PropTypes.object.isRequired,
+  familyById: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
   mergedFamilyName: PropTypes.string.isRequired,
-  itemsPerId: PropTypes.object.isRequired,
+  itemsById: PropTypes.object.isRequired,
   checked: PropTypes.object.isRequired,
   uncheckCheckbox: PropTypes.func.isRequired,
   checkCheckbox: PropTypes.func.isRequired,

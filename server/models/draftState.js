@@ -37,7 +37,7 @@ module.exports = {
       discountQualifiers: ['i1', 'i2'],
       mandatoryItems: ['i0'],
       familyItems: ['i0'], // items that are charged once per family, not per kid
-      staffPerId: {
+      staffById: {
         s0: {
           id: 's0',
           firstName: 'Michelle',
@@ -71,7 +71,7 @@ module.exports = {
           phone: '06 03 03 03 03'
         }
       },
-      itemsPerId: {
+      itemsById: {
         i0: {
           id: 'i0',
           name: 'Registration to the association',
@@ -178,10 +178,10 @@ module.exports = {
       { userId: 'k0', items: [] },
       { userId: 'k1', items: [] }
     ],
-    registeredPerId: {}, // same
+    registeredById: {}, // same
     paymentsHistory: [],
 
-    familyPerId: {
+    familyById: {
       p0: {
         id: 'p0',
         firstName: 'Donald',

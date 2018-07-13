@@ -26,7 +26,7 @@ export default function(state = empty, { type, payload }) {
       } else {
         // necessary because action.payload is undefined when logged out
         let { allKids } = payload.profile;
-        let { allItems, mandatoryItems, familyItems } = payload.eventsById.e0;
+        let { allItems, mandatoryItems, familyItems } = payload.thisEvent;
         let newKidId = 'k' + allKids.length;
         // return [familyId] // ['familyId']
         return ['family']

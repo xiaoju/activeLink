@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  getStaffPerId,
+  getStaffById,
   getEventProviderName,
   getEventContacts
 } from '../selectors';
@@ -10,7 +10,7 @@ import Payments from './Payments';
 
 class ConfirmStep extends Component {
   render() {
-    const { staffPerId, eventProviderName, eventContacts } = this.props;
+    const { staffById, eventProviderName, eventContacts } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -36,11 +36,11 @@ class ConfirmStep extends Component {
               {eventContacts.map(contactId => (
                 <div key={contactId} className="eventContacts">
                   <span>
-                    {staffPerId[contactId].firstName}{' '}
-                    {staffPerId[contactId].familyName}
+                    {staffById[contactId].firstName}{' '}
+                    {staffById[contactId].familyName}
                   </span>
-                  <span>{staffPerId[contactId].phone}</span>
-                  <span>{staffPerId[contactId].email}</span>
+                  <span>{staffById[contactId].phone}</span>
+                  <span>{staffById[contactId].email}</span>
                 </div>
               ))}
             </div>
@@ -53,7 +53,7 @@ class ConfirmStep extends Component {
 
 function mapStateToProps(state) {
   return {
-    staffPerId: getStaffPerId(state),
+    staffById: getStaffById(state),
     eventProviderName: getEventProviderName(state),
     eventContacts: getEventContacts(state)
   };
@@ -62,7 +62,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ConfirmStep);
 
 ConfirmStep.propTypes = {
-  staffPerId: PropTypes.object.isRequired,
+  staffById: PropTypes.object.isRequired,
   eventProviderName: PropTypes.string.isRequired,
   eventContacts: PropTypes.array.isRequired
 };

@@ -11,9 +11,9 @@ export const getDiscountedPrices = state => state.event.discountedPrices; // [{r
 export const getMandatoryItems = state => state.event.mandatoryItems;
 export const getAllItems = state => state.event.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
 export const getFamilyItems = state => state.event.familyItems;
-export const getItemsPerId = state => state.event.itemsPerId;
+export const getItemsById = state => state.event.itemsById;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
-export const getStaffPerId = state => state.event.staffPerId;
+export const getStaffById = state => state.event.staffById;
 
 export const getProfile = state => state.profile;
 export const getFamilyMedia = state => state.profile.familyMedia;
@@ -21,14 +21,14 @@ export const getFamilyId = state => state.profile.familyId;
 export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
 export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
-export const getFamilyPerId = state => state.profile.familyPerId;
+export const getFamilyById = state => state.profile.familyById;
 export const getEventsById = state => state.profile.eventsById;
 export const getUserFamilyName = (state, { userId }) =>
-  state.profile.familyPerId[userId].familyName;
+  state.profile.familyById[userId].familyName;
 export const getFirstName = (state, { userId }) =>
-  state.profile.familyPerId[userId].firstName;
+  state.profile.familyById[userId].firstName;
 export const getKidGrade = (state, { userId }) =>
-  state.profile.familyPerId[userId].kidGrade;
+  state.profile.familyById[userId].kidGrade;
 export const getMediaObject = (state, { index }) =>
   state.profile.familyMedia[index];
 
@@ -43,11 +43,11 @@ export const getReceipt = state => state.receipt;
 
 // export const getInvalidUsers = createSelector(
 //   // format of the output: { 'k0': true, 'k1': true, 'p0': true, 'p1': true}
-//   [getAllUsers, getFamilyPerId],
-//   (allUsers, familyPerId) => {
+//   [getAllUsers, getFamilyById],
+//   (allUsers, familyById) => {
 //     const isInvalidGrade = function isInvalidGrade(userId) {
 //       return (
-//         !!familyPerId[userId].kidGrade && familyPerId[userId].kidGrade === ' '
+//         !!familyById[userId].kidGrade && familyById[userId].kidGrade === ' '
 //         // user is a kid (this field is a thing ) AND grade is not set
 //         // NB could just run this on allKids, then no need check if kidGrade exists.
 //       );
@@ -55,13 +55,13 @@ export const getReceipt = state => state.receipt;
 //
 //     const isInvalidFamilyName = function isInvalidFamilyName(userId) {
 //       return (
-//         familyPerId[userId].familyName === ''
+//         familyById[userId].familyName === ''
 //         // familyName is not set
 //       );
 //     };
 //
 //     const isInvalidFirstName = function isInvalidFirstName(userId) {
-//       return familyPerId[userId].firstName === '';
+//       return familyById[userId].firstName === '';
 //       // firstName is not set
 //     };
 //
@@ -81,12 +81,12 @@ export const getReceipt = state => state.receipt;
 // );
 
 export const getValidKids = createSelector(
-  [getAllKids, getFamilyPerId],
-  (allKids, familyPerId) => {
+  [getAllKids, getFamilyById],
+  (allKids, familyById) => {
     const isValidGrade = function isValidGrade(userId) {
       return (
-        // !!familyPerId[userId].kidGrade &&
-        familyPerId[userId].kidGrade !== ' '
+        // !!familyById[userId].kidGrade &&
+        familyById[userId].kidGrade !== ' '
         // user is a kid (this field is a thing ) AND grade is not set
         // NB just running this on allKids, then no need check if kidGrade exists.
       );
@@ -94,13 +94,13 @@ export const getValidKids = createSelector(
 
     const isValidFamilyName = function isValidFamilyName(userId) {
       return (
-        familyPerId[userId].familyName !== ''
+        familyById[userId].familyName !== ''
         // familyName is not set
       );
     };
 
     const isValidFirstName = function isValidFirstName(userId) {
-      return familyPerId[userId].firstName !== '';
+      return familyById[userId].firstName !== '';
       // firstName is not set
     };
 
@@ -117,16 +117,16 @@ export const getValidKids = createSelector(
 );
 
 export const getValidParents = createSelector(
-  [getAllParents, getFamilyPerId],
-  (allParents, familyPerId) => {
+  [getAllParents, getFamilyById],
+  (allParents, familyById) => {
     const isValidFamilyName = function isValidFamilyName(userId) {
       return (
-        familyPerId[userId].familyName !== '' // familyName is set
+        familyById[userId].familyName !== '' // familyName is set
       );
     };
 
     const isValidFirstName = function isValidFirstName(userId) {
-      return familyPerId[userId].firstName !== ''; // firstName is set
+      return familyById[userId].firstName !== ''; // firstName is set
     };
 
     const isValidUser = function isValidUser(userId) {
@@ -194,8 +194,8 @@ export const getLastMediaValid = createSelector(
 // );
 
 // export const getValidKids = createSelector(
-//   [getAllKids, getFamilyPerId],
-//   (allKids, familyPerId) =>
+//   [getAllKids, getFamilyById],
+//   (allKids, familyById) =>
 //     // condition for 'not validated': no first name, or no family name,
 //     // or (if this is a kid, which is true if it has a kidGrade property)
 //     // empty kidGrade
@@ -206,24 +206,24 @@ export const getLastMediaValid = createSelector(
 //     // !!firstName && !!familytName && (!!kidGrade && kidGrade !== ' ')
 //     allKids.map(
 //       kidId =>
-//         // {firstName, parentId, kidGrade} = familyPerId[kidId];
+//         // {firstName, parentId, kidGrade} = familyById[kidId];
 //         ({
-//           firstNameCondition: !!familyPerId[kidId].firstName,
-//           familyNameCondition: !!familyPerId[kidId].familytName,
+//           firstNameCondition: !!familyById[kidId].firstName,
+//           familyNameCondition: !!familyById[kidId].familytName,
 //           kidGradeCondition:
-//             !!familyPerId[kidId].kidGrade && familyPerId[kidId].kidGrade !== ' '
+//             !!familyById[kidId].kidGrade && familyById[kidId].kidGrade !== ' '
 //         })
 //
-//       // !!familyPerId[kidId].firstName &&
-//       // !!familyPerId[kidId].familytName &&
-//       // (!!familyPerId[kidId].kidGrade && familyPerId[kidId].kidGrade !== ' ')
+//       // !!familyById[kidId].firstName &&
+//       // !!familyById[kidId].familytName &&
+//       // (!!familyById[kidId].kidGrade && familyById[kidId].kidGrade !== ' ')
 //     )
 // );
 
 // export const getValidParents = createSelector (
 //   [getAllParents],
 //   (allKids) => allKids.map((kidId)=>(
-//         const {firstName, parentId, kidGrade} = familyPerId[kidId]
+//         const {firstName, parentId, kidGrade} = familyById[kidId]
 //         return (!!firstName && !!familytName && (!!kidGrade && kidGrade !== ' '))
 //     )
 // );
@@ -274,14 +274,14 @@ export const getFamilyAndValidKids = createSelector(
 export const getMergedFamilyName = createSelector(
   // extract the family names of all parents from the profile form, filter out
   // doublons, then concatenate string with '-' in between.
-  [getValidParents, getFamilyPerId],
-  (validParents, familyPerId) =>
+  [getValidParents, getFamilyById],
+  (validParents, familyById) =>
     [
       ...new Set(
         // allParents
         validParents
           // .slice(0, -1) // remove item from the 'create new parent' field
-          .map(thisParentId => familyPerId[thisParentId].familyName)
+          .map(thisParentId => familyById[thisParentId].familyName)
       )
     ].join('-')
 );
@@ -384,12 +384,12 @@ export const getFormIsValid = createSelector(
   })
 );
 
-export const getValidFamilyPerId = createSelector(
-  [getValidUsers, getFamilyPerId],
-  // (validUsers, familyPerId) => validUsers.map(userId => familyPerId[userId])
-  (validUsers, familyPerId) =>
+export const getValidFamilyById = createSelector(
+  [getValidUsers, getFamilyById],
+  // (validUsers, familyById) => validUsers.map(userId => familyById[userId])
+  (validUsers, familyById) =>
     validUsers.reduce((obj, userId) => {
-      obj[userId] = familyPerId[userId];
+      obj[userId] = familyById[userId];
       return obj;
     }, {})
 );

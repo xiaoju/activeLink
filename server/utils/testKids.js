@@ -2,10 +2,10 @@ module.exports = ({ allKids, familyById }) => {
   const isValidGrade = (familyById, userId) =>
     familyById[userId].kidGrade !== ' ';
 
-  const isValidFirstName = (familyPerId, userId) =>
+  const isValidFirstName = (familyById, userId) =>
     familyById[userId].firstName !== '';
 
-  const isValidFamilyName = (familyPerId, userId) =>
+  const isValidFamilyName = (familyById, userId) =>
     familyById[userId].familyName !== '';
 
   const isValidUser = userId =>
