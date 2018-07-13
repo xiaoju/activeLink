@@ -1,4 +1,4 @@
-// this reducer is the data that client can modify
+import uuid from 'uuid4';
 
 import {
   FETCH_USER,
@@ -23,8 +23,10 @@ export default function(state = null, { type, payload }) {
       else {
         // payload is undefined when logged out
         let { allKids, allParents, familyMedia, familyById } = payload.profile;
-        let newParentId = 'p' + allParents.length;
-        let newKidId = 'k' + allKids.length;
+        // let newParentId = 'p' + allParents.length;
+        let newParentId = uuid();
+        let newKidId = uuid();
+        // let newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
           ...payload.profile,
@@ -131,7 +133,8 @@ export default function(state = null, { type, payload }) {
     //   }
 
     case ADD_KID_ROW: {
-      let newKidId = 'k' + state.allKids.length;
+      // let newKidId = 'k' + state.allKids.length;
+      let newKidId = uuid();
       return {
         ...state,
         allKids: state.allKids.concat(newKidId),
@@ -148,7 +151,8 @@ export default function(state = null, { type, payload }) {
     }
 
     case ADD_PARENT_ROW: {
-      let newParentId = 'p' + state.allParents.length;
+      // let newParentId = 'p' + state.allParents.length;
+      let newParentId = uuid();
       return {
         ...state,
         allParents: state.allParents.concat(newParentId),
@@ -170,9 +174,11 @@ export default function(state = null, { type, payload }) {
           media: 'more_horiz',
           value: '',
           tags: [
-            !!state.familyById['p0'] && state.familyById['p0'].firstName,
-            'private',
-            'mobile'
+            // state.allParents.length > 0 &&
+            //   !!state.familyById[state.allParents[0]] &&
+            //   state.familyById[state.allParents[0]].firstName,
+            'private'
+            // 'mobile'
           ]
         })
       };

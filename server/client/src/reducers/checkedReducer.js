@@ -7,6 +7,8 @@ import {
   ADD_KID_ROW
 } from '../actions/types';
 
+import uuid from 'uuid4';
+
 const empty = null;
 
 export default function(state = empty, { type, payload }) {
@@ -27,7 +29,8 @@ export default function(state = empty, { type, payload }) {
         // necessary because action.payload is undefined when logged out
         let { allKids } = payload.profile;
         let { allItems, mandatoryItems, familyItems } = payload.thisEvent;
-        let newKidId = 'k' + allKids.length;
+        // let newKidId = 'k' + allKids.length;
+        let newKidId = uuid();
         // return [familyId] // ['familyId']
         return ['family']
           .concat(allKids) // ['familyId', 'k0', 'k1']
@@ -52,7 +55,8 @@ export default function(state = empty, { type, payload }) {
     }
 
     case ADD_KID_ROW: {
-      let newKidId = 'k' + (Object.keys(state).length - 1);
+      // let newKidId = 'k' + (Object.keys(state).length - 1);
+      let newKidId = uuid();
       return {
         ...state,
         [newKidId]: []

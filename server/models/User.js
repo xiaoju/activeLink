@@ -13,8 +13,8 @@ const userSchema = new Schema({
   // credits: { type: Number, default: 0 },
   googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
-  allKids: { type: Array, default: ['k0'] },
-  allParents: { type: Array, default: ['p0'] },
+  allKids: { type: Array, default: [] },
+  allParents: { type: Array, default: [] },
   familyMedia: {
     type: Array,
     default: [{ media: 'email', value: '', tags: ['private'] }]
@@ -23,22 +23,7 @@ const userSchema = new Schema({
   allRegistered: { type: Array, default: [] },
   registeredById: { type: Object, default: {} },
   paymentReceipts: { type: Array, default: [] },
-  familyById: {
-    type: Object,
-    default: {
-      p0: {
-        id: 'p0',
-        firstName: '',
-        familyName: ''
-      },
-      k0: {
-        id: 'k0',
-        firstName: '',
-        familyName: '',
-        kidGrade: ' '
-      }
-    }
-  }
+  familyById: { type: Object, default: {} }
   // local: {
   //   email: String,
   //   password: String
