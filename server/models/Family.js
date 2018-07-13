@@ -9,7 +9,7 @@ const { Schema } = mongoose;
 //   credits: { type: Number, default: 0 }
 // });
 
-const userSchema = new Schema({
+const familySchema = new Schema({
   // credits: { type: Number, default: 0 },
   googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
@@ -54,4 +54,4 @@ const userSchema = new Schema({
   // }
 });
 
-mongoose.model('users', userSchema);
+mongoose.model('families', familySchema);

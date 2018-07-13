@@ -41,16 +41,19 @@ module.exports = app => {
     res.redirect('/');
   });
 
-  app.get('/api/current_user', async (req, res) => {
-    // console.log('authRoute.js - req.user: ', req.user);
+  app.get('/api/current_family', async (req, res) => {
+    console.log(
+      'authRoute.js is handling the request - req.user: ',
+      req.user
+    );
+    console.log('req.user: ', req.user);
     // res.send(req.user);
-
     let thisAsso;
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });
     } catch (error) {
       console.log(
-        "/api/current_user (get) error, couldn't access event in database ",
+        "/api/current_family (get) error, couldn't access event in database ",
         error
       );
     }

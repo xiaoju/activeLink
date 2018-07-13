@@ -5,15 +5,15 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
-const User = mongoose.model('users');
+const Family = mongoose.model('families');
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser((family, done) => {
+  done(null, family.id);
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id).then(user => {
-    done(null, user);
+  Family.findById(id).then(family => {
+    done(null, family);
   });
 });
 
@@ -26,14 +26,14 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ googleId: profile.id });
-      if (existingUser) {
-        return done(null, existingUser);
+      const existingFamily = await Family.findOne({ googleId: profile.id });
+      if (existingFamily) {
+        return done(null, existingFamily);
       } else {
-        const newUser = await new User({
+        const newFamily = await new Family({
           googleId: profile.id
         }).save();
-        done(null, newUser);
+        done(null, newFamily);
       }
     }
   )

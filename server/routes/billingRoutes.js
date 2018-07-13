@@ -10,7 +10,7 @@ const validateCharge = require('../utils/validateCharge');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
-    let user; // this will contain the user data, after pulling it from database
+    let family; // this will contain the family data, after pulling it from database
 
     // rename the variables from frontend, for clarity:
     const frontendCharge = {
@@ -49,7 +49,7 @@ module.exports = app => {
       req.user.allParents = frontendCharge.frontendAllParents;
       req.user.familyMedia = frontendCharge.frontendMedia;
       req.user.familyById = frontendCharge.frontendFamilyById;
-      user = await req.user.save();
+      family = await req.user.save();
 
       const chargeDescription =
         req.body.familyId + '-' + req.body.eventId + '-';
@@ -73,7 +73,7 @@ module.exports = app => {
       // save stripeCharge receipt into database for future reference:
       try {
         ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt);
-        user = await req.user.save();
+        family = await req.user.save();
       } catch (error) {
         console.log('Error while saving stripeCharge to database: ', error);
       }

@@ -14,7 +14,7 @@ import {
 } from './types';
 
 export const fetchUser = () => async dispatch => {
-  const fetched = await axios.get('/api/current_user');
+  const fetched = await axios.get('/api/current_family');
   // TODO dispatch something if there is no answer from backend or from google
   // so that user knows where it's going wrong
   // console.log('action: FETCH_USER. fetched: ', fetched);
