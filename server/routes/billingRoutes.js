@@ -16,6 +16,7 @@ module.exports = app => {
     // rename the variables from frontend, for clarity:
     const frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
+      frontendAllParentsAndKids = frontendAllKids.concat(frontendAllParents),
       frontendMedia = req.body.validMedia,
       frontendFamilyById = req.body.validFamilyById,
       frontendTotal = req.body.total,
@@ -51,6 +52,34 @@ module.exports = app => {
     } else {
       // ######## form validation ########
 
+      // Remove from `users` collection the kids and parents that have been
+      // deleted as per frontend form. For this, compare what IDs are missing in
+      //  the new `frontendAllParentsAndKids` compared to the old
+      // `allKids + allParents from family collection`
+      if (req.user.allKids && req.user.allParents) {
+        // if this is the first creation of kids and parents for this family,
+        // then the previous allKids and allParents are undefined, and for sure
+        // there is no record to delete.
+        const previousParentsAndKids = req.user.allKids.concat(
+          req.user.allParents
+        );
+        const droppedParentsAndKids = previousParentsAndKids.filter(
+          userId => !frontendAllParentsAndKids.includes(userId)
+        );
+        // droppedParentsAndKids.map(userId => {
+        //   let deletedOne = User.findOneAndDelete({ id: userId });
+        //   console.log('deletedOne: ', deletedOne);
+        // });
+        // User.findOneAndDelete({id: { $in: droppedParentsAndKids }});
+        User.deleteMany({ id: { $in: droppedParentsAndKids } }, function(err) {
+          if (err) {
+            console.log('error by deleteMany: ', err);
+          } else {
+            console.log('deleteMany succeeded.');
+          }
+        });
+      }
+
       // save updated profile from frontend into `family` collection:
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
@@ -59,8 +88,8 @@ module.exports = app => {
 
       // save new users (kids and parents) from frontend into `users` collection
       // (only firstName, familyName and kidGrade):
-      const allParentsAndKids = frontendAllKids.concat(frontendAllParents);
-      allParentsAndKids.map(async userId => {
+
+      frontendAllParentsAndKids.map(async userId => {
         const newUserData = frontendFamilyById[userId];
         let newOrUpdatedUser;
 
