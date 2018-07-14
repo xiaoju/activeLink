@@ -4,6 +4,7 @@ const requireLogin = require('../middlewares/requireLogin');
 
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
+const User = mongoose.model('users');
 
 const paymentReceiptDraft = require('../models/paymentReceiptDraft');
 const validateCharge = require('../utils/validateCharge');
@@ -13,14 +14,20 @@ module.exports = app => {
     let family; // this will contain the family data, after pulling it from database
 
     // rename the variables from frontend, for clarity:
-    const frontendCharge = {
-      frontendAllKids: req.body.validKids,
-      frontendAllParents: req.body.validParents,
-      frontendMedia: req.body.validMedia,
-      frontendFamilyById: req.body.validFamilyById,
-      frontendTotal: req.body.total,
-      frontendChecked: req.body.validChecked
-    };
+    const frontendAllKids = req.body.validKids,
+      frontendAllParents = req.body.validParents,
+      frontendMedia = req.body.validMedia,
+      frontendFamilyById = req.body.validFamilyById,
+      frontendTotal = req.body.total,
+      frontendChecked = req.body.validChecked,
+      frontendCharge = {
+        frontendAllKids,
+        frontendAllParents,
+        frontendMedia,
+        frontendFamilyById,
+        frontendTotal,
+        frontendChecked
+      };
 
     // look up the event details, from backend database
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
@@ -44,21 +51,54 @@ module.exports = app => {
     } else {
       // ######## form validation ########
 
-      // save update profile data from frontend into database:
-      req.user.allKids = frontendCharge.frontendAllKids;
-      req.user.allParents = frontendCharge.frontendAllParents;
-      req.user.familyMedia = frontendCharge.frontendMedia;
-      req.user.familyById = frontendCharge.frontendFamilyById;
+      // save updated profile from frontend into `family` collection:
+      req.user.allKids = frontendAllKids;
+      req.user.allParents = frontendAllParents;
+      req.user.familyMedia = frontendMedia;
       family = await req.user.save();
 
-      const chargeDescription =
-        req.body.familyId + '-' + req.body.eventId + '-';
+      // save new users (kids and parents) from frontend into `users` collection
+      // (only firstName, familyName and kidGrade):
+      const allParentsAndKids = frontendAllKids.concat(frontendAllParents);
+      allParentsAndKids.map(async userId => {
+        const newUserData = frontendFamilyById[userId];
+        let newOrUpdatedUser;
+
+        let existingUser;
+        try {
+          existingUser = await User.findOne({ id: userId });
+        } catch (error) {
+          console.log('error by findOne: ', error);
+        }
+
+        if (existingUser) {
+          // console.log('found existing user: ', newUserData.firstName);
+          try {
+            newOrUpdatedUser = await existingUser.set(newUserData);
+          } catch (error) {
+            console.log('error by replacing old data: ', error);
+          }
+        } else {
+          // console.log('creating new user: ', newUserData.firstName);
+          try {
+            newOrUpdatedUser = await new User(newUserData).save();
+          } catch (error) {
+            console.log('error by creating new user: ', error);
+          }
+        }
+        newOrUpdatedUser.save();
+        // console.log('newOrUpdatedUser: ', newOrUpdatedUser);
+      });
+
+      // remove from `users` collection the kids & parents deleted from frontend
 
       // execute the paiement
+      const chargeDescription =
+        req.body.familyId + '-' + req.body.eventId + '-';
       let stripeCharge;
       try {
         stripeReceipt = await stripe.charges.create({
-          amount: frontendCharge.frontendTotal,
+          amount: frontendTotal,
           currency: 'eur',
           description: chargeDescription,
           source: req.body.stripeToken.id

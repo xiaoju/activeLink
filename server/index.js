@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/Asso');
 require('./models/Family');
+require('./models/User');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true });

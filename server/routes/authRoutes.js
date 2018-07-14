@@ -1,8 +1,8 @@
 const passport = require('passport');
-// const { eventsById } = require('../models/draftState');
 
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
+const User = mongoose.model('users');
 
 module.exports = app => {
   app.get(
@@ -42,11 +42,10 @@ module.exports = app => {
   });
 
   app.get('/api/current_family', async (req, res) => {
-    console.log(
-      'authRoute.js is handling the request - req.user: ',
-      req.user
-    );
-    console.log('req.user: ', req.user);
+    // console.log(
+    //   'authRoute.js is handling the request - req.user: ',
+    //   req.user
+    // );
     // res.send(req.user);
     let thisAsso;
     try {
@@ -57,19 +56,28 @@ module.exports = app => {
         error
       );
     }
-    // console.log('authRoutes (get), thisAsso: ', thisAsso);
+
+    const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
+    const familyByIdArray = await User.find({
+      id: { $in: allParentsAndKids }
+    });
+    // convert familyByIdArray [{...},{..}] to an object: {id:{...}, id:{...}}
+    const familyById = familyByIdArray.reduce((obj, item) => {
+      obj[item.id] = item;
+      return obj;
+    }, {});
 
     if (!req.user) {
       res.send(null);
     } else {
       res.send({
         profile: {
+          familyById,
           _id: req.user._id,
           googleId: req.user.googleId,
           familyId: req.user.familyId,
           allKids: req.user.allKids,
           allParents: req.user.allParents,
-          familyById: req.user.familyById,
           familyMedia: req.user.familyMedia,
           allRegistered: req.user.allRegistered, // TODO rename to allRegisteredItems
           registeredById: req.user.registeredById, // TODO rename to registeredItemsById
