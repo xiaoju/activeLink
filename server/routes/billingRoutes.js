@@ -14,7 +14,8 @@ module.exports = app => {
     let family; // this will contain the family data, after pulling it from database
 
     // rename the variables from frontend, for clarity:
-    const frontendAllKids = req.body.validKids,
+    const familyId = req.user.familyId,
+      frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
       frontendAllParentsAndKids = frontendAllKids.concat(frontendAllParents),
       frontendMedia = req.body.validMedia,
@@ -39,6 +40,7 @@ module.exports = app => {
     // TODO move this to a middleware
     // check that the charge request received from frontend is valid
     const chargeErrors = validateCharge({
+      familyId,
       frontendCharge,
       thisEvent
     });

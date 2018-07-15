@@ -57,24 +57,40 @@ module.exports = app => {
       );
     }
 
-    const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
-    const familyByIdArray = await User.find({
-      id: { $in: allParentsAndKids }
-    });
-    // convert familyByIdArray [{...},{..}] to an object: {id:{...}, id:{...}}
-    const familyById = familyByIdArray.reduce((obj, item) => {
-      obj[item.id] = item;
-      return obj;
-    }, {});
+    // Build `familyById` out of database records. It contains the detailed
+    // information (firstName, familyName, kidGrade) for the kids and parents
+    // belonging to this family.
+    // Then send `familyById` to frontEnd
+    // BUG if the family wasn't created yet, req.user is undefined
+    // if (!req.user.allKids) {
+    // TODO check the whole logic here!
+    let familyById;
+    if (!req.user) {
+      const familyById = {};
+    } else {
+      const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
 
+      // const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
+      const familyByIdArray = await User.find({
+        id: { $in: allParentsAndKids }
+      });
+      // convert familyByIdArray [{...},{..}] to an object: {id:{...}, id:{...}}
+      familyById = familyByIdArray.reduce((obj, item) => {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+    }
+
+    // put together the data required by client
     if (!req.user) {
       res.send(null);
+      // if not logged in, don't send data.
     } else {
       res.send({
         profile: {
           familyById,
           _id: req.user._id,
-          googleId: req.user.googleId,
+          googleId: req.user.googleId, // TODO check do I need send this to frontend?
           familyId: req.user.familyId,
           allKids: req.user.allKids,
           allParents: req.user.allParents,

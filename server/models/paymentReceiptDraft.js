@@ -76,7 +76,7 @@ module.exports = {
     allEvents: [],
     bookedEvents: ['e0'],
     allRegisteredItems: [
-      { userId: 'family', items: ['i0'] },
+      { userId: 'familyId', items: ['i0'] },
       { userId: 'k0', items: ['i4', 'i7'] },
       { userId: 'k1', items: ['i4'] }
     ],

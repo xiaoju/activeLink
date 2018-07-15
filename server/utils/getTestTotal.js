@@ -3,6 +3,7 @@
 // need to check the family items got their cross from 'family' and only him (but can have no cross)
 
 module.exports = ({
+  familyId,
   frontendAllKids,
   frontendTotal,
   frontendFamilyById,
@@ -27,7 +28,7 @@ module.exports = ({
 
   const validKids = frontendAllKids.filter(isValidUser);
 
-  const familyAndValidKids = ['family'].concat(validKids);
+  const familyAndValidKids = [familyId].concat(validKids);
 
   const checkedItems = familyAndValidKids
     .map(thisUserId => frontendChecked[thisUserId])

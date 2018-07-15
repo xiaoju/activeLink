@@ -1,3 +1,5 @@
+const uuid = require('uuid4');
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 // const GithubStrategy = require('passport-github2').Strategy;
@@ -31,7 +33,8 @@ passport.use(
         return done(null, existingFamily);
       } else {
         const newFamily = await new Family({
-          googleId: profile.id
+          googleId: profile.id,
+          familyId: uuid()
         }).save();
         done(null, newFamily);
       }

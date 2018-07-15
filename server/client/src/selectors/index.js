@@ -17,8 +17,8 @@ export const getStaffById = state => state.event.staffById;
 
 export const getProfile = state => state.profile;
 export const getFamilyMedia = state => state.profile.familyMedia;
-export const getFamilyId = state => state.profile.familyId;
-export const getAllKids = state => state.profile.allKids; // [k0, k1, k2]
+export const getFamilyId = state => state.profile.familyId; // ['familyId']
+export const getAllKids = state => state.profile.allKids; // ['k0', 'k1', 'k2']
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
 export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
 export const getFamilyById = state => state.profile.familyById;
@@ -259,10 +259,10 @@ export const getLastMediaValid = createSelector(
 // );
 
 export const getFamilyAndValidKids = createSelector(
-  [getValidKids],
-  validKids =>
-    ['family'] // ['family']
-      .concat(validKids) // ['family', 'k0', 'k1']
+  [getFamilyId, getValidKids],
+  (familyId, validKids) =>
+    [familyId] // ['familyId']
+      .concat(validKids) // ['familyId', 'k0', 'k1']
 );
 // export const getFamilyAndValidKids = createSelector(
 //   [getFamilyId, getValidKids],
@@ -291,7 +291,7 @@ export const getCheckedItems = createSelector(
   // used by OrderSummary component and getTotal and getCheckedItemsNoDoublons
   [getFamilyAndValidKids, getChecked],
   (familyAndValidKids, checked) =>
-    familyAndValidKids // [familyId, 'k0', 'k1']
+    familyAndValidKids // ['familyId', 'k0', 'k1']
       .map(thisUserId => checked[thisUserId]) // [['r0'], ['r2','r4']], ['r2','r5','r7']]
       .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []) // ['r0','r2','r4','r2','r5','r7']
 );

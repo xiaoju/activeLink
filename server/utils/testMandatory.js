@@ -1,9 +1,17 @@
-module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
+module.exports = ({
+  familyId,
+  checked,
+  mandatoryItems,
+  familyItems,
+  allKids
+}) => {
   // TODO handle the case if there is no mandatory item:
   // TODO review this whole logic!
   // if (!mandatoryItems.length) {errorMandatory = false};
 
   //  MANDATORY AND FAMILY
+
+  let testFamilyMandatory; // this will hold the result for this part
 
   // the items that are both "mandatory" and "family Items":
   const mandatoryFamilyItems = mandatoryItems.filter(item =>
@@ -11,15 +19,14 @@ module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
   );
   // console.log('mandatoryFamilyItems: ', mandatoryFamilyItems);
 
-  // handle the case where there is no family item that is mandatory
-  // if (!mandatoryFamilyItems.length) {
-  //   testFamilyMandatory = true;
-  // } else {
+  if (!mandatoryFamilyItems.length) {
+    testFamilyMandatory = true;
+  } else !checked[familyId] && (testFamilyMandatory = false);
 
   // reduce these into true (= each of these also belongs to checked.family, so
   // it's conform to the checked being manatory) or false:
   testFamilyMandatory = mandatoryFamilyItems.reduce(
-    (acc, item) => acc && checked.family.includes(item),
+    (acc, item) => acc && checked[familyId].includes(item),
     true
   );
   // console.log('testFamilyMandatory: ', testFamilyMandatory);
@@ -50,6 +57,7 @@ module.exports = ({ checked, mandatoryItems, familyItems, allKids }) => {
       .reduce((acc, bool) => acc && bool, true);
     // console.log('testNonFamilyMandatory: ', testNonFamilyMandatory);
   }
+  //
   // PUT TOGETHER NON-FAMILY and FAMILY
   const errorMandatory = !testFamilyMandatory || !testNonFamilyMandatory;
   // console.log('errorMandatory: ', errorMandatory);

@@ -174,7 +174,7 @@ module.exports = {
     ],
     allRegistered: [
       // all the items that have been purchased by this family and kids
-      { userId: 'family', items: [] },
+      { userId: 'familyId', items: [] },
       { userId: 'k0', items: [] },
       { userId: 'k1', items: [] }
     ],

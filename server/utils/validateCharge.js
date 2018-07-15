@@ -19,6 +19,7 @@ const testMandatory = require('./testMandatory');
 // } = datasetForTest;
 
 module.exports = ({
+  familyId,
   frontendCharge: {
     frontendAllKids,
     frontendAllParents,
@@ -51,6 +52,7 @@ module.exports = ({
 
   // check if the total price calculated by frontend is correct
   const testTotal = getTestTotal({
+    familyId,
     frontendAllKids,
     frontendTotal,
     frontendFamilyById,
@@ -69,6 +71,7 @@ module.exports = ({
   // test if all mandatory items have been selected (selected by 'family' for
   // the familyItems, selected by every Kids for the other items)
   const errorMandatoryItems = testMandatory({
+    familyId,
     checked: frontendChecked,
     mandatoryItems,
     familyItems,

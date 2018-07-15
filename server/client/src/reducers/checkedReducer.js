@@ -24,15 +24,16 @@ export default function(state = empty, { type, payload }) {
       // to
       // {familyId: [], k0: [], k1: [], k2: []}
       if (!payload) {
+        // necessary because action.payload is undefined when logged out
         return empty;
       } else {
-        // necessary because action.payload is undefined when logged out
         let { allKids } = payload.profile;
+        const { familyId } = payload.profile;
         let { allItems, mandatoryItems, familyItems } = payload.thisEvent;
         // let newKidId = 'k' + allKids.length;
         let newKidId = uuid();
         // return [familyId] // ['familyId']
-        return ['family']
+        return [familyId] // ['familyId']
           .concat(allKids) // ['familyId', 'k0', 'k1']
           .concat(newKidId) // ['familyId', 'k0', 'k1', 'k2']
           .reduce((obj, thisUserId, currentIndex) => {

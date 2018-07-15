@@ -19,7 +19,6 @@ class SelectComponentStyled extends Component {
   }
 
   handleChange(event) {
-    // console.log('event: ', event.map(object => object.value));
     this.props.updateTags({
       index: this.props.index,
       tags: event.map(object => object.value)

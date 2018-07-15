@@ -83,6 +83,12 @@ force push to heroku:
 
 ## Architecture
 
+### IDs
+- Authentication is performed at 'family' level: it's a 'family' who authenticates to the app.
+A 'family' consists of some 'parents' and 'kids'. In practice, this means that the parents and kids who want to connect to the app must communicate this one login and password set to each others.
+- The 'family', each 'kid', and each 'parent' all got an separate IDs. We usually refer to these IDs as `familyId`, `kidId` and `parentId`.
+- IDs are produced by the UUID4 package. For illustration in the documentation, we use shorter IDs, such as `k0`, `k1`, `p0`, `p1`, etc.
+
 ### folders structure
 - The (`git`) root folder `/` contains `.gitignore`, `.prettierignore`, `README.md` and `TODO.md` .
 - The app is stored in `/server`
