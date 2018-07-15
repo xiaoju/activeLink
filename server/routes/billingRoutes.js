@@ -33,8 +33,14 @@ module.exports = app => {
 
     // look up the event details, from backend database
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
-    const thisAsso = await Asso.findOne({ id: 'a0' });
-    const thisEvent = thisAsso.eventsById.e0;
+
+    let thisEvent;
+    try {
+      const thisAsso = await Asso.findOne({ id: 'a0' });
+      thisEvent = thisAsso.eventsById.e0;
+    } catch (error) {
+      console.log('billingRoutes.js // line 38 // error: ', error);
+    }
 
     // ######## form validation ########
     // TODO move this to a middleware
@@ -99,7 +105,10 @@ module.exports = app => {
         try {
           existingUser = await User.findOne({ id: userId });
         } catch (error) {
-          console.log('error by findOne: ', error);
+          console.log(
+            'billingRoutes.js // line 108 // error by findOne: ',
+            error
+          );
         }
 
         if (existingUser) {

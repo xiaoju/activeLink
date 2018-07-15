@@ -20,10 +20,28 @@ module.exports = app => {
   //   passport.authenticate('local', { scope: ['user:email'] })
   // );
 
+  // app.get(
+  //   '/auth/google/callback',
+  //   passport.authenticate('google'),
+  //   (req, res) => {
+  //     res.redirect('/register');
+  //   }
+  // );
   app.get(
     '/auth/google/callback',
-    passport.authenticate('google'),
+    passport.authenticate('google'), // complete the authenticate using the google strategy
+    (err, req, res, next) => {
+      // custom error handler to catch any errors, such as TokenError
+      if (err.name === 'TokenError') {
+        console.log('/auth/google/callback (GET) "tokenError": ', err);
+        // the error when a Token has already been used/redeemed
+        res.redirect('/auth/google'); // redirect them back to the login page
+      } else {
+        console.log('/auth/google/callback (GET) error: ', err); // Handle other errors here
+      }
+    },
     (req, res) => {
+      // On success, redirect back to '/register'
       res.redirect('/register');
     }
   );
@@ -65,15 +83,21 @@ module.exports = app => {
     // if (!req.user.allKids) {
     // TODO check the whole logic here!
     let familyById;
+    let familyByIdArray;
     if (!req.user) {
       const familyById = {};
     } else {
       const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
-
-      // const allParentsAndKids = req.user.allKids.concat(req.user.allParents);
-      const familyByIdArray = await User.find({
-        id: { $in: allParentsAndKids }
-      });
+      try {
+        familyByIdArray = await User.find({
+          id: { $in: allParentsAndKids }
+        });
+      } catch (error) {
+        console.log(
+          'authRoutes.js, api/current_family (get), error by mongo search to build familyById: ',
+          error
+        );
+      }
       // convert familyByIdArray [{...},{..}] to an object: {id:{...}, id:{...}}
       familyById = familyByIdArray.reduce((obj, item) => {
         obj[item.id] = item;

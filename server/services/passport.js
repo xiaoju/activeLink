@@ -28,7 +28,13 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingFamily = await Family.findOne({ googleId: profile.id });
+      let existingFamily;
+      try {
+        existingFamily = await Family.findOne({ googleId: profile.id });
+      } catch (error) {
+        console.log('passport.js, line 35 // error by findOne: ', error);
+      }
+
       if (existingFamily) {
         return done(null, existingFamily);
       } else {
