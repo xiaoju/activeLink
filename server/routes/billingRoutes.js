@@ -1,6 +1,7 @@
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
 const requireLogin = require('../middlewares/requireLogin');
+const deepMerge = require('deepmerge');
 
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
@@ -34,10 +35,13 @@ module.exports = app => {
     // look up the event details, from backend database
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
 
+    let thisAsso;
     let thisEvent;
+    let previousRegistered;
     try {
-      const thisAsso = await Asso.findOne({ id: 'a0' });
+      thisAsso = await Asso.findOne({ id: 'a0' });
       thisEvent = thisAsso.eventsById.e0;
+      previousRegistered = thisAsso.registered;
     } catch (error) {
       console.log('billingRoutes.js // line 38 // error: ', error);
     }
@@ -92,11 +96,17 @@ module.exports = app => {
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
       req.user.familyMedia = frontendMedia;
-      family = await req.user.save();
+      try {
+        family = await req.user.save();
+      } catch (error) {
+        console.log(
+          'billingRoutes.js, line 100: error by saving frontend info into family collection',
+          error
+        );
+      }
 
       // save new users (kids and parents) from frontend into `users` collection
       // (only firstName, familyName and kidGrade):
-
       frontendAllParentsAndKids.map(async userId => {
         const newUserData = frontendFamilyById[userId];
         let newOrUpdatedUser;
@@ -130,8 +140,6 @@ module.exports = app => {
         // console.log('newOrUpdatedUser: ', newOrUpdatedUser);
       });
 
-      // remove from `users` collection the kids & parents deleted from frontend
-
       // execute the paiement
       const chargeDescription =
         req.body.familyId + '-' + req.body.eventId + '-';
@@ -147,9 +155,6 @@ module.exports = app => {
         console.log('Error while connecting to Stripe server: ', error);
       }
 
-      // TODO build a correct paymentReceipt
-      res.send(paymentReceiptDraft);
-
       // save stripeCharge receipt into database for future reference:
       try {
         ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt);
@@ -160,33 +165,51 @@ module.exports = app => {
 
       if (stripeReceipt.status === 'succeeded') {
         try {
-          console.log('I should be saving the paid classes to database!');
-          // save the paid classes to user profile in database
-          // and to allUsers database
-          // TODO write code!!
-          // registeredCount = req.user.registeredCount.push();
-          // registeredById;
-          // user = await req.user.save();
+          // save the paid classes into the `registrations` property of `asso`
+
+          const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
+          // arrayMerge defines how the deepMerge shall proceed with arrays:
+          // concatenate and remove the duplicates.
+
+          let newRegistered = deepMerge(previousRegistered, frontendChecked, {
+            arrayMerge
+          });
+
+          let thisAsso;
+          try {
+            thisAsso = await Asso.findOne({ id: 'a0' });
+          } catch (error) {
+            console.log(
+              'billingRoutes.js, line 185 // error by findOne Asso: ',
+              error
+            );
+          }
+          try {
+            updatedAsso = await thisAsso.set({ registered: newRegistered });
+          } catch (error) {
+            console.log(
+              'billingRoutes.js, line 193 // error by saving newRegistered: ',
+              error
+            );
+          }
+
+          try {
+            updatedAsso.save();
+          } catch (error) {
+            console.log(
+              'billingRoutes.js, line 202, error by saving modified asso to db: ',
+              error
+            );
+          }
         } catch (error) {
           console.log('Error while saving the paid classes to database');
         }
       }
 
+      // TODO build a correct paymentReceipt, also based on the error messages
+      res.send(paymentReceiptDraft);
+
       // send the payment receipt to front end:
     }
-
-    // } catch (error) {
-    // console.log('An error occured: ', error);
-    // res.status(500).send({ error: 'boo:(' });
-    // res.render('error', { error });
-    // res.send({ error });
-    // }
-    // }
-
-    // console.log('BACKEND, received payload: ', req.body);
-    // req.user.credits += 5;
-    // const user = await req.user.save();
-    // saving stuff into database
-    // res.send(user);
   });
 };

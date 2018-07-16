@@ -249,6 +249,15 @@ input:not([type]).pasValide {
   box-shadow: none !important;
 }
 
+/* TODO the following to avoid in chrome the color of autofill to be yelllow background, not working */
+.input-field input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px blue inset;
+  -webkit-text-fill-color: green !important;
+  background-color: red !important;
+  background-image: none !important;
+  color: pink !important;
+}
+
 .nav-wrapper > a,
 .nav-wrapper > a > img {
   height: 100%;

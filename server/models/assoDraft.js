@@ -4,6 +4,7 @@ module.exports = {
   name: 'English Link Caousou',
   contacts: ['s0'],
   adress: '1 Place du Capitole, 31000 Toulouse',
+  registered: {},
   allStaff: ['s0', 's1', 's2', 's3'],
   staffById: {
     s0: {
