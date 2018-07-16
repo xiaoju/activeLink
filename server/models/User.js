@@ -5,7 +5,9 @@ const userSchema = new Schema({
   id: { type: String },
   firstName: { type: String },
   familyName: { type: String },
-  kidGrade: { type: String }
+  kidGrade: { type: String },
+  family: { type: Array }, // kids and parents might belong to several families ("familles recomposées")
+  deleted: { type: Boolean }
 });
 
 mongoose.model('users', userSchema);

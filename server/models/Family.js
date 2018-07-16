@@ -10,20 +10,17 @@ const { Schema } = mongoose;
 // });
 
 const familySchema = new Schema({
-  // credits: { type: Number, default: 0 },
   googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
+  photoConsent: { type: Boolean, default: false },
+  assos: { type: Array, default: ['a0'] }, // a family can join several associations that all run this app
   allKids: { type: Array, default: [] },
   allParents: { type: Array, default: [] },
   familyMedia: {
     type: Array,
     default: [{ media: 'email', value: '', tags: ['private'] }]
   },
-  bookedEvents: { type: Array, default: [] },
-  allRegistered: { type: Array, default: [] },
-  registeredById: { type: Object, default: {} },
-  paymentReceipts: { type: Array, default: [] },
-  familyById: { type: Object, default: {} }
+  paymentReceipts: { type: Array, default: [] }
   // local: {
   //   email: String,
   //   password: String

@@ -12,7 +12,8 @@ const assoSchema = new Schema({
   itemsById: { type: Object, default: {} },
   allEvents: { type: Array, default: [''] },
   eventsById: { type: Object, default: {} },
-  registered: { type: Object, default: {} }
+  allFamilies: { type: Array, default: [''] },
+  registrations: { type: Object, default: {} }
 });
 
 mongoose.model('assos', assoSchema);

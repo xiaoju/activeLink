@@ -121,7 +121,7 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 `/api/logout `          log out!
 
 ## initial seeding of Database
-- using a mongoDB GUI like MongoHub or Robo3T, add one `association` record, including one event and its items, as per example file `/server/models/assoDraft.js`.
+- using a mongoDB GUI like MongoHub or Robo3T, add one `association` record, including one event and its items, as per example file `/server/models/assoDraft.js`. Or from the management interface in mlab, in this case the assoDraft.js object must be converted to json format, for example by running JSON.stringify({object}) in the Chrome console.
 
 ## authentication process
 

@@ -6,6 +6,7 @@ const deepMerge = require('deepmerge');
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
+const Family = mongoose.model('families');
 
 const paymentReceiptDraft = require('../models/paymentReceiptDraft');
 const validateCharge = require('../utils/validateCharge');
@@ -38,10 +39,12 @@ module.exports = app => {
     let thisAsso;
     let thisEvent;
     let previousRegistered;
+
+    // lookup event information from database
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });
       thisEvent = thisAsso.eventsById.e0;
-      previousRegistered = thisAsso.registered;
+      previousRegistered = thisAsso.registrations;
     } catch (error) {
       console.log('billingRoutes.js // line 38 // error: ', error);
     }
@@ -64,10 +67,12 @@ module.exports = app => {
     } else {
       // ######## form validation ########
 
-      // Remove from `users` collection the kids and parents that have been
-      // deleted as per frontend form. For this, compare what IDs are missing in
-      //  the new `frontendAllParentsAndKids` compared to the old
-      // `allKids + allParents from family collection`
+      // "Delete" (= set `deleted` flag to `true`) kids and parents in the
+      // `users` collection, who have been deleted as per frontend form. For
+      // this, compare what IDs are missing in the new
+      // `frontendAllParentsAndKids` compared to the old
+      // `allKids + allParents from family collection`.
+      // TODO change from real delete to just `delete` flag
       if (req.user.allKids && req.user.allParents) {
         // if this is the first creation of kids and parents for this family,
         // then the previous allKids and allParents are undefined, and for sure
@@ -86,13 +91,15 @@ module.exports = app => {
         User.deleteMany({ id: { $in: droppedParentsAndKids } }, function(err) {
           if (err) {
             console.log('error by deleteMany: ', err);
-          } else {
-            console.log('deleteMany succeeded.');
           }
+          // else {
+          // console.log('deleteMany succeeded.');
+          // }
         });
       }
 
-      // save updated profile from frontend into `family` collection:
+      // save updated profile from frontend into
+      // `family` collection (familyMedia, list of kidIds, list of parentIds):
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
       req.user.familyMedia = frontendMedia;
@@ -105,8 +112,8 @@ module.exports = app => {
         );
       }
 
-      // save new users (kids and parents) from frontend into `users` collection
-      // (only firstName, familyName and kidGrade):
+      // save new users (kids and parents) from frontend into
+      // `users` collection (firstName, familyName and kidGrade):
       frontendAllParentsAndKids.map(async userId => {
         const newUserData = frontendFamilyById[userId];
         let newOrUpdatedUser;
@@ -143,7 +150,10 @@ module.exports = app => {
       // execute the paiement
       const chargeDescription =
         req.body.familyId + '-' + req.body.eventId + '-';
-      let stripeCharge;
+      // TODO add the name of the association
+      // and use the full text name of the eventId
+      // and user the mergedFamilyName
+      let stripeReceipt;
       try {
         stripeReceipt = await stripe.charges.create({
           amount: frontendTotal,
@@ -156,8 +166,8 @@ module.exports = app => {
       }
 
       // save stripeCharge receipt into database for future reference:
+      const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
       try {
-        ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt);
         family = await req.user.save();
       } catch (error) {
         console.log('Error while saving stripeCharge to database: ', error);
@@ -174,6 +184,9 @@ module.exports = app => {
           let newRegistered = deepMerge(previousRegistered, frontendChecked, {
             arrayMerge
           });
+          console.log('previousRegistered: ', previousRegistered);
+          console.log('frontendChecked: ', frontendChecked);
+          console.log('newRegistered: ', newRegistered);
 
           let thisAsso;
           try {
@@ -185,7 +198,7 @@ module.exports = app => {
             );
           }
           try {
-            updatedAsso = await thisAsso.set({ registered: newRegistered });
+            updatedAsso = await thisAsso.set({ registrations: newRegistered });
           } catch (error) {
             console.log(
               'billingRoutes.js, line 193 // error by saving newRegistered: ',
@@ -206,8 +219,59 @@ module.exports = app => {
         }
       }
 
+      // build receipt out of stripeReceipt and database data
+      const allKidsAndParents = [].concat(family.allKids, family.allParents);
+      const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
+      family = await Family.findOne({ familyId });
+      users = await User.find({
+        id: { $in: allKidsAndParents }
+        // [{id, firstName, familyName, kidGrade},{},...]
+      });
+      const normalizedUsers = users.reduce((obj, thisUser) => {
+        obj[thisUser.id] = thisUser;
+        return obj;
+      }, {});
+      // normalized state
+      console.log('users: ', users);
+      console.log('#######');
+      console.log('normalizedUsers: ', normalizedUsers);
+
+      // TODO try get registrations directly through a (nested) database query
+      // const registrations = await Asso.find({
+      //   userId: { $in: allKidsAndParents }
+      // });
+      const thisAsso = await Asso.findOne({ id: 'a0' });
+      const registrations = allKidsFamilyParents.map(userId => ({
+        [userId]: thisAsso.registrations[userId]
+      }));
+
+      let publicReceipt = {
+        users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
+        allKids: family.allKids,
+        allParents: family.allParents,
+        familyMedia: family.familyMedia,
+        photoConsent: family.photoConsent,
+        eventName: thisEvent.eventName,
+        total: stripeReceipt.amount,
+        timeStamp: stripeReceipt.created,
+        currency: stripeReceipt.currency,
+        last4: stripeReceipt.source.last4,
+        status: stripeReceipt.status,
+        chargeId: stripeReceipt.id,
+        registrations
+        // discountApplied,
+        // purchasedItems,
+        //    name,
+        //    period,
+        //    paidPrice,
+        //    beneficiaries // ['Mulan', 'Zilan'] or ['Obama-Trump']
+        //
+        // errors
+      };
+      console.log('publicReceipt: ', publicReceipt);
+
       // TODO build a correct paymentReceipt, also based on the error messages
-      res.send(paymentReceiptDraft);
+      res.send(publicReceipt);
 
       // send the payment receipt to front end:
     }
