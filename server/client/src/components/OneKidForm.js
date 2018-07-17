@@ -11,6 +11,7 @@ import {
   getKidGrade
 } from '../selectors';
 import { modifyUser, addKidRow, addParentRow } from '../actions/index';
+// import { capitalizeFirstLetter } from '../utils/Tools';
 
 class OneKidForm extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class OneKidForm extends Component {
     this.props.modifyUser({
       userId: this.props.userId,
       fieldName: event.target.name,
+      // value: capitalizeFirstLetter(event.target.value) // wrong with 'noms à particule'!
       value: event.target.value
     });
   }
