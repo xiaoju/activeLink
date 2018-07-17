@@ -299,9 +299,11 @@ export const getCheckedItems = createSelector(
 export const getCheckedItemsNoDoublons = createSelector(
   // remove doublons from checkedItems,
   // for use in OrderSummary component, cycling through these items to show only these.
-  // TODO could sort the array. Currently the first ones are those first clicked.
   [getCheckedItems],
-  checkedItems => [...new Set(checkedItems)]
+  checkedItems =>
+    [...new Set(checkedItems)].sort(
+      (i0, i1) => i0.substring(1) - i1.substring(1)
+    )
 );
 
 export const getApplyDiscount = createSelector(
