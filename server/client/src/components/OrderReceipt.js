@@ -2,6 +2,7 @@ import React from 'react';
 
 function OrderReceipt(props) {
   let {
+    familyId, // 'abcd'
     users, // [{id, firstName, familyName, kidGrade},{},...]
     allKids, // ['k0', 'k2']
     allParents, // ['p0', 'p1']
@@ -14,7 +15,9 @@ function OrderReceipt(props) {
     last4, // '1234'
     status, // 'succeeded'
     chargeId, // 'abcd'
-    registrations // [{k0: ['i2', 'i5']}, {...}]
+    applyDiscount, // true
+    allPurchasedItems, // ['i0', 'i2', 'i7']
+    purchasedItemsById // { i0: {...}, i2: { id: 'i2', name: 'Knitting class', period: '2038-2039', paidPrice: 3000, beneficiaries: ['familyId', 'k7', 'p3'] } }
   } = props.receipt;
   return (
     <div>
@@ -25,31 +28,40 @@ function OrderReceipt(props) {
       <br />
       {eventName}
       <br />
-      Profile:
+      <h5>Profile:</h5>
       <br />
-      kids
-      {allKids.map(userId => (
-        <p>
-          {users[userId].firstName} {users[userId].familyName}{' '}
-          {users[userId].kidGrade}
-        </p>
-      ))}
+      <strong>kids</strong>
+      <ul>
+        {allKids.map(userId => (
+          <li>
+            {users[userId].firstName} {users[userId].familyName},{' '}
+            {users[userId].kidGrade}
+          </li>
+        ))}
+      </ul>
       <br />
-      Parents
-      {allParents.map(userId => (
-        <p>
-          {users[userId].firstName} {users[userId].familyName}
-        </p>
-      ))}
+      <strong>Parents</strong>
+      <ul>
+        {allParents.map(userId => (
+          <li>
+            {users[userId].firstName} {users[userId].familyName}
+          </li>
+        ))}
+      </ul>
       <br />
-      Phone and emails
+      <strong>Phone and emails</strong>
       <br />
-      {familyMedia.map(mediaObj => (
-        <p>
-          {mediaObj.media}
-          {mediaObj.value} {mediaObj.tags.map(tag => <span>{tag} </span>)}
-        </p>
-      ))}
+      <ul>
+        {familyMedia.map(mediaObj => (
+          <li key={mediaObj.value}>
+            {mediaObj.media} ( {mediaObj.tags.map(tag => <span>{tag} </span>)}):{' '}
+            {mediaObj.value}
+          </li>
+        ))}
+      </ul>
+      <br />
+      <strong>Photo consent: </strong>
+      {photoConsent ? 'yes' : 'no'}
       <br />
       {/* {allPurchasedToday.map(obj => (
         <ul key={obj.id}>
@@ -64,24 +76,43 @@ function OrderReceipt(props) {
           </li>
         </ul>
       ))} */}
+      <strong>Purchased items: </strong>
+      <div>
+        {allPurchasedItems.map(itemId => (
+          <div>
+            <ul>
+              <li>{purchasedItemsById[itemId].name}</li>
+              <li>{purchasedItemsById[itemId].period}</li>
+              <li>
+                Price: {purchasedItemsById[itemId].paidPrice / 100}{' '}
+                {currency === 'eur' ? 'EUR' : currency}
+              </li>
+            </ul>
+            <ul>
+              <strong>Beneficiaries: </strong>
+              {purchasedItemsById[itemId].beneficiaries.map(userId => (
+                <li>
+                  {userId === familyId
+                    ? 'The whole family'
+                    : users[userId].firstName + ' ' + users[userId].familyName}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <strong>Total paid: </strong> {total / 100} {currency}
       <br />
-      Total paid: {total / 100} {currency}
+      {applyDiscount && 'Discount was applied.'}
       <br />
-      Credit card number: xxxx xxxx xxxx {last4}
+      <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
       <br />
-      Payment status: {status}
+      <strong>Payment status: </strong>
+      {status}
       <br />
-      Time: {new Date(1000 * timeStamp).toLocaleString()}
+      <strong>Time: </strong>
+      {new Date(1000 * timeStamp).toLocaleString()}
       <br />
-      Photo consent: {photoConsent ? 'yes' : 'no'}
-      <br />
-      {/* Registrations:{' '}
-      {registrations.map(registrationObj => (
-        <p>
-          {users[Object.keys(registrationObj)[0]].firstName}
-          {Object.values(registrationObj)[0].map(tag => <span>{tag}</span>)}
-        </p>
-      ))} */}
     </div>
   );
 }

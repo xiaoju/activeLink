@@ -33,6 +33,7 @@ module.exports = ({
   const checkedItems = familyAndValidKids
     .map(thisUserId => frontendChecked[thisUserId])
     .reduce((outputArray, smallArray) => outputArray.concat(smallArray), []);
+  // maybe the .reduce could be also done with: [].concat(...theSmallArrays)
 
   const applyDiscount =
     checkedItems.filter(item => discountQualifiers.includes(item)).length > 1;
@@ -42,7 +43,7 @@ module.exports = ({
       applyDiscount
         ? thisItemId => discountedPrices[thisItemId]
         : thisItemId => standardPrices[thisItemId]
-    )
+    ) // replace each itemId by the price to be paid
     .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0);
 
   const errorTotal = backendTotal !== frontendTotal;

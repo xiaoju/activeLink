@@ -49,10 +49,16 @@ module.exports = app => {
       console.log('billingRoutes.js // line 38 // error: ', error);
     }
 
+    const {
+      eventName,
+      discountedPrices,
+      standardPrices
+    } = thisAsso.eventsById.e0;
+
     // ######## form validation ########
     // TODO move this to a middleware
     // check that the charge request received from frontend is valid
-    const chargeErrors = validateCharge({
+    const { chargeErrors, applyDiscount } = validateCharge({
       familyId,
       frontendCharge,
       thisEvent
@@ -184,11 +190,10 @@ module.exports = app => {
           let newRegistered = deepMerge(previousRegistered, frontendChecked, {
             arrayMerge
           });
-          console.log('previousRegistered: ', previousRegistered);
-          console.log('frontendChecked: ', frontendChecked);
-          console.log('newRegistered: ', newRegistered);
+          // console.log('previousRegistered: ', previousRegistered);
+          // console.log('frontendChecked: ', frontendChecked);
+          // console.log('newRegistered: ', newRegistered);
 
-          let thisAsso;
           try {
             thisAsso = await Asso.findOne({ id: 'a0' });
           } catch (error) {
@@ -222,45 +227,107 @@ module.exports = app => {
       // build receipt out of stripeReceipt and database data
       const allKidsAndParents = [].concat(family.allKids, family.allParents);
       const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
-      family = await Family.findOne({ familyId });
-      users = await User.find({
-        id: { $in: allKidsAndParents }
-        // [{id, firstName, familyName, kidGrade},{},...]
-      });
+      try {
+        family = await Family.findOne({ familyId });
+      } catch (error) {
+        console.log(
+          'billingRoutes.js, line 232, error by Family.findOne: ',
+          error
+        );
+      }
+
+      try {
+        users = await User.find({
+          id: { $in: allKidsAndParents }
+          // [{id, firstName, familyName, kidGrade},{},...]
+        });
+      } catch (error) {
+        console.log('billingRoutes.js, line 244, error by User.find: ', error);
+      }
       const normalizedUsers = users.reduce((obj, thisUser) => {
         obj[thisUser.id] = thisUser;
         return obj;
       }, {});
-      // normalized state
-      console.log('users: ', users);
-      console.log('#######');
       console.log('normalizedUsers: ', normalizedUsers);
+      // normalized state
 
       // TODO try get registrations directly through a (nested) database query
       // const registrations = await Asso.find({
       //   userId: { $in: allKidsAndParents }
       // });
-      const thisAsso = await Asso.findOne({ id: 'a0' });
+      const applicablePrice = ({
+        itemId,
+        discountedPrices,
+        standardPrices,
+        applyDiscount
+      }) => (applyDiscount ? discountedPrices[itemId] : standardPrices[itemId]);
+
+      try {
+        thisAsso = await Asso.findOne({ id: 'a0' });
+      } catch (error) {
+        console.log(
+          'billingRoutes.js, line 243, error by pulling asso from database: ',
+          error
+        );
+      }
       const registrations = allKidsFamilyParents.map(userId => ({
         [userId]: thisAsso.registrations[userId]
       }));
 
+      const itemBeneficiaries = ({ itemId, frontendChecked }) =>
+        Object.keys(frontendChecked).filter(userId =>
+          frontendChecked[userId].includes(itemId)
+        );
+
+      const allPurchasedItems = [
+        ...new Set([].concat(...Object.values(frontendChecked)))
+      ] // extract all the itemIds from frontendChecked, without duplicates
+        .sort((i0, i1) => i0.substring(1) - i1.substring(1)); // sort, ascending, based on the digits in itemId
+
+      purchasedItemsById = allPurchasedItems
+        .map(itemId => thisAsso.itemsById[itemId]) // for each of these itemIds,
+        // get the item object, here as array of objects.
+        .reduce((obj, item) => {
+          obj[item.id] = {
+            id: item.id,
+            name: item.name,
+            period: item.period,
+            paidPrice: applicablePrice({
+              itemId: item.id,
+              discountedPrices,
+              standardPrices,
+              applyDiscount
+            }),
+            beneficiaries: itemBeneficiaries({
+              itemId: item.id,
+              frontendChecked
+            })
+          };
+          return obj;
+        }, {});
+      // convert this array to a normalized object, keeping only the useful properties
+
+      // console.log('#############');
+      // console.log('purchasedItemsById: ', purchasedItemsById);
+
       let publicReceipt = {
+        familyId,
         users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
         allKids: family.allKids,
         allParents: family.allParents,
         familyMedia: family.familyMedia,
         photoConsent: family.photoConsent,
-        eventName: thisEvent.eventName,
+        eventName,
         total: stripeReceipt.amount,
         timeStamp: stripeReceipt.created,
         currency: stripeReceipt.currency,
         last4: stripeReceipt.source.last4,
         status: stripeReceipt.status,
         chargeId: stripeReceipt.id,
-        registrations
-        // discountApplied,
-        // purchasedItems,
+        registrations,
+        applyDiscount,
+        allPurchasedItems,
+        purchasedItemsById
         //    name,
         //    period,
         //    paidPrice,

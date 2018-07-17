@@ -38,7 +38,7 @@ class OrderSummary extends Component {
     let subTotal = itemId => quantity(itemId) * unitPrice(itemId);
 
     let kidNames = itemId =>
-      familyAndValidKids // [familyId,'k0', 'k1' ]
+      familyAndValidKids // ['familyId','k0', 'k1' ]
         .slice(1) // ['k0', 'k1']
         .filter(userId => checked[userId].includes(itemId))
         .map(userId => familyById[userId].firstName)
