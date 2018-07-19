@@ -8,6 +8,7 @@ class ValidationPanel extends Component {
     const {
       formIsValid: {
         totalNotZero,
+        oneAddressMini,
         oneEmailMini,
         oneKidMini,
         oneParentMini,
@@ -34,10 +35,15 @@ class ValidationPanel extends Component {
             <strong>Emails:</strong> please enter at least one valid email.
           </p>
         )}
+        {!oneAddressMini && (
+          <p>
+            <strong>Postal address:</strong> please enter at least one address.
+          </p>
+        )}
         {!onePhoneMini && (
           <p>
-            <strong>Phone numbers:</strong> please enter at least one valid
-            phone number.
+            <strong>Phone numbers:</strong> please enter at least one phone
+            number.
           </p>
         )}
         {!oneKidMini && (

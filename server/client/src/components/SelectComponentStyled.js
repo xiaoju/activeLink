@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreatableSelect from 'react-select/lib/Creatable';
 import * as Animated from 'react-select/lib/animated';
-import {
-  getMediaObject,
-  getAllParents,
-  getValidParents,
-  getFamilyById
-} from '../selectors';
 import { updateTags } from '../actions/index';
 import PropTypes from 'prop-types';
 
@@ -18,37 +12,16 @@ class SelectComponentStyled extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  handleChange(onChangeEvent) {
     this.props.updateTags({
+      targetArray: this.props.targetArray,
       index: this.props.index,
-      tags: event.map(object => object.value)
+      tags: onChangeEvent.map(object => object.value)
     });
   }
 
   render() {
-    const { mediaObject, validParents, familyById } = this.props;
-
-    const options = validParents // ['p1', 'p3']
-      .map(parentId => familyById[parentId].firstName) // ['Donald', 'Rosemary', '']
-      .filter(firstName => !!firstName) // ['Donald', 'Rosemary']
-      .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
-      .concat([
-        { value: 'family', label: 'family' },
-        { value: 'private', label: 'private' },
-        { value: 'pro', label: 'pro' },
-        { value: 'mobile', label: 'mobile' },
-        { value: 'landline', label: 'landline' }
-      ]);
-    // and here the output:
-    // [
-    //   { value: 'Donald', label: 'Donald' },
-    //   { value: 'Rosemary', label: 'Rosemary' },
-    //   { value: 'family', label: 'family' },
-    //   { value: 'private', label: 'private' },
-    //   { value: 'pro', label: 'pro' },
-    //   { value: 'mobile', label: 'mobile' },
-    //   { value: 'landline', label: 'landline' }
-    // ];
+    const { options, tags } = this.props;
 
     // source code for styling:
     // https://github.com/JedWatson/react-select/blob/v2/src/styles.js
@@ -196,8 +169,8 @@ class SelectComponentStyled extends Component {
         options={options}
         styles={colourStyles}
         isClearable={false}
-        value={mediaObject.tags.map(tag => ({ value: tag, label: tag }))}
-        // converting `mediaObject.tags` from ['mobile', 'landline']
+        value={tags.map(tag => ({ value: tag, label: tag }))}
+        // converting `tags` from ['mobile', 'landline']
         // to [
         //   { value: 'mobile', label: 'mobile' },
         //   { value: 'landline', label: 'landline' }
@@ -208,23 +181,27 @@ class SelectComponentStyled extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
-  return {
-    mediaObject: getMediaObject(state, props),
-    allParents: getAllParents(state),
-    validParents: getValidParents(state),
-    familyById: getFamilyById(state)
-  };
-}
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ updateTags }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  SelectComponentStyled
-);
+export default connect(null, mapDispatchToProps)(SelectComponentStyled);
 
 SelectComponentStyled.propTypes = {
-  index: PropTypes.number.isRequired
+  targetArray: PropTypes.string.isRequired, // component modifies tags of `state.profile[targetArray]`
+  index: PropTypes.number.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // selectedTags
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired
+  // allParents: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  // validParents: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+  // familyById: PropTypes.objectOf(
+  //   PropTypes.shape({
+  //     firstName: PropTypes.string.isRequired
+  //   })
+  // ).isRequired
 };

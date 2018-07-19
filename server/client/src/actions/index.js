@@ -6,8 +6,10 @@ import {
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   UPDATE_TAGS,
+  MODIFY_ADDRESS,
   MODIFY_MEDIA,
   MODIFY_USER,
+  ADD_ADDRESS_ROW,
   ADD_MEDIA_ROW,
   ADD_KID_ROW,
   ADD_PARENT_ROW
@@ -25,7 +27,7 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     const res = await axios.post('/api/payment', payload);
-    console.log('res: ', res);
+    // console.log('res: ', res);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {
     console.log(
@@ -69,6 +71,16 @@ export function modifyUser({ userId, fieldName, value }) {
   };
 }
 
+export function modifyAddress({ index, value }) {
+  return {
+    type: MODIFY_ADDRESS,
+    payload: {
+      index,
+      value
+    }
+  };
+}
+
 export function modifyMedia({ index, value }) {
   return {
     type: MODIFY_MEDIA,
@@ -91,16 +103,23 @@ export function addParentRow() {
   };
 }
 
+export function addAddressRow() {
+  return {
+    type: ADD_ADDRESS_ROW
+  };
+}
+
 export function addMediaRow() {
   return {
     type: ADD_MEDIA_ROW
   };
 }
 
-export function updateTags({ index, tags }) {
+export function updateTags({ targetArray, index, tags }) {
   return {
     type: UPDATE_TAGS,
     payload: {
+      targetArray,
       index,
       tags
     }

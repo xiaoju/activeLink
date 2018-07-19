@@ -6,6 +6,7 @@ function OrderReceipt(props) {
     users, // [{id, firstName, familyName, kidGrade},{},...]
     allKids, // ['k0', 'k2']
     allParents, // ['p0', 'p1']
+    addresses, // [{...}, {value: 'abc', tags: ['ab', 'de']}]
     familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['private']}, {media: 'phone', value: '12345', tags: []}]
     photoConsent, // false
     eventName, // 'this is the name'
@@ -48,6 +49,16 @@ function OrderReceipt(props) {
           </li>
         ))}
       </ul>
+      <br />
+      <strong>Address</strong>
+      <br />
+      {addresses.map(addressObject => (
+        <li key={addressObject.value}>
+          {addressObject.media} (``{addressObject.tags.map(tag => (
+            <span>{tag} </span>
+          ))}): {addressObject.value}
+        </li>
+      ))}
       <br />
       <strong>Phone and emails</strong>
       <br />

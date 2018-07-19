@@ -119,8 +119,9 @@ module.exports = app => {
           allKids: req.user.allKids,
           allParents: req.user.allParents,
           familyMedia: req.user.familyMedia,
-          allRegistered: req.user.allRegistered, // TODO rename to allRegisteredItems
-          registeredById: req.user.registeredById, // TODO rename to registeredItemsById
+          addresses: req.user.addresses,
+          registrations: req.user.registrations,
+          // registeredById: req.user.registeredById, // TODO rename to registeredItemsById
           paymentReceipts: req.user.paymentReceipts,
           allEvents: req.user.allEvents
         },
@@ -129,7 +130,7 @@ module.exports = app => {
           ...thisAsso.eventsById.e0,
           eventProviderName: thisAsso.name,
           itemsById: thisAsso.itemsById,
-          assoAdress: thisAsso.assoAdress,
+          address: thisAsso.address,
           allStaff: thisAsso.allStaff,
           staffById: thisAsso.staffById
         }

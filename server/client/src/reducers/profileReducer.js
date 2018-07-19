@@ -4,8 +4,10 @@ import {
   FETCH_USER,
   LOAD_RECEIPT,
   UPDATE_TAGS,
+  MODIFY_ADDRESS,
   MODIFY_MEDIA,
   MODIFY_USER,
+  ADD_ADDRESS_ROW,
   ADD_MEDIA_ROW,
   ADD_KID_ROW,
   ADD_PARENT_ROW
@@ -22,17 +24,33 @@ export default function(state = null, { type, payload }) {
       if (!payload) return null;
       else {
         // payload is undefined when logged out
-        let { allKids, allParents, familyMedia, familyById } = payload.profile;
-        // let newParentId = 'p' + allParents.length;
+        let {
+          allKids,
+          allParents,
+          addresses,
+          familyMedia,
+          familyById
+        } = payload.profile;
         let newParentId = uuid();
         let newKidId = uuid();
-        // let newKidId = 'k' + allKids.length;
         return {
           // we add one new (invalid) kid and parent, as field for user to type.
           ...payload.profile,
           allKids: allKids.concat(newKidId),
           allParents: allParents.concat(newParentId),
+          addresses: addresses.concat({
+            //  [{ value: '1 place du Capitole, 31000 Toulouse FRANCE',
+            //   tags: ['everybody'] // ['everybody'] or ['John', 'Maria', 'Mulan'] }]
+            // we add an empty row for typing more addresses
+            value: '',
+            tags: []
+            // state.allParents.length > 1 &&
+            // !!state.familyById[state.allParents[1]]
+            //   ? [state.familyById[state.allParents[1]].firstName]
+            //   : []
+          }),
           familyMedia: familyMedia.concat({
+            // we add an empty row for typing more media
             media: 'more_horiz', // cssmaterialize icon names: 'phone', 'email', 'more_horiz'
             value: '', // 012345678 or abc@gmail.com
             tags: ['private']
@@ -63,6 +81,7 @@ export default function(state = null, { type, payload }) {
         itemsById,
         bookedEvents,
         familyById,
+        addresses,
         familyMedia,
         allEvents
       } = payload;
@@ -74,6 +93,7 @@ export default function(state = null, { type, payload }) {
         itemsById,
         bookedEvents,
         familyById,
+        addresses,
         familyMedia,
         allEvents
       };
@@ -92,48 +112,8 @@ export default function(state = null, { type, payload }) {
         }
       };
     }
-    // case ADD_ROW:
-    //   switch (payload) {
-    //     case 'kid':
-    //       const { allKids } = state;
-    //       const newKidId = 'k' + allKids.length;
-    //       return {
-    //         ...state,
-    //         allKids: allKids.concat(newKidId),
-    //         familyById: {
-    //           ...state.familyById,
-    //           [newKidId]: {
-    //             id: newKidId,
-    //             firstName: '',
-    //             familyName: '',
-    //             kidGrade: ' '
-    //           }
-    //         }
-    //       };
-    //     case 'parent':
-    //       const { allParents } = state;
-    //       const newParentId = 'p' + allParents.length;
-    //       return {
-    //         ...state,
-    //         allParents: allParents.concat(newParentId),
-    //         familyById: {
-    //           ...state.familyById,
-    //           [newParentId]: {
-    //             id: newParentId,
-    //             firstName: '',
-    //             familyName: ''
-    //           }
-    //         }
-    //       };
-    //     case 'media':
-    //       return state;
-    //
-    //     default:
-    //       return state;
-    //   }
 
     case ADD_KID_ROW: {
-      // let newKidId = 'k' + state.allKids.length;
       let newKidId = uuid();
       return {
         ...state,
@@ -151,7 +131,6 @@ export default function(state = null, { type, payload }) {
     }
 
     case ADD_PARENT_ROW: {
-      // let newParentId = 'p' + state.allParents.length;
       let newParentId = uuid();
       return {
         ...state,
@@ -164,6 +143,20 @@ export default function(state = null, { type, payload }) {
             familyName: ''
           }
         }
+      };
+    }
+
+    case ADD_ADDRESS_ROW: {
+      return {
+        ...state,
+        addresses: state.addresses.concat({
+          value: '',
+          tags: []
+          // state.allParents.length > 2 &&
+          // !!state.familyById[state.allParents[2]]
+          //   ? [state.familyById[state.allParents[2]].firstName]
+          //   : []
+        })
       };
     }
 
@@ -180,6 +173,22 @@ export default function(state = null, { type, payload }) {
             'private'
             // 'mobile'
           ]
+        })
+      };
+    }
+
+    case MODIFY_ADDRESS: {
+      // beware that `addresses` *is an array* (of objects)!
+      let { index, value } = payload;
+      return {
+        ...state,
+        addresses: Immutable.updateObjectInArray(state.addresses, {
+          index,
+          item: {
+            ...state.addresses[index],
+            // tags: state.addresses[index].tags,
+            value
+          }
         })
       };
     }
@@ -203,16 +212,16 @@ export default function(state = null, { type, payload }) {
     }
 
     case UPDATE_TAGS: {
-      // familyMedia is an array of mediaObjects.
-      // index is the index of the mediaObject we want to update with new tags.
-      // let { familyMedia } = state;
-      let { index, tags } = payload;
+      // `familyMedia` (resp. `adresses`) is an array of `mediaObjects` (resp. `addressObjects`).
+      // index is the index of the mediaObject/addressObject we want to update with new tags.
+      //targetArray is the array on which we're working: `familyMedia` or `addresses`
+      let { targetArray, index, tags } = payload;
       return {
         ...state,
-        familyMedia: Immutable.updateObjectInArray(state.familyMedia, {
+        [targetArray]: Immutable.updateObjectInArray(state[targetArray], {
           index,
           item: {
-            ...state.familyMedia[index],
+            ...state[targetArray][index],
             tags
           }
         })

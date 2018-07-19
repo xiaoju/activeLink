@@ -18,8 +18,9 @@ const familySchema = new Schema({
   allParents: { type: Array, default: [] },
   familyMedia: {
     type: Array,
-    default: [{ media: 'email', value: '', tags: ['private'] }]
+    default: [{ media: 'more_horiz', value: '', tags: ['private'] }]
   },
+  addresses: { type: Array, default: [{ value: '', tags: ['Everybody'] }] },
   paymentReceipts: { type: Array, default: [] }
   // local: {
   //   email: String,

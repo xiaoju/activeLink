@@ -1,8 +1,8 @@
 {
   "id": "a0",
-  "name": "English Link Caousou",
+  "name": "The English Link",
   "contacts": ["s0"],
-  "adress": "1 Place du Capitole, 31000 Toulouse",
+  "address": "1 Place du Capitole, 31000 Toulouse",
   "registrations": {},
   "allStaff": ["s0", "s1", "s2", "s3"],
   "staffById": {

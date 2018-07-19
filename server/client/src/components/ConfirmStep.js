@@ -23,8 +23,8 @@ class ConfirmStep extends Component {
             </div>
             <div className="myContactsContainer">
               <span>
-                Payments are securely processed by 'stripe.com' following
-                '3D-Secure' authentication.
+                Payments are securely processed by 'stripe.com'
+                {/* following '3D-Secure' authentication. */}
               </span>
               <span>The connections to the servers are encrypted.</span>
               <span>

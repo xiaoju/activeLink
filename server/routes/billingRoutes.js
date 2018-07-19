@@ -20,6 +20,7 @@ module.exports = app => {
       frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
       frontendAllParentsAndKids = frontendAllKids.concat(frontendAllParents),
+      frontendAddresses = req.body.validAddresses,
       frontendMedia = req.body.validMedia,
       frontendFamilyById = req.body.validFamilyById,
       frontendTotal = req.body.total,
@@ -104,10 +105,11 @@ module.exports = app => {
         });
       }
 
-      // save updated profile from frontend into
-      // `family` collection (familyMedia, list of kidIds, list of parentIds):
+      // save updated profile (familyMedia, addresses, allKids, allParents) from
+      // frontend into `family` collection :
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
+      req.user.addresses = frontendAddresses;
       req.user.familyMedia = frontendMedia;
       try {
         family = await req.user.save();
@@ -315,6 +317,7 @@ module.exports = app => {
         users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
         allKids: family.allKids,
         allParents: family.allParents,
+        addresses: family.addresses,
         familyMedia: family.familyMedia,
         photoConsent: family.photoConsent,
         eventName,

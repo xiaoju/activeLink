@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { getMediaObject, getLastMediaValid } from '../selectors';
+import {
+  getMediaObject,
+  getLastMediaValid,
+  getMediaTagOptions
+} from '../selectors';
 import { modifyMedia, addMediaRow } from '../actions/index';
 import SelectComponentStyled from './SelectComponentStyled';
 
@@ -20,12 +24,16 @@ class OneMediaForm extends Component {
   handleMediaChange(event) {
     this.props.modifyMedia({
       index: this.props.index,
-      value: event.target.value.toLowerCase()
+      value: event.target.value.trim().toLowerCase()
     });
   }
 
   render() {
-    const { index, mediaObject: { media, value } } = this.props;
+    const {
+      index,
+      mediaObject: { media, value, tags },
+      mediaTagOptions
+    } = this.props;
 
     return (
       <form className="formInputsContainer">
@@ -50,7 +58,12 @@ class OneMediaForm extends Component {
             Email or phone number
           </label>
         </div>
-        <SelectComponentStyled index={index} />
+        <SelectComponentStyled
+          targetArray={'familyMedia'}
+          index={index}
+          tags={tags}
+          options={mediaTagOptions}
+        />
       </form>
     );
   }
@@ -59,7 +72,8 @@ class OneMediaForm extends Component {
 function mapStateToProps(state, props) {
   return {
     mediaObject: getMediaObject(state, props),
-    lastMediaValid: getLastMediaValid(state)
+    lastMediaValid: getLastMediaValid(state),
+    mediaTagOptions: getMediaTagOptions(state)
   };
 }
 
@@ -70,9 +84,16 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(OneMediaForm);
 
 OneMediaForm.propTypes = {
-  mediaObject: PropTypes.object.isRequired,
-  media: PropTypes.string,
-  value: PropTypes.string,
-  tags: PropTypes.array,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  mediaTagOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired,
+  mediaObject: PropTypes.shape({
+    media: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+  }).isRequired
 };

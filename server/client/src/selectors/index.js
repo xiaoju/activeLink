@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { capitalizeFirstLetter } from '../utils/Tools';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
 export const getEvent = state => state.event;
@@ -17,6 +18,7 @@ export const getStaffById = state => state.event.staffById;
 
 export const getProfile = state => state.profile;
 export const getFamilyMedia = state => state.profile.familyMedia;
+export const getAddresses = state => state.profile.addresses;
 export const getFamilyId = state => state.profile.familyId; // ['familyId']
 export const getAllKids = state => state.profile.allKids; // ['k0', 'k1', 'k2']
 export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
@@ -142,6 +144,12 @@ export const getValidUsers = createSelector(
   (validParents, validKids) => validKids.concat(validParents)
 );
 
+export const getValidParentsKids = createSelector(
+  // same as getValidUsers, but with parents listed first, used in address tags
+  [getValidParents, getValidKids],
+  (validParents, validKids) => validParents.concat(validKids)
+);
+
 // export const getAllKidsValid = createSelector(
 //   [getInvalidUsers, getAllKids],
 //   (invalidUsers, allKids) => {
@@ -183,9 +191,15 @@ export const getAllParentsValid = createSelector(
 );
 
 export const getLastMediaValid = createSelector(
-  // checking that 'last media in the view got a valid value (email or phone)'
+  // checking that last media in the view got a valid value (email or phone)'
   [getFamilyMedia],
   familyMedia => familyMedia[familyMedia.length - 1].media !== 'more_horiz'
+);
+
+export const getLastAddressValid = createSelector(
+  // checking that the last address got a valid value (not empty string)'
+  [getAddresses],
+  addresses => addresses[addresses.length - 1].value !== ''
 );
 
 // export const getAllParentsValid = createSelector(
@@ -351,6 +365,12 @@ export const getTotal = createSelector(
 
 export const getTotalNotZero = createSelector([getTotal], total => total > 0);
 
+export const getOneAddressMini = createSelector(
+  [getAddresses],
+  addresses =>
+    addresses.filter(addressObject => addressObject.value !== '').length > 0
+);
+
 export const getOnePhoneMini = createSelector(
   [getFamilyMedia],
   familyMedia =>
@@ -366,19 +386,29 @@ export const getOneEmailMini = createSelector(
 export const getFormIsValid = createSelector(
   [
     getTotalNotZero,
+    getOneAddressMini,
     getOnePhoneMini,
     getOneEmailMini,
     getOneKidMini,
     getOneParentMini
   ],
-  (totalNotZero, onePhoneMini, oneEmailMini, oneKidMini, oneParentMini) => ({
+  (
     totalNotZero,
+    oneAddressMini,
+    onePhoneMini,
+    oneEmailMini,
+    oneKidMini,
+    oneParentMini
+  ) => ({
+    totalNotZero,
+    oneAddressMini,
     oneEmailMini,
     onePhoneMini,
     oneParentMini,
     oneKidMini,
     consolidated:
       totalNotZero &&
+      oneAddressMini &&
       onePhoneMini &&
       oneEmailMini &&
       oneKidMini &&
@@ -403,6 +433,10 @@ export const getValidMedia = createSelector([getFamilyMedia], familyMedia =>
   )
 );
 
+export const getValidAddresses = createSelector([getAddresses], addresses =>
+  addresses.filter(addressObject => addressObject.value !== '')
+);
+
 export const getValidChecked = createSelector(
   [getFamilyAndValidKids, getChecked],
   (familyAndValidKids, checked) =>
@@ -418,3 +452,44 @@ export const getMainEmail = createSelector([getFamilyMedia], familyMedia => {
   );
   return !foundMediaObject ? '' : foundMediaObject.value;
 });
+
+export const getMediaTagOptions = createSelector(
+  [getFamilyById, getValidParents],
+  (familyById, validParents) => {
+    return validParents // ['p1', 'p3']
+      .map(parentId => capitalizeFirstLetter(familyById[parentId].firstName)) // ['Donald', 'Rosemary', '']
+      .filter(firstName => !!firstName) // ['Donald', 'Rosemary'] (remove the empty string)
+      .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
+      .concat([
+        // add the standard tags
+        { value: 'family', label: 'family' },
+        { value: 'private', label: 'private' },
+        { value: 'pro', label: 'pro' },
+        { value: 'mobile', label: 'mobile' },
+        { value: 'landline', label: 'landline' }
+      ]);
+    // and here the output (note the first 2):
+    //  [{ value: 'Donald', label: 'Donald' },
+    //   { value: 'Rosemary', label: 'Rosemary' },
+    //   { value: 'family', label: 'family' },
+    //   { value: 'private', label: 'private' },
+    //   { value: 'pro', label: 'pro' },
+    //   { value: 'mobile', label: 'mobile' },
+    //   { value: 'landline', label: 'landline' }]
+  }
+);
+
+export const getAddressTagOptions = createSelector(
+  // see `getMediaTagOptions` for a description of the logic
+  [getFamilyById, getValidParentsKids],
+  (familyById, validParentsKids) => {
+    const validUsersFirstnames = validParentsKids // ['p1', 'p2', 'k0', 'k1']
+      .map(parentId => capitalizeFirstLetter(familyById[parentId].firstName)) // ['Donald', 'Rosemary', 'Mulan', 'Zilan', '']
+      .filter(firstName => !!firstName) // remove the empty string
+      .map(tag => ({ value: tag, label: tag }));
+    return [{ value: 'Everybody', label: 'Everybody!' }].concat(
+      // add the standard tags
+      validUsersFirstnames
+    );
+  }
+);
