@@ -16,17 +16,20 @@ import { modifyUser, addKidRow, addParentRow } from '../actions/index';
 class OneKidForm extends Component {
   constructor(props) {
     super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleOnChangeEvent = this.handleOnChangeEvent.bind(this);
     this.handleOnBlurEvent = this.handleOnBlurEvent.bind(this);
   }
 
   handleOnBlurEvent(event) {
+    // add an empty row, which will be used for inputing the next kid/parent,
+    // as soon as the row being currently typed got valid.
     this.props.allKidsValid
       ? this.props.addKidRow()
       : this.props.allParentsValid && this.props.addParentRow();
   }
 
-  handleInputChange(event) {
+  handleOnChangeEvent(event) {
+    // After each keystroke, save the new value to state. (This a "controlled form").
     this.props.modifyUser({
       userId: this.props.userId,
       fieldName: event.target.name,
@@ -61,7 +64,7 @@ class OneKidForm extends Component {
               id={userId + '-firstName'}
               className={!firstName ? 'pasValide' : ' '}
               value={firstName}
-              onChange={this.handleInputChange}
+              onChange={this.handleOnChangeEvent}
               onBlur={this.handleOnBlurEvent}
             />
             <label htmlFor={userId + '-familyName'} className="active">
@@ -75,7 +78,7 @@ class OneKidForm extends Component {
               id={userId + '-familyName'}
               className={!userFamilyName ? 'pasValide' : ''}
               value={userFamilyName}
-              onChange={this.handleInputChange}
+              onChange={this.handleOnChangeEvent}
               onBlur={this.handleOnBlurEvent}
             />
             <label htmlFor={userId + '-familyName'} className="active">
@@ -95,8 +98,10 @@ class OneKidForm extends Component {
                   : 'browser-default'
               }
               value={kidGrade}
-              onChange={this.handleInputChange}
+              // onChange={this.handleOnChangeEvent}
+              onChange={this.handleOnChangeEvent}
               onBlur={this.handleOnBlurEvent}
+              // onInput={this.handleOnBlurEvent}
             >
               <option value=" "> </option>
               <option value="PS">PS</option>

@@ -1,8 +1,8 @@
 {
   "id": "a0",
-  "name": "The English Link",
+  "name": "The Active Link",
   "contacts": ["s0"],
-  "address": "1 Place du Capitole, 31000 Toulouse",
+  "address": "1 Place du Capitole, 31000 Toulouse FRANCE",
   "registrations": {},
   "allStaff": ["s0", "s1", "s2", "s3"],
   "staffById": {
@@ -24,6 +24,7 @@
     },
     "s2": {
       "id": "s2",
+      "role": "admin",
       "firstName": "Simone",
       "familyName": "Weil",
       "name": "Simone Weil",

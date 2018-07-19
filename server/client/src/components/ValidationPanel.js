@@ -43,13 +43,13 @@ class ValidationPanel extends Component {
         {!onePhoneMini && (
           <p>
             <strong>Phone numbers:</strong> please enter at least one phone
-            number.
+            number. Digits only: no '+', no '( )', no 'space'.
           </p>
         )}
         {!oneKidMini && (
           <p>
-            <strong>Kids:</strong> please enter first name, family name and
-            school grade for at least 1 kid.
+            <strong>Kids:</strong> For each kid, please fill-in the THREE
+            FIELDS: first name, family name and <strong>school grade</strong>.
           </p>
         )}
         {!oneParentMini && (

@@ -51,7 +51,7 @@ class OrderSummary extends Component {
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">③ Review your order</h4>
         <div className="orderSummary" style={{ margin: '2%' }}>
-          <table className="striped centered responsive-table">
+          <table className="striped centered">
             <thead>
               <tr>
                 <th>Item</th>
