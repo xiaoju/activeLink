@@ -7,6 +7,7 @@ import {
   getEventContacts
 } from '../selectors';
 import Payments from './Payments';
+import { capitalizeFirstLetter } from '../utils/Tools';
 
 class ConfirmStep extends Component {
   render() {
@@ -39,6 +40,7 @@ class ConfirmStep extends Component {
                     {staffById[contactId].firstName}{' '}
                     {staffById[contactId].familyName}
                   </span>
+                  <span>{capitalizeFirstLetter(staffById[contactId].job)}</span>
                   <span>{staffById[contactId].phone}</span>
                   <span>{staffById[contactId].email}</span>
                 </div>
