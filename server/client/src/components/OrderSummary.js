@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getFamilyId,
   getAllItems,
   getCheckedItemsNoDoublons,
   getCheckedItems,
@@ -18,6 +19,7 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      familyId,
       classItems,
       checkedItemsNoDoublons,
       checkedItems,
@@ -57,10 +59,11 @@ class OrderSummary extends Component {
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">⑤ Review your order</h4>
         <div className="orderSummary" style={{ margin: '2%' }}>
+          {/* Profile section */}
           <h5>- Profile -</h5>
           <br />
 
-          {/* EVENT 0 : "classes" type */}
+          {/* Classes section */}
           <h5>- Selected classes -</h5>
 
           <table className="striped centered">
@@ -98,10 +101,16 @@ class OrderSummary extends Component {
             </tfoot>
           </table>
 
-          {/* EVENT 1 : "volunteering" type */}
+          {/* Consent section */}
 
           <h5>- Photo & Video Consent -</h5>
-          <br />
+          {checked[familyId].includes('i21') ? (
+            <p>Photos are OK!</p>
+          ) : (
+            <p>No pictures please!</p>
+          )}
+
+          {/* Volunteering section */}
 
           <h5>- Volunteering -</h5>
           <span>
@@ -120,6 +129,7 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    familyId: getFamilyId(state),
     classItems: getAllItems(state),
     checkedItemsNoDoublons: getCheckedItemsNoDoublons(state),
     checkedItems: getCheckedItems(state),
