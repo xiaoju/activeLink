@@ -63,7 +63,7 @@ class CallForVolunteers extends Component {
         <div className="container itemDetails">
           <p>
             If you prefer, you can also support by the organization of single
-            short-time events.
+            events only.
             <br />Please select a few:
           </p>
 

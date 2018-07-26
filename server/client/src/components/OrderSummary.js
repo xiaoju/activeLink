@@ -77,39 +77,60 @@ class OrderSummary extends Component {
         <div className="orderSummary" style={{ margin: '2%' }}>
           {/* Profile section */}
           <h5>- Profile -</h5>
-          <h6>Parents: </h6>
-          {validParents.map(userId => (
-            <p key={userId}>
-              {validFamilyById[userId].firstName}{' '}
-              {validFamilyById[userId].familyName}
-            </p>
-          ))}
-          <h6>Kids: </h6>
-          {validKids.map(userId => (
-            <p key={userId}>
-              {validFamilyById[userId].firstName}{' '}
-              {validFamilyById[userId].familyName}{' '}
-              {validFamilyById[userId].kidGrade}
-            </p>
-          ))}
-          <h6>Postal addresses: </h6>
-          {validAddresses.map((addressObject, index) => (
-            <p key={index}>
-              {addressObject.tags.map((tag, index) => (
-                <span key={index}>{tag} </span>
-              ))}:
-              {addressObject.value}
-            </p>
-          ))}
-          <h6>Phones and emails: </h6>
-          {validMedia.map((mediaObject, index) => (
-            <p>
-              {mediaObject.tags.map((tag, index) => (
-                <span key={index}>{tag} </span>
-              ))}:
-              {mediaObject.value}
-            </p>
-          ))}
+          <h6>
+            <strong>Parents: </strong>
+          </h6>
+          <ul>
+            {validParents.map(userId => (
+              <li key={userId}>
+                {validFamilyById[userId].firstName}{' '}
+                {validFamilyById[userId].familyName}
+              </li>
+            ))}
+          </ul>
+          <h6>
+            <strong>Kids: </strong>
+          </h6>
+          <ul>
+            {validKids.map(userId => (
+              <li key={userId}>
+                {validFamilyById[userId].firstName}{' '}
+                {validFamilyById[userId].familyName}
+                {', '}
+                {validFamilyById[userId].kidGrade}
+              </li>
+            ))}
+          </ul>
+          <h6>
+            <strong>Postal addresses: </strong>
+          </h6>
+          <ul>
+            {validAddresses.map((addressObject, index) => (
+              <li key={index}>
+                <strong>
+                  {addressObject.tags.map((tag, index) => (
+                    <span key={index}>{tag} </span>
+                  ))}:{' '}
+                </strong>
+                {addressObject.value}
+              </li>
+            ))}
+          </ul>
+          <h6>
+            <strong>Phones and emails: </strong>
+          </h6>
+          <ul>
+            {validMedia.map((mediaObject, index) => (
+              <li>
+                <strong>
+                  {mediaObject.tags.map((tag, index) => (
+                    <span key={index}>{tag} </span>
+                  ))}:{' '}
+                </strong>
+                {mediaObject.value}
+              </li>
+            ))}
+          </ul>
           <br />
           {/* Classes section */}
           <h5>- Selected classes -</h5>
@@ -163,7 +184,17 @@ class OrderSummary extends Component {
               tasks:
             </span>
           ) : (
-            <span>I don't support {eventProviderName}.</span>
+            <ul>
+              <li>I don't support {eventProviderName}.</li>
+              <li style={{ color: '#ffa726' }}>
+                <br />
+                <strong>
+                  Really, wouldn't you like to support {eventProviderName} by
+                  helping co-organize one of the events?<br />(see section ④
+                  above)
+                </strong>
+              </li>
+            </ul>
           )}
           <ul>
             {isVolunteering &&
