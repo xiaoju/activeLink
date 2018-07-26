@@ -16,7 +16,21 @@ export const getFamilyItems = state => state.event.familyItems;
 export const getItemsById = state => state.event.itemsById;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
 export const getStaffById = state => state.event.staffById;
-export const gete1Items = state => state.e1;
+// export const gete1Items = state => state.e1;
+export const getVolunteeringItems = state => [
+  'i9',
+  'i10',
+  'i11',
+  'i12',
+  'i13',
+  'i14',
+  'i15',
+  'i16',
+  'i17',
+  'i18',
+  'i19',
+  'i20'
+];
 
 export const getProfile = state => state.profile;
 export const getFamilyMedia = state => state.profile.familyMedia;
@@ -512,4 +526,10 @@ export const getAddressTagOptions = createSelector(
       validUsersFirstnames
     );
   }
+);
+
+export const getIsVolunteering = createSelector(
+  [getValidChecked, getFamilyId, getVolunteeringItems],
+  (validChecked, familyId, volunteeringItems) =>
+    validChecked[familyId].some(itemId => volunteeringItems.includes(itemId))
 );

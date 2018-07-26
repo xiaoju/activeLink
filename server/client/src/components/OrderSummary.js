@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getVolunteeringItems,
+  getIsVolunteering,
   getEventProviderName,
   getValidParents,
   getValidKids,
@@ -25,6 +27,8 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      volunteeringItems,
+      isVolunteering,
       eventProviderName,
       validParents,
       validKids,
@@ -146,20 +150,33 @@ class OrderSummary extends Component {
           {/* Consent section */}
           <h5>- Photo & Video Consent -</h5>
           {checked[familyId].includes('i21') ? (
-            <p>Photos are OK!</p>
+            <p>OK for pictures of my kids!</p>
           ) : (
-            <p>No pictures please!</p>
+            <p>No pictures of my kids please!</p>
           )}
           {/* Volunteering section */}
           <h5>- Volunteering -</h5>
-          <span>
-            <strong>I don't support {eventProviderName}.</strong>
 
-            <strong>
-              Thank you for your support! We will call you back regarding
-              following tasks:
-            </strong>
-          </span>
+          {isVolunteering ? (
+            <span>
+              Thank you for your support! We'll contact you regarding following
+              tasks:
+            </span>
+          ) : (
+            <span>I don't support {eventProviderName}.</span>
+          )}
+          <ul>
+            {isVolunteering &&
+              volunteeringItems
+                .filter(itemId => checked[familyId].includes(itemId))
+                .sort((i0, i1) => i0.substring(1) - i1.substring(1))
+                .map(itemId => (
+                  <li key={itemId}>
+                    {itemsById[itemId].name}
+                    <br />
+                  </li>
+                ))}
+          </ul>
         </div>
       </div>
     );
@@ -168,6 +185,8 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    volunteeringItems: getVolunteeringItems(state),
+    isVolunteering: getIsVolunteering(state),
     eventProviderName: getEventProviderName(state),
     validParents: getValidParents(state),
     validKids: getValidKids(state),

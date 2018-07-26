@@ -55,7 +55,30 @@
       "phone": "06 06 06 06 06"
     }
   },
-  "allItems": ["i0", "i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+  "allItems": [
+    "i0",
+    "i1",
+    "i2",
+    "i3",
+    "i4",
+    "i5",
+    "i6",
+    "i7",
+    "i8",
+    "i9",
+    "i10",
+    "i11",
+    "i12",
+    "i13",
+    "i14",
+    "i15",
+    "i16",
+    "i17",
+    "i18",
+    "i19",
+    "i20",
+    "i21"
+  ],
   "itemsById": {
     "i0": {
       "id": "i0",
@@ -297,6 +320,20 @@
         "i19",
         "i20"
       ],
+      "payItems": [],
+      "mandatoryItems": [],
+      "familyItems": [],
+      "discountQualifiers": []
+    },
+    "e2": {
+      "eventId": "e2",
+      "eventName": "Photo & Video Consent",
+      "sectionTitle": "Photo & Video Consent",
+      "introduction": "",
+      "eventContacts": [""],
+      "bookingStartDate": "",
+      "bookingEndDate": "",
+      "allItems": ["i21"],
       "payItems": [],
       "mandatoryItems": [],
       "familyItems": [],

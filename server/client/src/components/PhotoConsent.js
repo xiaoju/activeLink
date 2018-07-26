@@ -34,10 +34,11 @@ class PhotoConsent extends Component {
 
     const consentText = (
       <span>
-        Check this box to <strong> give {eventProviderName} permission </strong>{' '}
-        to take photographs and videos of your children: {childrenFullNames} and
-        grant {eventProviderName}
-        <strong> full rights</strong> to use the images resulting from the
+        Check this box to{' '}
+        <strong>give permission to {eventProviderName} </strong>to take
+        photographs and videos of your children:{childrenFullNames}and grant{' '}
+        <em>{eventProviderName}</em>
+        <strong> the full rights</strong> to use the images resulting from the
         photography and video filming, and any reproductions or adaptations of
         the images for fundraising, publicity or other purposes to help achieve
         the association's aims. This might include (but is not limited to) the

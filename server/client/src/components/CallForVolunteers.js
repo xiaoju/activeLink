@@ -74,8 +74,9 @@ class CallForVolunteers extends Component {
         </div>
         <div className="container itemDetails">
           <p>
-            If you prefer, you can also support by short-time events. Please
-            select a few:
+            If you prefer, you can also support by the organization of single
+            short-time events.
+            <br />Please select a few:
           </p>
 
           {e1Items.map(itemId => (
