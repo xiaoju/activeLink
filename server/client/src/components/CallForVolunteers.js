@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import { bindActionCreators } from 'redux';
 import {
-  // gete1Items,
+  getVolunteeringItems,
   getChecked,
   getFamilyId,
   getItemsById
@@ -13,25 +13,13 @@ import {
 class CallForVolunteers extends Component {
   render() {
     const {
+      volunteeringItems,
       familyId,
       checked,
       checkCheckbox,
       uncheckCheckbox,
       itemsById
     } = this.props;
-    const e1Items = [
-      'i9',
-      'i10',
-      'i11',
-      'i12',
-      'i13',
-      'i14',
-      'i15',
-      'i16',
-      'i17',
-      'i18',
-      'i19'
-    ];
 
     return (
       <div className="itemsContainer hoverable">
@@ -58,18 +46,18 @@ class CallForVolunteers extends Component {
             <input
               type="checkbox"
               onChange={onChangeEvent =>
-                checked[familyId].includes('i20')
+                checked[familyId].includes('i9')
                   ? // if already in array
-                    uncheckCheckbox(familyId, 'i20', onChangeEvent)
+                    uncheckCheckbox(familyId, 'i9', onChangeEvent)
                   : // if not yet in array
-                    checkCheckbox(familyId, 'i20', onChangeEvent)
+                    checkCheckbox(familyId, 'i9', onChangeEvent)
               }
-              id="i20"
+              id="i9"
               className="filled-in checkbox-orange z-depth-2"
               // checked={}
               // disabled='disabled'
             />
-            <label htmlFor="i20">{itemsById.i20.name}</label>
+            <label htmlFor="i9">{itemsById.i9.name}</label>
           </div>
         </div>
         <div className="container itemDetails">
@@ -79,7 +67,7 @@ class CallForVolunteers extends Component {
             <br />Please select a few:
           </p>
 
-          {e1Items.map(itemId => (
+          {volunteeringItems.slice(1).map(itemId => (
             <div key={itemId} className="volunteersCheckbox">
               <input
                 type="checkbox"
@@ -107,7 +95,7 @@ class CallForVolunteers extends Component {
 
 function mapStateToProps(state) {
   return {
-    // e1Items: gete1Items(state),
+    volunteeringItems: getVolunteeringItems(state),
     itemsById: getItemsById(state),
     familyId: getFamilyId(state),
     checked: getChecked(state)

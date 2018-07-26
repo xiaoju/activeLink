@@ -16,7 +16,6 @@ export const getFamilyItems = state => state.event.familyItems;
 export const getItemsById = state => state.event.itemsById;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
 export const getStaffById = state => state.event.staffById;
-// export const gete1Items = state => state.e1;
 export const getVolunteeringItems = state => [
   'i9',
   'i10',
