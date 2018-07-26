@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import {
+  getAssoIconLink,
   getFamilyId,
   getEventId,
   getValidKids,
@@ -45,6 +46,10 @@ class Payments extends Component {
           <StripeCheckout
             name={eventProviderName}
             description={eventName}
+            image={
+              'http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png'
+            }
+            // image={'%PUBLIC_URL%/englishLinkLogo.png'}
             allowRememberMe={false}
             amount={total}
             email={mainEmail}
@@ -86,6 +91,7 @@ class Payments extends Component {
 
 function mapStateToProps(state) {
   return {
+    assoIconLink: getAssoIconLink(state),
     familyId: getFamilyId(state),
     eventId: getEventId(state),
     validKids: getValidKids(state),
@@ -109,6 +115,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
 
 Payments.propTypes = {
+  assoIconLink: PropTypes.string.isRequired,
   familyId: PropTypes.string.isRequired,
   eventId: PropTypes.string.isRequired,
   validKids: PropTypes.array.isRequired,

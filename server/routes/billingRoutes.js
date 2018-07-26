@@ -72,7 +72,7 @@ module.exports = app => {
       });
       // NB this custom error text is actually not shown in my client app
     } else {
-      // ######## form validation ########
+      // ######## end of form validation ########
 
       // "Delete" (= set `deleted` flag to `true`) kids and parents in the
       // `users` collection, who have been deleted as per frontend form. For
@@ -182,48 +182,51 @@ module.exports = app => {
       }
 
       if (stripeReceipt.status === 'succeeded') {
+        console.log(
+          'Starting saving the paid classes into the `registrations` property of `asso`'
+        );
+        // save the paid classes into the `registrations` property of `asso`
+
+        const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
+        // arrayMerge defines how the deepMerge shall proceed with arrays:
+        // concatenate and remove the duplicates.
+
+        let newRegistered = deepMerge(previousRegistered, frontendChecked, {
+          arrayMerge
+        });
+        // console.log('previousRegistered: ', previousRegistered);
+        // console.log('frontendChecked: ', frontendChecked);
+        // console.log('newRegistered: ', newRegistered);
+
         try {
-          // save the paid classes into the `registrations` property of `asso`
-
-          const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
-          // arrayMerge defines how the deepMerge shall proceed with arrays:
-          // concatenate and remove the duplicates.
-
-          let newRegistered = deepMerge(previousRegistered, frontendChecked, {
-            arrayMerge
-          });
-          // console.log('previousRegistered: ', previousRegistered);
-          // console.log('frontendChecked: ', frontendChecked);
-          // console.log('newRegistered: ', newRegistered);
-
-          try {
-            thisAsso = await Asso.findOne({ id: 'a0' });
-          } catch (error) {
-            console.log(
-              'billingRoutes.js, line 185 // error by findOne Asso: ',
-              error
-            );
-          }
-          try {
-            updatedAsso = await thisAsso.set({ registrations: newRegistered });
-          } catch (error) {
-            console.log(
-              'billingRoutes.js, line 193 // error by saving newRegistered: ',
-              error
-            );
-          }
-
-          try {
-            updatedAsso.save();
-          } catch (error) {
-            console.log(
-              'billingRoutes.js, line 202, error by saving modified asso to db: ',
-              error
-            );
-          }
+          thisAsso = await Asso.findOne({ id: 'a0' });
         } catch (error) {
-          console.log('Error while saving the paid classes to database');
+          console.log(
+            'billingRoutes.js, line 185 // error by findOne Asso: ',
+            error
+          );
         }
+        try {
+          updatedAsso = await thisAsso.set({ registrations: newRegistered });
+        } catch (error) {
+          console.log(
+            'billingRoutes.js, line 193 // error by saving newRegistered: ',
+            error
+          );
+        }
+
+        try {
+          updatedAsso.save();
+        } catch (error) {
+          console.log(
+            'billingRoutes.js, line 202, error by saving modified asso to db: ',
+            error
+          );
+        }
+
+        console.log(
+          'Finished saving the paid classes into the `registrations` property of `asso`'
+        );
       }
 
       // build receipt out of stripeReceipt and database data
@@ -250,7 +253,7 @@ module.exports = app => {
         obj[thisUser.id] = thisUser;
         return obj;
       }, {});
-      console.log('normalizedUsers: ', normalizedUsers);
+      // console.log('normalizedUsers: ', normalizedUsers);
       // normalized state
 
       // TODO try get registrations directly through a (nested) database query
@@ -338,9 +341,9 @@ module.exports = app => {
         //
         // errors
       };
-      console.log('publicReceipt: ', publicReceipt);
+      // console.log('publicReceipt: ', publicReceipt);
 
-      // TODO build a correct paymentReceipt, also based on the error messages
+      // TODO include error messages in the receipt
       res.send(publicReceipt);
 
       // send the payment receipt to front end:

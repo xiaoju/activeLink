@@ -1,76 +1,103 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { uncheckCheckbox, checkCheckbox } from '../actions/index';
+import { bindActionCreators } from 'redux';
+import {
+  // gete1Items,
+  getChecked,
+  getFamilyId,
+  getItemsById
+} from '../selectors';
 // import PropTypes from 'prop-types';
 
 class CallForVolunteers extends Component {
   render() {
+    const {
+      familyId,
+      checked,
+      checkCheckbox,
+      uncheckCheckbox,
+      itemsById
+    } = this.props;
+    const e1Items = [
+      'i9',
+      'i10',
+      'i11',
+      'i12',
+      'i13',
+      'i14',
+      'i15',
+      'i16',
+      'i17',
+      'i18',
+      'i19'
+    ];
+
     return (
-      <div>
-        <h4>One more thing...</h4>
-        <br />
-        <div>
-          <p>Name, surname, phone, email ==> to be selected from list.</p>
+      <div className="itemsContainer hoverable">
+        <h4 className="stepTitle">④ Call for Volunteers!</h4>
+        <div className="container itemDetails">
           <p>
-            We are still in need of one to two more bureau members for the vital
-            positions of Logistics Coordinators.
+            Without support by parents, The English Link may need to scale back
+            activities. Please tick some boxes below and we'll call you back.
           </p>
+        </div>
+        <div className="container itemDetails">
           <p>
-            Please let me know if you're interested in helping out to continue
-            these activities that our children look forward to.
+            We are looking for 2 bureau members for the positions of{' '}
+            <strong>Logistics Coordinators</strong>.<br />The Bureau meets once
+            a month in the evening to manage and plan activities. Meetings are
+            held at the homes of the bureau members on a rotating basis.<br />The{' '}
+            <strong>Logistics Coordinator</strong> leads the organization of the
+            3 workshops (fall, spring, summer), reserves the venues and leads
+            the planning for the Christmas party and "Annual General Meeting /
+            Garden Party", coordinates tickets for the pantomime, organizes book
+            covering sessions as necessary, coordinates the cake sale.
           </p>
-          <p> Without your support, we may need to scale back.</p>
+          <div className="volunteersCheckbox">
+            <input
+              type="checkbox"
+              onChange={onChangeEvent =>
+                checked[familyId].includes('i20')
+                  ? // if already in array
+                    uncheckCheckbox(familyId, 'i20', onChangeEvent)
+                  : // if not yet in array
+                    checkCheckbox(familyId, 'i20', onChangeEvent)
+              }
+              id="i20"
+              className="filled-in checkbox-orange z-depth-2"
+              // checked={}
+              // disabled='disabled'
+            />
+            <label htmlFor="i20">{itemsById.i20.name}</label>
+          </div>
+        </div>
+        <div className="container itemDetails">
           <p>
-            If you are unable to volunteer as a bureau member, don't despair -
-            we can still use your help!
+            If you prefer, you can also support by short-time events. Please
+            select a few:
           </p>
-          <p> No contribution is too small. </p>
-          <p>
-            Please fill out the attached volunteer form to indicate which events
-            you can help with.
-          </p>
-          <p>I can help with the following activities:</p>
-          <p>(Please check all that apply)</p>
-          <p>___ Forum des Activities (early September)</p>
-          <p>___ Welcome Breakfast (early September)</p>
-          <p>___ Parent/Teacher Meeting (November)</p>
-          <p>___ Fall/autumn Workshop</p>
-          <p>___ Christmas Party</p>
-          <p>___ Open Day (Jan/Feb)</p>
-          <p>___ Spring Workshop</p>
-          <p>
-            ___ Theatre Performances (On Stage Theatre, Theatre Company) May
-          </p>
-          <p>___ Bake Sale</p>
-          <p>___ Summer Workshop (Sports Day)</p>
-          <p>___ Annual General Meeting/Garden Party (May)</p>
-          <p>___ Bureau member: Logistics Coordinator</p>
-          <p> Logistics Coordinator responsibilities include:</p>
-          <ul>
-            <li>- Lead the organization of the three workshops</li>
-            <li>
-              - Reserve the venues and lead the planning for the Christmas party
-              and AGM/Garden Party
-            </li>
-            <li>- Coordinate tickets for the pantomime</li>
-            <li>- Organize book covering sessions as necessary</li>
-            <li>- Coordinate the cake sale</li>
-            <p>
-              The Bureau meets once a month in the evening to manage and plan
-              activities.
-            </p>
-            <p>
-              Meetings are held at the homes of the bureau members on a rotating
-              basis.
-            </p>
-            <p>
-              We are still in need of one to two more bureau members for the
-              vital positions of Logistics Coordinators.
-            </p>
-          </ul>
-          <p>Thank you! We'll call you back!</p>
-          <p>The English Link does not exist without the support of parents!</p>
-          <p>Looking forward to hearing from you.</p>
-          <p>Carmen</p>
+
+          {e1Items.map(itemId => (
+            <div key={itemId} className="volunteersCheckbox">
+              <input
+                type="checkbox"
+                onChange={onChangeEvent =>
+                  checked[familyId].includes(itemId)
+                    ? // if already in array
+                      uncheckCheckbox(familyId, itemId, onChangeEvent)
+                    : // if not yet in array
+                      checkCheckbox(familyId, itemId, onChangeEvent)
+                }
+                id={itemId}
+                className="filled-in checkbox-orange z-depth-2"
+                // checked={}
+              />
+              <label htmlFor={itemId}>{itemsById[itemId].name}</label>
+            </div>
+          ))}
+
+          {/* Thank you! We'll call you back! */}
         </div>
       </div>
     );
@@ -79,11 +106,24 @@ class CallForVolunteers extends Component {
 
 function mapStateToProps(state) {
   return {
-    // formIsValid: getFormIsValid(state)
+    // e1Items: gete1Items(state),
+    itemsById: getItemsById(state),
+    familyId: getFamilyId(state),
+    checked: getChecked(state)
   };
 }
 
-export default connect(mapStateToProps)(CallForVolunteers);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      checkCheckbox: checkCheckbox,
+      uncheckCheckbox: uncheckCheckbox
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CallForVolunteers);
 
 // CallForVolunteers.propTypes = {
 // formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired

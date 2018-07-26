@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import SpinnerWrapper from './SpinnerWrapper';
 import ProfileForm from './ProfileForm';
 import SelectClassesForm from './SelectClassesForm';
-import ConfirmStep from './ConfirmStep';
 import OrderSummary from './OrderSummary';
+import PhotoConsent from './PhotoConsent';
+import CallForVolunteers from './CallForVolunteers';
+import ConfirmStep from './ConfirmStep';
 
 class RegisterEvent extends Component {
   render() {
@@ -17,6 +19,8 @@ class RegisterEvent extends Component {
             <div>
               <ProfileForm />
               <SelectClassesForm />
+              <PhotoConsent />
+              <CallForVolunteers />
               <OrderSummary />
               <ConfirmStep />
             </div>

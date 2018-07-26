@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getAllItems,
   getCheckedItemsNoDoublons,
   getCheckedItems,
   getApplyDiscount,
@@ -17,7 +18,8 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
-      filteredItems,
+      classItems,
+      checkedItemsNoDoublons,
       checkedItems,
       applyDiscount,
       discountQualifiers,
@@ -47,10 +49,20 @@ class OrderSummary extends Component {
     let discountNotice = itemId =>
       applyDiscount && discountQualifiers.includes(itemId) && 'yes';
 
+    let filteredItems = checkedItemsNoDoublons.filter(itemId =>
+      classItems.includes(itemId)
+    );
+
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">③ Review your order</h4>
+        <h4 className="stepTitle">⑤ Review your order</h4>
         <div className="orderSummary" style={{ margin: '2%' }}>
+          <h5>- Profile -</h5>
+          <br />
+
+          {/* EVENT 0 : "classes" type */}
+          <h5>- Selected classes -</h5>
+
           <table className="striped centered">
             <thead>
               <tr>
@@ -85,6 +97,21 @@ class OrderSummary extends Component {
               </tr>
             </tfoot>
           </table>
+
+          {/* EVENT 1 : "volunteering" type */}
+
+          <h5>- Photo & Video Consent -</h5>
+          <br />
+
+          <h5>- Volunteering -</h5>
+          <span>
+            <strong>I don't want to support.</strong>
+
+            <strong>
+              Thank you for your support! We will call you back regarding
+              following tasks:
+            </strong>
+          </span>
         </div>
       </div>
     );
@@ -93,7 +120,8 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
-    filteredItems: getCheckedItemsNoDoublons(state),
+    classItems: getAllItems(state),
+    checkedItemsNoDoublons: getCheckedItemsNoDoublons(state),
     checkedItems: getCheckedItems(state),
     applyDiscount: getApplyDiscount(state),
     discountQualifiers: getDiscountQualifiers(state),

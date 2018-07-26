@@ -6,6 +6,7 @@ export const getEvent = state => state.event;
 export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
 export const getEventProviderName = state => state.event.eventProviderName;
+export const getAssoIconLink = state => state.event.assoIconLink;
 export const getEventContacts = state => state.event.eventContacts;
 export const getStandardPrices = state => state.event.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.event.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
@@ -15,6 +16,7 @@ export const getFamilyItems = state => state.event.familyItems;
 export const getItemsById = state => state.event.itemsById;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
 export const getStaffById = state => state.event.staffById;
+export const gete1Items = state => state.e1;
 
 export const getProfile = state => state.profile;
 export const getFamilyMedia = state => state.profile.familyMedia;
@@ -25,6 +27,7 @@ export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
 export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
 export const getFamilyById = state => state.profile.familyById;
 export const getEventsById = state => state.profile.eventsById;
+
 export const getUserFamilyName = (state, { userId }) =>
   state.profile.familyById[userId].familyName;
 export const getFirstName = (state, { userId }) =>
@@ -136,6 +139,14 @@ export const getValidParents = createSelector(
     };
 
     return allParents.filter(isValidUser); // ['p0', 'p1']
+  }
+);
+
+export const getFirstValidParentName = createSelector(
+  [getValidParents, getFamilyById],
+  (validParents, familyById) => {
+    const FirstValidParent = familyById[validParents[0]];
+    return FirstValidParent.firstName + ' ' + FirstValidParent.familyName;
   }
 );
 
@@ -302,6 +313,7 @@ export const getMergedFamilyName = createSelector(
 
 export const getCheckedItems = createSelector(
   // the list of items that are checked by anyone of the users
+  // includes doublons, freeOfCharge items, volunteering items
   // used by OrderSummary component and getTotal and getCheckedItemsNoDoublons
   [getFamilyAndValidKids, getChecked],
   (familyAndValidKids, checked) =>
@@ -311,7 +323,7 @@ export const getCheckedItems = createSelector(
 );
 
 export const getCheckedItemsNoDoublons = createSelector(
-  // remove doublons from checkedItems,
+  // remove doublons from checkedItems and sort in ascending order,
   // for use in OrderSummary component, cycling through these items to show only these.
   [getCheckedItems],
   checkedItems =>
@@ -324,6 +336,7 @@ export const getApplyDiscount = createSelector(
   [getCheckedItems, getDiscountQualifiers],
   (checkedItems, discountQualifiers) =>
     checkedItems.filter(item => discountQualifiers.includes(item)).length > 1
+  // NB checkedItems keeps the doublons ['i0','i2','i4','i2','i5','i7']
 );
 
 // export const getApplyDiscount2 = createSelector(
@@ -352,14 +365,21 @@ export const getApplyDiscount = createSelector(
 // discount shall apply as soon as at least 2 registrations for qualifying classes: C > 1;
 
 export const getTotal = createSelector(
-  [getCheckedItems, getApplyDiscount, getStandardPrices, getDiscountedPrices],
-  (checkedItems, applyDiscount, standardPrices, discountedPrices) =>
-    checkedItems // ['r0','r2','r4','r2','r5','r7'] (doublons are kept, e.g. 'r2')
+  [
+    getCheckedItems,
+    getAllItems,
+    getApplyDiscount,
+    getStandardPrices,
+    getDiscountedPrices
+  ],
+  (checkedItems, classItems, applyDiscount, standardPrices, discountedPrices) =>
+    checkedItems // ['i0','i2','i4','i2','i5','i7'] (doublons are kept, e.g. 'r2')
+      .filter(itemId => classItems.includes(itemId)) // don't count the volunteering items
       .map(
         applyDiscount
           ? thisItemId => discountedPrices[thisItemId]
           : thisItemId => standardPrices[thisItemId]
-      ) // [30, 100, 250, 450, 150]
+      ) // [30, 100, 250, 450, 150] (replace itemId with its price)
       .reduce((outputSum, smallAmount) => outputSum + smallAmount, 0) // the total
 );
 

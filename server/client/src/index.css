@@ -12,6 +12,10 @@ div #logo {
   text-align: left;
 }
 
+.orangeStrong {
+  color: #ffa726;
+}
+
 .SelectComponent__value-container > div:focus-within {
   border-width: 2px;
 }
@@ -35,9 +39,23 @@ div #logo {
   background: transparent;
 }
 
+.volunteersCheckbox label,
 .usernameCheckbox label {
   color: rgba(0, 0, 0, 0.87);
   font-weight: bold;
+}
+
+.photoConsentCheckbox label {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.photoConsentCheckbox p {
+  margin: 0em;
+  padding: 0em;
+}
+
+.photoConsentCheckbox .signature {
+  padding-top: 0.6em;
 }
 
 .usernameCheckboxDisabled label {

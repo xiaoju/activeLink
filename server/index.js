@@ -12,13 +12,23 @@ require('./models/Family');
 require('./models/User');
 require('./services/passport');
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+mongoose
+  .connect(keys.mongoURI, {
+    useNewUrlParser: true,
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 1000
+  })
+  .then(res => console.log('mongoose: connection success.'))
+  .catch(err =>
+    console.log('______________ Mongoose connect error: __________', err)
+  );
 // .then(
 //   () => {
+//     console.log('mongoose: connection success.');
 //     /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
 //   },
 //   err => {
-//     console.log('Mongoose connect error: '), err, '********************';
+//     console.log('______________ Mongoose connect error: __________', err);
 //   }
 // );
 

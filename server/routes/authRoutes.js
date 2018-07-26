@@ -55,7 +55,12 @@ module.exports = app => {
   // );
 
   app.get('/api/logout', (req, res) => {
-    req.logout();
+    try {
+      req.logout();
+    } catch (error) {
+      console.log('There was an error by logout: ', error);
+    }
+    // throw new Error('TEST error by /api/logout !!');
     res.redirect('/');
   });
 
@@ -110,6 +115,9 @@ module.exports = app => {
       res.send(null);
       // if not logged in, don't send data.
     } else {
+      console.log('thisAsso: ', thisAsso);
+      console.log('thisAsso.name: ', thisAsso.name);
+      console.log('thisAsso.iconLink: ', thisAsso.iconLink); // BUG why is this undefined?!!
       res.send({
         profile: {
           familyById,
@@ -129,6 +137,7 @@ module.exports = app => {
           // this goes to the eventReducer
           ...thisAsso.eventsById.e0,
           eventProviderName: thisAsso.name,
+          assoIconLink: thisAsso.iconLink,
           itemsById: thisAsso.itemsById,
           address: thisAsso.address,
           allStaff: thisAsso.allStaff,

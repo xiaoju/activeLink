@@ -34,7 +34,7 @@ function OrderReceipt(props) {
       <strong>kids</strong>
       <ul>
         {allKids.map(userId => (
-          <li>
+          <li key={userId}>
             {users[userId].firstName} {users[userId].familyName},{' '}
             {users[userId].kidGrade}
           </li>
@@ -44,7 +44,7 @@ function OrderReceipt(props) {
       <strong>Parents</strong>
       <ul>
         {allParents.map(userId => (
-          <li>
+          <li key={userId}>
             {users[userId].firstName} {users[userId].familyName}
           </li>
         ))}

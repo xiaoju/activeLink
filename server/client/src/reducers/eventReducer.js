@@ -19,6 +19,7 @@ export default function(state = empty, { type, payload }) {
           eventId,
           eventName,
           eventProviderName,
+          assoIconLink,
           eventContacts,
           allItems,
           standardPrices,
@@ -29,10 +30,17 @@ export default function(state = empty, { type, payload }) {
           staffById,
           itemsById
         } = payload.thisEvent;
+        console.log('assoIconLink: ', assoIconLink);
+        console.log(
+          'payload.thisEvent.assoIconLink: ',
+          payload.thisEvent.assoIconLink
+        );
+        console.log('payload.thisEvent: ', payload.thisEvent);
         return {
           eventId,
           eventName,
           eventProviderName,
+          assoIconLink,
           eventContacts,
           allItems,
           standardPrices,

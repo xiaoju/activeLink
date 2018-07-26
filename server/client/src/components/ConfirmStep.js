@@ -15,7 +15,7 @@ class ConfirmStep extends Component {
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">④ Confirm and pay</h4>
+        <h4 className="stepTitle">⑥ Confirm and pay</h4>
         <div className="container">
           <Payments />
           <div className="categoryIcon">

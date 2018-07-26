@@ -3,6 +3,11 @@
 // example, the total cost has been reduced, or some mandatory items have been
 // removed, etc.
 
+// TODO the payItems are only the ones from e0 (the classes). It should also
+// conside the payItems of the other sections of this event (today only
+// volunteering and consent, which are free of charge, but maybe more items in
+// future.
+
 const getTestTotal = require('./getTestTotal');
 const testKids = require('./testKids');
 const testMandatory = require('./testMandatory');
@@ -31,6 +36,7 @@ module.exports = ({
   thisEvent: {
     discountQualifiers,
     standardPrices,
+    payItems,
     discountedPrices,
     mandatoryItems,
     familyItems
@@ -57,6 +63,7 @@ module.exports = ({
     frontendTotal,
     frontendFamilyById,
     frontendChecked,
+    payItems,
     discountQualifiers,
     standardPrices,
     discountedPrices

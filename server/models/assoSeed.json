@@ -1,6 +1,8 @@
 {
   "id": "a0",
-  "name": "The Active Link",
+  "name": "The English Link",
+  "iconLink":
+    "http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png",
   "contacts": ["s0"],
   "address": "1 Place du Capitole, 31000 Toulouse FRANCE",
   "registrations": {},
@@ -59,15 +61,27 @@
       "id": "i0",
       "name": "Registration to the association",
       "period": "2018-2019",
+      "audience": "families",
       "staff": ["s0"],
       "description":
         "The registration to the English Link association is required to join the activities. School year 2018-2019.",
-      "itemGrades": ["PS", "MS", "GS", "CP", "CE1", "CE2", "CM1", "CM2"]
+      "itemGrades": [
+        "PS",
+        "MS",
+        "GS",
+        "CP",
+        "CE1",
+        "CE2",
+        "CM1",
+        "CM2",
+        "college"
+      ]
     },
     "i1": {
       "id": "i1",
       "name": "English classes in GS",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s1"],
       "description":
         "English Classes for bilingual kids of Grande Section. Twice 45 min a week during class time. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join \"English classes in primary\" or \"English classes in GS\".",
@@ -77,6 +91,7 @@
       "id": "i2",
       "name": "English classes in primary",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s2"],
       "description":
         "English Classes for bilingual kids from CP to CM2. Adapted from the british national curriculum. 2 hours per week. 1 hour during class time plus 1 hour Thursday 15h45-16h45 for CP & CE1. During normal class time for CE2, CM1 & CM2. Price includes books and other learning materials. Discount applies if minimum 2 kids of the same family do join \"English classes in primary\" or \"English classes in GS\".",
@@ -84,8 +99,9 @@
     },
     "i3": {
       "id": "i3",
-      "name": "Munchkin club in maternelle",
+      "name": "Munchkin Club",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s3"],
       "description":
         "Fun gathering for english speakers, enjoying games, songs, activities and reading. For PS, MS & GS. Wednesday 11:00-12:00.",
@@ -95,6 +111,7 @@
       "id": "i4",
       "name": "Mini Kids Club",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s0"],
       "description":
         "Dynamic and renewed activities in english for bilingual kids. For CP & CE1. Monday 12:30-13:30.",
@@ -104,6 +121,7 @@
       "id": "i5",
       "name": "Kids Club",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s2"],
       "description":
         "Dynamic and renewed activities in english for bilingual kids. For CE2, CM1 & CM2. Thursday 12:30-13:30.",
@@ -113,6 +131,7 @@
       "id": "i6",
       "name": "College Club",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s2"],
       "description":
         "Dynamic and renewed activities in english for bilingual kids. For college: 6e to 3e. Thursday 12:30-13:30.",
@@ -122,6 +141,7 @@
       "id": "i7",
       "name": "Bookworms",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s3"],
       "description":
         "The books club in english for bilingual kids. The pleasure of borrowing books and discovering stories, plus animations around books: a quiet time at the end of the week. From CP to CM2. Friday 12:30-13:30.",
@@ -131,10 +151,90 @@
       "id": "i8",
       "name": "On Stage!",
       "period": "2018-2019",
+      "audience": "kids",
       "staff": ["s1"],
       "description":
         "Theater in English for bilingual kids. A work on acting and staging, shown on stage at the end of the year. Tuesday 16:30-18:00.",
       "itemGrades": ["CP", "CE1", "CE2", "CM1", "CM2"]
+    },
+    "i9": {
+      "id": "i9",
+      "name": "Forum des Activities (early September)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i10": {
+      "id": "i10",
+      "name": "Welcome Breakfast (early September)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i11": {
+      "id": "i11",
+      "name": "Parent/Teacher Meeting (November)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i12": {
+      "id": "i12",
+      "name": "Workshop 1 (Fall/autumn)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i13": {
+      "id": "i13",
+      "name": "Christmas Party (December or January)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i14": {
+      "id": "i14",
+      "name": "Open Day (January or February)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i15": {
+      "id": "i15",
+      "name": "Workshop 2 (Spring)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i16": {
+      "id": "i16",
+      "name": "Performances by On Stage! and The Theatre Company (May)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i17": {
+      "id": "i17",
+      "name": "Bake Sale",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i18": {
+      "id": "i18",
+      "name": "Workshop 3: Sports Day (Summer)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i19": {
+      "id": "i19",
+      "name": "Annual General Meeting/Garden Party (May)",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i20": {
+      "id": "i20",
+      "name": "Bureau member: Logistics Coordinator",
+      "period": "2018-2019",
+      "audience": "parents"
+    },
+    "i21": {
+      "id": "i21",
+      "name":
+        "I give permission to <strong>{eventProviderName}</strong> association to take photographs and videos of my children: <br /> {'names of children'} <br /> <strong> I also grant </strong> {eventProviderName} full rights to use the images resulting from the photography/video filming, and any reproductions or adaptations of the images for fundraising, publicity or other purposes to help achieve the association's aims. This might include (but is not limited to) the right to use them in their printed and online newsletter, website, publicity, social media, press releases and funding applications.",
+      "period": "2018-2019",
+      "audience": "family"
     }
   },
   "allEvents": ["e0"],
@@ -142,10 +242,15 @@
     "e0": {
       "eventId": "e0",
       "eventName": "Registration 2018-2019",
+      "introduction": "",
       "eventContacts": ["s1", "s2"],
       "bookingStartDate": "",
       "bookingEndDate": "",
       "allItems": ["i0", "i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+      "payItems": ["i0", "i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+      "mandatoryItems": ["i0"],
+      "familyItems": ["i0"],
+      "discountQualifiers": ["i1", "i2"],
       "standardPrices": {
         "i0": 3000,
         "i1": 22500,
@@ -167,10 +272,35 @@
         "i6": 100,
         "i7": 10500,
         "i8": 25500
-      },
-      "discountQualifiers": ["i1", "i2"],
-      "mandatoryItems": ["i0"],
-      "familyItems": ["i0"]
+      }
+    },
+    "e1": {
+      "eventId": "e1",
+      "eventName": "Call for Volunteers",
+      "sectionTitle": "Call for Volunteers!",
+      "introduction":
+        "We are still in need of one to two more bureau members for the vital positions of Logistics Coordinators. Please let me know if you're interested in helping out to continue these activities that our children look forward to. Without your support, we may need to scale back. If you feel unable to volunteer as a bureau member for a whole year, don't despair - we can still use your help for short-time events! No contribution is too small.",
+      "eventContacts": ["s1"],
+      "bookingStartDate": "",
+      "bookingEndDate": "",
+      "allItems": [
+        "i9",
+        "i10",
+        "i11",
+        "i12",
+        "i13",
+        "i14",
+        "i15",
+        "i16",
+        "i17",
+        "i18",
+        "i19",
+        "i20"
+      ],
+      "payItems": [],
+      "mandatoryItems": [],
+      "familyItems": [],
+      "discountQualifiers": []
     }
   }
 }

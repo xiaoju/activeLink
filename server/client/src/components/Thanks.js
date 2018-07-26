@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { getReceipt } from '../selectors';
 import SpinnerWrapper from './SpinnerWrapper';
 import OrderReceipt from './OrderReceipt';
-import CallForVolunteers from './CallForVolunteers';
 
 class Thanks extends Component {
   render() {
@@ -20,7 +19,6 @@ class Thanks extends Component {
         ) : (
           <div>
             <OrderReceipt receipt={receipt} />
-            <CallForVolunteers />
           </div>
         )}
       </div>
