@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getEventProviderName,
+  getValidParents,
+  getValidKids,
+  getValidFamilyById,
+  getValidAddresses,
+  getValidMedia,
   getFamilyId,
   getAllItems,
   getCheckedItemsNoDoublons,
@@ -19,6 +25,12 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      eventProviderName,
+      validParents,
+      validKids,
+      validFamilyById,
+      validAddresses,
+      validMedia,
       familyId,
       classItems,
       checkedItemsNoDoublons,
@@ -61,11 +73,42 @@ class OrderSummary extends Component {
         <div className="orderSummary" style={{ margin: '2%' }}>
           {/* Profile section */}
           <h5>- Profile -</h5>
+          <h6>Parents: </h6>
+          {validParents.map(userId => (
+            <p key={userId}>
+              {validFamilyById[userId].firstName}{' '}
+              {validFamilyById[userId].familyName}
+            </p>
+          ))}
+          <h6>Kids: </h6>
+          {validKids.map(userId => (
+            <p key={userId}>
+              {validFamilyById[userId].firstName}{' '}
+              {validFamilyById[userId].familyName}{' '}
+              {validFamilyById[userId].kidGrade}
+            </p>
+          ))}
+          <h6>Postal addresses: </h6>
+          {validAddresses.map((addressObject, index) => (
+            <p key={index}>
+              {addressObject.tags.map((tag, index) => (
+                <span key={index}>{tag} </span>
+              ))}:
+              {addressObject.value}
+            </p>
+          ))}
+          <h6>Phones and emails: </h6>
+          {validMedia.map((mediaObject, index) => (
+            <p>
+              {mediaObject.tags.map((tag, index) => (
+                <span key={index}>{tag} </span>
+              ))}:
+              {mediaObject.value}
+            </p>
+          ))}
           <br />
-
           {/* Classes section */}
           <h5>- Selected classes -</h5>
-
           <table className="striped centered">
             <thead>
               <tr>
@@ -100,21 +143,17 @@ class OrderSummary extends Component {
               </tr>
             </tfoot>
           </table>
-
           {/* Consent section */}
-
           <h5>- Photo & Video Consent -</h5>
           {checked[familyId].includes('i21') ? (
             <p>Photos are OK!</p>
           ) : (
             <p>No pictures please!</p>
           )}
-
           {/* Volunteering section */}
-
           <h5>- Volunteering -</h5>
           <span>
-            <strong>I don't want to support.</strong>
+            <strong>I don't support {eventProviderName}.</strong>
 
             <strong>
               Thank you for your support! We will call you back regarding
@@ -129,6 +168,12 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    eventProviderName: getEventProviderName(state),
+    validParents: getValidParents(state),
+    validKids: getValidKids(state),
+    validFamilyById: getValidFamilyById(state),
+    validAddresses: getValidAddresses(state),
+    validMedia: getValidMedia(state),
     familyId: getFamilyId(state),
     classItems: getAllItems(state),
     checkedItemsNoDoublons: getCheckedItemsNoDoublons(state),
