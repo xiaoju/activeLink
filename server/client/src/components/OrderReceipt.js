@@ -23,12 +23,31 @@ function OrderReceipt(props) {
   return (
     <div>
       <h4>Thank you for your registration!</h4>
+      <h5>You can now exit this page.</h5>
       <br />
       <h4>Order receipt:</h4>
-      Receipt number: {chargeId}
-      <br />
-      {eventName}
-      <br />
+      <ul>
+        <li>{eventName}</li>
+        <li>
+          <strong>Receipt number: </strong>
+          {chargeId}
+        </li>
+        <li>
+          <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
+        </li>
+        <li>
+          <strong>Total paid: </strong> {total / 100} {currency}
+        </li>
+        <li>{applyDiscount && 'Discount has been applied.'}</li>
+        <li>
+          <strong>Payment status: </strong>
+          {status}
+        </li>
+        <li>
+          <strong>Time: </strong>
+          {new Date(1000 * timeStamp).toLocaleString()}
+        </li>
+      </ul>
       <h5>Profile:</h5>
       <br />
       <strong>kids</strong>
@@ -72,7 +91,10 @@ function OrderReceipt(props) {
       </ul>
       <br />
       <strong>Photo consent: </strong>
-      {photoConsent ? 'yes' : 'no'}
+      {allPurchasedItems.includes('i21')
+        ? 'OK for pictures'
+        : 'not OK for pictures'}
+      {/* i21 */}
       <br />
       {/* {allPurchasedToday.map(obj => (
         <ul key={obj.id}>
@@ -112,18 +134,6 @@ function OrderReceipt(props) {
           </div>
         ))}
       </div>
-      <strong>Total paid: </strong> {total / 100} {currency}
-      <br />
-      {applyDiscount && 'Discount was applied.'}
-      <br />
-      <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
-      <br />
-      <strong>Payment status: </strong>
-      {status}
-      <br />
-      <strong>Time: </strong>
-      {new Date(1000 * timeStamp).toLocaleString()}
-      <br />
     </div>
   );
 }
