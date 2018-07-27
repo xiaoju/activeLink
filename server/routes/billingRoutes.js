@@ -316,6 +316,7 @@ module.exports = app => {
       // console.log('purchasedItemsById: ', purchasedItemsById);
 
       let publicReceipt = {
+        assoName: thisAsso.name,
         familyId,
         users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
         allKids: family.allKids,

@@ -2,13 +2,14 @@ import React from 'react';
 
 function OrderReceipt(props) {
   let {
-    familyId, // 'abcd'
-    users, // [{id, firstName, familyName, kidGrade},{},...]
-    allKids, // ['k0', 'k2']
-    allParents, // ['p0', 'p1']
-    addresses, // [{...}, {value: 'abc', tags: ['ab', 'de']}]
-    familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['private']}, {media: 'phone', value: '12345', tags: []}]
-    photoConsent, // false
+    // familyId, // 'abcd'
+    // users, // [{id, firstName, familyName, kidGrade},{},...]
+    // allKids, // ['k0', 'k2']
+    // allParents, // ['p0', 'p1']
+    // addresses, // [{...}, {value: 'abc', tags: ['ab', 'de']}]
+    // familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['private']}, {media: 'phone', value: '12345', tags: []}]
+    // photoConsent, // false
+    assoName,
     eventName, // 'this is the name'
     total, // 30000 (in cents)
     timeStamp, //12345432
@@ -16,38 +17,45 @@ function OrderReceipt(props) {
     last4, // '1234'
     status, // 'succeeded'
     chargeId, // 'abcd'
-    applyDiscount, // true
-    allPurchasedItems, // ['i0', 'i2', 'i7']
-    purchasedItemsById // { i0: {...}, i2: { id: 'i2', name: 'Knitting class', period: '2038-2039', paidPrice: 3000, beneficiaries: ['familyId', 'k7', 'p3'] } }
+    applyDiscount // true
+    // allPurchasedItems, // ['i0', 'i2', 'i7']
+    // purchasedItemsById // { i0: {...}, i2: { id: 'i2', name: 'Knitting class', period: '2038-2039', paidPrice: 3000, beneficiaries: ['familyId', 'k7', 'p3'] } }
   } = props.receipt;
   return (
     <div>
-      <h4>Thank you for your registration!</h4>
-      <h5>You can now exit this page.</h5>
-      <br />
-      <h4>Order receipt:</h4>
-      <ul>
-        <li>{eventName}</li>
-        <li>
-          <strong>Receipt number: </strong>
-          {chargeId}
-        </li>
-        <li>
-          <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
-        </li>
-        <li>
-          <strong>Total paid: </strong> {total / 100} {currency}
-        </li>
-        <li>{applyDiscount && 'Discount has been applied.'}</li>
-        <li>
-          <strong>Payment status: </strong>
-          {status}
-        </li>
-        <li>
-          <strong>Time: </strong>
-          {new Date(1000 * timeStamp).toLocaleString()}
-        </li>
-      </ul>
+      <div className="itemsContainer hoverable">
+        <h4 className="stepTitle">⑦ Order receipt</h4>
+        <h5>Thank you for your registration!</h5>
+        <h5>You can now exit this page.</h5>
+        <div className="orderSummary" style={{ margin: '2%' }}>
+          <ul>
+            <li>
+              <strong>
+                {assoName}, {eventName}
+              </strong>
+            </li>
+            <li>
+              <strong>Receipt number: </strong>
+              {chargeId}
+            </li>
+            <li>
+              <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
+            </li>
+            <li>
+              <strong>Total paid: </strong> {total / 100}{' '}
+              {currency.toUpperCase()}
+            </li>
+            <li>{applyDiscount && 'Discount has been applied.'}</li>
+            <li>
+              <strong>Payment status: </strong>
+              {status}
+            </li>
+            <li>
+              <strong>Time: </strong>
+              {new Date(1000 * timeStamp).toLocaleString()}
+            </li>
+          </ul>
+          {/*
       <h5>Profile:</h5>
       <br />
       <strong>kids</strong>
@@ -94,9 +102,9 @@ function OrderReceipt(props) {
       {allPurchasedItems.includes('i21')
         ? 'OK for pictures'
         : 'not OK for pictures'}
-      {/* i21 */}
-      <br />
-      {/* {allPurchasedToday.map(obj => (
+         */}
+
+          {/* {allPurchasedToday.map(obj => (
         <ul key={obj.id}>
           <li>
             Item: {obj.name}, {obj.period}
@@ -109,6 +117,8 @@ function OrderReceipt(props) {
           </li>
         </ul>
       ))} */}
+
+          {/*
       <strong>Purchased items: </strong>
       <div>
         {allPurchasedItems.map(itemId => (
@@ -133,6 +143,8 @@ function OrderReceipt(props) {
             </ul>
           </div>
         ))}
+      </div> */}
+        </div>
       </div>
     </div>
   );
