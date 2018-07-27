@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { getProfile } from '../selectors';
 import NotLogged from './NotLogged';
 import NextEvents from './NextEvents';
-import LinkToCall from './LinkToCall';
-import MyProfile from './MyProfile';
-import MyClasses from './MyClasses';
+// import LinkToCall from './LinkToCall';
+// import MyProfile from './MyProfile';
+// import MyClasses from './MyClasses';
 
 class Home extends Component {
   render() {
@@ -14,9 +14,9 @@ class Home extends Component {
     return !!profile ? (
       <div>
         <NextEvents />
-        <LinkToCall />
+        {/* <LinkToCall />
         <MyProfile />
-        <MyClasses />
+        <MyClasses /> */}
       </div>
     ) : (
       <NotLogged />
