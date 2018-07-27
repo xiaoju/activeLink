@@ -81,6 +81,8 @@ push to heroku:
 force push to heroku:
 `git push heroku`git subtree split --prefix server master`:master --force`
 
+create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
+
 ## Architecture
 
 ### IDs

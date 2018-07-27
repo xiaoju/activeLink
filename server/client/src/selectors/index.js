@@ -159,7 +159,9 @@ export const getFirstValidParentName = createSelector(
   [getValidParents, getFamilyById],
   (validParents, familyById) => {
     const FirstValidParent = familyById[validParents[0]];
-    return FirstValidParent.firstName + ' ' + FirstValidParent.familyName;
+    return !FirstValidParent
+      ? 'xxx' // If there is no "validParent" yet
+      : FirstValidParent.firstName + ' ' + FirstValidParent.familyName;
   }
 );
 
