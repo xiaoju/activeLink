@@ -115,9 +115,9 @@ module.exports = app => {
       res.send(null);
       // if not logged in, don't send data.
     } else {
-      console.log('thisAsso: ', thisAsso);
-      console.log('thisAsso.name: ', thisAsso.name);
-      console.log('thisAsso.iconLink: ', thisAsso.iconLink); // BUG why is this undefined?!!
+      // console.log('thisAsso: ', thisAsso);
+      // console.log('thisAsso.name: ', thisAsso.name);
+      // console.log('thisAsso.iconLink: ', thisAsso.iconLink); // BUG why is this undefined?!!
       res.send({
         profile: {
           familyById,

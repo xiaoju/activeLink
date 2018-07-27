@@ -64,7 +64,7 @@ class CallForVolunteers extends Component {
           <p>
             If you prefer, you can also support by the organization of single
             events only.
-            <br />Please select a few:
+            <br />Please select one or more:
           </p>
 
           {volunteeringItems.slice(1).map(itemId => (

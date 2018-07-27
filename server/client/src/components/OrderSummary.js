@@ -189,9 +189,14 @@ class OrderSummary extends Component {
               <li style={{ color: '#ffa726' }}>
                 <br />
                 <strong>
-                  Really, wouldn't you like to support {eventProviderName} by
-                  helping co-organize one of the events?<br />(see section ④
-                  above)
+                  <ul>
+                    <li>
+                      Really, wouldn't it be nice to support {eventProviderName}{' '}
+                      and help co-organize one of the events?
+                    </li>
+                    <li>1st step: click a box in section ④ above.</li>
+                    <li>Then we'll call you back and accompany you.</li>
+                  </ul>
                 </strong>
               </li>
             </ul>
