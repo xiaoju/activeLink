@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import ItemCheckboxes from './ItemCheckboxes';
 import ItemPrices from './ItemPrices';
 import {
+  sectionTitle,
   getStaffById,
   getApplyDiscount,
   getChecked,
@@ -23,6 +25,7 @@ import {
 class SelectClassesForm extends Component {
   render() {
     const {
+      sectionTitle,
       staffById,
       allItems,
       itemsById,
@@ -41,7 +44,7 @@ class SelectClassesForm extends Component {
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">② Select classes for your kids</h4>
+        <h4 className="stepTitle">{sectionTitle}</h4>
         {allItems &&
           allItems.map((thisItemId, i) => (
             <div className="container itemDetails" key={thisItemId}>
@@ -116,3 +119,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectClassesForm);
+
+SelectClassesForm.propTypes = {
+  sectionTitle: PropTypes.string.isRequired,
+  sectionInstructions: PropTypes.string
+  // TODO
+};

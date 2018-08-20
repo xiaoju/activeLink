@@ -13,12 +13,18 @@ import OneMediaForm from './OneMediaForm';
 
 class ProfileForm extends Component {
   render() {
-    const { allParents, allKids, addresses, familyMedia } = this.props;
+    const {
+      sectionTitle,
+      allParents,
+      allKids,
+      addresses,
+      familyMedia
+    } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
         <div className="innerContainer">
-          <h4 className="stepTitle">① Update your profile</h4>
+          <h4 className="stepTitle">{sectionTitle}</h4>
           <div className="title_and_button">
             <h5>
               <strong>Kids</strong>
@@ -72,6 +78,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ProfileForm);
 
 ProfileForm.propTypes = {
+  sectionTitle: PropTypes.string.isRequired,
+  sectionInstructions: PropTypes.string,
   allParents: PropTypes.array.isRequired,
   allKids: PropTypes.array.isRequired,
   addresses: PropTypes.array.isRequired,

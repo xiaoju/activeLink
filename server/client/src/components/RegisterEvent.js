@@ -17,12 +17,12 @@ class RegisterEvent extends Component {
         {this.props.profile &&
           this.props.event && (
             <div>
-              <ProfileForm />
-              <SelectClassesForm />
-              <PhotoConsent />
-              <CallForVolunteers />
-              <OrderSummary />
-              <ConfirmStep />
+              <ProfileForm sectionTitle="① Update your profile" />
+              <SelectClassesForm sectionTitle="② Select classes for your kids" />
+              <PhotoConsent sectionTitle="③ Photo & video consent" />
+              <CallForVolunteers sectionTitle="④ Call for Volunteers!" />
+              <OrderSummary sectionTitle="⑤ Review your order" />
+              <ConfirmStep sectionTitle="⑥ Confirm and pay" />
             </div>
           )}
       </div>

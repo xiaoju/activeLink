@@ -11,11 +11,16 @@ import { capitalizeFirstLetter } from '../utils/Tools';
 
 class ConfirmStep extends Component {
   render() {
-    const { staffById, eventProviderName, eventContacts } = this.props;
+    const {
+      sectionTitle,
+      staffById,
+      eventProviderName,
+      eventContacts
+    } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">⑥ Confirm and pay</h4>
+        <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="container">
           <Payments />
           <div className="categoryIcon">

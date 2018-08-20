@@ -13,6 +13,7 @@ import {
 class CallForVolunteers extends Component {
   render() {
     const {
+      sectionTitle,
       volunteeringItems,
       familyId,
       checked,
@@ -23,7 +24,7 @@ class CallForVolunteers extends Component {
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">④ Call for Volunteers!</h4>
+        <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="container itemDetails">
           <p>
             Without support by parents, The English Link may need to scale back

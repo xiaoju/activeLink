@@ -27,6 +27,7 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      sectionTitle,
       volunteeringItems,
       isVolunteering,
       eventProviderName,
@@ -73,7 +74,7 @@ class OrderSummary extends Component {
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">⑤ Review your order</h4>
+        <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="orderSummary" style={{ margin: '2%' }}>
           {/* Profile section */}
           <h5>- Profile -</h5>

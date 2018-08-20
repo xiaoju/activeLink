@@ -15,6 +15,7 @@ import {
 class PhotoConsent extends Component {
   render() {
     const {
+      sectionTitle,
       firstValidParentName,
       validKids,
       familyId,
@@ -52,7 +53,7 @@ class PhotoConsent extends Component {
 
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">③ Photo & video consent</h4>
+        <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="container itemDetails">
           <div className="photoConsentCheckbox">
             <input
