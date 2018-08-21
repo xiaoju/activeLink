@@ -86,9 +86,10 @@ class LogIn extends Component {
 
             <button
               className={
-                Validation.validateEmail(this.state.loginEmail)
-                  ? 'waves-effect waves-light btn-large orange lighten-1'
-                  : 'btn-large disabled'
+                !Validation.validateEmail(this.state.loginEmail) ||
+                (!this.state.resendPassword && !this.state.loginPassword)
+                  ? 'btn-large disabled'
+                  : 'waves-effect waves-light btn-large orange lighten-1'
               }
               type="button"
               name="action"
