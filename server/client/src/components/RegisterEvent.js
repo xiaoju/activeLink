@@ -19,8 +19,8 @@ class RegisterEvent extends Component {
             <div>
               <ProfileForm sectionTitle="① Update your profile" />
               <SelectClassesForm sectionTitle="② Select classes for your kids" />
-              <PhotoConsent sectionTitle="③ Photo & video consent" />
-              <CallForVolunteers sectionTitle="④ Call for Volunteers!" />
+              <CallForVolunteers sectionTitle="③ Call for Volunteers!" />
+              <PhotoConsent sectionTitle="④ Photo & video consent" />
               <OrderSummary sectionTitle="⑤ Review your order" />
               <ConfirmStep sectionTitle="⑥ Confirm and pay" />
             </div>

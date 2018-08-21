@@ -61,11 +61,11 @@ class OneAddressForm extends Component {
           />
           <label
             htmlFor={'address' + index}
-            style={{ lineHeight: '1em' }}
-            className="active"
+            // style={{ lineHeight: '1em' }}
+            className="double-line-label active"
           >
             Postal address<br />
-            <em>e.g.: '1 place du Capitole, 31000 Toulouse FRANCE</em>'
+            <em>e.g.: 1 place du Capitole, 31000 Toulouse FRANCE</em>
           </label>
         </div>
         <SelectComponentStyled

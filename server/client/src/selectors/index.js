@@ -32,11 +32,25 @@ export const getVolunteeringItems = state => [
 ];
 
 export const getProfile = state => state.profile;
-export const getFamilyMedia = state => state.profile.familyMedia;
-export const getAddresses = state => state.profile.addresses;
+
+// export const getFamilyMedia = state => state.profile.familyMedia;
+export const getFamilyMedia = state =>
+  !!state.profile ? state.profile.familyMedia : [];
+
+// export const getAddresses = state => state.profile.addresses;
+export const getAddresses = state =>
+  !!state.profile ? state.profile.addresses : [];
+
 export const getFamilyId = state => state.profile.familyId; // ['familyId']
-export const getAllKids = state => state.profile.allKids; // ['k0', 'k1', 'k2']
-export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
+
+// export const getAllKids = state => state.profile.allKids; // ['k0', 'k1', 'k2']
+export const getAllKids = state =>
+  !!state.profile ? state.profile.allKids : []; // ['k0', 'k1', 'k2']
+
+// export const getAllParents = state => state.profile.allParents; // ['p0', 'p1']
+export const getAllParents = state =>
+  !!state.profile ? state.profile.allParents : []; // ['p0', 'p1']
+
 export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
 export const getFamilyById = state => state.profile.familyById;
 export const getEventsById = state => state.profile.eventsById;
@@ -160,7 +174,7 @@ export const getFirstValidParentName = createSelector(
   (validParents, familyById) => {
     const FirstValidParent = familyById[validParents[0]];
     return !FirstValidParent
-      ? 'xxx' // If there is no "validParent" yet
+      ? '__________' // If there is no "validParent" yet
       : FirstValidParent.firstName + ' ' + FirstValidParent.familyName;
   }
 );

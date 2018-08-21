@@ -138,6 +138,8 @@ nav i.material-icons.large {
   flex-shrink: 0;
 }
 
+.loginEmail,
+.loginPassword,
 .firstName {
   display: flex;
   flex-grow: 1;
@@ -267,6 +269,10 @@ input:not([type]).pasValide {
   box-shadow: none !important;
 }
 
+.double-line-label {
+  line-height: 1em;
+}
+
 /* TODO the following to avoid in chrome the color of autofill to be yelllow background, not working */
 .input-field input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px blue inset;
@@ -302,9 +308,17 @@ input[type='text']:not(.browser-default) {
   height: 1em;
 }
 
-.validationMessage > p {
-  color: white;
+.validationMessage {
+  background-color: #fff3e0;
+  border: medium solid #ffa726;
+  border-radius: 15px;
+  margin: 1em auto;
 }
+/* #fff3e0 is materializecss 'orange lighten-5' */
+
+/* .validationMessage > p {
+  color: #ffa726;
+} */
 
 .validationMessage:empty {
   display: none;

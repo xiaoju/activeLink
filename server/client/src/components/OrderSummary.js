@@ -77,7 +77,7 @@ class OrderSummary extends Component {
         <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="orderSummary" style={{ margin: '2%' }}>
           {/* Profile section */}
-          <h5>- Profile -</h5>
+          <h5>- ➊ Profile -</h5>
           <h6>
             <strong>Parents: </strong>
           </h6>
@@ -134,7 +134,7 @@ class OrderSummary extends Component {
           </ul>
           <br />
           {/* Classes section */}
-          <h5>- Selected classes -</h5>
+          <h5>- ➋ Selected classes -</h5>
           <table className="striped centered">
             <thead>
               <tr>
@@ -169,15 +169,8 @@ class OrderSummary extends Component {
               </tr>
             </tfoot>
           </table>
-          {/* Consent section */}
-          <h5>- Photo & Video Consent -</h5>
-          {checked[familyId].includes('i21') ? (
-            <p>OK for pictures of my kids!</p>
-          ) : (
-            <p>No pictures of my kids please!</p>
-          )}
           {/* Volunteering section */}
-          <h5>- Volunteering -</h5>
+          <h5>- ➌ Volunteering -</h5>
 
           {isVolunteering ? (
             <span>
@@ -187,19 +180,14 @@ class OrderSummary extends Component {
           ) : (
             <ul>
               <li>I don't support {eventProviderName}.</li>
-              <li style={{ color: '#ffa726' }}>
-                <br />
-                <strong>
-                  <ul>
-                    <li>
-                      Really, wouldn't it be nice to support {eventProviderName}{' '}
-                      and help co-organize one of the events?
-                    </li>
-                    <li>1st step: click a box in section ④ above.</li>
-                    <li>Then we'll call you back and accompany you.</li>
-                  </ul>
-                </strong>
-              </li>
+              <div className="card-panel validationMessage">
+                <p>
+                  Really, could you please support {eventProviderName} and
+                  co-organize one of the events?
+                  <br /> <strong>Select a task in section ③ above,</strong>
+                  <br />we'll call you back and accompany you.
+                </p>
+              </div>
             </ul>
           )}
           <ul>
@@ -209,11 +197,18 @@ class OrderSummary extends Component {
                 .sort((i0, i1) => i0.substring(1) - i1.substring(1))
                 .map(itemId => (
                   <li key={itemId}>
-                    {itemsById[itemId].name}
+                    <strong>{itemsById[itemId].name}</strong>
                     <br />
                   </li>
                 ))}
           </ul>
+          {/* Consent section */}
+          <h5>- ➍ Photo & Video Consent -</h5>
+          {checked[familyId].includes('i21') ? (
+            <p>OK for pictures of my kids!</p>
+          ) : (
+            <p>No pictures of my kids please!</p>
+          )}
         </div>
       </div>
     );

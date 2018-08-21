@@ -17,13 +17,7 @@ class ValidationPanel extends Component {
     } = this.props;
 
     return (
-      <div
-        className="card-panel orange lighten-1 validationMessage"
-        style={{
-          borderRadius: '15px',
-          margin: '1em auto'
-        }}
-      >
+      <div className="card-panel validationMessage">
         {!totalNotZero && (
           <p>
             <strong>Items:</strong> please select the items you want to purchase

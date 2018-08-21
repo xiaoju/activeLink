@@ -54,8 +54,9 @@ class OneMediaForm extends Component {
             onChange={this.handleMediaChange}
             onBlur={this.handleOnBlurEvent}
           />
-          <label htmlFor={'media' + index} className="active">
-            Email or phone number
+          <label htmlFor={'media' + index} className="double-line-label active">
+            Email or phone number<br />
+            <em>e.g.: my.name@example.com or 06 12 34 56 78</em>
           </label>
         </div>
         <SelectComponentStyled

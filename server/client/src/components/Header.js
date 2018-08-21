@@ -30,6 +30,13 @@ class Header extends Component {
                   </a>
                 )}
               </li>
+              <li>
+                {!profile && (
+                  <Link to="/login">
+                    <i className="medium material-icons">crop_square</i>
+                  </Link>
+                )}
+              </li>
             </ul>
           </div>
         </nav>

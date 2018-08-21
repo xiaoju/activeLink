@@ -6,7 +6,6 @@ import { uncheckCheckbox, checkCheckbox } from '../actions/index';
 import ItemCheckboxes from './ItemCheckboxes';
 import ItemPrices from './ItemPrices';
 import {
-  sectionTitle,
   getStaffById,
   getApplyDiscount,
   getChecked,

@@ -37,7 +37,7 @@ class PhotoConsent extends Component {
       <span>
         Check this box to{' '}
         <strong>give permission to {eventProviderName} </strong>to take
-        photographs and videos of your children:{childrenFullNames}and grant{' '}
+        photographs and videos of your children {childrenFullNames} and grant{' '}
         <em>{eventProviderName}</em>
         <strong> the full rights</strong> to use the images resulting from the
         photography and video filming, and any reproductions or adaptations of
@@ -69,7 +69,11 @@ class PhotoConsent extends Component {
               className="filled-in checkbox-orange z-depth-2"
             />
             {/* <label htmlFor="i21">{consentText}</label> */}
-            <label htmlFor="i21" />
+            <label htmlFor="i21">
+              <strong>approved</strong>
+            </label>
+            <br />
+            <br />
             <div>{consentText}</div>
           </div>
         </div>
