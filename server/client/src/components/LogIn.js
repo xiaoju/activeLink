@@ -32,13 +32,21 @@ class LogIn extends Component {
   onSubmit(event) {
     event.preventDefault();
     const { loginEmail, loginPassword, resendPassword } = this.state;
-    axios
-      .post('/auth/local', {
-        primaryEmail: loginEmail,
-        password: loginPassword,
-        resendPassword
-      })
-      .then(result => console.log('RESULT:', result));
+
+    resendPassword
+      ? axios
+          .post('/auth/reset', {
+            primaryEmail: loginEmail
+          })
+          .then(result =>
+            console.log('REQUESTED RESET EMAIL. RESULT: ', result)
+          )
+      : axios
+          .post('/auth/local', {
+            primaryEmail: loginEmail,
+            password: loginPassword
+          })
+          .then(result => console.log('REQUESTED LOG IN. RESULT:', result));
   }
 
   render() {

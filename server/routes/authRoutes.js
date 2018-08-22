@@ -3,30 +3,170 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
+const Family = mongoose.model('families');
+
+var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead
+var crypto = require('crypto');
+
+const keys = require('../config/keys');
+// var Mailgun = require('mailgun-js');
+// var mailgun = new Mailgun({
+//   apiKey: keys.mailgunAPIKey,
+//   domain: keys.mailgunDomain
+// });
+// console.log('ABC');
+// console.log('keys.mailgunAPIKey: ', keys.mailgunAPIKey);
+// console.log('keys.mailgunDomain: ', keys.mailgunDomain);
+// var emailData = {
+//   from: 'jerome@xiaoju.io',
+//   to: 'jerome.clerambault@outlook.com',
+//   subject: 'essai du compte mailgun',
+//   html:
+//     'bla bla bla, un email en html <a href="http://0.0.0.0:3030/validate?' +
+//     'test@xiaoju.io' +
+//     '">Click here to add your email address to a mailing list</a>'
+// };
+
+// var api_key = 'key-5788e11642dfd95bb68f58a0804513d1';
+// var domain = 'xiaoju.io';
+var mailgun = require('mailgun-js')({
+  apiKey: keys.mailgunAPIKey,
+  domain: keys.mailgunDomain
+});
 
 module.exports = app => {
+  app.get('/auth/local', function(req, res) {
+    console.log('SIMPLE REDIRECT FROM /auth/local to /login');
+    res.redirect('/login');
+  });
+
+  app.post('/auth/local', function(req, res, next) {
+    console.log('AUTH/LOCAL, POST');
+    console.log('req.body:', req.body);
+    passport.authenticate('local', function(err, user, info) {
+      if (err) {
+        console.log('ERROR: ', err);
+        return next(err);
+      }
+
+      if (!user) {
+        console.log('NO USER, REDIRECT TO /sorry');
+        return res.redirect('/sorry');
+      }
+
+      req.logIn(user, function(err) {
+        console.log('USER FOUND: ', user);
+        if (err) {
+          console.log('ERROR (BUT USER FOUND): ', err);
+          return next(err);
+        }
+        console.log('SUCCESS: REDIRECT TO /register');
+        // On success, redirect back to '/register'
+        return res.redirect('/register');
+      });
+
+      // bypass login and just redirect
+      // res.redirect('/lemonde');
+      //
+    })(req, res, next);
+  });
+
+  app.post('/auth/reset', function(req, res, next) {
+    async.waterfall(
+      [
+        function(done) {
+          crypto.randomBytes(20, function(err, buf) {
+            var token = buf.toString('hex');
+            done(err, token);
+          });
+        },
+        function(token, done) {
+          Family.findOne({ primaryEmail: req.body.primaryEmail }, function(
+            err,
+            family
+          ) {
+            if (!family) {
+              // req.flash('error', 'No account with that email address exists.');
+              console.log('RESET ERROR: No account with that email address.');
+              return res.redirect('/login');
+            }
+
+            family.resetPasswordToken = token;
+            family.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+            family.save(function(err) {
+              done(err, token, family);
+            });
+          });
+        },
+        function(token, family, done) {
+          const emailData = {
+            from: 'The English Link <english-link@xiaoju.io>',
+            to: 'jerome.clerambault@outlook.com',
+            subject: 'English-Link / password reset',
+            text:
+              'Hello,\n\n' +
+              'You are receiving this email because you (or someone else) has requested a password reset for your English Link account.\n\n' +
+              'Please click on the following link, or paste it into your internet browser to complete the process:\n\n' +
+              'http://' +
+              req.headers.host +
+              '/auth/reset/' +
+              token +
+              '\n\n' +
+              'If you did not request a new password, please ignore this email and your password will remain unchanged.\n\n' +
+              'Kind Regards,\n' +
+              'Jerome'
+          };
+
+          mailgun.messages().send(emailData, function(error, body) {
+            if (error) {
+              console.log('ERROR by email sending: ', error);
+            } else {
+              console.log('An email has been sent.');
+
+              // req.flash(
+              //   'info',
+              //   'An e-mail has been sent to ' +
+              //     family.primaryEmail +
+              //     " with further instructions. Don't forget to check you spam folder!"
+              // );
+
+              console.log('Body: ', body);
+            }
+          });
+
+          res.redirect('/emailsent'); // TODO use flash messages instead
+        }
+      ],
+      function(err) {
+        if (err) return next(err);
+        res.redirect('/login');
+      }
+    );
+  });
+
+  app.get('/auth/reset/:token', function(req, res) {
+    Family.findOne(
+      {
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: { $gt: Date.now() }
+      },
+      function(err, family) {
+        if (!family) {
+          console.log('ERROR: Password reset token is invalid or has expired.');
+          // req.flash('error', 'Password reset token is invalid or has expired.');
+          return res.redirect('/login'); // TODO pass the parameter 'resendPassword: true' to login
+        }
+        res.redirect('/reset/' + req.params.token);
+      }
+    );
+  });
+
   app.get(
     '/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
   );
 
-  // app.get(
-  //   '/auth/github',
-  //   passport.authenticate('github', { scope: ['user:email'] })
-  // );
-
-  // app.get(
-  //   '/auth/local',
-  //   passport.authenticate('local', { scope: ['user:email'] })
-  // );
-
-  // app.get(
-  //   '/auth/google/callback',
-  //   passport.authenticate('google'),
-  //   (req, res) => {
-  //     res.redirect('/register');
-  //   }
-  // );
   app.get(
     '/auth/google/callback',
     passport.authenticate('google'), // complete the authenticate using the google strategy
@@ -46,14 +186,6 @@ module.exports = app => {
     }
   );
 
-  // app.get(
-  //   '/auth/github/callback',
-  //   passport.authenticate('github'),
-  //   (req, res) => {
-  //     res.redirect('/dashboard');
-  //   }
-  // );
-
   app.get('/api/logout', (req, res) => {
     try {
       req.logout();
@@ -65,11 +197,6 @@ module.exports = app => {
   });
 
   app.get('/api/current_family', async (req, res) => {
-    // console.log(
-    //   'authRoute.js is handling the request - req.user: ',
-    //   req.user
-    // );
-    // res.send(req.user);
     let thisAsso;
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });

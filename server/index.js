@@ -54,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
-require('./routes/localAuthRoutes')(app);
+// require('./routes/localAuthRoutes')(app);
 require('./routes/billingRoutes')(app);
 // require('./routes/dataRoutes')(app);
 

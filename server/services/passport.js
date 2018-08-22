@@ -91,8 +91,8 @@ passport.use(
               console.log('NO PWD MATCH');
               console.log('EXIT COMPARE WITH (null, false, {message: xxx})');
 
-              // return done(null, false, { message: 'Incorrect password.' });
-              return done(null, family, { message: 'Incorrect password.' }); // bypass the password check!
+              return done(null, false, { message: 'Incorrect password.' });
+              // return done(null, family, { message: 'Incorrect password.' }); // bypass the password check!
             }
           });
         });

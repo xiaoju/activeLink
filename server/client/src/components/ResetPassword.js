@@ -20,9 +20,9 @@ class ResetPassword extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const { password1 } = this.state;
+    const { primaryEmail, password1, token } = this.state;
     axios
-      .post('/auth/reset', { password1 })
+      .post('/auth/reset', { primaryEmail, password1, token })
       .then(result => console.log('RESULT:', result));
   }
 
