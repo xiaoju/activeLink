@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       password1: '',
       password2: ''
@@ -16,13 +18,21 @@ class ResetPassword extends Component {
     this.setState({ [name]: value });
   }
 
+  onSubmit(event) {
+    event.preventDefault();
+    const { password1 } = this.state;
+    axios
+      .post('/auth/reset', { password1 })
+      .then(result => console.log('RESULT:', result));
+  }
+
   render() {
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">Reset password</h4>
         <br />
         <div className="container itemDetails">
-          <form>
+          <form onSubmit={this.onSubmit}>
             <div className="input-field loginPassword">
               <i className={'material-icons prefix icon-orange'}>lock</i>
               <input
@@ -52,8 +62,12 @@ class ResetPassword extends Component {
             </div>
             <br />
             <button
-              className={'waves-effect waves-light btn-large orange lighten-1'}
-              type="button"
+              className={
+                this.state.password1 !== this.state.password2
+                  ? 'btn-large disabled'
+                  : 'waves-effect waves-light btn-large orange lighten-1'
+              }
+              type="submit"
               name="action"
             >
               <i className="material-icons left">send</i>

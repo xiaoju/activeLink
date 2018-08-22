@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import * as Validation from '../utils/Validation';
+import axios from 'axios';
 
 class LogIn extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       loginEmail: '',
       loginPassword: '',
@@ -27,15 +29,28 @@ class LogIn extends Component {
         });
   }
 
+  onSubmit(event) {
+    event.preventDefault();
+    const { loginEmail, loginPassword, resendPassword } = this.state;
+    axios
+      .post('/auth/local', {
+        primaryEmail: loginEmail,
+        password: loginPassword,
+        resendPassword
+      })
+      .then(result => console.log('RESULT:', result));
+  }
+
   render() {
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">Log in to enter</h4>
         <div className="container itemDetails">
-          <form>
+          <form onSubmit={this.onSubmit}>
             <div className="input-field loginEmail">
               <i className={'material-icons prefix icon-orange'}>email</i>
               <input
+                // type="email"
                 name="loginEmail"
                 id="loginEmail"
                 value={this.state.loginEmail}
@@ -91,7 +106,7 @@ class LogIn extends Component {
                   ? 'btn-large disabled'
                   : 'waves-effect waves-light btn-large orange lighten-1'
               }
-              type="button"
+              type="submit"
               name="action"
             >
               <i className="material-icons left">send</i>

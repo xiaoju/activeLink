@@ -3,8 +3,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+var nodemailer = require('nodemailer');
+
 const cookieSession = require('cookie-session');
+
 const passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+// var bcrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
+
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/Asso');
@@ -47,6 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
+require('./routes/localAuthRoutes')(app);
 require('./routes/billingRoutes')(app);
 // require('./routes/dataRoutes')(app);
 

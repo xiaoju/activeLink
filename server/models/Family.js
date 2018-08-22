@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+var bcrypt = require('bcrypt-nodejs');
 
 // const userSchema = new Schema({
 //   googleId: { type: String, default: '' },
@@ -21,6 +22,14 @@ const familySchema = new Schema({
     default: [{ media: 'more_horiz', value: '', tags: ['private'] }]
   },
   addresses: { type: Array, default: [{ value: '', tags: ['Everybody'] }] },
+
+  // username: { type: String, required: true, unique: true },
+  primaryEmail: { type: String, required: true, unique: true },
+  // email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+
   paymentReceipts: { type: Array, default: [] }
   // local: {
   //   email: String,
@@ -51,5 +60,29 @@ const familySchema = new Schema({
   //   name: String
   // }
 });
+
+familySchema.pre('save', function(next) {
+  var family = this;
+  var SALT_FACTOR = 14;
+
+  if (!family.isModified('password')) return next();
+
+  bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(family.password, salt, null, function(err, hash) {
+      if (err) return next(err);
+      family.password = hash;
+      next();
+    });
+  });
+});
+
+familySchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
 
 mongoose.model('families', familySchema);

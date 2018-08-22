@@ -91,6 +91,9 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 - The 'family', each 'kid', and each 'parent' all got an separate IDs. We usually refer to these IDs as `familyId`, `kidId` and `parentId`.
 - IDs are produced by the UUID4 package. For illustration in the documentation, we use shorter IDs, such as `k0`, `k1`, `p0`, `p1`, etc.
 
+### proxy
+/api/* and /auth/* routes are handled by the express server. Other routes are hanled by the react front end. As defined in /client/package.json (`proxy` section)
+
 ### folders structure
 - The (`git`) root folder `/` contains `.gitignore`, `.prettierignore`, `README.md` and `TODO.md` .
 - The app is stored in `/server`
@@ -219,3 +222,4 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 - We use fat reducers and thin action creators (i.e. the reducers contain a lot of logic.)
 #### Resources
 ①②③④⑤⑥⑦⑧⑨⑩
+🄌➊➋➌➍➎➏➐➑➒➓

@@ -12,6 +12,9 @@ class RegisterEvent extends Component {
   render() {
     return (
       <div>
+        {!this.props.profile && <h5>Please log in!</h5>}
+        {/* TODO: add a redirect to login page instead of this 'please log in' message */}
+
         {this.props.profile && !this.props.event && <SpinnerWrapper />}
 
         {this.props.profile &&
