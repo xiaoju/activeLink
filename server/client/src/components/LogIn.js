@@ -34,14 +34,14 @@ class LogIn extends Component {
     const { loginEmail, loginPassword, resendPassword } = this.state;
 
     resendPassword
-      ? axios
-          .post('/auth/reset', {
-            primaryEmail: loginEmail
-          })
-          .then(result =>
-            console.log('REQUESTED RESET EMAIL. RESULT: ', result)
-          )
-      : axios
+      ? axios.post('/auth/reset', {
+          primaryEmail: loginEmail
+          // TODO then redirect to `/EmailSent`
+        })
+      : // .then(result =>
+        //   console.log('REQUESTED RESET EMAIL. RESULT: ', result)
+        // )
+        axios
           .post('/auth/local', {
             primaryEmail: loginEmail,
             password: loginPassword

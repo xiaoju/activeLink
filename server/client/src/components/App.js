@@ -31,7 +31,7 @@ class App extends Component {
           <Route path="/thanks" component={Thanks} />
           <Route path="/sorry" component={Sorry} />
           <Route path="/emailsent" component={EmailSent} />
-          <Route path="/reset/:token" component={ResetPassword} />
+          <Route path="/reset/:resetToken" component={ResetPassword} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

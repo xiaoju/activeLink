@@ -110,7 +110,7 @@ module.exports = app => {
               'Please click on the following link, or paste it into your internet browser to complete the process:\n\n' +
               'http://' +
               req.headers.host +
-              '/auth/reset/' +
+              '/reset/' +
               token +
               '\n\n' +
               'If you did not request a new password, please ignore this email and your password will remain unchanged.\n\n' +
@@ -122,7 +122,12 @@ module.exports = app => {
             if (error) {
               console.log('ERROR by email sending: ', error);
             } else {
-              console.log('An email has been sent.');
+              console.log(
+                'The link has been sent: http://' +
+                  req.headers.host +
+                  '/reset/' +
+                  token
+              );
 
               // req.flash(
               //   'info',
@@ -145,19 +150,18 @@ module.exports = app => {
     );
   });
 
-  app.get('/auth/reset/:token', function(req, res) {
+  app.get('/auth/checkResetToken/:token', function(req, res) {
     Family.findOne(
       {
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() }
       },
-      function(err, family) {
+      function(error, family) {
+        // TODO handle error
         if (!family) {
-          console.log('ERROR: Password reset token is invalid or has expired.');
-          // req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/login'); // TODO pass the parameter 'resendPassword: true' to login
+          return res.json({ tokenIsValid: false });
         }
-        res.redirect('/reset/' + req.params.token);
+        return res.json({ tokenIsValid: true });
       }
     );
   });
