@@ -1,10 +1,10 @@
 import React from 'react';
 
-function SpinnerWrapper() {
+function SpinnerWrapper(props) {
   return (
     <div>
       <br />
-      <h5 className="stepTitle">Loading...</h5>
+      <h5 className="stepTitle">{props.caption || 'Loading...'}</h5>
       <br />
       <div className="preloader-wrapper active">
         <div className="spinner-layer spinner-red-only">

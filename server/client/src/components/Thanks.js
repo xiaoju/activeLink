@@ -12,9 +12,7 @@ class Thanks extends Component {
       <div>
         {!receipt ? (
           <div>
-            <h4>Processing your order...</h4>
-            <br />
-            <SpinnerWrapper />
+            <SpinnerWrapper caption="Processing your order..." />
           </div>
         ) : (
           <div>
