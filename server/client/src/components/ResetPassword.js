@@ -27,9 +27,22 @@ class ResetPassword extends Component {
     event.preventDefault();
     const { resetToken, password1 } = this.state;
     axios
-      .post('/auth/reset', { resetToken, password1 })
-      .then(() => this.props.dispatch(push('/register'))) // TODO  only if was successful!
-      .catch(err => console.log('AXIOS error: ', err));
+      .post('/auth/reset/' + resetToken, { password: password1 })
+      .then(result => {
+        const { passwordWasChanged, body, error } = result.data;
+
+        if (passwordWasChanged) {
+          console.log('passwordWasChanged: ', passwordWasChanged);
+          console.log('body: ', body);
+          this.props.dispatch(push('/register'));
+        } else {
+          console.log('passwordWasChanged: ', passwordWasChanged);
+          console.log('error: ', error);
+          this.props.dispatch(push('/login'));
+        }
+      })
+
+      .catch(error => console.log('AXIOS error: ', error));
   }
 
   componentDidMount() {
@@ -43,21 +56,17 @@ class ResetPassword extends Component {
       console.log('ERROR by AXIOS checkResetToken: ', error);
     }
   }
-  // this.props.checkResetToken(this.props.match.params.resetToken);
-  // .then(output => console.log('output: ', output));
-  // .then(tokenIsValid => this.setState({ tokenIsValid }));
 
   // !tokenIsValid && redirect to /login with message that
   // "Password reset token is invalid or has expired, please request a new reset link";
   // also pass the 'resendPassword: false' parameter to /login,
-  // by saving it into the redux store.
 
   componentDidUpdate() {
     !this.state.tokenIsValid && this.props.dispatch(push('/login'));
   }
 
   render() {
-    const { resetToken, tokenIsValid, password1, password2 } = this.state;
+    const { tokenIsValid, password1, password2 } = this.state;
 
     return (
       <div className="itemsContainer hoverable">
@@ -119,21 +128,4 @@ class ResetPassword extends Component {
   }
 }
 
-// export default ResetPassword;
-
-// function mapStateToProps(state) {
-//   return {
-//     tokenIsValid: getTokenIsValid(state)
-//   };
-// }
-//
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ checkResetToken }, dispatch);
-// }
-//
-
-// function mapStateToProps(state) {
-//   return { store: state.store };
-// }
-//
 export default connect()(ResetPassword);

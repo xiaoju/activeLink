@@ -30,7 +30,7 @@ class App extends Component {
           <Route path="/getinvited" component={GetInvited} />
           <Route path="/thanks" component={Thanks} />
           <Route path="/sorry" component={Sorry} />
-          <Route path="/emailsent" component={EmailSent} />
+          <Route path="/emailsent/:emailedTo" component={EmailSent} />
           <Route path="/reset/:resetToken" component={ResetPassword} />
           <Route component={PageNotFound} />
         </Switch>

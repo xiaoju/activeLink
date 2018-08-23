@@ -1,34 +1,11 @@
 const passport = require('passport');
-
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
 const Family = mongoose.model('families');
-
 var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead
 var crypto = require('crypto');
-
 const keys = require('../config/keys');
-// var Mailgun = require('mailgun-js');
-// var mailgun = new Mailgun({
-//   apiKey: keys.mailgunAPIKey,
-//   domain: keys.mailgunDomain
-// });
-// console.log('ABC');
-// console.log('keys.mailgunAPIKey: ', keys.mailgunAPIKey);
-// console.log('keys.mailgunDomain: ', keys.mailgunDomain);
-// var emailData = {
-//   from: 'jerome@xiaoju.io',
-//   to: 'jerome.clerambault@outlook.com',
-//   subject: 'essai du compte mailgun',
-//   html:
-//     'bla bla bla, un email en html <a href="http://0.0.0.0:3030/validate?' +
-//     'test@xiaoju.io' +
-//     '">Click here to add your email address to a mailing list</a>'
-// };
-
-// var api_key = 'key-5788e11642dfd95bb68f58a0804513d1';
-// var domain = 'xiaoju.io';
 var mailgun = require('mailgun-js')({
   apiKey: keys.mailgunAPIKey,
   domain: keys.mailgunDomain
@@ -41,8 +18,8 @@ module.exports = app => {
   });
 
   app.post('/auth/local', function(req, res, next) {
-    console.log('AUTH/LOCAL, POST');
-    console.log('req.body:', req.body);
+    // console.log('AUTH/LOCAL, POST');
+    // console.log('req.body:', req.body);
     passport.authenticate('local', function(err, user, info) {
       if (err) {
         console.log('ERROR: ', err);
@@ -86,9 +63,10 @@ module.exports = app => {
             family
           ) {
             if (!family) {
-              // req.flash('error', 'No account with that email address exists.');
-              console.log('RESET ERROR: No account with that email address.');
-              return res.redirect('/login');
+              return res.json({
+                resetTokenEmailSent: false,
+                error: 'No account with that email address.'
+              });
             }
 
             family.resetPasswordToken = token;
@@ -102,8 +80,8 @@ module.exports = app => {
         function(token, family, done) {
           const emailData = {
             from: 'The English Link <english-link@xiaoju.io>',
-            to: 'jerome.clerambault@outlook.com',
-            subject: 'English-Link / password reset',
+            to: family.primaryEmail,
+            subject: 'English-Link / password reset link',
             text:
               'Hello,\n\n' +
               'You are receiving this email because you (or someone else) has requested a password reset for your English Link account.\n\n' +
@@ -117,10 +95,13 @@ module.exports = app => {
               'Kind Regards,\n' +
               'Jerome'
           };
-
           mailgun.messages().send(emailData, function(error, body) {
             if (error) {
               console.log('ERROR by email sending: ', error);
+              return res.json({
+                resetTokenEmailSent: false,
+                error
+              });
             } else {
               console.log(
                 'The link has been sent: http://' +
@@ -128,24 +109,18 @@ module.exports = app => {
                   '/reset/' +
                   token
               );
-
-              // req.flash(
-              //   'info',
-              //   'An e-mail has been sent to ' +
-              //     family.primaryEmail +
-              //     " with further instructions. Don't forget to check you spam folder!"
-              // );
-
-              console.log('Body: ', body);
+              return res.json({
+                resetTokenEmailSent: true,
+                emailedTo: family.primaryEmail,
+                body
+              });
             }
           });
-
-          res.redirect('/emailsent'); // TODO use flash messages instead
         }
       ],
       function(err) {
         if (err) return next(err);
-        res.redirect('/login');
+        return res.json({ resetTokenEmailSent: false, error });
       }
     );
   });
@@ -162,6 +137,74 @@ module.exports = app => {
           return res.json({ tokenIsValid: false });
         }
         return res.json({ tokenIsValid: true });
+      }
+    );
+  });
+
+  app.post('/auth/reset/:token', function(req, res) {
+    async.waterfall(
+      [
+        function(done) {
+          Family.findOne(
+            {
+              resetPasswordToken: req.params.token,
+              resetPasswordExpires: { $gt: Date.now() }
+            },
+            function(error, family) {
+              if (!family) {
+                return res.json({
+                  passwordWasChanged: false,
+                  error: 'Password reset token is invalid or has expired.'
+                });
+              }
+
+              family.password = req.body.password;
+              family.resetPasswordToken = undefined;
+              family.resetPasswordExpires = undefined;
+
+              family.save(function(error) {
+                req.logIn(family, function(error) {
+                  done(error, family);
+                });
+              });
+            }
+          );
+        },
+        function(family, done) {
+          const emailData = {
+            from: 'The English Link <english-link@xiaoju.io>',
+            to: family.primaryEmail,
+            subject: 'English-Link / your password has been changed',
+            text:
+              'Hello,\n\n' +
+              'the password has just been changed for your English-Link account ' +
+              family.primaryEmail +
+              '\n\n' +
+              'Kind Regards,\n' +
+              'Jerome'
+          };
+          mailgun.messages().send(emailData, function(error, body) {
+            if (error) {
+              return res.json({
+                passwordWasChanged: false,
+                error
+              });
+            } else {
+              return res.json({
+                passwordWasChanged: true,
+                body
+              });
+            }
+          });
+          // TODO message to show on next page: 'Success! Your password has been changed.'
+        }
+      ],
+      function(error) {
+        // res.redirect('/');
+        return res.json({
+          passwordWasChanged: false,
+          error
+        });
       }
     );
   });

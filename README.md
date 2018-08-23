@@ -220,6 +220,13 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 #### Redux
 - Redux selectors are named `selectFoo`.
 - We use fat reducers and thin action creators (i.e. the reducers contain a lot of logic.)
+
+#### Credits
+
+- The app architecture is based on https://www.udemy.com/node-with-react-fullstack-web-development/learn/v4/overview by Stephen Grider.
+- The code for local authentication is based on http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/ by Sahat Yalkabov.
+
+
 #### Resources
 ①②③④⑤⑥⑦⑧⑨⑩
 🄌➊➋➌➍➎➏➐➑➒➓

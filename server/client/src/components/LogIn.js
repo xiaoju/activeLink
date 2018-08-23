@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import * as Validation from '../utils/Validation';
 import axios from 'axios';
 
@@ -34,14 +36,26 @@ class LogIn extends Component {
     const { loginEmail, loginPassword, resendPassword } = this.state;
 
     resendPassword
-      ? axios.post('/auth/reset', {
-          primaryEmail: loginEmail
-          // TODO then redirect to `/EmailSent`
-        })
-      : // .then(result =>
-        //   console.log('REQUESTED RESET EMAIL. RESULT: ', result)
-        // )
-        axios
+      ? axios
+          // user only provides email address, asking for password reset
+          .post('/auth/reset', {
+            primaryEmail: loginEmail
+          })
+          .then(result => {
+            const { resetTokenEmailSent, emailedTo, body, error } = result.data;
+            if (resetTokenEmailSent) {
+              console.log('resetTokenEmailSent: ', resetTokenEmailSent);
+              console.log('emailedTo: ', emailedTo);
+              console.log('body: ', body);
+              this.props.dispatch(push('/EmailSent/' + emailedTo));
+            } else {
+              console.log('resetTokenEmailSent: ', resetTokenEmailSent);
+              console.log('error: ', error);
+              this.props.dispatch(push('/login'));
+            }
+          })
+      : axios
+          // user provides email and password and wants to log in
           .post('/auth/local', {
             primaryEmail: loginEmail,
             password: loginPassword
@@ -52,7 +66,7 @@ class LogIn extends Component {
   render() {
     return (
       <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">Log in to enter</h4>
+        <h4 className="stepTitle">Members area</h4>
         <div className="container itemDetails">
           <form onSubmit={this.onSubmit}>
             <div className="input-field loginEmail">
@@ -139,4 +153,4 @@ class LogIn extends Component {
     );
   }
 }
-export default LogIn;
+export default connect()(LogIn);
