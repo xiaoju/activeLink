@@ -29,9 +29,10 @@ class RegisterEvent extends Component {
   render() {
     return (
       <div>
-        {!this.props.profile && this.props.dispatch(push('/login'))
-        // <h5>Please log in!</h5>
-        }
+        {!this.props.profile && (
+          // this.props.dispatch(push('/login'))
+          <h5>Please log in!</h5>
+        )}
 
         {this.props.profile && !this.props.event && <SpinnerWrapper />}
 

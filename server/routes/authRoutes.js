@@ -28,47 +28,53 @@ module.exports = app => {
     res.redirect('/login');
   });
 
-  app.post('/auth/local', function(req, res, next) {
-    // console.log('AUTH/LOCAL, POST');
-    // console.log('req.body:', req.body);
-    passport.authenticate('local', function(err, user, info) {
-      if (err) {
-        console.log('ERROR: ', err);
-        return next(err);
-      }
-
-      if (!user) {
-        console.log("ERROR: 'USER NOT FOUND.");
-        return res.json({
-          authStatus: false,
-          errorMessage: 'No account with that email address.'
-        });
-        // return res.redirect('/sorry');
-      }
-
-      req.logIn(user, function(err) {
-        console.log('USER FOUND');
-        if (err) {
-          console.log('USER FOUND BUT ERROR: ', err);
-          // return res.json({
-          //   authStatus: false,
-          //   errorMessage: 'User found, but an error happened.',
-          //   error
-          // });
-          return next(err);
-        }
-        console.log('SUCCESS: SHOULD REDIRECT TO /register');
-        return res.json({
-          authStatus: true
-        });
-        // return res.redirect('/register');
-      });
-
-      // bypass login and just redirect
-      // res.redirect('/lemonde');
-      //
-    })(req, res, next);
+  app.post('/auth/local', passport.authenticate('local'), function(req, res) {
+    return res.json({
+      authStatus: true
+    });
   });
+
+  // app.post('/auth/local', function(req, res, next) {
+  // console.log('AUTH/LOCAL, POST');
+  // console.log('req.body:', req.body);
+  // passport.authenticate('local', function(err, user, info) {
+  //   if (err) {
+  //     console.log('ERROR: ', err);
+  //     return next(err);
+  //   }
+  //
+  //   if (!user) {
+  //     console.log("ERROR: 'USER NOT FOUND.");
+  //     return res.json({
+  //       authStatus: false,
+  //       errorMessage: 'No account with that email address.'
+  //     });
+  //     // return res.redirect('/sorry');
+  //   }
+  //
+  //   req.logIn(user, function(err) {
+  //     console.log('USER FOUND');
+  //     if (err) {
+  //       console.log('USER FOUND BUT ERROR: ', err);
+  //       // return res.json({
+  //       //   authStatus: false,
+  //       //   errorMessage: 'User found, but an error happened.',
+  //       //   error
+  //       // });
+  //       return next(err);
+  //     }
+  //     console.log('SUCCESS: SHOULD REDIRECT TO /register');
+  //     return res.json({
+  //       authStatus: true
+  //     });
+  //     // return res.redirect('/register');
+  //   });
+  //
+  //   // bypass login and just redirect
+  //   // res.redirect('/lemonde');
+  //   //
+  // })(req, res, next);
+  // });
 
   app.post('/auth/reset', function(req, res, next) {
     async.waterfall(
@@ -236,23 +242,31 @@ module.exports = app => {
     passport.authenticate('google', { scope: ['profile', 'email'] })
   );
 
+  // app.get(
+  //   '/auth/google/callback',
+  //   passport.authenticate('google'), // complete the authenticate using the google strategy
+  //   (err, req, res, next) => {
+  //     // custom error handler to catch any errors, such as TokenError
+  //     if (err.name === 'TokenError') {
+  //       console.log('/auth/google/callback (GET) "tokenError": ', err);
+  //       // the error when a Token has already been used/redeemed
+  //       res.redirect('/auth/google'); // redirect them back to the login page
+  //     } else {
+  //       console.log('/auth/google/callback (GET) error: ', err); // Handle other errors here
+  //     }
+  //   },
+  //   (req, res) => {
+  //     // On success, redirect back to '/register'
+  //     res.redirect('/register');
+  //   }
+  // );
+
   app.get(
     '/auth/google/callback',
-    passport.authenticate('google'), // complete the authenticate using the google strategy
-    (err, req, res, next) => {
-      // custom error handler to catch any errors, such as TokenError
-      if (err.name === 'TokenError') {
-        console.log('/auth/google/callback (GET) "tokenError": ', err);
-        // the error when a Token has already been used/redeemed
-        res.redirect('/auth/google'); // redirect them back to the login page
-      } else {
-        console.log('/auth/google/callback (GET) error: ', err); // Handle other errors here
-      }
-    },
-    (req, res) => {
-      // On success, redirect back to '/register'
-      res.redirect('/register');
-    }
+    passport.authenticate('google', {
+      successRedirect: '/register',
+      failureRedirect: '/login'
+    })
   );
 
   app.get('/api/logout', (req, res) => {
