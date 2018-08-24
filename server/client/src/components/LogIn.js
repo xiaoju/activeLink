@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+// import { connect } from 'react-redux';
+// import { push } from 'connected-react-router';
 import * as Validation from '../utils/Validation';
 import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
@@ -50,7 +50,8 @@ class LogIn extends Component {
           .then(result => {
             const { resetTokenEmailSent, emailedTo } = result.data;
             if (resetTokenEmailSent) {
-              this.props.dispatch(push('/EmailSent/' + emailedTo));
+              // this.props.dispatch(push('/EmailSent/' + emailedTo));
+              this.props.history.push('/EmailSent/' + emailedTo);
             } else {
               // stay on /login page
               this.setState({
@@ -66,8 +67,9 @@ class LogIn extends Component {
             primaryEmail: loginEmail,
             password: loginPassword
           })
-          // .then(() => this.props.fetchUser());
-          .then(() => this.props.dispatch(push('/register')))
+          // .then(() => this.props.fetchUser())
+          // .then(() => this.props.dispatch(push('/register')))
+          .then(() => this.props.history.push('/register'))
           .catch(error => {
             this.setState({
               loading: false,
@@ -208,5 +210,6 @@ class LogIn extends Component {
     );
   }
 }
-export default connect()(LogIn);
+export default LogIn;
+// export default connect()(LogIn);
 // export default withRouter(connect(null, actions)(LogIn));
