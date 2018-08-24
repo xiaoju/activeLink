@@ -11,6 +11,17 @@ var mailgun = require('mailgun-js')({
   domain: keys.mailgunDomain
 });
 
+// // example of error catching:
+// app.get('/User', async function(req, res) {
+//   let users;
+//   try {
+//     users = await db.collection('User').find().toArray();
+//   } catch (error) {
+//     res.status(500).json({ error: error.toString() });
+//   }
+//   res.json({ users });
+// });
+
 module.exports = app => {
   app.get('/auth/local', function(req, res) {
     console.log('SIMPLE REDIRECT FROM /auth/local to /login');
@@ -27,19 +38,30 @@ module.exports = app => {
       }
 
       if (!user) {
-        console.log('NO USER, REDIRECT TO /sorry');
-        return res.redirect('/sorry');
+        console.log("ERROR: 'USER NOT FOUND.");
+        return res.json({
+          authStatus: false,
+          errorMessage: 'No account with that email address.'
+        });
+        // return res.redirect('/sorry');
       }
 
       req.logIn(user, function(err) {
-        console.log('USER FOUND: ', user);
+        console.log('USER FOUND');
         if (err) {
-          console.log('ERROR (BUT USER FOUND): ', err);
+          console.log('USER FOUND BUT ERROR: ', err);
+          // return res.json({
+          //   authStatus: false,
+          //   errorMessage: 'User found, but an error happened.',
+          //   error
+          // });
           return next(err);
         }
-        console.log('SUCCESS: REDIRECT TO /register');
-        // On success, redirect back to '/register'
-        return res.redirect('/register');
+        console.log('SUCCESS: SHOULD REDIRECT TO /register');
+        return res.json({
+          authStatus: true
+        });
+        // return res.redirect('/register');
       });
 
       // bypass login and just redirect

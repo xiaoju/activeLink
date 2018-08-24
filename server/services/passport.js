@@ -60,11 +60,11 @@ passport.use(
 
       process.nextTick(function() {
         Family.findOne({ primaryEmail: primaryEmail }, function(err, family) {
-          console.log('PASSPORT.JS, Family.findOne');
+          // console.log('PASSPORT.JS, Family.findOne');
           if (err) return done(err);
 
           if (!family) {
-            console.log('!FAMILY');
+            // console.log('!FAMILY');
             return done(
               null,
               false,

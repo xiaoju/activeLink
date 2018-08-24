@@ -60,14 +60,27 @@ class LogIn extends Component {
             primaryEmail: loginEmail,
             password: loginPassword
           })
-          .then(result => console.log('REQUESTED LOG IN. RESULT:', result));
+          .then(result => {
+            const { authStatus, errorMessage } = result.data;
+            console.log('REQUESTED LOG IN. RESULT:', result);
+            if (authStatus) {
+              console.log('LogIn.js, POST /auth/local, redirect to /register');
+              this.props.dispatch(push('/register'));
+            } else {
+              console.log('LogIn.js, POST /auth/local, redirect to /login');
+              this.props.dispatch(push('/login'));
+            }
+          });
   }
 
   render() {
+    const { loginEmail, loginPassword, resendPassword } = this.state;
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">Members area</h4>
         <div className="container itemDetails">
+          <h5>Please log in to enter the members area:</h5>
+          <br />
           <form onSubmit={this.onSubmit}>
             <div className="input-field loginEmail">
               <i className={'material-icons prefix icon-orange'}>email</i>
@@ -75,7 +88,7 @@ class LogIn extends Component {
                 // type="email"
                 name="loginEmail"
                 id="loginEmail"
-                value={this.state.loginEmail}
+                value={loginEmail}
                 onChange={this.handleChange}
               />
               <label htmlFor="loginEmail" className="active">
@@ -83,14 +96,14 @@ class LogIn extends Component {
               </label>
             </div>
 
-            {!this.state.resendPassword ? (
+            {!resendPassword ? (
               <div className="input-field loginPassword">
                 <i className={'material-icons prefix icon-orange'}>lock</i>
                 <input
                   type="password"
                   name="loginPassword"
                   id="loginPassword"
-                  value={this.state.loginPassword}
+                  value={loginPassword}
                   onChange={this.handleChange}
                 />
                 <label htmlFor="loginEmail" className="active">
@@ -110,7 +123,7 @@ class LogIn extends Component {
                 // TODO align left
                 name="resendPassword"
                 type="checkbox"
-                checked={this.state.resendPassword}
+                checked={resendPassword}
                 onChange={this.handleChange}
                 id="resendPassword"
                 className="filled-in checkbox-orange z-depth-2"
@@ -123,8 +136,8 @@ class LogIn extends Component {
 
             <button
               className={
-                !Validation.validateEmail(this.state.loginEmail) ||
-                (!this.state.resendPassword && !this.state.loginPassword)
+                !Validation.validateEmail(loginEmail) ||
+                (!resendPassword && !loginPassword)
                   ? 'btn-large disabled'
                   : 'waves-effect waves-light btn-large orange lighten-1'
               }
@@ -132,7 +145,7 @@ class LogIn extends Component {
               name="action"
             >
               <i className="material-icons left">send</i>
-              {this.state.resendPassword ? "Let's reset my password" : 'Login'}
+              {resendPassword ? "Let's reset my password" : 'Login'}
             </button>
 
             {/* <div>
@@ -144,9 +157,11 @@ class LogIn extends Component {
           </form>
 
           <div className="card-panel validationMessage">
-            {!Validation.validateEmail(this.state.loginEmail) && (
-              <p>Please type-in a valid email.</p>
+            {!Validation.validateEmail(loginEmail) && (
+              <p>Please fill-in the email field with a valid address.</p>
             )}
+            {!resendPassword &&
+              !loginPassword && <p>Please type your password.</p>}
           </div>
         </div>
       </div>

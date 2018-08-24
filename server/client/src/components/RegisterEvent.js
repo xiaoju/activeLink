@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import SpinnerWrapper from './SpinnerWrapper';
 import ProfileForm from './ProfileForm';
 import SelectClassesForm from './SelectClassesForm';
@@ -9,11 +10,28 @@ import CallForVolunteers from './CallForVolunteers';
 import ConfirmStep from './ConfirmStep';
 
 class RegisterEvent extends Component {
+  // componentDidMount() {
+  //   if (!this.props.profile) {
+  //     console.log('RegisterEvent did mount, redirecting to /login');
+  //     this.props.dispatch(push('/login'));
+  //     // this doesn't work, even logged in you are redirected to /login
+  //   }
+  // }
+  //
+  // componentDidUpdate() {
+  //   if (!this.props.profile) {
+  //     console.log('RegisterEvent did update, redirecting to /login');
+  //     this.props.dispatch(push('/login'));
+  //     // this doesn't work, even logged in you are redirected to /login
+  //   }
+  // }
+
   render() {
     return (
       <div>
-        {!this.props.profile && <h5>Please log in!</h5>}
-        {/* TODO: add a redirect to login page instead of this 'please log in' message */}
+        {!this.props.profile && this.props.dispatch(push('/login'))
+        // <h5>Please log in!</h5>
+        }
 
         {this.props.profile && !this.props.event && <SpinnerWrapper />}
 

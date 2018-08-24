@@ -18,6 +18,10 @@ class App extends Component {
     this.props.fetchUser();
   }
 
+  componentDidUpdate() {
+    this.props.fetchUser();
+  }
+
   render() {
     return (
       <div>
