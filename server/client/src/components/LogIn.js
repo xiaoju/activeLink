@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as Validation from '../utils/Validation';
 import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
+// import * as actions from '../actions';
 
 class LogIn extends Component {
   constructor(props) {
@@ -14,7 +16,8 @@ class LogIn extends Component {
       loginEmail: '',
       loginPassword: '',
       resendPassword: false,
-      loading: false
+      loading: false,
+      errorMessage: ''
     };
   }
 
@@ -50,7 +53,11 @@ class LogIn extends Component {
               this.props.dispatch(push('/EmailSent/' + emailedTo));
             } else {
               // stay on /login page
-              this.setState({ loading: false });
+              this.setState({
+                loading: false,
+                errorMessage:
+                  'The authentication failed, please double check the email address.'
+              });
             }
           })
       : axios
@@ -59,35 +66,45 @@ class LogIn extends Component {
             primaryEmail: loginEmail,
             password: loginPassword
           })
+          // .then(() => this.props.fetchUser());
           .then(() => this.props.dispatch(push('/register')))
           .catch(error => {
-            this.setState({ loading: false });
-            if (error.response.status === 401) {
-              console.log('error.response.status:', error.response.status);
-            }
+            this.setState({
+              loading: false,
+              errorMessage:
+                'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
+            });
           });
-    // .catch(error => {
-    //   if (error.response) {
-    //     // The request was made and the server responded with a status code
-    //     // that falls out of the range of 2xx
-    //     console.log('error.response.data:', error.response.data);
-    //     console.log('error.response.status:', error.response.status);
-    //     console.log('error.response.headers:', error.response.headers);
-    //   } else if (error.request) {
-    //     // The request was made but no response was received
-    //     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    //     // http.ClientRequest in node.js
-    //     console.log(error.request);
-    //   } else {
-    //     // Something happened in setting up the request that triggered an Error
-    //     console.log('error.message:', error.message);
-    //   }
-    //   console.log('error.config:', error.config);
-    // });
   }
+  //   if (error.response) {
+  //     // The request was made and the server responded with a status code
+  //     // that falls out of the range of 2xx
+  //     console.log('error.response.data:', error.response.data);
+  //     console.log('error.response.status:', error.response.status);
+  //     console.log('error.response.headers:', error.response.headers);
+  //   } else if (error.request) {
+  //     // The request was made but no response was received
+  //     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+  //     // http.ClientRequest in node.js
+  //     console.log(error.request);
+  //   } else {
+  //     // Something happened in setting up the request that triggered an Error
+  //     console.log('error.message:', error.message);
+  //   }
+  //   console.log('error.config:', error.config);
+  // });
+  // if (error.response.status === 401) {
+  //   console.log('error.response.status:', error.response.status);
+  // }
 
   render() {
-    const { loginEmail, loginPassword, resendPassword, loading } = this.state;
+    const {
+      loginEmail,
+      loginPassword,
+      resendPassword,
+      loading,
+      errorMessage
+    } = this.state;
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">Members area</h4>
@@ -179,6 +196,11 @@ class LogIn extends Component {
               )}
               {!resendPassword &&
                 !loginPassword && <p>Please type your password.</p>}
+              {errorMessage && (
+                <p>
+                  <strong>{errorMessage}</strong>
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -187,3 +209,4 @@ class LogIn extends Component {
   }
 }
 export default connect()(LogIn);
+// export default withRouter(connect(null, actions)(LogIn));

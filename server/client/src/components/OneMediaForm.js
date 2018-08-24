@@ -56,7 +56,7 @@ class OneMediaForm extends Component {
           />
           <label htmlFor={'media' + index} className="double-line-label active">
             Email or phone number<br />
-            <em>e.g.: my.name@example.com or 06 12 34 56 78</em>
+            <em>e.g.: my.name@example.com or 0612345678</em>
           </label>
         </div>
         <SelectComponentStyled
