@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 // import { withRouter } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import { push } from 'connected-react-router';
 import * as Validation from '../utils/Validation';
 import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
-// import * as actions from '../actions';
+import * as actions from '../actions';
 
 class LogIn extends Component {
   constructor(props) {
@@ -36,47 +36,69 @@ class LogIn extends Component {
         });
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault();
     this.setState({ loading: true });
     const { loginEmail, loginPassword, resendPassword } = this.state;
 
-    resendPassword
-      ? axios
-          // user only provides email address, asking for password reset
-          .post('/auth/reset', {
-            primaryEmail: loginEmail
-          })
-          .then(result => {
-            const { resetTokenEmailSent, emailedTo } = result.data;
-            if (resetTokenEmailSent) {
-              // this.props.dispatch(push('/EmailSent/' + emailedTo));
-              this.props.history.push('/EmailSent/' + emailedTo);
-            } else {
-              // stay on /login page
-              this.setState({
-                loading: false,
-                errorMessage:
-                  'The authentication failed, please double check the email address.'
-              });
-            }
-          })
-      : axios
-          // user provides email and password and wants to log in
-          .post('/auth/local', {
-            primaryEmail: loginEmail,
-            password: loginPassword
-          })
-          // .then(() => this.props.fetchUser())
-          // .then(() => this.props.dispatch(push('/register')))
-          .then(() => this.props.history.push('/register'))
-          .catch(error => {
+    if (resendPassword) {
+      axios
+        // user only provides email address, asking for password reset
+        .post('/auth/reset', {
+          primaryEmail: loginEmail
+        })
+        .then(result => {
+          const { resetTokenEmailSent, emailedTo } = result.data;
+          if (resetTokenEmailSent) {
+            // this.props.dispatch(push('/EmailSent/' + emailedTo));
+            this.props.history.push('/EmailSent/' + emailedTo);
+          } else {
+            // stay on /login page
             this.setState({
               loading: false,
               errorMessage:
-                'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
+                'The authentication failed, please double check the email address.'
             });
-          });
+          }
+        });
+    } else {
+      // user provides email and password and wants to log in
+      // first authenticate (axios.post)
+      // if this works, fetchUser
+      // and then redirect
+      //
+      // but if authentication failed, don't fetch and don't redirect.
+
+      try {
+        await axios.post('/auth/local', {
+          primaryEmail: loginEmail,
+          password: loginPassword
+        });
+
+        try {
+          await this.props.fetchUser();
+          // .then(() => this.props.dispatch(push('/register')))
+        } catch (err) {
+          console.log('LogIn.js, error by fetchuser: ', err);
+        }
+
+        this.props.history.push('/register');
+      } catch (err) {
+        this.setState({
+          loading: false,
+          errorMessage:
+            'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
+        });
+      }
+
+      // .catch(error => {
+      //   this.setState({
+      //     loading: false,
+      //     errorMessage:
+      //       'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
+      //   });
+      // });
+    }
   }
   //   if (error.response) {
   //     // The request was made and the server responded with a status code
@@ -210,6 +232,7 @@ class LogIn extends Component {
     );
   }
 }
-export default LogIn;
+// export default LogIn;
 // export default connect()(LogIn);
 // export default withRouter(connect(null, actions)(LogIn));
+export default connect(null, actions)(LogIn);
