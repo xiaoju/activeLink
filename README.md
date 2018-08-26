@@ -131,6 +131,9 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 
 ## authentication process
 
+## roles
+- Some routes require `admin` property set to `true` for this `family`, as defined in `requireAdmin` Express middleware. The admin property must be set by editing manually the Mongo document.
+
 ### initial invitation
 - platformManager goes to `/invite`, creates a list of "new parents", with their name, surname, email addresses (mandatory), kids info.
 - then selects parents and clicks "send invitation".

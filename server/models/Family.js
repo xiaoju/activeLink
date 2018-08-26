@@ -13,6 +13,7 @@ var bcrypt = require('bcrypt-nodejs');
 const familySchema = new Schema({
   googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
+  admin: { type: Boolean, default: false },
   // photoConsent: { type: Boolean, default: false },
   assos: { type: Array, default: ['a0'] }, // a family can join several associations that all run this app
   allKids: { type: Array, default: [] },
@@ -24,7 +25,8 @@ const familySchema = new Schema({
   addresses: { type: Array, default: [{ value: '', tags: ['Everybody'] }] },
 
   // username: { type: String, required: true, unique: true },
-  primaryEmail: { type: String, required: false, unique: true }, //TODO required should be true!
+  primaryEmail: { type: String, required: true, unique: true },
+  dateCreated: { type: Date, required: true },
   // email: { type: String, required: true, unique: true },
   password: { type: String },
   resetPasswordToken: String,

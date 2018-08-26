@@ -12,6 +12,7 @@ import Sorry from './Sorry';
 import ResetPassword from './ResetPassword';
 import PageNotFound from './PageNotFound';
 import EmailSent from './EmailSent';
+import SendInvites from './SendInvites';
 
 class App extends Component {
   componentDidMount() {
@@ -36,6 +37,7 @@ class App extends Component {
           <Route path="/sorry" component={Sorry} />
           <Route path="/emailsent/:emailedTo" component={EmailSent} />
           <Route path="/reset/:resetToken" component={ResetPassword} />
+          <Route path="/sendinvites" component={SendInvites} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

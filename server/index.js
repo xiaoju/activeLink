@@ -3,8 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-var nodemailer = require('nodemailer');
-
 const cookieSession = require('cookie-session');
 
 const passport = require('passport');
@@ -43,6 +41,9 @@ const app = express();
 
 app.use(bodyParser.json());
 
+// app.use(express.json());
+// see https://stackoverflow.com/questions/10005939/how-do-i-consume-the-json-post-data-in-an-express-application
+
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -57,6 +58,7 @@ require('./routes/authRoutes')(app);
 // require('./routes/localAuthRoutes')(app);
 require('./routes/billingRoutes')(app);
 // require('./routes/dataRoutes')(app);
+require('./routes/adminRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
