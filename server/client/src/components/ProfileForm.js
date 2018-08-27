@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
+  getAddressTagOptions,
   getMediaTagOptions,
   getPrimaryEmail,
   getAllParents,
@@ -17,6 +18,7 @@ class ProfileForm extends Component {
   render() {
     const {
       mediaTagOptions,
+      addressTagOptions,
       primaryEmail,
       sectionTitle,
       allParents,
@@ -52,9 +54,11 @@ class ProfileForm extends Component {
             <OneAddressForm
               key={index}
               index={index}
+              value={addresses[index].value}
+              tags={addresses[index].tags}
+              tagOptions={addressTagOptions}
               caption="Postal address"
               valueExample="1 place du Capitole, 31000 Toulouse FRANCE"
-              addressObject={addressObject}
             />
           ))}
           <div className="title_and_button">
@@ -95,6 +99,7 @@ class ProfileForm extends Component {
 
 function mapStateToProps(state) {
   return {
+    addressTagOptions: getAddressTagOptions(state),
     mediaTagOptions: getMediaTagOptions(state),
     primaryEmail: getPrimaryEmail(state),
     allParents: getAllParents(state),
@@ -108,6 +113,12 @@ export default connect(mapStateToProps)(ProfileForm);
 
 ProfileForm.propTypes = {
   mediaTagOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired,
+  addressTagOptions: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired

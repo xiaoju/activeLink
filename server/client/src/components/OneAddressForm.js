@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { getLastAddressValid, getAddressTagOptions } from '../selectors';
+import { getLastAddressValid } from '../selectors';
 import { modifyAddress, addAddressRow } from '../actions/index';
 import SelectComponentStyled from './SelectComponentStyled';
 
@@ -27,15 +27,14 @@ class OneAddressForm extends Component {
   render() {
     const {
       index,
-      addressTagOptions,
+      value,
+      tags,
+      tagOptions,
       caption,
-      valueExample,
-      // addressObject,
-      addressObject: { value, tags }
+      valueExample
     } = this.props;
-    // console.log('addressObject: ', addressObject);
 
-    // const options = [
+    // const tagOptions = [
     //   { value: 'everybody', label: 'everybody!' },
     //   { value: 'Donald', label: 'Donald' },
     //   { value: 'Rosemary', label: 'Rosemary' }
@@ -75,7 +74,7 @@ class OneAddressForm extends Component {
           targetArray={'addresses'}
           index={index}
           tags={tags}
-          options={addressTagOptions}
+          options={tagOptions}
         />
       </form>
     );
@@ -84,8 +83,7 @@ class OneAddressForm extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    lastAddressValid: getLastAddressValid(state),
-    addressTagOptions: getAddressTagOptions(state)
+    lastAddressValid: getLastAddressValid(state)
   };
 }
 
@@ -96,17 +94,9 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(OneAddressForm);
 
 OneAddressForm.propTypes = {
+  value: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   caption: PropTypes.string.isRequired,
   valueExample: PropTypes.string,
-  index: PropTypes.number.isRequired,
-  addressTagOptions: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  addressObject: PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
-  }).isRequired
+  index: PropTypes.number.isRequired
 };
