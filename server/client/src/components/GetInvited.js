@@ -10,7 +10,7 @@ class GetInvited extends Component {
       <div class="container">
         <ProfileForm
           sectionTitle="Fill-in your profile information"
-          sectionInstructions="To get your access code to the Members Area, please fill in your
+          sectionInstructions="To request an invitation to the Members Area, please fill in your
           details below then press the &quot;send&quot; button. We will come back to you to double check that access conditions are met."
         />
 
