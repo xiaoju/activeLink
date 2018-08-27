@@ -181,8 +181,8 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 
 
 ### Technology stack
-
-* N.E.R.D.: Node.js, Express, React... plus any Database (Mango or PostgreSQL)
+- M.E.R.N.: Mango, Express, React (instead of Angular), Nodes.js
+- N.E.R.D.: Node.js, Express, React... plus any Database (Mango or PostgreSQL)
 
 * front end: React, Redux
 * back end: node.js, Express, Passport, oauth2, mongoose
