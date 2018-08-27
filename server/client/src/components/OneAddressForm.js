@@ -28,6 +28,8 @@ class OneAddressForm extends Component {
     const {
       index,
       addressTagOptions,
+      caption,
+      valueExample,
       // addressObject,
       addressObject: { value, tags }
     } = this.props;
@@ -64,8 +66,9 @@ class OneAddressForm extends Component {
             // style={{ lineHeight: '1em' }}
             className="double-line-label active"
           >
-            Postal address<br />
-            <em>e.g.: 1 place du Capitole, 31000 Toulouse FRANCE</em>
+            {caption}
+            <br />
+            <em>e.g.: {valueExample}</em>
           </label>
         </div>
         <SelectComponentStyled
@@ -93,6 +96,8 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(OneAddressForm);
 
 OneAddressForm.propTypes = {
+  caption: PropTypes.string.isRequired,
+  valueExample: PropTypes.string,
   index: PropTypes.number.isRequired,
   addressTagOptions: PropTypes.arrayOf(
     PropTypes.shape({

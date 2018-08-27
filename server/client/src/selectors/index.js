@@ -32,6 +32,7 @@ export const getVolunteeringItems = state => [
 ];
 
 export const getProfile = state => state.profile;
+export const getPrimaryEmail = state => state.profile.primaryEmail;
 
 // export const getFamilyMedia = state => state.profile.familyMedia;
 export const getFamilyMedia = state =>
@@ -61,8 +62,6 @@ export const getFirstName = (state, { userId }) =>
   state.profile.familyById[userId].firstName;
 export const getKidGrade = (state, { userId }) =>
   state.profile.familyById[userId].kidGrade;
-export const getMediaObject = (state, { index }) =>
-  state.profile.familyMedia[index];
 
 export const getChecked = state => state.checked; // {idClerambault: [r0], idMulan: ['r1', 'r3', 'r5'], ...}
 
@@ -426,18 +425,18 @@ export const getOnePhoneMini = createSelector(
     familyMedia.filter(mediaObject => mediaObject.media === 'phone').length > 0
 );
 
-export const getOneEmailMini = createSelector(
-  [getFamilyMedia],
-  familyMedia =>
-    familyMedia.filter(mediaObject => mediaObject.media === 'email').length > 0
-);
+// export const getOneEmailMini = createSelector(
+//   [getFamilyMedia],
+//   familyMedia =>
+//     familyMedia.filter(mediaObject => mediaObject.media === 'email').length > 0
+// );
 
 export const getFormIsValid = createSelector(
   [
     getTotalNotZero,
     getOneAddressMini,
     getOnePhoneMini,
-    getOneEmailMini,
+    // getOneEmailMini,
     getOneKidMini,
     getOneParentMini
   ],
@@ -445,13 +444,13 @@ export const getFormIsValid = createSelector(
     totalNotZero,
     oneAddressMini,
     onePhoneMini,
-    oneEmailMini,
+    // oneEmailMini,
     oneKidMini,
     oneParentMini
   ) => ({
     totalNotZero,
     oneAddressMini,
-    oneEmailMini,
+    // oneEmailMini,
     onePhoneMini,
     oneParentMini,
     oneKidMini,
@@ -459,7 +458,7 @@ export const getFormIsValid = createSelector(
       totalNotZero &&
       oneAddressMini &&
       onePhoneMini &&
-      oneEmailMini &&
+      // oneEmailMini &&
       oneKidMini &&
       oneParentMini
   })
@@ -495,12 +494,12 @@ export const getValidChecked = createSelector(
     }, {})
 );
 
-export const getMainEmail = createSelector([getFamilyMedia], familyMedia => {
-  const foundMediaObject = familyMedia.find(
-    mediaObject => mediaObject.media === 'email'
-  );
-  return !foundMediaObject ? '' : foundMediaObject.value;
-});
+// export const getMainEmail = createSelector([getFamilyMedia], familyMedia => {
+//   const foundMediaObject = familyMedia.find(
+//     mediaObject => mediaObject.media === 'email'
+//   );
+//   return !foundMediaObject ? '' : foundMediaObject.value;
+// });
 
 export const getMediaTagOptions = createSelector(
   [getFamilyById, getValidParents],
@@ -508,9 +507,9 @@ export const getMediaTagOptions = createSelector(
     return validParents // ['p1', 'p3']
       .map(parentId => capitalizeFirstLetter(familyById[parentId].firstName)) // ['Donald', 'Rosemary', '']
       .filter(firstName => !!firstName) // ['Donald', 'Rosemary'] (remove the empty string)
-      .map(tag => ({ value: tag, label: tag })) // [{value: 'Donald', label: 'Donald'}, {... ]
+      .map(firstName => ({ value: firstName, label: firstName })) // [{value: 'Donald', label: 'Donald'}, {... ]
       .concat([
-        // add the standard tags
+        // add the standard tag options:
         { value: 'family', label: 'family' },
         { value: 'private', label: 'private' },
         { value: 'pro', label: 'pro' },

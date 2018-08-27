@@ -21,9 +21,11 @@ class SelectComponentStyled extends Component {
   }
 
   render() {
-    const { options, tags } = this.props;
+    const { options, tags, isDisabled } = this.props;
+    // `tags` is the array of already selected tags,
+    // `options` is the array of tags the user can select from.
 
-    // source code for styling:
+    // source code of react-select useful for styling:
     // https://github.com/JedWatson/react-select/blob/v2/src/styles.js
 
     const colourStyles = {
@@ -52,6 +54,7 @@ class SelectComponentStyled extends Component {
         // this is the empty chip where you type your own tags
         return {
           ...styles,
+          visibility: isDisabled && 'hidden',
           minWidth: '3em',
           color: 'rgba(0, 0, 0, 0.6)',
           borderWidth: 'thin',
@@ -131,6 +134,7 @@ class SelectComponentStyled extends Component {
         return {
           ...styles,
           backgroundColor: '#d1c4e9',
+          // border: 'thick red solid',
           borderRadius: '16px'
         };
       },
@@ -144,7 +148,7 @@ class SelectComponentStyled extends Component {
       }),
       multiValueRemove: (styles, { data }) => ({
         ...styles,
-        color: 'rgba(0, 0, 0, 0.6)',
+        color: isDisabled ? 'transparent' : 'rgba(0, 0, 0, 0.6)', // remove the 'delete tag cross' if control is disabled
         backgroundColor: '#d1c4e9',
         borderRadius: '0 16px 16px 0',
         ':hover': {
@@ -169,6 +173,7 @@ class SelectComponentStyled extends Component {
         options={options}
         styles={colourStyles}
         isClearable={false}
+        isDisabled={isDisabled}
         value={tags.map(tag => ({ value: tag, label: tag }))}
         // converting `tags` from ['mobile', 'landline']
         // to [
@@ -188,6 +193,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(null, mapDispatchToProps)(SelectComponentStyled);
 
 SelectComponentStyled.propTypes = {
+  isDisabled: PropTypes.bool,
   targetArray: PropTypes.string.isRequired, // component modifies tags of `state.profile[targetArray]`
   index: PropTypes.number.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // selectedTags

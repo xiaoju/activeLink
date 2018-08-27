@@ -138,6 +138,10 @@ nav i.material-icons.large {
   flex-shrink: 0;
 }
 
+.twoNamesContainer input {
+  margin-top: 1em;
+}
+
 .loginEmail,
 .loginPassword,
 .firstName {

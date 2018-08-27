@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
+  getMediaTagOptions,
+  getPrimaryEmail,
   getAllParents,
   getAllKids,
   getAddresses,
@@ -14,6 +16,8 @@ import OneMediaForm from './OneMediaForm';
 class ProfileForm extends Component {
   render() {
     const {
+      mediaTagOptions,
+      primaryEmail,
       sectionTitle,
       allParents,
       allKids,
@@ -48,6 +52,8 @@ class ProfileForm extends Component {
             <OneAddressForm
               key={index}
               index={index}
+              caption="Postal address"
+              valueExample="1 place du Capitole, 31000 Toulouse FRANCE"
               addressObject={addressObject}
             />
           ))}
@@ -57,9 +63,30 @@ class ProfileForm extends Component {
               <i className="material-icons small">email</i>
             </h5>
           </div>
-          {familyMedia.map((mediaObject, index) => (
-            <OneMediaForm key={index} index={index} />
-          ))}
+          <OneMediaForm // readyOnly view of the primaryEmail
+            key="primaryEmail"
+            isDisabled={true}
+            // index={0}  // not required because readOnly
+            media="email"
+            value={primaryEmail}
+            tags={['primary']}
+            tagOptions={[]}
+            caption="Primary email address, used to log in"
+            valueExample="(This field is &quot;read only&quot;)"
+          />
+          {[...familyMedia.keys()] // [0, 1, 2, 3]
+            .map(index => (
+              <OneMediaForm
+                key={index}
+                index={index}
+                media={familyMedia[index].media}
+                value={familyMedia[index].value}
+                tags={familyMedia[index].tags}
+                tagOptions={mediaTagOptions}
+                caption="Other email or phone number"
+                valueExample="my.name@example.com or 0612345678"
+              />
+            ))}
         </div>
       </div>
     );
@@ -68,6 +95,8 @@ class ProfileForm extends Component {
 
 function mapStateToProps(state) {
   return {
+    mediaTagOptions: getMediaTagOptions(state),
+    primaryEmail: getPrimaryEmail(state),
     allParents: getAllParents(state),
     allKids: getAllKids(state),
     addresses: getAddresses(state),
@@ -78,6 +107,13 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ProfileForm);
 
 ProfileForm.propTypes = {
+  mediaTagOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired,
+  primaryEmail: PropTypes.string.isRequired,
   sectionTitle: PropTypes.string.isRequired,
   sectionInstructions: PropTypes.string,
   allParents: PropTypes.array.isRequired,

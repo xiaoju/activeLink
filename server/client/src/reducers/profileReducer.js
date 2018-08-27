@@ -50,7 +50,7 @@ export default function(state = null, { type, payload }) {
             //   : []
           }),
           familyMedia: familyMedia.concat({
-            // we add an empty row for typing more media
+            // as last row we add an empty row used to type more media
             media: 'more_horiz', // cssmaterialize icon names: 'phone', 'email', 'more_horiz'
             value: '', // 012345678 or abc@gmail.com
             tags: ['private']

@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import {
-  getMediaObject,
-  getLastMediaValid,
-  getMediaTagOptions
-} from '../selectors';
+import { getLastMediaValid } from '../selectors';
 import { modifyMedia, addMediaRow } from '../actions/index';
 import SelectComponentStyled from './SelectComponentStyled';
 
@@ -30,9 +26,14 @@ class OneMediaForm extends Component {
 
   render() {
     const {
-      index,
-      mediaObject: { media, value, tags },
-      mediaTagOptions
+      index, // index of this record inside the familyMedia array
+      media, // 'email' or 'phone', ortherwise means 'not yet set'
+      value, // the email of phone number itself
+      tags, // the tags that applies to this
+      caption, // first line of the label
+      valueExample, // second line of the label
+      isDisabled, // impossible to type, field is read only
+      tagOptions // the list of choices that can be selected
     } = this.props;
 
     return (
@@ -51,19 +52,24 @@ class OneMediaForm extends Component {
             name={media}
             className={!value ? 'pasValide' : ' '}
             value={value}
-            onChange={this.handleMediaChange}
+            onChange={!isDisabled && this.handleMediaChange}
             onBlur={this.handleOnBlurEvent}
           />
           <label htmlFor={'media' + index} className="double-line-label active">
-            Email or phone number<br />
-            <em>e.g.: my.name@example.com or 0612345678</em>
+            {caption}
+            <br />
+            <em>
+              {!isDisabled && 'e.g.: '}
+              {valueExample}
+            </em>
           </label>
         </div>
         <SelectComponentStyled
           targetArray={'familyMedia'}
           index={index}
           tags={tags}
-          options={mediaTagOptions}
+          options={tagOptions}
+          isDisabled={isDisabled}
         />
       </form>
     );
@@ -72,9 +78,7 @@ class OneMediaForm extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    mediaObject: getMediaObject(state, props),
-    lastMediaValid: getLastMediaValid(state),
-    mediaTagOptions: getMediaTagOptions(state)
+    lastMediaValid: getLastMediaValid(state)
   };
 }
 
@@ -85,16 +89,14 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(OneMediaForm);
 
 OneMediaForm.propTypes = {
+  isDisabled: PropTypes.bool,
+  caption: PropTypes.string.isRequired,
+  valueExample: PropTypes.string,
   index: PropTypes.number.isRequired,
-  mediaTagOptions: PropTypes.arrayOf(
+  tagOptions: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired
     }).isRequired
-  ).isRequired,
-  mediaObject: PropTypes.shape({
-    media: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
-  }).isRequired
+  ).isRequired
 };

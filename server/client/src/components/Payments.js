@@ -15,7 +15,7 @@ import {
   getValidChecked,
   getTotal,
   getFormIsValid,
-  getMainEmail,
+  getPrimaryEmail,
   getEventName,
   getEventProviderName
 } from '../selectors';
@@ -35,7 +35,7 @@ class Payments extends Component {
       validChecked,
       total,
       formIsValid,
-      mainEmail,
+      primaryEmail,
       eventName,
       eventProviderName
     } = this.props;
@@ -52,8 +52,8 @@ class Payments extends Component {
             // image={'%PUBLIC_URL%/englishLinkLogo.png'}
             allowRememberMe={false}
             amount={total}
-            email={mainEmail}
-            receipt_email={mainEmail}
+            email={primaryEmail}
+            receipt_email={primaryEmail}
             currency="EUR"
             stripeKey={process.env.REACT_APP_STRIPE_KEY}
             token={stripeToken => {
@@ -102,7 +102,7 @@ function mapStateToProps(state) {
     validChecked: getValidChecked(state),
     total: getTotal(state),
     formIsValid: getFormIsValid(state),
-    mainEmail: getMainEmail(state),
+    primaryEmail: getPrimaryEmail(state),
     eventName: getEventName(state),
     eventProviderName: getEventProviderName(state)
   };
@@ -126,7 +126,7 @@ Payments.propTypes = {
   total: PropTypes.number.isRequired,
   handlePayment: PropTypes.func.isRequired,
   formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired,
-  mainEmail: PropTypes.string.isRequired,
+  primaryEmail: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   eventProviderName: PropTypes.string.isRequired
 };

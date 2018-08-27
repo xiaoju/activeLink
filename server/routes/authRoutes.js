@@ -334,6 +334,8 @@ module.exports = app => {
           _id: req.user._id,
           googleId: req.user.googleId, // TODO check do I need send this to frontend?
           familyId: req.user.familyId,
+          primaryEmail: req.user.primaryEmail,
+          admin: req.user.admin,
           allKids: req.user.allKids,
           allParents: req.user.allParents,
           familyMedia: req.user.familyMedia,

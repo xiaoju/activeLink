@@ -9,7 +9,7 @@ class ValidationPanel extends Component {
       formIsValid: {
         totalNotZero,
         oneAddressMini,
-        oneEmailMini,
+        // oneEmailMini,
         oneKidMini,
         oneParentMini,
         onePhoneMini
@@ -24,11 +24,11 @@ class ValidationPanel extends Component {
             by clicking on the orange checkboxes.
           </p>
         )}
-        {!oneEmailMini && (
+        {/* {!oneEmailMini && (
           <p>
             <strong>Emails:</strong> please enter at least one valid email.
           </p>
-        )}
+        )} */}
         {!oneAddressMini && (
           <p>
             <strong>Postal address:</strong> please enter at least one address.
