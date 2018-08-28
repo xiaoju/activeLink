@@ -1,3 +1,4 @@
+var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 
 const mongoose = require('mongoose');
@@ -38,6 +39,8 @@ mongoose
 // );
 
 const app = express();
+
+app.use(sslRedirect());
 
 app.use(bodyParser.json());
 
