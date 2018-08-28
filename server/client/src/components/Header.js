@@ -33,7 +33,7 @@ class Header extends Component {
               </li> */}
               <li>
                 {!profile ? (
-                  <Link to="/login">
+                  <Link title="Sign in" to="/login">
                     <FontAwesomeIcon
                       icon="sign-in-alt"
                       color="fff"
@@ -42,7 +42,7 @@ class Header extends Component {
                     />
                   </Link>
                 ) : (
-                  <a href="/api/logout">
+                  <a title="Sign out" href="/api/logout">
                     <FontAwesomeIcon
                       icon="sign-out-alt"
                       color="fff"

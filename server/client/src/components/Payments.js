@@ -50,10 +50,7 @@ class Payments extends Component {
             locale="en"
             image={
               // 'http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png'
-              // `%PUBLIC_URL%/englishLinkLogo.png`
               'englishLinkLogo.png'
-              // http://localhost:3000/%PUBLIC_URL%/englishLinkLogo.png
-              // assoIconLink
             }
             allowRememberMe={false}
             amount={total}
