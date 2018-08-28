@@ -145,11 +145,11 @@ module.exports = app => {
             }
           });
         }
-      ],
-      function(err) {
-        if (err) return next(err);
-        return res.json({ resetTokenEmailSent: false, error });
-      }
+      ]
+      // , function(err) {
+      // if (err) return next(err);
+      // return res.json({ resetTokenEmailSent: false, error });
+      // }
     );
   });
 
@@ -213,12 +213,12 @@ module.exports = app => {
           };
           mailgun.messages().send(emailData, function(error, body) {
             if (error) {
-              return res.json({
+              return res.status(500).json({
                 passwordWasChanged: false,
                 error
               });
             } else {
-              return res.json({
+              return res.status(200).json({
                 passwordWasChanged: true,
                 body
               });
