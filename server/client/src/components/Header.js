@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { getProfile } from '../selectors';
 import englishLinkLogo from '../pictures/englishLinkLogo.png';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 class Header extends Component {
   render() {
     const { profile } = this.props;
@@ -32,11 +34,21 @@ class Header extends Component {
               <li>
                 {!profile ? (
                   <Link to="/login">
-                    <i className="medium material-icons">crop_square</i>
+                    <FontAwesomeIcon
+                      icon="sign-in-alt"
+                      color="fff"
+                      size="4x"
+                      style={{ verticalAlign: 'middle' }}
+                    />
                   </Link>
                 ) : (
                   <a href="/api/logout">
-                    <i className="medium material-icons">exit_to_app</i>
+                    <FontAwesomeIcon
+                      icon="sign-out-alt"
+                      color="fff"
+                      size="4x"
+                      style={{ verticalAlign: 'middle' }}
+                    />
                   </a>
                 )}
               </li>

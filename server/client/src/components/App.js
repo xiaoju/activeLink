@@ -14,6 +14,10 @@ import PageNotFound from './PageNotFound';
 import EmailSent from './EmailSent';
 import SendInvites from './SendInvites';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+library.add(faSignInAlt, faSignOutAlt);
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
