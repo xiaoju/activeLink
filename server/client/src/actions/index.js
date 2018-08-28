@@ -30,6 +30,7 @@ export const fetchUser = () => async dispatch => {
 export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
+    // throw 'oops';
     const res = await axios.post('/api/payment', payload);
     // console.log('res: ', res);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });

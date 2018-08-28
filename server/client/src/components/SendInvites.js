@@ -40,7 +40,8 @@ class sendInvites extends Component {
   async onSubmit(event) {
     event.preventDefault();
     this.setState({ before: false, loading: true, after: false });
-    let { emailsList, loading, errorMessage } = this.state;
+    // let { emailsList, loading, errorMessage } = this.state;
+    let emailsList = this.state.emailsList;
     const emailsArray = emailsList.split(',').map(string => string.trim());
 
     let result;
@@ -90,7 +91,7 @@ class sendInvites extends Component {
       loading,
       after,
       newEmails,
-      newfamiliesByEmail,
+      // newfamiliesByEmail,
       badFormatEmails,
       duplicateEmails,
       errorMessage

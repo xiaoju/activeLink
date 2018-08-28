@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import {
-  getAssoIconLink,
+  // getAssoIconLink,
   getFamilyId,
   getEventId,
   getValidKids,
@@ -25,6 +25,7 @@ import ValidationPanel from './ValidationPanel';
 class Payments extends Component {
   render() {
     const {
+      // assoIconLink,
       familyId,
       eventId,
       validKids,
@@ -46,10 +47,13 @@ class Payments extends Component {
           <StripeCheckout
             name={eventProviderName}
             description={eventName}
+            locale="en"
             image={
               'http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png'
+              // `%PUBLIC_URL%/englishLinkLogo.png`
+              // http://localhost:3000/%PUBLIC_URL%/englishLinkLogo.png
+              // assoIconLink
             }
-            // image={'%PUBLIC_URL%/englishLinkLogo.png'}
             allowRememberMe={false}
             amount={total}
             email={primaryEmail}
@@ -57,7 +61,7 @@ class Payments extends Component {
             currency="EUR"
             stripeKey={process.env.REACT_APP_STRIPE_KEY}
             token={stripeToken => {
-              // console.log('stripeToken: ', stripeToken);
+              console.log('stripeToken: ', stripeToken);
               this.props.handlePayment({
                 stripeToken,
                 familyId,
@@ -91,7 +95,7 @@ class Payments extends Component {
 
 function mapStateToProps(state) {
   return {
-    assoIconLink: getAssoIconLink(state),
+    // assoIconLink: getAssoIconLink(state),
     familyId: getFamilyId(state),
     eventId: getEventId(state),
     validKids: getValidKids(state),
@@ -115,7 +119,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
 
 Payments.propTypes = {
-  assoIconLink: PropTypes.string.isRequired,
+  // assoIconLink: PropTypes.string.isRequired,
   familyId: PropTypes.string.isRequired,
   eventId: PropTypes.string.isRequired,
   validKids: PropTypes.array.isRequired,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getPrimaryEmail,
   getVolunteeringItems,
   getIsVolunteering,
   getEventProviderName,
@@ -27,6 +28,7 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      primaryEmail,
       sectionTitle,
       volunteeringItems,
       isVolunteering,
@@ -121,8 +123,12 @@ class OrderSummary extends Component {
             <strong>Phones and emails: </strong>
           </h6>
           <ul>
+            <li key="primaryEmail">
+              <strong>Primary email (used for sign-in): </strong>
+              {primaryEmail}
+            </li>
             {validMedia.map((mediaObject, index) => (
-              <li>
+              <li key={index}>
                 <strong>
                   {mediaObject.tags.map((tag, index) => (
                     <span key={index}>{tag} </span>
@@ -217,6 +223,7 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    primaryEmail: getPrimaryEmail(state),
     volunteeringItems: getVolunteeringItems(state),
     isVolunteering: getIsVolunteering(state),
     eventProviderName: getEventProviderName(state),

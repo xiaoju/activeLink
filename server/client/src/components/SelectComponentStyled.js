@@ -195,7 +195,7 @@ export default connect(null, mapDispatchToProps)(SelectComponentStyled);
 SelectComponentStyled.propTypes = {
   isDisabled: PropTypes.bool,
   targetArray: PropTypes.string.isRequired, // component modifies tags of `state.profile[targetArray]`
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number, // 'index' is not required if field is read-only
   tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // selectedTags
   options: PropTypes.arrayOf(
     PropTypes.shape({

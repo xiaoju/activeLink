@@ -25,9 +25,10 @@ function OrderReceipt(props) {
     <div>
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">⑦ Order receipt</h4>
-        <h5>Thank you for your registration!</h5>
-        <h5>You can now exit this page.</h5>
-        <div className="orderSummary" style={{ margin: '2%' }}>
+        <p>
+          <h6>Thank you for your registration! Enjoy the activities!</h6>
+        </p>
+        <div className="orderSummary" style={{ margin: '3em 2%' }}>
           <ul>
             <li>
               <strong>
@@ -145,6 +146,7 @@ function OrderReceipt(props) {
         ))}
       </div> */}
         </div>
+        <h6>You can now exit this page.</h6>
       </div>
     </div>
   );

@@ -48,11 +48,13 @@ class OneMediaForm extends Component {
             {media}
           </i>
           <input
+            readOnly={this.props.isDisabled}
+            value={value}
             id={'media' + index}
             name={media}
             className={!value ? 'pasValide' : ' '}
-            value={value}
-            onChange={!isDisabled && this.handleMediaChange}
+            // onChange={!isDisabled && this.handleMediaChange}
+            onChange={!isDisabled ? this.handleMediaChange : undefined}
             onBlur={this.handleOnBlurEvent}
           />
           <label htmlFor={'media' + index} className="double-line-label active">
@@ -92,7 +94,7 @@ OneMediaForm.propTypes = {
   isDisabled: PropTypes.bool,
   caption: PropTypes.string.isRequired,
   valueExample: PropTypes.string,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number, // 'index' is not required if field is read-only
   tagOptions: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
