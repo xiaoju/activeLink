@@ -157,7 +157,8 @@ class sendInvites extends Component {
                 {!this.validateEmailsList(emailsList) && (
                   <p>
                     Please double check your input. The emails should be
-                    separated by ','. Don't forget any @ and .
+                    separated by commas (','). Beware not to forget any @ and
+                    dot. No comma at the end of the list.
                   </p>
                 )}
                 {errorMessage && (

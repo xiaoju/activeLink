@@ -57,7 +57,7 @@ class LogIn extends Component {
             this.setState({
               loading: false,
               errorMessage:
-                'The authentication failed, please double check the email address.'
+                'The authentication failed, please double check that the email address you typed is the one you registered with.'
             });
           }
         });
@@ -69,6 +69,7 @@ class LogIn extends Component {
       //
       // but if authentication failed, don't fetch and don't redirect.
 
+      // TODO refactor without nested 'try await' loops
       try {
         await axios.post('/auth/local', {
           primaryEmail: loginEmail,
@@ -87,7 +88,7 @@ class LogIn extends Component {
         this.setState({
           loading: false,
           errorMessage:
-            'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
+            'The authentication failed. Please double check email address and password. You can also tick the orange checkbox, fill-in your email and press the button to request a new password.'
         });
       }
 
