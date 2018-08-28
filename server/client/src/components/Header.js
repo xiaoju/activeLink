@@ -21,7 +21,7 @@ class Header extends Component {
             </a>
 
             <ul id="nav-mobile" className="right">
-              <li>
+              {/* <li>
                 {!profile ? (
                   <a href="/auth/google">Login with Google</a>
                 ) : (
@@ -29,12 +29,16 @@ class Header extends Component {
                     <i className="medium material-icons">exit_to_app</i>
                   </a>
                 )}
-              </li>
+              </li> */}
               <li>
-                {!profile && (
+                {!profile ? (
                   <Link to="/login">
                     <i className="medium material-icons">crop_square</i>
                   </Link>
+                ) : (
+                  <a href="/api/logout">
+                    <i className="medium material-icons">exit_to_app</i>
+                  </a>
                 )}
               </li>
             </ul>
