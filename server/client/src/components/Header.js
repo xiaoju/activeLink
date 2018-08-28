@@ -17,7 +17,6 @@ class Header extends Component {
 
             <a href="/" className="brand-logo center">
               English Link
-              {/* {!event ? 'English Link' : event.eventName} */}
             </a>
 
             <ul id="nav-mobile" className="right">

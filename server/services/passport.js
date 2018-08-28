@@ -1,12 +1,9 @@
 const uuid = require('uuid4');
-
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const GithubStrategy = require('passport-github2').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
-
 const Family = mongoose.model('families');
 
 passport.serializeUser((family, done) => {
@@ -60,11 +57,9 @@ passport.use(
 
       process.nextTick(function() {
         Family.findOne({ primaryEmail: primaryEmail }, function(err, family) {
-          // console.log('PASSPORT.JS, Family.findOne');
           if (err) return done(err);
 
           if (!family) {
-            // console.log('!FAMILY');
             return done(
               null,
               false,
@@ -84,13 +79,10 @@ passport.use(
           //   return done(null, user);
 
           family.comparePassword(password, function(err, isMatch) {
-            console.log('COMPARE PASSWORD');
             if (isMatch) {
               return done(null, family);
             } else {
               console.log('NO PWD MATCH');
-              console.log('EXIT COMPARE WITH (null, false, {message: xxx})');
-
               return done(null, false, { message: 'Incorrect password.' });
               // return done(null, family, { message: 'Incorrect password.' }); // bypass the password check!
             }
