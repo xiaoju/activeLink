@@ -49,8 +49,9 @@ class Payments extends Component {
             description={eventName}
             locale="en"
             image={
-              // 'http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png'
-              'englishLinkLogo.png'
+              process.env.NODE_ENV === 'production'
+                ? 'englishLinkLogo.png'
+                : 'http://www.englishlinkcaousou.fr/s/cc_images/teaserbox_55471588.png'
             }
             allowRememberMe={false}
             amount={total}

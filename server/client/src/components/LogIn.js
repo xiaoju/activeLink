@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { push } from 'connected-react-router';
 import * as Validation from '../utils/Validation';
 import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
@@ -50,7 +48,6 @@ class LogIn extends Component {
         .then(result => {
           const { resetTokenEmailSent, emailedTo } = result.data;
           if (resetTokenEmailSent) {
-            // this.props.dispatch(push('/EmailSent/' + emailedTo));
             this.props.history.push('/EmailSent/' + emailedTo);
           } else {
             // stay on /login page
@@ -233,7 +230,5 @@ class LogIn extends Component {
     );
   }
 }
-// export default LogIn;
-// export default connect()(LogIn);
-// export default withRouter(connect(null, actions)(LogIn));
+
 export default connect(null, actions)(LogIn);

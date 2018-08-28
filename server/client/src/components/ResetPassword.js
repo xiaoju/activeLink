@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import { push } from 'connected-react-router';
 import SpinnerWrapper from './SpinnerWrapper';
-// import { connect } from 'react-redux';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -34,12 +32,10 @@ class ResetPassword extends Component {
         if (passwordWasChanged) {
           console.log('passwordWasChanged: ', passwordWasChanged);
           console.log('body: ', body);
-          // this.props.dispatch(push('/register'));
           this.props.history.push('/register');
         } else {
           console.log('passwordWasChanged: ', passwordWasChanged);
           console.log('error: ', error);
-          // this.props.dispatch(push('/login'));
           this.props.history.push('/login');
         }
       })
@@ -131,4 +127,3 @@ class ResetPassword extends Component {
   }
 }
 export default ResetPassword;
-// export default connect()(ResetPassword);
