@@ -55,9 +55,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
-// require('./routes/localAuthRoutes')(app);
+require('./routes/googleAuthRoutes')(app);
 require('./routes/billingRoutes')(app);
-// require('./routes/dataRoutes')(app);
 require('./routes/adminRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
