@@ -68,6 +68,7 @@ module.exports = app => {
           const emailData = {
             from: 'The English Link <english-link@xiaoju.io>',
             to: family.primaryEmail,
+            'h:Reply-To': 'englishlink31@gmail.com',
             subject: 'English-Link / password reset link',
             text:
               'Hello,\n\n' +
@@ -161,6 +162,7 @@ module.exports = app => {
           const emailData = {
             from: 'The English Link <english-link@xiaoju.io>',
             to: family.primaryEmail,
+            'h:Reply-To': 'englishlink31@gmail.com',
             subject: 'English-Link / your password has been changed',
             text:
               'Hello,\n\n' +

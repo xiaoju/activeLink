@@ -33,7 +33,7 @@ class ProfileForm extends Component {
           <h4 className="stepTitle">{sectionTitle}</h4>
           <div className="title_and_button">
             <h5>
-              <strong>Kids</strong>
+              <strong>Children</strong>
             </h5>
           </div>
           {allKids.map(userId => <OneKidForm key={userId} userId={userId} />)}

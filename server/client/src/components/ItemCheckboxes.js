@@ -33,7 +33,6 @@ function ItemCheckboxes({
               ? 'usernameCheckboxDisabled'
               : 'usernameCheckbox'
           } // color of label (name of kid) is greyed out when kid not the right grade for the class
-          // BUG in filter just above.
           key={itemId + '_' + thisUserId}
         >
           <input

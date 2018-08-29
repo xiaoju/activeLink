@@ -6,7 +6,6 @@ export const getEvent = state => state.event;
 export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
 export const getEventProviderName = state => state.event.eventProviderName;
-// export const getAssoIconLink = state => state.event.assoIconLink;
 export const getEventContacts = state => state.event.eventContacts;
 export const getStandardPrices = state => state.event.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.event.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]

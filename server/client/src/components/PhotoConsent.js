@@ -26,19 +26,29 @@ class PhotoConsent extends Component {
       familyById
     } = this.props;
 
+    // const childrenFullNames = validKids // [k0', 'k1' ]
+    //   .map((userId, index) => (
+    //     <p key={index}>
+    //       {familyById[userId].firstName} {familyById[userId].familyName}
+    //     </p>
+    //   ));
+
     const childrenFullNames = validKids // [k0', 'k1' ]
-      .map((userId, index) => (
-        <p key={index}>
-          {familyById[userId].firstName} {familyById[userId].familyName}
-        </p>
-      ));
+      .map(
+        (userId, index) =>
+          familyById[userId].firstName + ' ' + familyById[userId].familyName
+      )
+      .join(' & ');
 
     const consentText = (
       <span>
         Check this box to{' '}
         <strong>give permission to {eventProviderName} </strong>to take
-        photographs and videos of your children {childrenFullNames} and grant{' '}
-        <em>{eventProviderName}</em>
+        photographs and videos of your children{' '}
+        <p>
+          <strong>{childrenFullNames}</strong>
+        </p>{' '}
+        and grant <em>{eventProviderName}</em>
         <strong> the full rights</strong> to use the images resulting from the
         photography and video filming, and any reproductions or adaptations of
         the images for fundraising, publicity or other purposes to help achieve

@@ -182,11 +182,7 @@ module.exports = app => {
       }
 
       if (stripeReceipt.status === 'succeeded') {
-        console.log(
-          'Starting saving the paid classes into the `registrations` property of `asso`'
-        );
         // save the paid classes into the `registrations` property of `asso`
-
         const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
         // arrayMerge defines how the deepMerge shall proceed with arrays:
         // concatenate and remove the duplicates.
