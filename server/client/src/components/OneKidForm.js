@@ -114,7 +114,10 @@ class OneKidForm extends Component {
               <option value="CM1">CM1</option>
               <option value="CM2">CM2</option>
               <option disabled>──</option>
-              <option value="college">college</option>
+              <option value="6e">6e</option>
+              <option value="5e">5e</option>
+              <option value="4e">4e</option>
+              <option value="3e">3e</option>
             </select>
           </div>
         )}
