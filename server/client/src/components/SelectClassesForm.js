@@ -45,32 +45,38 @@ class SelectClassesForm extends Component {
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">{sectionTitle}</h4>
         {allItems &&
-          allItems.map((thisItemId, i) => (
-            <div className="container itemDetails" key={thisItemId}>
+          allItems.map((itemId, i) => (
+            <div className="container itemDetails" key={itemId}>
               {/* Name of the class */}
               <h5>
-                <strong>{itemsById[thisItemId].name}</strong>
+                <strong>{itemsById[itemId].name}</strong>
               </h5>
               {/* Description of the class */}
-              <div>{itemsById[thisItemId].description}</div>
-              {/* Teacher name */}
-              {itemsById[thisItemId].staff && (
+              <div>{itemsById[itemId].description}</div>
+              {/* Teacher name(s) */}
+              {itemsById[itemId].staff && (
                 <div>
                   Animated by{' '}
-                  {staffById[itemsById[thisItemId].staff[0]].firstName}{' '}
-                  {staffById[itemsById[thisItemId].staff[0]].familyName}.
+                  {itemsById[itemId].staff
+                    .map(
+                      staffId =>
+                        staffById[staffId].firstName +
+                        ' ' +
+                        staffById[staffId].familyName
+                    )
+                    .join(' & ')}.
                 </div>
               )}
 
               <ItemPrices
-                itemId={thisItemId}
+                itemId={itemId}
                 familyItems={familyItems}
                 standardPrices={standardPrices}
                 discountedPrices={discountedPrices}
               />
 
               <ItemCheckboxes
-                itemId={thisItemId}
+                itemId={itemId}
                 itemsById={itemsById}
                 familyItems={familyItems}
                 mergedFamilyName={mergedFamilyName}
