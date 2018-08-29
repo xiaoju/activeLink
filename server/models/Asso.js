@@ -3,6 +3,9 @@ const { Schema } = mongoose;
 
 const assoSchema = new Schema({
   id: { type: String, default: '' },
+  assoEmail: { type: String, default: '' },
+  replyTo: { type: String, default: '' },
+  emailFrom: { type: String, default: '' },
   name: { type: String, default: '' },
   contacts: { type: Array, default: [''] },
   address: { type: String, default: '' },

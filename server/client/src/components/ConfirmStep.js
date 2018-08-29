@@ -2,20 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  getStaffById,
-  getEventProviderName,
-  getEventContacts
+  // getStaffById,
+  getAssoEmail,
+  getEventProviderName
+  // getEventContacts
 } from '../selectors';
 import Payments from './Payments';
-import { capitalizeFirstLetter } from '../utils/Tools';
+// import { capitalizeFirstLetter } from '../utils/Tools';
 
 class ConfirmStep extends Component {
   render() {
     const {
+      assoEmail,
       sectionTitle,
-      staffById,
-      eventProviderName,
-      eventContacts
+      // staffById,
+      eventProviderName
+      // eventContacts
     } = this.props;
 
     return (
@@ -38,7 +40,7 @@ class ConfirmStep extends Component {
                 passwords.
               </span>
               <br />
-              <span>Any questions? Please contact us!</span>
+              {/* <span>Any questions? Please contact us!</span>
               {eventContacts.map(contactId => (
                 <div key={contactId} className="eventContacts">
                   <span>
@@ -49,7 +51,8 @@ class ConfirmStep extends Component {
                   <span>{staffById[contactId].phone}</span>
                   <span>{staffById[contactId].email}</span>
                 </div>
-              ))}
+              ))} */}
+              <p>Any questions? Please drop us an email at {assoEmail}</p>
             </div>
           </div>
         </div>
@@ -60,16 +63,18 @@ class ConfirmStep extends Component {
 
 function mapStateToProps(state) {
   return {
-    staffById: getStaffById(state),
-    eventProviderName: getEventProviderName(state),
-    eventContacts: getEventContacts(state)
+    // staffById: getStaffById(state),
+    assoEmail: getAssoEmail(state),
+    eventProviderName: getEventProviderName(state)
+    // eventContacts: getEventContacts(state)
   };
 }
 
 export default connect(mapStateToProps)(ConfirmStep);
 
 ConfirmStep.propTypes = {
-  staffById: PropTypes.object.isRequired,
-  eventProviderName: PropTypes.string.isRequired,
-  eventContacts: PropTypes.array.isRequired
+  // staffById: PropTypes.object.isRequired,
+  assoEmail: PropTypes.string.isRequired,
+  eventProviderName: PropTypes.string.isRequired
+  // eventContacts: PropTypes.array.isRequired
 };

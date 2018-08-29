@@ -3,6 +3,7 @@ import { capitalizeFirstLetter } from '../utils/Tools';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
 export const getEvent = state => state.event;
+export const getAssoEmail = state => state.event.assoEmail;
 export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
 export const getEventProviderName = state => state.event.eventProviderName;
