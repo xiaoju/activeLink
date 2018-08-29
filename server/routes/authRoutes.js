@@ -217,8 +217,8 @@ module.exports = app => {
         "/api/current_family (get) error, couldn't access event in database ",
         error
       );
+      res.status(500).json({ error: error.toString() });
     }
-
     // Build `familyById` out of database records. It contains the detailed
     // information (firstName, familyName, kidGrade) for the kids and parents
     // belonging to this family.
@@ -251,13 +251,15 @@ module.exports = app => {
 
     // put together the data required by client
     if (!req.user) {
+      // res.status(401).send(null);
+      console.log('authroutes.js, row 258, send(null)');
       res.send(null);
       // if not logged in, don't send data.
     } else {
       // console.log('thisAsso: ', thisAsso);
       // console.log('thisAsso.name: ', thisAsso.name);
       // console.log('thisAsso.iconLink: ', thisAsso.iconLink); // BUG why is this undefined?!!
-      res.send({
+      res.status(200).send({
         profile: {
           familyById,
           _id: req.user._id,
