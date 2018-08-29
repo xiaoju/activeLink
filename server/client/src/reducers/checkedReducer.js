@@ -19,7 +19,7 @@ export default function(state = empty, { type, payload }) {
 
     case FETCH_USER: {
       // create initial state:
-      // 1- convert data.familyAndValidKids, from
+      // 1- convert familyAndValidKids, from
       // [familyId, 'k0', 'k1']
       // to
       // {familyId: [], k0: [], k1: [], k2: []}

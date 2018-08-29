@@ -49,6 +49,18 @@ div #logo {
   color: rgba(0, 0, 0, 0.87);
 }
 
+.switch label {
+  font-size: 1em;
+}
+
+.switch label input[type='checkbox']:checked + .lever:after {
+  background-color: #ffa726;
+}
+
+.switch label input[type='checkbox']:checked + .lever {
+  background-color: #ffa726;
+}
+
 .photoConsentCheckbox p {
   margin: 0em;
   padding: 0em;

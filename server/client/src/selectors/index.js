@@ -28,7 +28,8 @@ export const getVolunteeringItems = state => [
   'i17',
   'i18',
   'i19',
-  'i20'
+  'i20',
+  'i21'
 ];
 
 export const getProfile = state => state.profile;

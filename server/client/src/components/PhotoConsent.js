@@ -13,6 +13,16 @@ import {
 } from '../selectors';
 
 class PhotoConsent extends Component {
+  componentDidMount() {
+    this.props.checkCheckbox(this.props.familyId, 'i22');
+    // BUG I have multiple rerenders, and the initial state get lost
+  }
+
+  // componentDidUpdate() {
+  //   // BUG this causes some infinite loop. just wanting i21 to have initial state: checked.
+  //   this.props.checkCheckbox(this.props.familyId, 'i21');
+  // }
+
   render() {
     const {
       sectionTitle,
@@ -40,24 +50,27 @@ class PhotoConsent extends Component {
       )
       .join(' & ');
 
-    const consentText = (
+    const disapproveText = (
       <span>
-        Check this box to{' '}
-        <strong>give permission to {eventProviderName} </strong>to take
-        photographs and videos of your children{' '}
-        <p>
-          <strong>{childrenFullNames}</strong>
-        </p>{' '}
-        and grant <em>{eventProviderName}</em>
+        I <strong>don't give permission</strong> to <em>{eventProviderName}</em>{' '}
+        to take photographs and videos of my children{' '}
+        <strong>{childrenFullNames}</strong>.
+      </span>
+    );
+
+    const approveText = (
+      <span>
+        {' '}
+        I <strong>give permission</strong> to <em>{eventProviderName}</em> to
+        take photographs and videos of my children{' '}
+        <strong>{childrenFullNames}</strong>, and I grant{' '}
+        <em>{eventProviderName}</em>
         <strong> the full rights</strong> to use the images resulting from the
         photography and video filming, and any reproductions or adaptations of
         the images for fundraising, publicity or other purposes to help achieve
         the association's aims. This might include (but is not limited to) the
         right to use them in their printed and online newsletters, websites,
         publicities, social media, press releases and funding applications.
-        <p className="signature">
-          <strong>Signature: {firstValidParentName}</strong>
-        </p>
       </span>
     );
 
@@ -66,25 +79,31 @@ class PhotoConsent extends Component {
         <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="container itemDetails">
           <div className="photoConsentCheckbox">
-            <input
-              type="checkbox"
-              onChange={onChangeEvent =>
-                checked[familyId].includes('i21')
-                  ? // if already in array
-                    uncheckCheckbox(familyId, 'i21', onChangeEvent)
-                  : // if not yet in array
-                    checkCheckbox(familyId, 'i21', onChangeEvent)
-              }
-              id="i21"
-              className="filled-in checkbox-orange z-depth-2"
-            />
-            {/* <label htmlFor="i21">{consentText}</label> */}
-            <label htmlFor="i21">
-              <strong>approved</strong>
-            </label>
+            <div className="switch">
+              <label>
+                <strong>Don't give permission</strong>
+                <input
+                  type="checkbox"
+                  checked={checked[familyId].includes('i22') && 'checked'}
+                  onChange={onChangeEvent =>
+                    checked[familyId].includes('i22')
+                      ? // if already in array
+                        uncheckCheckbox(familyId, 'i22', onChangeEvent)
+                      : // if not yet in array
+                        checkCheckbox(familyId, 'i22', onChangeEvent)
+                  }
+                />
+                <span className="lever" />
+                <strong>Give permission</strong>
+              </label>
+            </div>
             <br />
-            <br />
-            <div>{consentText}</div>
+            <div>
+              {checked[familyId].includes('i22') ? approveText : disapproveText}
+            </div>
+            <p className="signature">
+              <strong>Signature: {firstValidParentName}</strong>
+            </p>
           </div>
         </div>
       </div>
