@@ -256,10 +256,16 @@ module.exports = app => {
       res.send(null);
       // if not logged in, don't send data.
     } else {
-      // console.log('thisAsso: ', thisAsso);
-      // console.log('thisAsso.name: ', thisAsso.name);
-      // console.log('thisAsso.iconLink: ', thisAsso.iconLink); // BUG why is this undefined?!!
       res.status(200).send({
+        // asso: {
+        //   eventProviderName: thisAsso.name,
+        //   replyTo: thisAsso.replyTo,
+        //   emailFrom: thisAsso.emailFrom,
+        //   itemsById: thisAsso.itemsById,
+        //   address: thisAsso.address,
+        //   allStaff: thisAsso.allStaff,
+        //   staffById: thisAsso.staffById
+        // },
         profile: {
           familyById,
           _id: req.user._id,
@@ -272,15 +278,14 @@ module.exports = app => {
           familyMedia: req.user.familyMedia,
           addresses: req.user.addresses,
           registrations: req.user.registrations,
-          // registeredById: req.user.registeredById, // TODO rename to registeredItemsById
           paymentReceipts: req.user.paymentReceipts,
           allEvents: req.user.allEvents
         },
+        // thisEvent: thisAsso.eventsById.e0
         thisEvent: {
           // this goes to the eventReducer
           ...thisAsso.eventsById.e0,
           eventProviderName: thisAsso.name,
-          assoIconLink: thisAsso.iconLink,
           assoEmail: thisAsso.assoEmail,
           replyTo: thisAsso.replyTo,
           emailFrom: thisAsso.emailFrom,

@@ -87,7 +87,7 @@ class CallForVolunteers extends Component {
             </div>
           ))}
 
-          {/* Thank you! We'll call you back! */}
+          {/* // TODO: add checkbox "I choose not to volunteer to assist with any activities at this time" */}
         </div>
       </div>
     );
