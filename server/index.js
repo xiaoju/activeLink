@@ -24,10 +24,13 @@ mongoose
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 1000
   })
-  .then(res => console.log('mongoose: connection success.'))
-  .catch(err =>
-    console.log('______________ Mongoose connect error: __________', err)
-  );
+  .then(res =>
+    console.log('______________ mongoose: connection success ______________ \n')
+  )
+  .catch(err => {
+    console.log('______________ Mongoose connect error: __________ \n', err);
+    res.status(500).json({ error: err.toString() });
+  });
 // .then(
 //   () => {
 //     console.log('mongoose: connection success.');

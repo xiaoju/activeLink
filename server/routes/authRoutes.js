@@ -139,7 +139,7 @@ module.exports = app => {
             },
             function(error, family) {
               if (!family) {
-                return res.json({
+                return res.status(500).json({
                   passwordWasChanged: false,
                   error: 'Password reset token is invalid or has expired.'
                 });

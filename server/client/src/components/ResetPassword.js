@@ -40,7 +40,10 @@ class ResetPassword extends Component {
         }
       })
 
-      .catch(error => console.log('AXIOS error: ', error));
+      .catch(error => {
+        console.log('AXIOS error: ', error);
+        this.props.history.push('/login');
+      });
   }
 
   componentDidMount() {
