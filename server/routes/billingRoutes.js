@@ -173,15 +173,20 @@ module.exports = app => {
         console.log('Error while connecting to Stripe server: ', error);
       }
 
-      // save stripeCharge receipt into database for future reference:
+      // save stripeCharge receipt into this `family` collection, in database,
+      // for future reference:
       const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
       try {
         family = await req.user.save();
       } catch (error) {
         console.log('Error while saving stripeCharge to database: ', error);
       }
+      // end of saving stripeCharge to this `family`
 
       if (stripeReceipt.status === 'succeeded') {
+        console.log('--------------------------------------');
+        console.log('stripeReceipt.status: ', stripeReceipt.status);
+
         // save the paid classes into the `registrations` property of `asso`
         const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
         // arrayMerge defines how the deepMerge shall proceed with arrays:
@@ -190,6 +195,7 @@ module.exports = app => {
         let newRegistered = deepMerge(previousRegistered, frontendChecked, {
           arrayMerge
         });
+
         // console.log('previousRegistered: ', previousRegistered);
         // console.log('frontendChecked: ', frontendChecked);
         // console.log('newRegistered: ', newRegistered);
@@ -202,6 +208,7 @@ module.exports = app => {
             error
           );
         }
+
         try {
           updatedAsso = await thisAsso.set({ registrations: newRegistered });
         } catch (error) {
@@ -221,8 +228,26 @@ module.exports = app => {
         }
 
         console.log(
-          'Finished saving the paid classes into the `registrations` property of `asso`'
+          'Finished saving the paid classes into the `registrations` property of `asso`:'
         );
+
+        // // double checking if really saved:
+        // let newAsso;
+        // try {
+        //   newAsso = await Asso.findOne({ id: 'a0' });
+        // } catch (error) {
+        //   console.log(
+        //     'billingRoutes.js, line 185 // error by findOne Asso: ',
+        //     error
+        //   );
+        // }
+        // newAssoRegistrations = newAsso.registrations;
+        // // here I would need some comparison with the data from frontend.
+        // // For now only a manual check in the console
+        // console.log('newAssoRegistrations: ', newAssoRegistrations);
+        // console.log('--------------------------------------------');
+
+        // TODO is it ok to close the `if` loop in next row???!
       }
 
       // build receipt out of stripeReceipt and database data

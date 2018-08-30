@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 // import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import * as Validation from '../utils/Validation';
-import SpinnerWrapper from './SpinnerWrapper';
-import * as actions from '../actions';
+import * as Validation from '../../utils/Validation';
+import SpinnerWrapper from '../SpinnerWrapper';
+import * as actions from '../../actions';
 
 class sendInvites extends Component {
   constructor(props) {

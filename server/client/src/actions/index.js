@@ -13,7 +13,8 @@ import {
   ADD_ADDRESS_ROW,
   ADD_MEDIA_ROW,
   ADD_KID_ROW,
-  ADD_PARENT_ROW
+  ADD_PARENT_ROW,
+  LOAD_DUMP
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -25,6 +26,16 @@ export const fetchUser = () => async dispatch => {
   } catch (error) {
     console.log('Error in axios GET /api/current_family: ', error);
     // dispatch(push('/sorry'));
+  }
+};
+
+export const fetchDump = () => async dispatch => {
+  try {
+    const fetched = await axios.get('/api/v1/dbdump');
+    console.log('fetched.data: ', fetched.data);
+    dispatch({ type: LOAD_DUMP, payload: fetched.data });
+  } catch (error) {
+    console.log('Error in axios fetchDump. Error: ', error);
   }
 };
 

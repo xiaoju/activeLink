@@ -69,6 +69,9 @@ export const getChecked = state => state.checked; // {idClerambault: [r0], idMul
 
 export const getReceipt = state => state.receipt;
 
+export const getDump = state => state.dump;
+export const getRegistrations = state => state.dump.assos[0].registrations;
+
 // export const getAllUsers = createSelector(
 //   [getAllKids, getAllParents],
 //   (allKids, allParents) => allKids.concat(allParents) // ['k0', 'k1', 'k2', 'p0', 'p1', 'p2']

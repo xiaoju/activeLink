@@ -12,7 +12,8 @@ import Sorry from './Sorry';
 import ResetPassword from './ResetPassword';
 import PageNotFound from './PageNotFound';
 import EmailSent from './EmailSent';
-import SendInvites from './SendInvites';
+import SendInvites from './admin/SendInvites';
+import Dump from './admin/Dump';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +42,8 @@ class App extends Component {
           <Route path="/sorry" component={Sorry} />
           <Route path="/emailsent/:emailedTo" component={EmailSent} />
           <Route path="/reset/:resetToken" component={ResetPassword} />
-          <Route path="/sendinvites" component={SendInvites} />
+          <Route path="/admin/sendinvites" component={SendInvites} />
+          <Route path="/admin/dump" component={Dump} />
           <Route component={PageNotFound} />
         </Switch>
       </div>
