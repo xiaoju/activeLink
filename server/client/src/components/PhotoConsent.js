@@ -1,47 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { uncheckCheckbox, checkCheckbox } from '../actions/index';
+import { togglePhotoConsent } from '../actions/index';
 import PropTypes from 'prop-types';
 import {
+  getPhotoConsent,
   getFirstValidParentName,
   getEventProviderName,
-  getFamilyId,
-  getChecked,
   getValidKids,
   getFamilyById
 } from '../selectors';
 
 class PhotoConsent extends Component {
-  componentDidMount() {
-    this.props.checkCheckbox(this.props.familyId, 'i22');
-    // BUG I have multiple rerenders, and the initial state get lost
-  }
-
-  // componentDidUpdate() {
-  //   // BUG this causes some infinite loop. just wanting i21 to have initial state: checked.
-  //   this.props.checkCheckbox(this.props.familyId, 'i21');
-  // }
-
   render() {
     const {
       sectionTitle,
       firstValidParentName,
       validKids,
-      familyId,
       eventProviderName,
-      checkCheckbox,
-      uncheckCheckbox,
-      checked,
-      familyById
+      togglePhotoConsent,
+      familyById,
+      photoConsent
     } = this.props;
-
-    // const childrenFullNames = validKids // [k0', 'k1' ]
-    //   .map((userId, index) => (
-    //     <p key={index}>
-    //       {familyById[userId].firstName} {familyById[userId].familyName}
-    //     </p>
-    //   ));
 
     const childrenFullNames = validKids // [k0', 'k1' ]
       .map(
@@ -84,23 +64,15 @@ class PhotoConsent extends Component {
                 <strong>Don't give permission</strong>
                 <input
                   type="checkbox"
-                  checked={checked[familyId].includes('i22') && 'checked'}
-                  onChange={onChangeEvent =>
-                    checked[familyId].includes('i22')
-                      ? // if already in array
-                        uncheckCheckbox(familyId, 'i22', onChangeEvent)
-                      : // if not yet in array
-                        checkCheckbox(familyId, 'i22', onChangeEvent)
-                  }
+                  checked={photoConsent && 'checked'}
+                  onChange={event => togglePhotoConsent()}
                 />
                 <span className="lever" />
                 <strong>Give permission</strong>
               </label>
             </div>
             <br />
-            <div>
-              {checked[familyId].includes('i22') ? approveText : disapproveText}
-            </div>
+            <div>{photoConsent ? approveText : disapproveText}</div>
             <p className="signature">
               <strong>Signature: {firstValidParentName}</strong>
             </p>
@@ -113,9 +85,8 @@ class PhotoConsent extends Component {
 
 function mapStateToProps(state, props) {
   return {
+    photoConsent: getPhotoConsent(state),
     eventProviderName: getEventProviderName(state),
-    familyId: getFamilyId(state),
-    checked: getChecked(state),
     validKids: getValidKids(state),
     familyById: getFamilyById(state),
     firstValidParentName: getFirstValidParentName(state)
@@ -125,8 +96,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      checkCheckbox: checkCheckbox,
-      uncheckCheckbox: uncheckCheckbox
+      togglePhotoConsent: togglePhotoConsent
     },
     dispatch
   );
@@ -135,10 +105,8 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(PhotoConsent);
 
 PhotoConsent.propTypes = {
-  checkCheckbox: PropTypes.func.isRequired,
-  uncheckCheckbox: PropTypes.func.isRequired,
+  togglePhotoConsent: PropTypes.func.isRequired,
+  photoConsent: PropTypes.bool.isRequired,
   eventProviderName: PropTypes.string.isRequired,
-  familyId: PropTypes.string.isRequired,
-  checked: PropTypes.object.isRequired,
   validKids: PropTypes.array.isRequired
 };

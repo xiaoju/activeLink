@@ -51,14 +51,25 @@ div #logo {
 
 .switch label {
   font-size: 1em;
+  border: thin #ffa726 solid;
+  padding: 1em 7%;
+}
+
+.switch label .lever,
+.switch label .lever:after {
+  background-color: #e53935;
+}
+
+.switch label .lever:before {
+  background-color: #ffa726;
 }
 
 .switch label input[type='checkbox']:checked + .lever:after {
-  background-color: #ffa726;
+  background-color: #43a047;
 }
 
 .switch label input[type='checkbox']:checked + .lever {
-  background-color: #ffa726;
+  background-color: #43a047;
 }
 
 .photoConsentCheckbox p {

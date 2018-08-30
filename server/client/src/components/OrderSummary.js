@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getPhotoConsent,
   getPrimaryEmail,
   getVolunteeringItems,
   getIsVolunteering,
@@ -28,6 +29,7 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      photoConsent,
       primaryEmail,
       sectionTitle,
       volunteeringItems,
@@ -210,10 +212,10 @@ class OrderSummary extends Component {
           </ul>
           {/* Consent section */}
           <h5>- ➍ Photo & Video Consent -</h5>
-          {checked[familyId].includes('i22') ? (
-            <p>OK for pictures of my kids!</p>
+          {photoConsent ? (
+            <p>OK for pictures of my children!</p>
           ) : (
-            <p>No pictures of my kids please!</p>
+            <p>No pictures of my children please!</p>
           )}
         </div>
       </div>
@@ -223,6 +225,7 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    photoConsent: getPhotoConsent(state),
     primaryEmail: getPrimaryEmail(state),
     volunteeringItems: getVolunteeringItems(state),
     isVolunteering: getIsVolunteering(state),

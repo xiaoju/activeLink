@@ -34,6 +34,7 @@ export const getVolunteeringItems = state => [
 
 export const getProfile = state => state.profile;
 export const getPrimaryEmail = state => state.profile.primaryEmail;
+export const getPhotoConsent = state => state.profile.photoConsent;
 
 // export const getFamilyMedia = state => state.profile.familyMedia;
 export const getFamilyMedia = state =>

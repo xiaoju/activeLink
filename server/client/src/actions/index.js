@@ -5,6 +5,7 @@ import {
   LOAD_RECEIPT,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
+  TOGGLE_PHOTOCONSENT,
   UPDATE_TAGS,
   MODIFY_ADDRESS,
   MODIFY_MEDIA,
@@ -61,6 +62,12 @@ export function uncheckCheckbox(userId, itemId) {
       userId,
       itemId
     }
+  };
+}
+
+export function togglePhotoConsent() {
+  return {
+    type: TOGGLE_PHOTOCONSENT
   };
 }
 

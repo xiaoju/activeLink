@@ -7,6 +7,7 @@ import {
   MODIFY_ADDRESS,
   MODIFY_MEDIA,
   MODIFY_USER,
+  TOGGLE_PHOTOCONSENT,
   ADD_ADDRESS_ROW,
   ADD_MEDIA_ROW,
   ADD_KID_ROW,
@@ -110,6 +111,13 @@ export default function(state = null, { type, payload }) {
             [fieldName]: value
           }
         }
+      };
+    }
+
+    case TOGGLE_PHOTOCONSENT: {
+      return {
+        ...state,
+        photoConsent: !state.photoConsent
       };
     }
 

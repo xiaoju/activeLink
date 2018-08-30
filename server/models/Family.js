@@ -14,6 +14,7 @@ const familySchema = new Schema({
     default: [{ media: 'more_horiz', value: '', tags: ['private'] }]
   },
   addresses: { type: Array, default: [{ value: '', tags: ['Everybody'] }] },
+  photoConsent: { type: Boolean, required: true, default: true },
   primaryEmail: {
     type: String,
     required: true,
