@@ -7,15 +7,15 @@ const assoSchema = new Schema({
   replyTo: { type: String, default: '' },
   emailFrom: { type: String, default: '' },
   name: { type: String, default: '' },
-  contacts: { type: Array, default: [''] },
+  contacts: { type: Array, default: [] },
   address: { type: String, default: '' },
-  allStaff: { type: Array, default: [''] },
+  allStaff: { type: Array, default: [] },
   staffById: { type: Object, default: {} },
-  allItems: { type: Array, default: [''] },
+  allItems: { type: Array, default: [] },
   itemsById: { type: Object, default: {} },
-  allEvents: { type: Array, default: [''] },
+  allEvents: { type: Array, default: [] },
   eventsById: { type: Object, default: {} },
-  allFamilies: { type: Array, default: [''] },
+  allFamilies: { type: Array, default: [] },
   registrations: { type: Object, default: {} }
 });
 

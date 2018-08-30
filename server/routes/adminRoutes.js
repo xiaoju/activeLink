@@ -90,8 +90,12 @@ module.exports = app => {
     const formattedArray = newEmailsArray.map(email => ({
       primaryEmail: email,
       familyId: uuid(),
-      dateCreated: Date.now()
+      dateCreated: Date.now(),
+      assos: ['a0']
     }));
+
+    // create the list of new familyIds
+    const createdFamilyIds = formattedArray.map(obj => obj.familyId);
 
     // create the new documents in the database
     // NB in my (mlab.com) old version of MongoDB / Mongoose, insertMany is
@@ -111,6 +115,23 @@ module.exports = app => {
       // console.log('ERROR by mongoose insertMany(): ', err);
       // res.status(500).send('ERROR by mongoose insertMany()');
     }
+
+    // add the IDs of the newly created families to the allFamilies array in `assos` document
+    let thisAsso;
+    try {
+      thisAsso = await Asso.findOne({ id: 'a0' });
+    } catch (error) {
+      console.log(error);
+    }
+    previousAllFamilies = thisAsso.allFamilies;
+    newAllFamilies = [...new Set(previousAllFamilies.concat(createdFamilyIds))];
+    let updatedAsso;
+    try {
+      updatedAsso = await thisAsso.set({ allFamilies: newAllFamilies });
+    } catch (error) {
+      console.log('adminRoute, row 137, error by replacing old data: ', error);
+    }
+    updatedAsso.save();
 
     // TODO send email to the emails in the list,
     // and to the logged in admin who created the accounts
