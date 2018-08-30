@@ -7,7 +7,7 @@ function OrderReceipt(props) {
     // allKids, // ['k0', 'k2']
     // allParents, // ['p0', 'p1']
     // addresses, // [{...}, {value: 'abc', tags: ['ab', 'de']}]
-    // familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['private']}, {media: 'phone', value: '12345', tags: []}]
+    // familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['personal']}, {media: 'phone', value: '12345', tags: []}]
     // photoConsent, // false
     assoName,
     eventName, // 'this is the name'

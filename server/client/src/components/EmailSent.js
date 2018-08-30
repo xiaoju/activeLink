@@ -16,7 +16,7 @@ function EmailSent(props) {
               That link will point to a page where you can set your new
               password.
             </p>
-            <p>Don't forget to check you spam folder!</p>
+            <p>Don't forget to check your spam folder!</p>
             <p>You can now close this page.</p>
           </div>
         </div>

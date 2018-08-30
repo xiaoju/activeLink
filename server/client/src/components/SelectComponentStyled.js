@@ -22,8 +22,6 @@ class SelectComponentStyled extends Component {
 
   render() {
     const { options, tags, isDisabled } = this.props;
-    // `tags` is the array of already selected tags,
-    // `options` is the array of tags the user can select from.
 
     // source code of react-select useful for styling:
     // https://github.com/JedWatson/react-select/blob/v2/src/styles.js
@@ -196,8 +194,9 @@ SelectComponentStyled.propTypes = {
   isDisabled: PropTypes.bool,
   targetArray: PropTypes.string.isRequired, // component modifies tags of `state.profile[targetArray]`
   index: PropTypes.number, // 'index' is not required if field is read-only
-  tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // selectedTags
+  tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // the already selected tags
   options: PropTypes.arrayOf(
+    // the tags the user can select from
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired

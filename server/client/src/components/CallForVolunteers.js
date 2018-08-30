@@ -27,8 +27,9 @@ class CallForVolunteers extends Component {
         <h4 className="stepTitle">{sectionTitle}</h4>
         <div className="container itemDetails">
           <p>
-            Without support by parents, The English Link may need to scale back
-            activities. Please tick some boxes below and we'll call you back.
+            Without support from parents, The English Link may need to scale
+            back activities. Please tick some boxes below and we'll call you
+            back.
           </p>
         </div>
         <div className="container itemDetails">

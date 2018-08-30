@@ -513,7 +513,7 @@ export const getMediaTagOptions = createSelector(
       .concat([
         // add the standard tag options:
         { value: 'family', label: 'family' },
-        { value: 'private', label: 'private' },
+        { value: 'personal', label: 'personal' },
         { value: 'pro', label: 'pro' },
         { value: 'mobile', label: 'mobile' },
         { value: 'landline', label: 'landline' }

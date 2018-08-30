@@ -36,7 +36,7 @@ class ConfirmStep extends Component {
               </span>
               <span>The connections to the servers are encrypted.</span>
               <span>
-                {eventProviderName} doesn't see credit card numbers neither
+                {eventProviderName} doesn't see credit card numbers nor
                 passwords.
               </span>
               <br />
@@ -52,7 +52,10 @@ class ConfirmStep extends Component {
                   <span>{staffById[contactId].email}</span>
                 </div>
               ))} */}
-              <p>Any questions? Please drop us an email at {assoEmail}</p>
+              <p>
+                Any questions? Please drop us an email at{' '}
+                <strong>{assoEmail}</strong>
+              </p>
             </div>
           </div>
         </div>

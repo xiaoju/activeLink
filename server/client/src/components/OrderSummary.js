@@ -94,7 +94,7 @@ class OrderSummary extends Component {
             ))}
           </ul>
           <h6>
-            <strong>Kids: </strong>
+            <strong>Children: </strong>
           </h6>
           <ul>
             {validKids.map(userId => (
@@ -187,13 +187,17 @@ class OrderSummary extends Component {
             </span>
           ) : (
             <ul>
-              <li>I don't support {eventProviderName}.</li>
+              <li>
+                I choose not to volunteer to assist with any activities at this
+                time.
+              </li>
+              {/* <li>I don't support {eventProviderName}.</li> */}
               <div className="card-panel validationMessage">
                 <p>
                   Really, could you please support {eventProviderName} and
                   co-organize one of the events?
                   <br /> <strong>Select a task in section ③ above,</strong>
-                  <br />we'll call you back and accompany you.
+                  <br />we'll call you with more information.
                 </p>
               </div>
             </ul>
