@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import {
-  // getAssoIconLink,
+  getPhotoConsent,
   getFamilyId,
   getEventId,
   getValidKids,
@@ -25,7 +25,7 @@ import ValidationPanel from './ValidationPanel';
 class Payments extends Component {
   render() {
     const {
-      // assoIconLink,
+      photoConsent,
       familyId,
       eventId,
       validKids,
@@ -71,6 +71,7 @@ class Payments extends Component {
                 validMedia,
                 validFamilyById,
                 validChecked,
+                photoConsent,
                 total
               });
             }}
@@ -94,7 +95,7 @@ class Payments extends Component {
 
 function mapStateToProps(state) {
   return {
-    // assoIconLink: getAssoIconLink(state),
+    photoConsent: getPhotoConsent(state),
     familyId: getFamilyId(state),
     eventId: getEventId(state),
     validKids: getValidKids(state),
@@ -119,6 +120,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Payments);
 
 Payments.propTypes = {
   // assoIconLink: PropTypes.string.isRequired,
+  photoConsent: PropTypes.bool.isRequired,
   familyId: PropTypes.string.isRequired,
   eventId: PropTypes.string.isRequired,
   validKids: PropTypes.array.isRequired,

@@ -24,6 +24,7 @@ module.exports = app => {
       frontendMedia = req.body.validMedia,
       frontendFamilyById = req.body.validFamilyById,
       frontendTotal = req.body.total,
+      frontendPhotoConsent = req.body.photoConsent,
       frontendChecked = req.body.validChecked,
       frontendCharge = {
         frontendAllKids,
@@ -105,17 +106,19 @@ module.exports = app => {
         });
       }
 
-      // save updated profile (familyMedia, addresses, allKids, allParents) from
-      // frontend into `family` collection :
+      // save updated profile (familyMedia, addresses, allKids, allParents, photoConsent)
+      // from frontend into `family` collection :
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
       req.user.addresses = frontendAddresses;
       req.user.familyMedia = frontendMedia;
+      req.user.photoConsent = frontendPhotoConsent;
       try {
         family = await req.user.save();
       } catch (error) {
+        res.status(500).json({ error: error.toString() });
         console.log(
-          'billingRoutes.js, line 100: error by saving frontend info into family collection',
+          'billingRoutes.js, line 120: error by saving frontend info into family collection',
           error
         );
       }
