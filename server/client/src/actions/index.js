@@ -22,7 +22,7 @@ export const fetchUser = () => async dispatch => {
     const fetched = await axios.get('/api/current_family');
     // TODO dispatch something if there is no answer from backend or from google
     // so that user knows where it's going wrong
-    console.log('actions/index.js. fetched.data: ', fetched.data);
+    // console.log('actions/index.js. fetched.data: ', fetched.data);
     dispatch({ type: FETCH_USER, payload: fetched.data });
   } catch (error) {
     console.log(
@@ -47,7 +47,7 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     // throw 'oops';
-    console.log('payload: ', payload);
+    // console.log('payload: ', payload);
     const res = await axios.post('/api/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SpinnerWrapper from '../SpinnerWrapper';
-import { getRegistrations, getDump } from '../../selectors';
+import {
+  // getRegistrations,
+  getDump
+} from '../../selectors';
 import { fetchDump } from '../../actions/index';
 
 class Dump extends Component {
@@ -19,7 +22,10 @@ class Dump extends Component {
   }
 
   render() {
-    const { dump, registrations } = this.props;
+    const {
+      dump
+      // , registrations
+    } = this.props;
     return !dump ? (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">DB Dump</h4>

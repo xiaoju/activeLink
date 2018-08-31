@@ -25,9 +25,7 @@ function OrderReceipt(props) {
     <div>
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">⑦ Order receipt</h4>
-        <p>
-          <h6>Thank you for your registration! Enjoy the activities!</h6>
-        </p>
+        <h6>Thank you for your registration! Enjoy the activities!</h6>
         <div className="orderSummary" style={{ margin: '3em 2%' }}>
           <ul>
             <li>

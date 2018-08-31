@@ -129,10 +129,6 @@ module.exports = app => {
       let newRegisteredEvents = previousRegisteredEvents.concat([
         frontendEventId
       ]);
-      console.log('o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-');
-      console.log('previousRegisteredEvents: ', previousRegisteredEvents);
-      console.log('[frontendEventId]: ', [frontendEventId]);
-      console.log('newRegisteredEvents: ', newRegisteredEvents);
 
       req.user.registeredEvents = newRegisteredEvents;
       req.user.allKids = frontendAllKids;

@@ -27,15 +27,19 @@ class ResetPassword extends Component {
     axios
       .post('/auth/reset/' + resetToken, { password: password1 })
       .then(result => {
-        const { passwordWasChanged, body, error } = result.data;
+        const {
+          passwordWasChanged
+          // body,
+          // error
+        } = result.data;
 
         if (passwordWasChanged) {
-          console.log('passwordWasChanged: ', passwordWasChanged);
-          console.log('body: ', body);
+          // console.log('passwordWasChanged: ', passwordWasChanged);
+          // console.log('body: ', body);
           this.props.history.push('/register');
         } else {
-          console.log('passwordWasChanged: ', passwordWasChanged);
-          console.log('error: ', error);
+          // console.log('passwordWasChanged: ', passwordWasChanged);
+          // console.log('error: ', error);
           this.props.history.push('/login');
         }
       })

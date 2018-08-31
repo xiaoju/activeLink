@@ -254,14 +254,19 @@ module.exports = app => {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // build familyRegistrations out of `registrations` from assos collection
     // (actually similar code when building the orderReceipt in `billingRoutes`)
-    const familyId = req.user.familyId;
-    const allKids = req.user.allKids;
-    const allParents = req.user.allParents;
-    const allKidsAndParents = [].concat(allKids, allParents);
-    const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
-    const familyRegistrations = allKidsFamilyParents.map(userId => ({
-      [userId]: thisAsso.registrations[userId]
-    }));
+    let familyRegistrations;
+    if (!req.user) {
+      familyRegistrations = [];
+    } else {
+      const familyId = req.user.familyId;
+      const allKids = req.user.allKids;
+      const allParents = req.user.allParents;
+      const allKidsAndParents = [].concat(allKids, allParents);
+      const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
+      familyRegistrations = allKidsFamilyParents.map(userId => ({
+        [userId]: thisAsso.registrations[userId]
+      }));
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // put together the data required by client
