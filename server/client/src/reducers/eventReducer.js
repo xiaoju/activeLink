@@ -5,16 +5,17 @@ import { LOAD_RECEIPT, FETCH_USER } from '../actions/types';
 const empty = null;
 
 export default function(state = empty, { type, payload }) {
-  // console.log('eventReducer, payload: ', payload);
   switch (type) {
     case LOAD_RECEIPT:
       return empty;
 
     case FETCH_USER:
-      if (!payload)
-        // action.payload is undefined when logged out
+      if (
+        !payload || // action.payload is undefined if logged out
+        !payload.thisEvent // payload.event is null if no event is open for registration,
+      ) {
         return empty;
-      else {
+      } else {
         const {
           eventId,
           eventName,

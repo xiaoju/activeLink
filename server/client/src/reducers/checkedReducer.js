@@ -23,8 +23,10 @@ export default function(state = empty, { type, payload }) {
       // [familyId, 'k0', 'k1']
       // to
       // {familyId: [], k0: [], k1: [], k2: []}
-      if (!payload) {
-        // necessary because action.payload is undefined when logged out
+      if (
+        !payload || // action.payload is undefined when logged out
+        !payload.thisEvent // payload.event is null if no event is open for registration
+      ) {
         return empty;
       } else {
         let { allKids } = payload.profile;

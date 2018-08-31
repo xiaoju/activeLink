@@ -22,9 +22,13 @@ export const fetchUser = () => async dispatch => {
     const fetched = await axios.get('/api/current_family');
     // TODO dispatch something if there is no answer from backend or from google
     // so that user knows where it's going wrong
+    console.log('actions/index.js. fetched.data: ', fetched.data);
     dispatch({ type: FETCH_USER, payload: fetched.data });
   } catch (error) {
-    console.log('Error in axios GET /api/current_family: ', error);
+    console.log(
+      'Error by axios GET /api/current_family or by dispatch FETCH_USER : ',
+      error
+    );
     // dispatch(push('/sorry'));
   }
 };
@@ -43,6 +47,7 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     // throw 'oops';
+    console.log('payload: ', payload);
     const res = await axios.post('/api/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {

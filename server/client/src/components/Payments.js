@@ -60,7 +60,7 @@ class Payments extends Component {
             currency="EUR"
             stripeKey={process.env.REACT_APP_STRIPE_KEY}
             token={stripeToken => {
-              console.log('stripeToken: ', stripeToken);
+              // console.log('stripeToken: ', stripeToken);
               this.props.handlePayment({
                 stripeToken,
                 familyId,

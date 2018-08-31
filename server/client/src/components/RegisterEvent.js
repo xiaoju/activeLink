@@ -9,22 +9,6 @@ import CallForVolunteers from './CallForVolunteers';
 import ConfirmStep from './ConfirmStep';
 
 class RegisterEvent extends Component {
-  // componentDidMount() {
-  //   if (!this.props.profile) {
-  //     console.log('RegisterEvent did mount, redirecting to /login');
-  //     this.props.dispatch(push('/login'));
-  //     // this doesn't work, even logged in you are redirected to /login
-  //   }
-  // }
-  //
-  // componentDidUpdate() {
-  //   if (!this.props.profile) {
-  //     console.log('RegisterEvent did update, redirecting to /login');
-  //     this.props.dispatch(push('/login'));
-  //     // this doesn't work, even logged in you are redirected to /login
-  //   }
-  // }
-
   render() {
     return (
       <div>

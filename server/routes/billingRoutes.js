@@ -15,8 +15,10 @@ module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
     let family; // this will contain the family data, after pulling it from database
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // rename the variables from frontend, for clarity:
     const familyId = req.user.familyId,
+      frontendEventId = req.body.eventId,
       frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
       frontendAllParentsAndKids = frontendAllKids.concat(frontendAllParents),
@@ -34,7 +36,10 @@ module.exports = app => {
         frontendTotal,
         frontendChecked
       };
+    // console.log('o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-');
+    // console.log('req.body: ', req.body);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // look up the event details, from backend database
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
 
@@ -42,13 +47,18 @@ module.exports = app => {
     let thisEvent;
     let previousRegistered;
 
-    // lookup event information from database
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });
+      // TODO move 2 next rows out of the try loop
       thisEvent = thisAsso.eventsById.e0;
       previousRegistered = thisAsso.registrations;
     } catch (error) {
-      console.log('billingRoutes.js // line 38 // error: ', error);
+      console.log(
+        'familyId: ',
+        familyId,
+        '. billingRoutes.js // line 61 // error: ',
+        error
+      );
     }
 
     const {
@@ -57,8 +67,13 @@ module.exports = app => {
       standardPrices
     } = thisAsso.eventsById.e0;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ######## form validation ########
     // TODO move this to a middleware
+    // TODO validation: are these validChecked items really part of this event?
+    // TODO validation: for each of these, validate the file type (boolean, string, etc)
+    // TODO validation: is the user authorized to register this eventId? Is this
+    // eventId currently open for registration?
     // check that the charge request received from frontend is valid
     const { chargeErrors, applyDiscount } = validateCharge({
       familyId,
@@ -75,12 +90,13 @@ module.exports = app => {
     } else {
       // ######## end of form validation ########
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // TODO change from real data delete to just `delete` flag
       // "Delete" (= set `deleted` flag to `true`) kids and parents in the
       // `users` collection, who have been deleted as per frontend form. For
       // this, compare what IDs are missing in the new
       // `frontendAllParentsAndKids` compared to the old
       // `allKids + allParents from family collection`.
-      // TODO change from real delete to just `delete` flag
       if (req.user.allKids && req.user.allParents) {
         // if this is the first creation of kids and parents for this family,
         // then the previous allKids and allParents are undefined, and for sure
@@ -98,7 +114,7 @@ module.exports = app => {
         // User.findOneAndDelete({id: { $in: droppedParentsAndKids }});
         User.deleteMany({ id: { $in: droppedParentsAndKids } }, function(err) {
           if (err) {
-            console.log('error by deleteMany: ', err);
+            console.log('familyId: ', familyId, '. error by deleteMany: ', err);
           }
           // else {
           // console.log('deleteMany succeeded.');
@@ -106,23 +122,41 @@ module.exports = app => {
         });
       }
 
-      // save updated profile (familyMedia, addresses, allKids, allParents, photoConsent)
-      // from frontend into `family` collection :
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // save updated profile (familyMedia, addresses, allKids, allParents,
+      // photoConsent, registeredEvents) from frontend into `family` collection :
+      let previousRegisteredEvents = req.user.registeredEvents;
+      let newRegisteredEvents = previousRegisteredEvents.concat([
+        frontendEventId
+      ]);
+      console.log('o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-');
+      console.log('previousRegisteredEvents: ', previousRegisteredEvents);
+      console.log('[frontendEventId]: ', [frontendEventId]);
+      console.log('newRegisteredEvents: ', newRegisteredEvents);
+
+      req.user.registeredEvents = newRegisteredEvents;
       req.user.allKids = frontendAllKids;
       req.user.allParents = frontendAllParents;
       req.user.addresses = frontendAddresses;
       req.user.familyMedia = frontendMedia;
       req.user.photoConsent = frontendPhotoConsent;
+
+      // console.log('x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-');
+      // console.log('frontendPhotoConsent: ', frontendPhotoConsent);
       try {
         family = await req.user.save();
+        //TODO rename family to thisFamily to ease search per keyword in code
       } catch (error) {
         res.status(500).json({ error: error.toString() });
         console.log(
-          'billingRoutes.js, line 120: error by saving frontend info into family collection',
+          'familyId: ',
+          familyId,
+          '. billingRoutes.js, line 144: error by saving frontend info into family collection',
           error
         );
       }
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save new users (kids and parents) from frontend into
       // `users` collection (firstName, familyName and kidGrade):
       frontendAllParentsAndKids.map(async userId => {
@@ -134,7 +168,9 @@ module.exports = app => {
           existingUser = await User.findOne({ id: userId });
         } catch (error) {
           console.log(
-            'billingRoutes.js // line 108 // error by findOne: ',
+            'familyId: ',
+            familyId,
+            '. billingRoutes.js // line 163 // error by findOne: ',
             error
           );
         }
@@ -144,20 +180,31 @@ module.exports = app => {
           try {
             newOrUpdatedUser = await existingUser.set(newUserData);
           } catch (error) {
-            console.log('error by replacing old data: ', error);
+            console.log(
+              'familyId: ',
+              familyId,
+              '. error by replacing old data: ',
+              error
+            );
           }
         } else {
           // console.log('creating new user: ', newUserData.firstName);
           try {
             newOrUpdatedUser = await new User(newUserData).save();
           } catch (error) {
-            console.log('error by creating new user: ', error);
+            console.log(
+              'familyId: ',
+              familyId,
+              '. error by creating new user: ',
+              error
+            );
           }
         }
         newOrUpdatedUser.save();
         // console.log('newOrUpdatedUser: ', newOrUpdatedUser);
       });
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // execute the paiement
       const chargeDescription =
         req.body.familyId + '-' + req.body.eventId + '-';
@@ -173,24 +220,37 @@ module.exports = app => {
           source: req.body.stripeToken.id
         });
       } catch (error) {
-        console.log('Error while connecting to Stripe server: ', error);
+        'familyId: ',
+          familyId,
+          console.log('. Error while connecting to Stripe server: ', error);
       }
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save stripeCharge receipt into this `family` collection, in database,
       // for future reference:
       const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
       try {
         family = await req.user.save();
       } catch (error) {
-        console.log('Error while saving stripeCharge to database: ', error);
+        console.log(
+          'familyId: ',
+          familyId,
+          '. Error while saving stripeCharge to database: ',
+          error
+        );
       }
-      // end of saving stripeCharge to this `family`
 
       if (stripeReceipt.status === 'succeeded') {
-        console.log('--------------------------------------');
-        console.log('stripeReceipt.status: ', stripeReceipt.status);
-
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // save the paid classes into the `registrations` property of `asso`
+
+        // TODO in case of error inside this 'succeeded' loop, the risk is that
+        // a parent has paid, but the classes don't get recorded in his profile.
+        // Should automatically either save the classes later, either inform the admin!
+
+        // console.log('--------------------------------------');
+        // console.log('stripeReceipt.status: ', stripeReceipt.status);
+
         const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
         // arrayMerge defines how the deepMerge shall proceed with arrays:
         // concatenate and remove the duplicates.
@@ -207,16 +267,22 @@ module.exports = app => {
           thisAsso = await Asso.findOne({ id: 'a0' });
         } catch (error) {
           console.log(
-            'billingRoutes.js, line 185 // error by findOne Asso: ',
+            'familyId: ',
+            familyId,
+            '. billingRoutes.js, line 267 // error by findOne Asso: ',
             error
           );
         }
 
         try {
-          updatedAsso = await thisAsso.set({ registrations: newRegistered });
+          updatedAsso = await thisAsso.set({
+            registrations: newRegistered
+          });
         } catch (error) {
           console.log(
-            'billingRoutes.js, line 193 // error by saving newRegistered: ',
+            'familyId: ',
+            familyId,
+            '. billingRoutes.js, line 281 // error by saving newRegistered: ',
             error
           );
         }
@@ -225,15 +291,17 @@ module.exports = app => {
           updatedAsso.save();
         } catch (error) {
           console.log(
-            'billingRoutes.js, line 202, error by saving modified asso to db: ',
+            'familyId: ',
+            familyId,
+            '. billingRoutes.js, line 292, error by saving modified asso to db: ',
             error
           );
         }
+        // console.log(
+        //   'Finished saving the paid classes into the `registrations` property of `asso`:'
+        // );
 
-        console.log(
-          'Finished saving the paid classes into the `registrations` property of `asso`:'
-        );
-
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // // double checking if really saved:
         // let newAsso;
         // try {
@@ -253,14 +321,16 @@ module.exports = app => {
         // TODO is it ok to close the `if` loop in next row???!
       }
 
-      // build receipt out of stripeReceipt and database data
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // build receipt data out of stripeReceipt and database data
+      // TODO beware that from here on `stripeReceipt.status` can be 'succeeded' or not
       const allKidsAndParents = [].concat(family.allKids, family.allParents);
       const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
       try {
         family = await Family.findOne({ familyId });
       } catch (error) {
         console.log(
-          'billingRoutes.js, line 232, error by Family.findOne: ',
+          '. billingRoutes.js, line 329, error by Family.findOne: ',
           error
         );
       }
@@ -271,7 +341,10 @@ module.exports = app => {
           // [{id, firstName, familyName, kidGrade},{},...]
         });
       } catch (error) {
-        console.log('billingRoutes.js, line 244, error by User.find: ', error);
+        console.log(
+          '. billingRoutes.js, line 341, error by User.find: ',
+          error
+        );
       }
       const normalizedUsers = users.reduce((obj, thisUser) => {
         obj[thisUser.id] = thisUser;
@@ -295,7 +368,7 @@ module.exports = app => {
         thisAsso = await Asso.findOne({ id: 'a0' });
       } catch (error) {
         console.log(
-          'billingRoutes.js, line 243, error by pulling asso from database: ',
+          '. billingRoutes.js, line 367, error by pulling asso from database: ',
           error
         );
       }
@@ -339,6 +412,11 @@ module.exports = app => {
       // console.log('#############');
       // console.log('purchasedItemsById: ', purchasedItemsById);
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // put together the publicReceipt
+      // TODO all the data in publicReceipt should be pulled from the database,
+      // not from frontend data, otherwise it will be wrong whenever there was
+      // an erorr during database writing.
       let publicReceipt = {
         assoName: thisAsso.name,
         familyId,
@@ -358,20 +436,15 @@ module.exports = app => {
         registrations,
         applyDiscount,
         allPurchasedItems,
-        purchasedItemsById
-        //    name,
-        //    period,
-        //    paidPrice,
-        //    beneficiaries // ['Mulan', 'Zilan'] or ['Obama-Trump']
-        //
-        // errors
+        purchasedItemsById,
+        registeredEvents: newRegisteredEvents
       };
       // console.log('publicReceipt: ', publicReceipt);
-
       // TODO include error messages in the receipt
-      res.send(publicReceipt);
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // send the payment receipt to front end:
+      res.send(publicReceipt);
     }
   });
 };

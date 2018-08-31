@@ -252,10 +252,31 @@ module.exports = app => {
     // put together the data required by client
     if (!req.user) {
       // res.status(401).send(null);
-      console.log('authroutes.js, row 258, send(null)');
+      // console.log('authroutes.js, row 258, send(null)');
       res.send(null);
       // if not logged in, don't send data.
     } else {
+      let thisEvent = req.user.registeredEvents.includes('e0')
+        ? null // send null if there is no event opened for registration
+        : // TODO check the event dates to see if event is open for registration
+          // and also look at list of events already registered by this user.
+          {
+            ...thisAsso.eventsById.e0,
+            eventProviderName: thisAsso.name,
+            assoEmail: thisAsso.assoEmail,
+            replyTo: thisAsso.replyTo,
+            emailFrom: thisAsso.emailFrom,
+            itemsById: thisAsso.itemsById,
+            address: thisAsso.address,
+            allStaff: thisAsso.allStaff,
+            staffById: thisAsso.staffById
+          };
+
+      let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
+      // TODO don't hardcode the eventId!
+
+      console.log('req.user.registrations', req.user.registrations);
+
       res.status(200).send({
         // asso: {
         //   eventProviderName: thisAsso.name,
@@ -268,8 +289,8 @@ module.exports = app => {
         // },
         profile: {
           familyById,
-          _id: req.user._id,
-          googleId: req.user.googleId, // TODO check do I need send this to frontend?
+          _id: req.user._id, // OK to remove?
+          // googleId: req.user.googleId,
           familyId: req.user.familyId,
           primaryEmail: req.user.primaryEmail,
           photoConsent: req.user.photoConsent,
@@ -278,23 +299,13 @@ module.exports = app => {
           allParents: req.user.allParents,
           familyMedia: req.user.familyMedia,
           addresses: req.user.addresses,
-          registrations: req.user.registrations,
+          registrations: req.user.registrations, // TODO not received by frontend!
           paymentReceipts: req.user.paymentReceipts,
-          allEvents: req.user.allEvents
+          allEvents: req.user.allEvents,
+          registeredEvents: req.user.registeredEvents
         },
-        // thisEvent: thisAsso.eventsById.e0
-        thisEvent: {
-          // this goes to the eventReducer
-          ...thisAsso.eventsById.e0,
-          eventProviderName: thisAsso.name,
-          assoEmail: thisAsso.assoEmail,
-          replyTo: thisAsso.replyTo,
-          emailFrom: thisAsso.emailFrom,
-          itemsById: thisAsso.itemsById,
-          address: thisAsso.address,
-          allStaff: thisAsso.allStaff,
-          staffById: thisAsso.staffById
-        }
+        thisEvent, // this goes to the eventReducer
+        openEvents // not yet processed by the frontend
       });
     }
   });

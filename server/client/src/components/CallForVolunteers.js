@@ -87,9 +87,31 @@ class CallForVolunteers extends Component {
               <label htmlFor={itemId}>{itemsById[itemId].name}</label>
             </div>
           ))}
-
-          {/* // TODO: add checkbox "I choose not to volunteer to assist with any activities at this time" */}
         </div>
+
+        {/* <div className="container itemDetails">
+          <p />
+          <div className="volunteersCheckbox">
+            <input
+              type="checkbox"
+              // onChange={}
+              // TODO use radio buttons group instead.
+              // initial: not checked
+              // click it: set all the volunteer boxes to not-Checked
+              // unclick it: just make it empty
+              // validation of form: minimum one box is checked among volunteer items and noneChoice.
+              // if notChecked
+              id="noneChoice"
+              className="filled-in checkbox-orange z-depth-2"
+              // checked={}
+              // disabled='disabled'
+            />
+            <label htmlFor="noneChoice">
+              I choose not to volunteer to assist with any activities at this
+              time
+            </label>
+          </div>
+        </div> */}
       </div>
     );
   }
