@@ -2,20 +2,27 @@ import { createSelector } from 'reselect';
 import { capitalizeFirstLetter } from '../utils/Tools';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
+
+export const getAssoEmail = state => state.asso.assoEmail;
+export const getReplyTo = state => state.asso.replyTo;
+export const getEmailFrom = state => state.asso.emailFrom;
+export const getItemsById = state => state.asso.itemsById;
+export const getAddress = state => state.asso.address;
+export const getAllStaff = state => state.asso.allStaff;
+export const getStaffById = state => state.asso.staffById;
+export const getOpenEvents = state => state.asso.openEvents;
+
 export const getEvent = state => state.event;
-export const getAssoEmail = state => state.event.assoEmail;
 export const getEventId = state => state.event.eventId;
 export const getEventName = state => state.event.eventName;
-export const getEventProviderName = state => state.event.eventProviderName;
+export const getEventProviderName = state => state.asso.eventProviderName;
 export const getEventContacts = state => state.event.eventContacts;
 export const getStandardPrices = state => state.event.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
 export const getDiscountedPrices = state => state.event.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
 export const getMandatoryItems = state => state.event.mandatoryItems;
 export const getAllItems = state => state.event.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
 export const getFamilyItems = state => state.event.familyItems;
-export const getItemsById = state => state.event.itemsById;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
-export const getStaffById = state => state.event.staffById;
 export const getVolunteeringItems = state => [
   'i9',
   'i10',

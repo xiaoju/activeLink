@@ -11,7 +11,7 @@ export default function(state = empty, { type, payload }) {
 
     case FETCH_USER:
       if (
-        !payload || // action.payload is undefined if logged out
+        !payload || // action.payload is undefined if logged out // TODO can I remove this line?
         !payload.thisEvent // payload.event is null if no event is open for registration,
       ) {
         return empty;

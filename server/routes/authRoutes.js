@@ -273,33 +273,40 @@ module.exports = app => {
     } else {
       let thisEvent = req.user.registeredEvents.includes('e0')
         ? null // send null if there is no event opened for registration
-        : // TODO check the event dates to see if event is open for registration
-          // and also look at list of events already registered by this user.
-          {
-            ...thisAsso.eventsById.e0,
-            eventProviderName: thisAsso.name,
-            assoEmail: thisAsso.assoEmail,
-            replyTo: thisAsso.replyTo,
-            emailFrom: thisAsso.emailFrom,
-            itemsById: thisAsso.itemsById,
-            address: thisAsso.address,
-            allStaff: thisAsso.allStaff,
-            staffById: thisAsso.staffById
-          };
+        : thisAsso.eventsById.e0;
+      // TODO check the event dates to see if event is open for registration
+      // and also look at list of events already registered by this user.
+      // {
+      //   ...thisAsso.eventsById.e0,
+      //   eventProviderName: thisAsso.name,
+      //   assoEmail: thisAsso.assoEmail,
+      //   replyTo: thisAsso.replyTo,
+      //   emailFrom: thisAsso.emailFrom,
+      //   itemsById: thisAsso.itemsById,
+      //   address: thisAsso.address,
+      //   allStaff: thisAsso.allStaff,
+      //   staffById: thisAsso.staffById
+      // };
 
       let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
       // TODO don't hardcode the eventId!
 
       res.status(200).send({
-        // asso: {
-        //   eventProviderName: thisAsso.name,
-        //   replyTo: thisAsso.replyTo,
-        //   emailFrom: thisAsso.emailFrom,
-        //   itemsById: thisAsso.itemsById,
-        //   address: thisAsso.address,
-        //   allStaff: thisAsso.allStaff,
-        //   staffById: thisAsso.staffById
-        // },
+        // TODO build asso reducer to receive this. otherwise no info about asso is available if currently no event open for registration!
+        asso: {
+          id: thisAsso.id,
+          contacts: thisAsso.contacts,
+          eventProviderName: thisAsso.name,
+          replyTo: thisAsso.replyTo,
+          // emailFrom: thisAsso.emailFrom,
+          assoEmail: thisAsso.assoEmail,
+          allItems: thisAsso.allItems,
+          itemsById: thisAsso.itemsById,
+          address: thisAsso.address,
+          allStaff: thisAsso.allStaff,
+          staffById: thisAsso.staffById,
+          openEvents
+        },
         profile: {
           familyById,
           _id: req.user._id, // OK to remove?
@@ -320,8 +327,7 @@ module.exports = app => {
           registeredEvents: req.user.registeredEvents,
           familyRegistrations // TODO build it!
         },
-        thisEvent, // this goes to the eventReducer
-        openEvents // not yet processed by the frontend
+        thisEvent // this goes to the eventReducer
       });
     }
   });
