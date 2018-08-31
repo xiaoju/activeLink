@@ -36,8 +36,6 @@ module.exports = app => {
         frontendTotal,
         frontendChecked
       };
-    // console.log('o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-');
-    // console.log('req.body: ', req.body);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // look up the event details, from backend database
@@ -125,6 +123,8 @@ module.exports = app => {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save updated profile (familyMedia, addresses, allKids, allParents,
       // photoConsent, registeredEvents) from frontend into `family` collection :
+
+      // registeredEvents are the eventIds (e.g. ['e0'])
       let previousRegisteredEvents = req.user.registeredEvents;
       let newRegisteredEvents = previousRegisteredEvents.concat([
         frontendEventId
@@ -372,7 +372,9 @@ module.exports = app => {
           error
         );
       }
-      const registrations = allKidsFamilyParents.map(userId => ({
+
+      // the classes that have been booked by this family, so far
+      const familyRegistrations = allKidsFamilyParents.map(userId => ({
         [userId]: thisAsso.registrations[userId]
       }));
 
@@ -415,7 +417,7 @@ module.exports = app => {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // put together the publicReceipt
       // TODO all the data in publicReceipt should be pulled from the database,
-      // not from frontend data, otherwise it will be wrong whenever there was
+      // not from the request data, otherwise it will be wrong whenever there was
       // an erorr during database writing.
       let publicReceipt = {
         assoName: thisAsso.name,
@@ -433,10 +435,10 @@ module.exports = app => {
         last4: stripeReceipt.source.last4,
         status: stripeReceipt.status,
         chargeId: stripeReceipt.id,
-        registrations,
+        familyRegistrations, // purchased in this order or BEFORE
         applyDiscount,
-        allPurchasedItems,
-        purchasedItemsById,
+        allPurchasedItems, // purchased in THIS purchase order // TODO copy to family database with date of purchase, for archive
+        purchasedItemsById, // purchased in THIS purchase order
         registeredEvents: newRegisteredEvents
       };
       // console.log('publicReceipt: ', publicReceipt);

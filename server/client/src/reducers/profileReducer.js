@@ -86,6 +86,7 @@ export default function(state = null, { type, payload }) {
         addresses,
         familyMedia,
         allEvents,
+        familyRegistrations,
         registeredEvents
       } = payload;
       return {
@@ -100,6 +101,7 @@ export default function(state = null, { type, payload }) {
         addresses,
         familyMedia,
         allEvents,
+        familyRegistrations,
         registeredEvents
       };
     }

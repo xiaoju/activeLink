@@ -219,6 +219,8 @@ module.exports = app => {
       );
       res.status(500).json({ error: error.toString() });
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Build `familyById` out of database records. It contains the detailed
     // information (firstName, familyName, kidGrade) for the kids and parents
     // belonging to this family.
@@ -249,6 +251,19 @@ module.exports = app => {
       }, {});
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // build familyRegistrations out of `registrations` from assos collection
+    // (actually similar code when building the orderReceipt in `billingRoutes`)
+    const familyId = req.user.familyId;
+    const allKids = req.user.allKids;
+    const allParents = req.user.allParents;
+    const allKidsAndParents = [].concat(allKids, allParents);
+    const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
+    const familyRegistrations = allKidsFamilyParents.map(userId => ({
+      [userId]: thisAsso.registrations[userId]
+    }));
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // put together the data required by client
     if (!req.user) {
       // res.status(401).send(null);
@@ -275,8 +290,6 @@ module.exports = app => {
       let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
       // TODO don't hardcode the eventId!
 
-      console.log('req.user.registrations', req.user.registrations);
-
       res.status(200).send({
         // asso: {
         //   eventProviderName: thisAsso.name,
@@ -299,10 +312,13 @@ module.exports = app => {
           allParents: req.user.allParents,
           familyMedia: req.user.familyMedia,
           addresses: req.user.addresses,
-          registrations: req.user.registrations, // TODO not received by frontend!
+          // registrations: req.user.registrations, // registrations is the
+          //whole database for all families, stored in assos collection. what i
+          // want here is familyRegistrations
           paymentReceipts: req.user.paymentReceipts,
           allEvents: req.user.allEvents,
-          registeredEvents: req.user.registeredEvents
+          registeredEvents: req.user.registeredEvents,
+          familyRegistrations // TODO build it!
         },
         thisEvent, // this goes to the eventReducer
         openEvents // not yet processed by the frontend
