@@ -49,38 +49,54 @@ div #logo {
   color: rgba(0, 0, 0, 0.87);
 }
 
+/* materializecss colors for the switch button lever:
+#ef9a9a red lighten-3
+#e53935 red darken-1 = rgba(229,57,53)
+#ffa726 orange (border line and the flash when clicking the switch)
+#43a047 green darken-1 = rgba(67,160,71)
+#a5d6a7 green lighten-3
+ */
+
 .switch label {
   font-size: 1em;
   border: thin #ffa726 solid;
   padding: 1em 7%;
 }
 
-/* materializecss colors for the switch button lever:
-#ef9a9a red lighten-3
-#e53935 red darken-1
-#ffa726 orange (border line and the flash when clicking the switch)
-#43a047 green darken-1
-#a5d6a7 green lighten-3
- */
-
-.switch label .lever {
-  background-color: #ef9a9a;
-}
-
 .switch label .lever:after {
+  /* le rond, left side */
   background-color: #e53935;
 }
 
-.switch label .lever:before {
-  background-color: #ffa726;
-}
-
 .switch label input[type='checkbox']:checked + .lever:after {
+  /* le rond, right side */
   background-color: #43a047;
 }
 
 .switch label input[type='checkbox']:checked + .lever {
+  /* le rail, right side (green) */
   background-color: #a5d6a7;
+}
+
+.switch label .lever {
+  /* le rail, left side (red) */
+  background-color: #ef9a9a;
+}
+
+.switch label input[type='checkbox'] + .lever:before {
+  /* the flash, left side (red), initial color */
+  background-color: #e53935;
+}
+
+.switch label input[type='checkbox']:checked + .lever:before {
+  /* the flash, right side (green), initial color */
+  /* background-color: rgba(67, 160, 71, 0.15); */
+  background-color: #43a047;
+}
+
+input[type='checkbox']:not(:disabled) ~ .lever:active:before {
+  /* the flash, left side (red), final color */
+  background-color: rgba(239, 154, 154, 0.15);
 }
 
 .photoConsentCheckbox p {
