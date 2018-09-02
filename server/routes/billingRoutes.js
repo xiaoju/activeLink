@@ -515,7 +515,7 @@ module.exports = app => {
               '- ' +
               media.media +
               ' (' +
-              media.tags.join(' ,') +
+              media.tags.join(', ') +
               '): ' +
               media.value +
               '\n'
@@ -525,7 +525,7 @@ module.exports = app => {
           .map(
             address =>
               '- address (' +
-              address.tags.join(' ,') +
+              address.tags.join(', ') +
               '): ' +
               address.value +
               '\n'
