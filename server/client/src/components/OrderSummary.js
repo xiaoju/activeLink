@@ -148,7 +148,7 @@ class OrderSummary extends Component {
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
-                <th>Kids</th>
+                <th>Children</th>
                 <th>Discount</th>
                 <th>Unit Price</th>
                 <th>Total</th>

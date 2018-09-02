@@ -23,21 +23,7 @@ export const getMandatoryItems = state => state.event.mandatoryItems;
 export const getAllItems = state => state.event.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
 export const getFamilyItems = state => state.event.familyItems;
 export const getDiscountQualifiers = state => state.event.discountQualifiers;
-export const getVolunteeringItems = state => [
-  'i9',
-  'i10',
-  'i11',
-  'i12',
-  'i13',
-  'i14',
-  'i15',
-  'i16',
-  'i17',
-  'i18',
-  'i19',
-  'i20',
-  'i21'
-];
+export const getVolunteeringItems = state => state.event.volunteeringItems;
 
 export const getProfile = state => state.profile;
 export const getPrimaryEmail = state => state.profile.primaryEmail;
@@ -547,7 +533,7 @@ export const getAddressTagOptions = createSelector(
       .map(parentId => capitalizeFirstLetter(familyById[parentId].firstName)) // ['Donald', 'Rosemary', 'Mulan', 'Zilan', '']
       .filter(firstName => !!firstName) // remove the empty string
       .map(tag => ({ value: tag, label: tag }));
-    return [{ value: 'Everybody', label: 'Everybody!' }].concat(
+    return [{ value: 'Whole family', label: 'Whole family' }].concat(
       // add the standard tags
       validUsersFirstnames
     );

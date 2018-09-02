@@ -83,6 +83,9 @@ force push to heroku:
 
 create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
 
+create also a first user, from inside your mlab interface:
+  `{"primaryEmail": "jerome@xiaoju.io"}`
+
 ## Architecture
 
 ### IDs

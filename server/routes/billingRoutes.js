@@ -1,5 +1,9 @@
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
+var mailgun = require('mailgun-js')({
+  apiKey: keys.mailgunAPIKey,
+  domain: keys.mailgunDomain
+});
 const requireLogin = require('../middlewares/requireLogin');
 const deepMerge = require('deepmerge');
 
@@ -18,6 +22,7 @@ module.exports = app => {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // rename the variables from frontend, for clarity:
     const familyId = req.user.familyId,
+      primaryEmail = req.user.primaryEmail,
       frontendEventId = req.body.eventId,
       frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
@@ -42,14 +47,8 @@ module.exports = app => {
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
 
     let thisAsso;
-    let thisEvent;
-    let previousRegistered;
-
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });
-      // TODO move 2 next rows out of the try loop
-      thisEvent = thisAsso.eventsById.e0;
-      previousRegistered = thisAsso.registrations;
     } catch (error) {
       console.log(
         'familyId: ',
@@ -59,6 +58,8 @@ module.exports = app => {
       );
     }
 
+    const thisEvent = thisAsso.eventsById.e0;
+    const previousRegistered = thisAsso.registrations;
     const {
       eventName,
       discountedPrices,
@@ -73,6 +74,7 @@ module.exports = app => {
     // TODO validation: is the user authorized to register this eventId? Is this
     // eventId currently open for registration?
     // check that the charge request received from frontend is valid
+
     const { chargeErrors, applyDiscount } = validateCharge({
       familyId,
       frontendCharge,
@@ -293,9 +295,6 @@ module.exports = app => {
             error
           );
         }
-        // console.log(
-        //   'Finished saving the paid classes into the `registrations` property of `asso`:'
-        // );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // // double checking if really saved:
@@ -331,6 +330,7 @@ module.exports = app => {
         );
       }
 
+      // TODO rename users (the extract from database) to usersArray, to avoid mix up format (array vs object)
       try {
         users = await User.find({
           id: { $in: allKidsAndParents }
@@ -346,7 +346,11 @@ module.exports = app => {
         obj[thisUser.id] = thisUser;
         return obj;
       }, {});
-      // console.log('normalizedUsers: ', normalizedUsers);
+
+      // TODO add familyId to the normalizedUsers, to avoid bug when looking up info about the familyItems
+
+      console.log('users: ', users);
+      console.log('normalizedUsers: ', normalizedUsers);
       // normalized state
 
       // TODO try get registrations directly through a (nested) database query
@@ -407,8 +411,12 @@ module.exports = app => {
         }, {});
       // convert this array to a normalized object, keeping only the useful properties
 
-      // console.log('#############');
-      // console.log('purchasedItemsById: ', purchasedItemsById);
+      const purchasedVolunteeringItems = thisEvent.volunteeringItems.filter(
+        itemId => allPurchasedItems.includes(itemId)
+      );
+      const purchasedClassItems = thisEvent.classItems.filter(itemId =>
+        allPurchasedItems.includes(itemId)
+      );
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // put together the publicReceipt
@@ -422,6 +430,7 @@ module.exports = app => {
         allKids: family.allKids,
         allParents: family.allParents,
         addresses: family.addresses,
+        primaryEmail,
         familyMedia: family.familyMedia,
         photoConsent: family.photoConsent,
         eventName,
@@ -434,15 +443,198 @@ module.exports = app => {
         familyRegistrations, // purchased in this order or BEFORE
         applyDiscount,
         allPurchasedItems, // purchased in THIS purchase order // TODO copy to family database with date of purchase, for archive
+        purchasedVolunteeringItems,
+        purchasedClassItems,
         purchasedItemsById, // purchased in THIS purchase order
         registeredEvents: newRegisteredEvents
       };
       // console.log('publicReceipt: ', publicReceipt);
-      // TODO include error messages in the receipt
+      // TODO include eventual error messages in the publicReceipt
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // send the payment receipt to front end:
-      res.send(publicReceipt);
+      // send confirmation email to primaryEmail and to backupEmail
+
+      const emailBody =
+        'Hello,\n\n' +
+        'please find below your confirmation of registration.\n' +
+        'Please contact us if you notice any error.\n\n' +
+        'Kind Regards,\n' +
+        'Jerome\n\n' +
+        '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n' +
+        thisAsso.name +
+        ', ' +
+        thisEvent.eventName +
+        '\n\n' +
+        '# Paiement receipt #\n\n' +
+        '- Receipt No.: ' +
+        publicReceipt.chargeId +
+        '\n' +
+        '- Credit card number: xxxx xxxx xxxx ' +
+        publicReceipt.last4 +
+        '\n' +
+        '- Total paid: ' +
+        publicReceipt.total / 100 +
+        ' EUR \n' +
+        '- Payment status: ' +
+        publicReceipt.status +
+        '\n' +
+        '- Time: ' +
+        new Date(1000 * publicReceipt.timeStamp).toLocaleString() +
+        '\n\n' +
+        '# Profile #\n\n' +
+        '## Children ##\n\n' +
+        publicReceipt.allKids
+          .map(
+            kidId =>
+              '- ' +
+              publicReceipt.users[kidId].firstName +
+              ' ' +
+              publicReceipt.users[kidId].familyName +
+              ', ' +
+              publicReceipt.users[kidId].kidGrade
+          )
+          .join('\n') +
+        '\n\n' +
+        '## Parents ##\n\n' +
+        publicReceipt.allParents.map(
+          parentId =>
+            '- ' +
+            publicReceipt.users[parentId].firstName +
+            ' ' +
+            publicReceipt.users[parentId].familyName +
+            '\n'
+        ) +
+        '\n' +
+        '## Phones & Emails ##\n\n' +
+        '- Primary email: ' +
+        publicReceipt.primaryEmail +
+        '\n' +
+        publicReceipt.familyMedia
+          .map(
+            media =>
+              '- ' +
+              media.media +
+              ' (' +
+              media.tags.join(' ,') +
+              '): ' +
+              media.value +
+              '\n'
+          )
+          .join() +
+        publicReceipt.addresses
+          .map(
+            address =>
+              '- address (' +
+              address.tags.join(' ,') +
+              '): ' +
+              address.value +
+              '\n'
+          )
+          .join() +
+        '\n # Selected classes # \n\n' +
+        publicReceipt.purchasedClassItems
+          .map(
+            itemId =>
+              '- ' +
+              publicReceipt.purchasedItemsById[itemId].name +
+              ', ' +
+              publicReceipt.purchasedItemsById[itemId].period +
+              ', for ' +
+              publicReceipt.purchasedItemsById[itemId].beneficiaries
+                .map(
+                  userId =>
+                    userId === publicReceipt.familyId
+                      ? 'the whole family'
+                      : publicReceipt.users[userId].firstName
+                )
+                .join(' & ') +
+              '. Unit price: ' +
+              publicReceipt.purchasedItemsById[itemId].paidPrice / 100 +
+              ' EUR.'
+          )
+          .join('\n') +
+        '\n\n' +
+        '# Photo & Video Consent # \n\n' +
+        (publicReceipt.photoConsent
+          ? 'I give permission to ' +
+            thisAsso.name +
+            ' to take photographs and videos of my children ' +
+            publicReceipt.allKids
+              .map(
+                kidId =>
+                  publicReceipt.users[kidId].firstName +
+                  ' ' +
+                  publicReceipt.users[kidId].familyName
+              )
+              .join(' & ') +
+            ', and I grant ' +
+            thisAsso.name +
+            ' the full rights to use the images resulting from the photography' +
+            'and video filming, and any reproductions or ' +
+            'adaptations of the images for fundraising, publicity or other ' +
+            "purposes to help achieve the association's aims. This might include " +
+            '(but is not limited to) the right to use them in their printed and ' +
+            'online newsletters, websites, publicities, social media, press ' +
+            'releases and funding applications'
+          : "I don't give permission to " +
+            thisAsso.name +
+            ' to take photographs and videos of my children ' +
+            publicReceipt.allKids
+              .map(
+                kidId =>
+                  publicReceipt.users[kidId].firstName +
+                  ' ' +
+                  publicReceipt.users[kidId].familyName
+              )
+              .join(' & ')) +
+        '.\nSignature: ' +
+        publicReceipt.users[publicReceipt.allParents[0]].firstName +
+        ' ' +
+        publicReceipt.users[publicReceipt.allParents[0]].familyName +
+        '\n\n' +
+        '# Volunteering # \n\n' +
+        (publicReceipt.purchasedVolunteeringItems.length > 0
+          ? 'I volunteer to help with following activities:\n' +
+            publicReceipt.purchasedVolunteeringItems
+              .map(
+                itemId => '- ' + publicReceipt.purchasedItemsById[itemId].name
+              )
+              .join('\n')
+          : 'I choose not to volunteer to assist with any activities at this time.') +
+        '\n\n' +
+        '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n';
+
+      const emailData = {
+        from: thisAsso.emailFrom,
+        to: primaryEmail,
+        cc: thisAsso.backupEmail,
+        'h:Reply-To': thisAsso.replyTo,
+        subject: thisAsso.name + ' / Confirmation of registration',
+        text: emailBody
+      };
+
+      console.log('emailData: ', emailData);
+
+      try {
+        mailgun.messages().send(emailData, function(error, body) {
+          if (error) {
+            console.log('billingRoutes, 591. ERROR: ', error);
+            res.status(500).json({ error: error.toString() });
+          } else {
+            console.log(
+              'Confirmation of registration has been sent to: ',
+              primaryEmail
+            );
+            // send the payment receipt to front end:
+            res.status(200).send(publicReceipt);
+          }
+        });
+      } catch (error) {
+        console.log('billingRoutes, 604. ERROR: ', error);
+        res
+          .status(500)
+          .json({ error: error.toString(), receipt: publicReceipt });
+      }
     }
   });
 };

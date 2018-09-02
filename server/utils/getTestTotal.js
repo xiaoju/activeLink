@@ -8,7 +8,7 @@ module.exports = ({
   frontendTotal,
   frontendFamilyById,
   frontendChecked,
-  payItems,
+  classItems,
   discountQualifiers,
   standardPrices,
   discountedPrices
@@ -40,7 +40,7 @@ module.exports = ({
     checkedItems.filter(item => discountQualifiers.includes(item)).length > 1;
 
   const backendTotal = checkedItems
-    .filter(thisItemId => payItems.includes(thisItemId)) // don't count price for freeOfCharge items, such as volunteering items and consent form answer
+    .filter(thisItemId => classItems.includes(thisItemId)) // don't count price for freeOfCharge items, such as volunteering items and consent form answer
     .map(
       applyDiscount
         ? thisItemId => discountedPrices[thisItemId]

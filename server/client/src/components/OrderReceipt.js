@@ -10,6 +10,7 @@ function OrderReceipt(props) {
     // familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['personal']}, {media: 'phone', value: '12345', tags: []}]
     // photoConsent, // false
     assoName,
+    primaryEmail,
     eventName, // 'this is the name'
     total, // 30000 (in cents)
     timeStamp, //12345432
@@ -25,7 +26,10 @@ function OrderReceipt(props) {
     <div>
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">⑦ Order receipt</h4>
-        <h6>Thank you for your registration! Enjoy the activities!</h6>
+        <p>
+          This is your receipt. <br />
+          We've sent a copy for you to <strong>{primaryEmail}</strong>.
+        </p>
         <div className="orderSummary" style={{ margin: '3em 2%' }}>
           <ul>
             <li>
@@ -144,9 +148,13 @@ function OrderReceipt(props) {
         ))}
       </div> */}
         </div>
-        <h6>You can now exit this page.</h6>
+        <p>
+          Thank you for your registration and enjoy the activities!<br />
+          You can now close this page.
+        </p>
       </div>
     </div>
+    // TODO automatically log out, and remove from state what needs to
   );
 }
 
