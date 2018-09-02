@@ -41,7 +41,7 @@ export default function(state = null, { type, payload }) {
           allParents: allParents.concat(newParentId),
           addresses: addresses.concat({
             //  [{ value: '1 place du Capitole, 31000 Toulouse FRANCE',
-            //   tags: ['everybody'] // ['everybody'] or ['John', 'Maria', 'Mulan'] }]
+            //   tags: ['whole family'] // ['whole family'] or ['John', 'Maria', 'Mulan'] }]
             // we add an empty row for typing more addresses
             value: '',
             tags: []
