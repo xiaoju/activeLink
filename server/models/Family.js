@@ -25,6 +25,7 @@ const familySchema = new Schema({
   password: { type: String },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  inputsHistory: { type: Array, default: [] },
   registeredEvents: { type: Array, default: [] },
   paymentReceipts: { type: Array, default: [] }
 });

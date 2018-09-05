@@ -20,6 +20,25 @@ module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
     let family; // this will contain the family data, after pulling it from database
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Save the raw user input into database, for future reference
+    // userInput is all of req.body without req.body.stripeToken
+    const userInput = {
+      familyId: req.body.familyId,
+      eventId: req.body.eventId,
+      validKids: req.body.validKids,
+      validParents: req.body.validParents,
+      validAddresses: req.body.validAddresses,
+      validMedia: req.body.validMedia,
+      validFamilyById: req.body.validFamilyById,
+      validChecked: req.body.validChecked,
+      photoConsent: req.body.photoConsent,
+      total: req.body.total,
+      timestamp: Date.now()
+    };
+    const inputHistoryNewCount = req.user.inputsHistory.push(userInput); // NB we won't use this const
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TODO .trim() on familyNames and firstNames
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -436,6 +455,11 @@ module.exports = app => {
       // console.log('mergedFamilyName: ', mergedFamilyName);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // one receipt is sent to fontEnd (publicReceipt)
+      // one receipt is sent per email (emailBody / emailData)
+      // one receipt is saved to database
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // put together the publicReceipt
       // TODO all the data in publicReceipt should be pulled from the database,
       // not from the request data, otherwise it will be wrong whenever there was
@@ -657,9 +681,13 @@ module.exports = app => {
         });
       } catch (error) {
         console.log('billingRoutes, 604. ERROR: ', error);
-        res
-          .status(500)
-          .json({ error: error.toString(), receipt: publicReceipt });
+        res.status(500).json({
+          error: error.toString(),
+          receipt: publicReceipt,
+          bookedEvents: ['e0'] // TODO for bookedEvents, should add this event
+          // to the previous state (pulled from database) of the array,
+          // and store into database
+        });
       }
     }
   });
