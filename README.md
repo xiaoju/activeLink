@@ -75,16 +75,53 @@ test credit card number
         * `STRIPE_PUBLISHABLE_KEY`: pk_test_xxxxxx
         * `STRIPE_SECRET_KEY`: sk_test_xxxxxx
 
-push to heroku:
+- push to heroku: /////// DEPRECATED ////////
 `git subtree push --prefix server heroku master`
 
-force push to heroku:
+- push to production server on heroku:
+`git subtree push --prefix server production master`
+
+- push to heroku staging server:
+`git subtree push --prefix server staging master`
+
+- force push to heroku:
 `git push heroku `git subtree split --prefix server master`:master --force`
 
-create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
+- create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
 
-create also a first user, from inside your mlab interface:
-  `{"primaryEmail": "admin.name"@example.com", "admin": "true"}`
+- create also a first user, from inside your mlab interface:
+old version:
+```
+{
+  "primaryEmail": "jc@xiaoju.io",
+  "admin": "true"
+}
+```
+
+```
+{
+  "primaryEmail": "admin.name@example.com",
+  "roles": {
+    "platformMaster": true,
+    "admin": ["a0"],
+    "teacher": [],
+    "parent": ["a0"]
+    }
+  }
+```
+// BUG this user gets "" as a UUID! Anyway, don't use an admin account to book classes!
+
+
+- database backup
+  - install mongoDB locally to get the mongodumb command
+    - on mac: `
+      ```
+      brew update
+      brew install mongodb
+      mongodump -h ds247347.mlab.com:47347 -d activelink-prod -u <user> -p <password> -o <output directory>
+      ```
+
+    - see MongodbCommands.md
 
 ## Architecture
 
@@ -204,7 +241,6 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 ### Production environment
 
 * Hosted on heroku.com
-*
 
 ## License
 
@@ -213,6 +249,8 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 ## Contributing
 ### Style
 - Mostly following [Udacity style guides](https://udacity.github.io/git-styleguide/).
+### versioning
+  - [Semantic versioning guidelines](http://semver.org/).
 #### Git commits:
   - feat: a new feature
   - fix: a bug fix
@@ -224,7 +262,7 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 #### Linter
   - using Prettier
 #### Redux
-- Redux selectors are named `selectFoo`.
+- Redux selectors are named `getFoo`.
 - We use fat reducers and thin action creators (i.e. the reducers contain a lot of logic.)
 
 #### Credits

@@ -12,20 +12,33 @@ export const getAllStaff = state => state.asso.allStaff;
 export const getStaffById = state => state.asso.staffById;
 export const getOpenEvents = state => state.asso.openEvents;
 
-export const getEvent = state => state.event;
-export const getEventId = state => state.event.eventId;
-export const getEventName = state => state.event.eventName;
+export const getEventsById = state => state.events.eventsById;
+export const getEvent = state => state.events.eventsById.e0;
+export const getCurrentRegistrationEvents = state =>
+  state.events.currentRegistrationEvents;
+
+export const getEventId = state => state.events.eventsById.e0.eventId;
+export const getEventName = state => state.events.eventsById.e0.eventName;
 export const getEventProviderName = state => state.asso.eventProviderName;
-export const getEventContacts = state => state.event.eventContacts;
-export const getStandardPrices = state => state.event.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
-export const getDiscountedPrices = state => state.event.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
-export const getMandatoryItems = state => state.event.mandatoryItems;
-export const getAllItems = state => state.event.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
-export const getFamilyItems = state => state.event.familyItems;
-export const getDiscountQualifiers = state => state.event.discountQualifiers;
-export const getVolunteeringItems = state => state.event.volunteeringItems;
+export const getEventContacts = state =>
+  state.events.eventsById.e0.eventContacts;
+export const getStandardPrices = state =>
+  state.events.eventsById.e0.standardPrices; // [{r0: 30000}, {r1: 23400}, ...]
+export const getDiscountedPrices = state =>
+  state.events.eventsById.e0.discountedPrices; // [{r0: 20000}, {r1: 13400}, ...]
+export const getMandatoryItems = state =>
+  state.events.eventsById.e0.mandatoryItems;
+export const getAllItems = state => state.events.eventsById.e0.allItems; // ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7']
+export const getFamilyItems = state => state.events.eventsById.e0.familyItems;
+export const getDiscountQualifiers = state =>
+  state.events.eventsById.e0.discountQualifiers;
+export const getVolunteeringItems = state =>
+  state.events.eventsById.e0.volunteeringItems;
 
 export const getProfile = state => state.profile;
+export const getAdminAssos = state =>
+  !state.profile ? [] : state.profile.roles.admin;
+// export const getAdminAssos = state => ['a0', 'a1', 'a2']; // TODO
 export const getPrimaryEmail = state => state.profile.primaryEmail;
 export const getPhotoConsent = state => state.profile.photoConsent;
 
@@ -47,10 +60,8 @@ export const getAllKids = state =>
 export const getAllParents = state =>
   !!state.profile ? state.profile.allParents : []; // ['p0', 'p1']
 
-export const getAllEvents = state => state.profile.allEvents; // ['e0', 'e1']
 export const getFamilyById = state => state.profile.familyById;
-export const getEventsById = state => state.profile.eventsById;
-
+export const getRegisteredEvents = state => state.profile.registeredEvents;
 export const getUserFamilyName = (state, { userId }) =>
   state.profile.familyById[userId].familyName;
 export const getFirstName = (state, { userId }) =>
@@ -64,6 +75,17 @@ export const getReceipt = state => state.receipt;
 
 export const getDump = state => state.dump;
 export const getRegistrations = state => state.dump.assos[0].registrations;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// createSelector() items
+
+export const getAvailableForRegistrationEvents = createSelector(
+  [getCurrentRegistrationEvents, getRegisteredEvents],
+  (currentRegistrationEvents, registeredEvents) =>
+    currentRegistrationEvents.filter(
+      eventId => !registeredEvents.includes(eventId)
+    )
+);
 
 // export const getAllUsers = createSelector(
 //   [getAllKids, getAllParents],

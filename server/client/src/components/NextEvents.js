@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getEvent } from '../selectors';
+import {
+  getEvent,
+  getAvailableForRegistrationEvents,
+  getEventsById
+} from '../selectors';
 
 class NextEvents extends Component {
   render() {
     const { event } = this.props;
+    const { availableForRegistrationEvents, eventsById } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
@@ -18,13 +23,15 @@ class NextEvents extends Component {
               or
               2b- this is now open for registration */}
               <h5>
-                {!event ? (
-                  "The next event isn't opened for booking yet."
-                ) : (
-                  <Link to={`/register`}>
-                    "{event.eventName}" is now open for registration!
-                  </Link>
-                )}
+                {availableForRegistrationEvents.length === 0
+                  ? "The next event isn't opened for booking yet."
+                  : availableForRegistrationEvents.map(eventId => (
+                      <Link to={`/register`}>
+                        "{eventsById[eventId].eventName}" is now open for
+                        registration!
+                        {/* "{event.eventName}" is now open for registration! */}
+                      </Link>
+                    ))}
               </h5>
             </strong>
           </div>
@@ -36,7 +43,9 @@ class NextEvents extends Component {
 
 function mapStateToProps(state) {
   return {
-    event: getEvent(state)
+    event: getEvent(state),
+    availableForRegistrationEvents: getAvailableForRegistrationEvents(state),
+    eventsById: getEventsById(state)
   };
 }
 

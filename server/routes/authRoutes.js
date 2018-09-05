@@ -209,6 +209,12 @@ module.exports = app => {
   });
 
   app.get('/api/current_family', async (req, res) => {
+    let theseAssos; // all asso details for the assos where this family is a parent.
+    // Obtained from database, find in assos collection the documents that match
+    // the IDs listed in req.user.roles.parent
+    // [{'id': 'a0', ...}, {'id': 'a1', ...}, ...]
+
+    // but for now, only one asso...
     let thisAsso;
     try {
       thisAsso = await Asso.findOne({ id: 'a0' });
@@ -219,6 +225,16 @@ module.exports = app => {
       );
       res.status(500).json({ error: error.toString() });
     }
+
+    // for now, only one asso...
+    theseAssos = [thisAsso];
+
+    // normalize theseAssos for redux:
+    let assosById = theseAssos.reduce(function(obj, thisAsso) {
+      obj[thisAsso.id] = thisAsso;
+      return obj;
+    }, {});
+    // for one asso, we simply get: AssosById = {a0: {id: 'a0', ...}}
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Build `familyById` out of database records. It contains the detailed
@@ -269,71 +285,107 @@ module.exports = app => {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // put together the data required by client
+
+    // for each asso of this family
+    const assoEvents = thisAsso.assoEvents;
+    // next 3 to be obtained, in frontEnd, from assoEvents and eventsById based on current date vs
+    // (for each event) registrationStart and registrationEnd,
+    // through assoEvents.filter()
+    const currentRegistrationEvents = ['e0'];
+    const pastRegistrationEvents = [''];
+    const futureRegistrationEvents = [''];
+
+    // the assos of this family:
+    // familyAssos = req.user.roles.parents;
+
+    // the events of this familyId:
+    // familyEvents = familyAssos.map(assoId => .assoEvents)
+
+    // const familyEvents = {
+    //   currentRegistrationEvents,
+    //   pastRegistrationEvents,
+    //   futureRegistrationEvents
+    // }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // extract the events details from database
+    // and format to normalized redux object
+
+    // // allEvents will be built by frontend, putting together past, current and
+    // // future events from all his associations, as required
+    // let allEvents = [
+    //   ...new Set(
+    //     [].concat(
+    //       thisAsso.pastRegistrationEvents,
+    //       thisAsso.currentRegistrationEvents,
+    //       thisAsso.futureRegistrationEvents
+    //     )
+    //   )
+    // ];
+
+    // currently, only one asso. So we take all the events from the database without filtering
+    let eventsById = thisAsso.eventsById;
+    // when several assos, we will extract from events collection all the events
+    // that match our associations
+    // Then we will convert from array to normalized redux object:
+    // let eventsById = ourAssosEvents.reduce(function(obj, eventId) {
+    //   obj[eventId] = theseEvents[eventId];
+    //   return obj;
+    // }, {});
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // put together the data required by client, and send it
     if (!req.user) {
       // res.status(401).send(null);
       // console.log('authroutes.js, row 258, send(null)');
-      res.send(null);
-      // if not logged in, don't send data.
+      res.send(null); // if not logged in, don't send data.
     } else {
-      let thisEvent = req.user.registeredEvents.includes('e0')
-        ? null // send null if there is no event opened for registration
-        : thisAsso.eventsById.e0;
-      // TODO check the event dates to see if event is open for registration
-      // and also look at list of events already registered by this user.
-      // {
-      //   ...thisAsso.eventsById.e0,
-      //   eventProviderName: thisAsso.name,
-      //   assoEmail: thisAsso.assoEmail,
-      //   replyTo: thisAsso.replyTo,
-      //   emailFrom: thisAsso.emailFrom,
-      //   itemsById: thisAsso.itemsById,
-      //   address: thisAsso.address,
-      //   allStaff: thisAsso.allStaff,
-      //   staffById: thisAsso.staffById
-      // };
-
-      let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
-      // TODO don't hardcode the eventId!
+      // let thisEvent = req.user.registeredEvents.includes('e0')
+      //   ? null // send null if there is no event opened for registration
+      //   : thisAsso.eventsById.e0;
+      //
+      // let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
 
       res.status(200).send({
-        // TODO build asso reducer to receive this. otherwise no info about asso is available if currently no event open for registration!
+        assos: {
+          assosById,
+          allAssos: req.user.roles.parent
+        },
         asso: {
           id: thisAsso.id,
           contacts: thisAsso.contacts,
           eventProviderName: thisAsso.name,
           replyTo: thisAsso.replyTo,
-          // emailFrom: thisAsso.emailFrom,
           assoEmail: thisAsso.assoEmail,
           allItems: thisAsso.allItems,
           itemsById: thisAsso.itemsById,
           address: thisAsso.address,
           allStaff: thisAsso.allStaff,
-          staffById: thisAsso.staffById,
-          openEvents
+          staffById: thisAsso.staffById
         },
         profile: {
           familyById,
-          _id: req.user._id, // OK to remove?
-          // googleId: req.user.googleId,
           familyId: req.user.familyId,
           primaryEmail: req.user.primaryEmail,
           photoConsent: req.user.photoConsent,
-          admin: req.user.admin,
+          roles: req.user.roles,
           allKids: req.user.allKids,
           allParents: req.user.allParents,
           familyMedia: req.user.familyMedia,
           addresses: req.user.addresses,
-          // registrations: req.user.registrations, // registrations is the
-          //whole database for all families, stored in assos collection. what i
-          // want here is familyRegistrations
           paymentReceipts: req.user.paymentReceipts,
           allEvents: req.user.allEvents,
           registeredEvents: req.user.registeredEvents,
-          familyRegistrations // TODO build it!
+          familyRegistrations
         },
-        thisEvent // this goes to the eventReducer
+        events: {
+          eventsById,
+          currentRegistrationEvents,
+          pastRegistrationEvents,
+          futureRegistrationEvents
+        }
       });
     }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   });
 };

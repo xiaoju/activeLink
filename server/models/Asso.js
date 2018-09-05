@@ -15,10 +15,15 @@ const assoSchema = new Schema({
   staffById: { type: Object, default: {} },
   allItems: { type: Array, default: [] },
   itemsById: { type: Object, default: {} },
-  allEvents: { type: Array, default: [] },
-  eventsById: { type: Object, default: {} },
   allFamilies: { type: Array, default: [] },
-  registrations: { type: Object, default: {} }
+  registrations: { type: Object, default: {} },
+  eventsById: { type: Object, default: {} },
+
+  assoEvents: { type: Array, default: [] }
+
+  // currentRegistrationEvents: { type: Array, default: [] },
+  // pastRegistrationEvents: { type: Array, default: [] },
+  // futureRegistrationEvents: { type: Array, default: [] }
 });
 
 mongoose.model('assos', assoSchema);
