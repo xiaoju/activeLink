@@ -5,12 +5,11 @@ const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
 const requireLogin = require('../middlewares/requireLogin');
 const requireAdmin = require('../middlewares/requireAdmin');
-
-// TODO send mailgun emails to the newly invited families
+const requirePlatformAdmin = require('../middlewares/requirePlatformAdmin');
 
 module.exports = app => {
   // exports a full dump of the database in json format
-  app.get('/api/v1/dbdump', requireLogin, requireAdmin, async function(
+  app.get('/api/v1/dbdump', requireLogin, requirePlatformAdmin, async function(
     req,
     res
   ) {
@@ -42,16 +41,30 @@ module.exports = app => {
     res.status(201).json({ dbDump });
   });
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INVITE NEW FAMILIES TO THE ASSO
+  // TODO send mailgun emails to the newly invited families,
+  // but only as an option to be clicked,
+  // and with message that can be customized.
+  // TODO if email already exists, maybe just need to add a new asso.
   app.put('/api/createFamilies', requireLogin, requireAdmin, async function(
     req,
     res
   ) {
+    // ['doublon@example.com', 'doublon@example.com', 'old@example.com', 'new@example.com']
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // validate I have admin right for the asso where accounts should be created
+    const myAssoArray = req.user.roles.admin;
+    const newMembersAsso = req.body.newMembersAsso; // the asso in which the users should be added
+    if (!myAssoArray.includes(newMembersAsso)) {
+      console.log('adminRoutes, 61, error 401, unauthorized!');
+      return res.status(401).send({ error: 'Unauthorized!' });
+    }
+
     // takes an email addresses array and create 1 'family' database document
     // for each email.
-
     let removeDoublons = arr => [...new Set(arr)];
-
-    // ['doublon@example.com', 'doublon@example.com', 'old@example.com', 'new@example.com']
     const emailsArray = removeDoublons(req.body.emailsArray);
 
     // filtering out invalid emails
@@ -91,7 +104,12 @@ module.exports = app => {
       primaryEmail: email,
       familyId: uuid(),
       dateCreated: Date.now(),
-      assos: ['a0']
+      roles: {
+        admin: [],
+        parent: ['a0'],
+        teacher: []
+      },
+      roles: { a0: ['parent'] }
     }));
 
     // create the list of new familyIds

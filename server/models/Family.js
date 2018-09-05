@@ -5,8 +5,8 @@ var bcrypt = require('bcrypt-nodejs');
 const familySchema = new Schema({
   // googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
-  admin: { type: Boolean, default: false },
-  assos: { type: Array, default: ['a0'] }, // a family can join several associations that all run this app
+  // admin: { type: Boolean, default: false },
+  roles: { type: Object, default: {} },
   allKids: { type: Array, default: [] },
   allParents: { type: Array, default: [] },
   familyMedia: {
