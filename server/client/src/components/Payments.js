@@ -23,6 +23,11 @@ import { handlePayment } from '../actions/index';
 import ValidationPanel from './ValidationPanel';
 
 class Payments extends Component {
+  componentDidMount() {
+    const hostname = window && window.location && window.location.hostname;
+    console.log('hostname: ', hostname);
+  }
+
   render() {
     const {
       photoConsent,
@@ -58,9 +63,14 @@ class Payments extends Component {
             email={primaryEmail}
             receipt_email={primaryEmail}
             currency="EUR"
-            stripeKey={process.env.REACT_APP_STRIPE_KEY}
+            // stripeKey={process.env.REACT_APP_STRIPE_KEY}
+            stripeKey={
+              (window && window.location && window.location.hostname) ===
+              'activelink-staging.herokuapp.com'
+                ? 'pk_test_5OWVaftUwORDieoDZbQfHPDM'
+                : process.env.REACT_APP_STRIPE_KEY
+            }
             token={stripeToken => {
-              // console.log('stripeToken: ', stripeToken);
               this.props.handlePayment({
                 stripeToken,
                 familyId,
