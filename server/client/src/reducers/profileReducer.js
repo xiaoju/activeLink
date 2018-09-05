@@ -24,6 +24,8 @@ export default function(state = null, { type, payload }) {
       // if null, Header will show the login button
       if (!payload) return null;
       else {
+        // TODO change this to {} to avoid crash when selector looks up a property of profile.
+        // check first that nowhere I use (!state.profile or profile === null ...)
         // payload is undefined when logged out
         let {
           allKids,

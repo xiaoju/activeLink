@@ -27,19 +27,11 @@ class ResetPassword extends Component {
     axios
       .post('/auth/reset/' + resetToken, { password: password1 })
       .then(result => {
-        const {
-          passwordWasChanged
-          // body,
-          // error
-        } = result.data;
+        const { passwordWasChanged } = result.data;
 
         if (passwordWasChanged) {
-          // console.log('passwordWasChanged: ', passwordWasChanged);
-          // console.log('body: ', body);
           this.props.history.push('/register');
         } else {
-          // console.log('passwordWasChanged: ', passwordWasChanged);
-          // console.log('error: ', error);
           this.props.history.push('/login');
         }
       })
@@ -62,17 +54,22 @@ class ResetPassword extends Component {
     }
   }
 
+  // TODO
   // !tokenIsValid && redirect to /login with message that
   // "Password reset token is invalid or has expired, please request a new reset link";
   // also pass the 'resendPassword: false' parameter to /login,
 
   componentDidUpdate() {
     !this.state.tokenIsValid && this.props.history.push('/login');
-    // this.props.dispatch(push('/login'));
   }
 
   render() {
-    const { tokenIsValid, password1, password2 } = this.state;
+    const {
+      tokenIsValid,
+      password1,
+      password2
+      // , loading
+    } = this.state;
 
     return (
       <div className="itemsContainer hoverable">

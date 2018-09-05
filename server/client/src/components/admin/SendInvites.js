@@ -51,7 +51,6 @@ class sendInvites extends Component {
     } catch (err) {
       console.log('SendInvites.js, ERROR by axios put createFamilies: ', err);
       this.setState({
-        // UIStep: 'before',
         before: true,
         loading: false,
         after: false,
@@ -62,14 +61,14 @@ class sendInvites extends Component {
     }
 
     // TODO handle error of server unauthorized, result is then undefined
-    // TODO the "After" version of the page
+
+    // console.log('result: ', result);
 
     let {
       newEmails,
       newfamiliesByEmail,
       badFormatEmails,
       duplicateEmails
-      // apiErrorMessage: errorMessage // TODO check this
     } = result.data;
 
     this.setState({
@@ -80,7 +79,6 @@ class sendInvites extends Component {
       newfamiliesByEmail,
       badFormatEmails,
       duplicateEmails
-      // errorMessage
     });
   }
 
@@ -91,7 +89,6 @@ class sendInvites extends Component {
       loading,
       after,
       newEmails,
-      // newfamiliesByEmail,
       badFormatEmails,
       duplicateEmails,
       errorMessage

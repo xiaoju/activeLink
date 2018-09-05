@@ -8,6 +8,7 @@ const assoSchema = new Schema({
   emailFrom: { type: String, default: '' },
   backupEmail: { type: String, default: '' },
   name: { type: String, default: '' },
+  website: { type: String, default: '' },
   contacts: { type: Array, default: [] },
   address: { type: String, default: '' },
   allStaff: { type: Array, default: [] },

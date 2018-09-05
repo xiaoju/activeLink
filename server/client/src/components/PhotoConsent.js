@@ -33,7 +33,7 @@ class PhotoConsent extends Component {
     const disapproveText = (
       <span>
         I <strong>don't give permission</strong> to <em>{eventProviderName}</em>{' '}
-        to take photographs and videos of my children{' '}
+        to take photographs and videos of my child(ren){' '}
         <strong>{childrenFullNames}</strong>.
       </span>
     );
@@ -42,7 +42,7 @@ class PhotoConsent extends Component {
       <span>
         {' '}
         I <strong>give permission</strong> to <em>{eventProviderName}</em> to
-        take photographs and videos of my children{' '}
+        take photographs and videos of my child(ren){' '}
         <strong>{childrenFullNames}</strong>, and I grant{' '}
         <em>{eventProviderName}</em>
         <strong> the full rights</strong> to use the images resulting from the

@@ -349,8 +349,8 @@ module.exports = app => {
 
       // TODO add familyId to the normalizedUsers, to avoid bug when looking up info about the familyItems
 
-      console.log('users: ', users);
-      console.log('normalizedUsers: ', normalizedUsers);
+      // console.log('users: ', users);
+      // console.log('normalizedUsers: ', normalizedUsers);
       // normalized state
 
       // TODO try get registrations directly through a (nested) database query
