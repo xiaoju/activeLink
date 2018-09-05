@@ -1,3 +1,5 @@
+const capitalizeFirstLetter = require('../utils/capitalizeFirstLetter');
+
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
 var mailgun = require('mailgun-js')({
@@ -12,12 +14,13 @@ const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
 const Family = mongoose.model('families');
 
-const paymentReceiptDraft = require('../models/paymentReceiptDraft');
 const validateCharge = require('../utils/validateCharge');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
     let family; // this will contain the family data, after pulling it from database
+
+    // TODO .trim() on familyNames and firstNames
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // rename the variables from frontend, for clarity:
@@ -418,6 +421,20 @@ module.exports = app => {
         allPurchasedItems.includes(itemId)
       );
 
+      // extract the family names of all parents from the profile form, filter out
+      // doublons, then concatenate string with '-' in between.
+      // function capitalizeFirstLetter(thisString) {
+      //   return thisString.charAt(0).toUpperCase() + thisString.slice(1);
+      // }
+      const mergedFamilyName = [
+        ...new Set(
+          family.allParents.map(thisParentId =>
+            capitalizeFirstLetter(normalizedUsers[thisParentId].familyName)
+          )
+        )
+      ].join('-');
+      // console.log('mergedFamilyName: ', mergedFamilyName);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // put together the publicReceipt
       // TODO all the data in publicReceipt should be pulled from the database,
@@ -425,6 +442,7 @@ module.exports = app => {
       // an erorr during database writing.
       let publicReceipt = {
         assoName: thisAsso.name,
+        mergedFamilyName,
         familyId,
         users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
         allKids: family.allKids,
@@ -435,6 +453,7 @@ module.exports = app => {
         photoConsent: family.photoConsent,
         eventName,
         total: stripeReceipt.amount,
+        livemode: stripeReceipt.livemode,
         timeStamp: stripeReceipt.created,
         currency: stripeReceipt.currency,
         last4: stripeReceipt.source.last4,
@@ -454,9 +473,19 @@ module.exports = app => {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // send confirmation email to primaryEmail and to backupEmail
 
+      const FullTextKidsNames = publicReceipt.allKids
+        .map(
+          kidId =>
+            capitalizeFirstLetter(publicReceipt.users[kidId].firstName) +
+            ' ' +
+            publicReceipt.users[kidId].familyName.toUpperCase()
+        )
+        .join(' & ');
+
       const emailBody =
         'Hello,\n\n' +
-        'please find below your confirmation of registration.\n' +
+        'thank you for your registration!\n' +
+        'You find below your confirmation of registration. ' +
         'Please contact us if you notice any error.\n\n' +
         'Kind Regards,\n' +
         'Jerome\n\n' +
@@ -487,24 +516,25 @@ module.exports = app => {
           .map(
             kidId =>
               '- ' +
-              publicReceipt.users[kidId].firstName +
+              capitalizeFirstLetter(publicReceipt.users[kidId].firstName) +
               ' ' +
-              publicReceipt.users[kidId].familyName +
+              publicReceipt.users[kidId].familyName.toUpperCase() +
               ', ' +
               publicReceipt.users[kidId].kidGrade
           )
           .join('\n') +
         '\n\n' +
         '## Parents ##\n\n' +
-        publicReceipt.allParents.map(
-          parentId =>
-            '- ' +
-            publicReceipt.users[parentId].firstName +
-            ' ' +
-            publicReceipt.users[parentId].familyName +
-            '\n'
-        ) +
-        '\n' +
+        publicReceipt.allParents
+          .map(
+            parentId =>
+              '- ' +
+              capitalizeFirstLetter(publicReceipt.users[parentId].firstName) +
+              ' ' +
+              publicReceipt.users[parentId].familyName.toUpperCase()
+          )
+          .join('\n') +
+        '\n\n' +
         '## Phones & Emails ##\n\n' +
         '- Primary email: ' +
         publicReceipt.primaryEmail +
@@ -545,7 +575,9 @@ module.exports = app => {
                   userId =>
                     userId === publicReceipt.familyId
                       ? 'the whole family'
-                      : publicReceipt.users[userId].firstName
+                      : capitalizeFirstLetter(
+                          publicReceipt.users[userId].firstName
+                        )
                 )
                 .join(' & ') +
               '. Unit price: ' +
@@ -558,15 +590,8 @@ module.exports = app => {
         (publicReceipt.photoConsent
           ? 'I give permission to ' +
             thisAsso.name +
-            ' to take photographs and videos of my children ' +
-            publicReceipt.allKids
-              .map(
-                kidId =>
-                  publicReceipt.users[kidId].firstName +
-                  ' ' +
-                  publicReceipt.users[kidId].familyName
-              )
-              .join(' & ') +
+            ' to take photographs and videos of my child(ren) ' +
+            FullTextKidsNames +
             ', and I grant ' +
             thisAsso.name +
             ' the full rights to use the images resulting from the photography' +
@@ -578,19 +603,16 @@ module.exports = app => {
             'releases and funding applications'
           : "I don't give permission to " +
             thisAsso.name +
-            ' to take photographs and videos of my children ' +
-            publicReceipt.allKids
-              .map(
-                kidId =>
-                  publicReceipt.users[kidId].firstName +
-                  ' ' +
-                  publicReceipt.users[kidId].familyName
-              )
-              .join(' & ')) +
+            ' to take photographs and videos of my child(ren) ' +
+            FullTextKidsNames) +
         '.\nSignature: ' +
-        publicReceipt.users[publicReceipt.allParents[0]].firstName +
+        capitalizeFirstLetter(
+          publicReceipt.users[publicReceipt.allParents[0]].firstName
+        ) +
         ' ' +
-        publicReceipt.users[publicReceipt.allParents[0]].familyName +
+        publicReceipt.users[
+          publicReceipt.allParents[0]
+        ].familyName.toUpperCase() +
         '\n\n' +
         '# Volunteering # \n\n' +
         (publicReceipt.purchasedVolunteeringItems.length > 0
@@ -609,11 +631,15 @@ module.exports = app => {
         to: primaryEmail,
         cc: thisAsso.backupEmail,
         'h:Reply-To': thisAsso.replyTo,
-        subject: thisAsso.name + ' / Confirmation of registration',
+        subject:
+          thisAsso.name +
+          (publicReceipt.livemode ? ' / ' : ' - TEST - / ') +
+          mergedFamilyName +
+          ' / Confirmation of registration',
         text: emailBody
       };
 
-      console.log('emailData: ', emailData);
+      // console.log('emailData: ', emailData);
 
       try {
         mailgun.messages().send(emailData, function(error, body) {
