@@ -56,10 +56,16 @@ module.exports = app => {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate I have admin right for the asso where accounts should be created
     const myAssoArray = req.user.roles.admin;
-    const newMembersAsso = req.body.newMembersAsso; // the asso in which the users should be added
-    if (!myAssoArray.includes(newMembersAsso)) {
+    const selectedAsso = req.body.selectedAsso; // the asso in which the users should be added
+    const frontendEmailsArray = req.body.emailsArray;
+    console.log('myAssoArray: ', myAssoArray);
+    console.log('selectedAsso: ', selectedAsso);
+    console.log('frontendEmailsArray: ', frontendEmailsArray);
+    if (!myAssoArray.includes(selectedAsso)) {
       console.log('adminRoutes, 61, error 401, unauthorized!');
-      return res.status(401).send({ error: 'Unauthorized!' });
+      return res.status(401).send({
+        error: 'You need admin rights.'
+      });
     }
 
     // takes an email addresses array and create 1 'family' database document

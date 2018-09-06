@@ -80,7 +80,9 @@ module.exports = app => {
       );
     }
 
+    const assoName = thisAsso.name;
     const thisEvent = thisAsso.eventsById.e0;
+    // TODO e0 is hardcoded!
     const previousRegistered = thisAsso.registrations;
     const {
       eventName,
@@ -226,11 +228,7 @@ module.exports = app => {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // execute the paiement
-      const chargeDescription =
-        req.body.familyId + '-' + req.body.eventId + '-';
-      // TODO add the name of the association
-      // and use the full text name of the eventId
-      // and user the mergedFamilyName
+      const chargeDescription = assoName + '-' + eventName + '-' + primaryEmail;
       let stripeReceipt;
       try {
         stripeReceipt = await stripe.charges.create({
@@ -618,7 +616,7 @@ module.exports = app => {
             FullTextKidsNames +
             ', and I grant ' +
             thisAsso.name +
-            ' the full rights to use the images resulting from the photography' +
+            ' the full rights to use the images resulting from the photography ' +
             'and video filming, and any reproductions or ' +
             'adaptations of the images for fundraising, publicity or other ' +
             "purposes to help achieve the association's aims. This might include " +

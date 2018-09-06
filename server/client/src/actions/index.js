@@ -30,6 +30,7 @@ export const fetchUser = () => async dispatch => {
       error
     );
     // dispatch(push('/sorry'));
+    dispatch(push('/login')); // TODO add an error message as props: errorMessage
   }
 };
 

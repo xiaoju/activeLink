@@ -19,6 +19,10 @@ class LogIn extends Component {
     };
   }
 
+  componentDidMount() {
+    this.handleMessageCode(this.props.match.params.messageCode);
+  }
+
   handleChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -32,6 +36,21 @@ class LogIn extends Component {
       : this.setState({
           [name]: value
         });
+  }
+
+  handleMessageCode(messageCode) {
+    // console.log('messageCode: ', messageCode);
+    switch (messageCode) {
+      case '851': {
+        console.log('case 851');
+        this.setState({ errorMessage: 'TEST MESSAGE' });
+        return;
+      }
+
+      default:
+        console.log('case null');
+        this.setState({ errorMessage: '' });
+    }
   }
 
   async onSubmit(event) {
@@ -77,11 +96,23 @@ class LogIn extends Component {
           await this.props.fetchUser();
           // .then(() => this.props.dispatch(push('/register')))
         } catch (err) {
+          // error by fetchUser
           console.log('LogIn.js, error by fetchuser: ', err);
         }
 
         this.props.history.push('/register');
       } catch (err) {
+        // error by axios.post
+        // console.log('err: ', err);
+        // console.log('err.toString(): ', err.toString());
+        // console.log(
+        //   'Object.getOwnPropertyNames(err): ',
+        //   Object.getOwnPropertyNames(err)
+        // );
+        // Object.getOwnPropertyNames(err).map(key =>
+        //   console.log(key, ': ', err[key])
+        // );
+        // console.log('err.request.status', err.request.status);
         this.setState({
           loading: false,
           errorMessage:

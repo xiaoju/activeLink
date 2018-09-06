@@ -6,7 +6,7 @@ const familySchema = new Schema({
   // googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
   // admin: { type: Boolean, default: false },
-  roles: { type: Object, default: {} },
+  roles: { type: Object, default: { parent: ['a0'] } },
   allKids: { type: Array, default: [] },
   allParents: { type: Array, default: [] },
   familyMedia: {

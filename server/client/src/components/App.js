@@ -36,7 +36,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           {/* <Route path="/register/:eventId" component={RegisterEvent} /> */}
           <Route path="/register" component={RegisterEvent} />
-          <Route path="/login" component={LogIn} />
+          <Route path="/login/:messageCode?" component={LogIn} />
           <Route path="/getinvited" component={GetInvited} />
           <Route path="/thanks" component={Thanks} />
           <Route path="/sorry" component={Sorry} />

@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
-// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import * as Validation from '../../utils/Validation';
 import SpinnerWrapper from '../SpinnerWrapper';
 import * as actions from '../../actions';
-import { getProfile, getAdminAssos } from '../../selectors';
+import { getProfile, getAdminAssos, getAssosById } from '../../selectors';
 
 class sendInvites extends Component {
   constructor(props) {
     super(props);
+    this.handleAssoChange = this.handleAssoChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.validateEmailsList = this.validateEmailsList.bind(this);
+    console.log('this.props.adminAssos: ', this.props.adminAssos);
     this.state = {
-      before: true,
-      loading: false,
-      after: false,
+      showingForm: true,
+      loadingResult: false,
+      showingResult: false,
       emailsList: '',
-      newMembersAsso: '',
+      selectedAsso: 'a0',
+      //   ? this.props.adminAssos.length > 1 ? '' : this.props.adminAssos[0]
+      // TODO correct the line above to replace hardcoded 'a0'. Problem is that state.getProfile
+      // is still undefined at time of loading this, and so the adminAssos is [].
       newEmails: [],
       newfamiliesByEmail: {},
       badFormatEmails: [],
@@ -36,37 +40,48 @@ class sendInvites extends Component {
   }
 
   handleChange(event) {
+    console.log('event.target.name:', event.target.name);
+    console.log('event.target.value:', event.target.value);
+
     this.setState({ [event.target.name]: event.target.value });
+    console.log('selectedAsso: ', this.state.selectedAsso);
+  }
+
+  handleAssoChange(event) {
+    this.setState({ selectedAsso: event.target.value });
   }
 
   async onSubmit(event) {
     event.preventDefault();
-    this.setState({ before: false, loading: true, after: false });
-    // let { emailsList, loading, errorMessage } = this.state;
-    let emailsList = this.state.emailsList;
-    const emailsArray = emailsList.split(',').map(string => string.trim());
+    this.setState({
+      showingForm: false,
+      loadingResult: true,
+      showingResult: false
+    });
+    let emailsArray = this.state.emailsList
+      .split(',')
+      .map(string => string.trim());
 
     let result;
     try {
+      console.log('emailsArray: ', emailsArray);
+      console.log('selectedAsso: ', this.state.selectedAsso);
       result = await axios.put('/api/createFamilies', {
         emailsArray,
-        newMembersAsso: this.state.newMembersAsso
+        selectedAsso: this.state.selectedAsso
       });
     } catch (err) {
       console.log('SendInvites.js, ERROR by axios put createFamilies: ', err);
       this.setState({
-        before: true,
-        loading: false,
-        after: false,
+        showingForm: true,
+        loadingResult: false,
+        showingResult: false,
         errorMessage:
-          'Something went wrong, sorry about this! Please try again. ' + err
+          'Something went wrong, sorry about this! ERROR: ' +
+          err.response.data.error
       });
       return;
     }
-
-    // TODO handle error of server unauthorized, result is then undefined
-
-    // console.log('result: ', result);
 
     let {
       newEmails,
@@ -76,9 +91,9 @@ class sendInvites extends Component {
     } = result.data;
 
     this.setState({
-      before: false,
-      loading: false,
-      after: true,
+      showingForm: false,
+      loadingResult: false,
+      showingResult: true,
       newEmails,
       newfamiliesByEmail,
       badFormatEmails,
@@ -88,130 +103,137 @@ class sendInvites extends Component {
 
   render() {
     const {
-      before,
+      showingForm,
       emailsList,
-      loading,
-      after,
-      newMembersAsso,
+      loadingResult,
+      showingResult,
+      selectedAsso,
       newEmails,
       badFormatEmails,
       duplicateEmails,
       errorMessage
     } = this.state;
 
-    const { adminAssos } = this.props;
+    const { profile, adminAssos, assosById } = this.props;
 
     return (
       <div>
-        {!this.props.profile && (
+        {loadingResult && (
           <div className="itemsContainer hoverable">
-            <h4 className="stepTitle">Send invitations</h4>
-            <h5>Please log in!</h5>
-          </div>
-        )}
-
-        {loading && (
-          <div className="itemsContainer hoverable">
-            <h4 className="stepTitle">Send invitations</h4>
+            <h4 className="stepTitle">Create accounts</h4>
             <div className="container itemDetails">
               <SpinnerWrapper caption="Preparing and sending..." />
             </div>
           </div>
         )}
 
-        {this.props.profile &&
-          !this.props.adminAssos && (
-            <SpinnerWrapper caption="Looking up for which asso you got admin rights..." />
-          )}
+        {showingForm && (
+          <div className="itemsContainer hoverable">
+            <h4 className="stepTitle">Send invitations</h4>
+            <div className="card-panel validationMessage">
+              {!profile && <p>YOU NEED TO LOG IN!</p>}
 
-        {this.props.profile &&
-          this.props.adminAssos &&
-          before && (
-            <div className="itemsContainer hoverable">
-              <h4 className="stepTitle">Send invitations for English Link</h4>
-              <div className="container itemDetails">
-                <h5>
-                  Please enter the email addresses to which the invitations
-                  should be sent:
-                </h5>
-                <br />
-                <br />
-                <form onSubmit={this.onSubmit}>
-                  <div className="schoolGrade">
-                    <label>Association</label>
-                    <select
-                      name="newMembersAsso"
-                      className="browser-default"
-                      value={newMembersAsso}
-                      onChange={this.handleChange}
-                    >
-                      {adminAssos.map(assoId => (
-                        <option key={assoId} value={assoId}>
-                          {assoId}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <br />
-                  <br />
+              {profile && !adminAssos && <p>YOU NEED ADMIN RIGHTS!</p>}
 
-                  <div className="input-field loginEmail">
-                    <i className={'material-icons prefix icon-orange'}>email</i>
-                    <textarea
-                      name="emailsList"
-                      value={emailsList}
-                      onChange={this.handleChange}
-                      style={{
-                        marginTop: '1em',
-                        marginBottom: '1em',
-                        height: '14em'
-                      }}
-                    />
-                    <label
-                      htmlFor="emailsList"
-                      className="double-line-label active"
-                    >
-                      One or more email addresses, comma separated.<br />
-                      <em>
-                        e.g.: john@example.com, jane@example.com,
-                        luke@example.com
-                      </em>
-                    </label>
-                  </div>
-
-                  <button
-                    className={
-                      !this.validateEmailsList(emailsList)
-                        ? 'btn-large disabled'
-                        : 'waves-effect waves-light btn-large orange lighten-1'
-                    }
-                    type="submit"
-                    name="action"
-                  >
-                    <i className="material-icons left">send</i>
-                    Send the invitations
-                  </button>
-                </form>
-
-                <div className="card-panel validationMessage">
-                  {!this.validateEmailsList(emailsList) && (
-                    <p>
-                      Please double check your input. The emails should be
-                      separated by commas (','). Beware not to forget any @ and
-                      dot. No comma at the end of the list.
-                    </p>
-                  )}
-                  {errorMessage && (
-                    <strong>
-                      <p>{errorMessage}</p>
-                    </strong>
-                  )}
-                </div>
-              </div>
+              {profile &&
+                adminAssos &&
+                !this.validateEmailsList(emailsList) && (
+                  <p>
+                    Please double check your input. The emails should be
+                    separated by commas (','). Beware not to forget any @ and
+                    dot. No comma at the end of the list.
+                  </p>
+                )}
+              {errorMessage && (
+                <strong>
+                  <p>{errorMessage}</p>
+                </strong>
+              )}
             </div>
-          )}
 
-        {after && (
+            {!!profile &&
+              !!adminAssos && (
+                <div className="container itemDetails">
+                  <h5>
+                    Please enter the email addresses for which the accounts
+                    should be created:
+                  </h5>
+
+                  <br />
+                  <form onSubmit={this.onSubmit}>
+                    <div className="input-field loginEmail">
+                      <i className={'material-icons prefix icon-orange'}>
+                        email
+                      </i>
+                      <textarea
+                        name="emailsList"
+                        value={emailsList}
+                        onChange={this.handleChange}
+                        style={{
+                          marginTop: '2em',
+                          marginBottom: '1em',
+                          height: '14em'
+                        }}
+                      />
+                      <label
+                        htmlFor="emailsList"
+                        className="double-line-label active"
+                        style={{ width: '100%' }}
+                      >
+                        One or more email addresses, comma separated.<br />
+                        <em>
+                          e.g.: john@example.com, jane@example.com,
+                          luke@example.com
+                        </em>
+                      </label>
+                    </div>
+
+                    <div className="schoolGrade">
+                      <label>
+                        Name of the association:
+                        {adminAssos.length > 1 ? (
+                          <select
+                            className={'browser-default'}
+                            value={this.state.selectedAsso}
+                            onChange={this.handleAssoChange}
+                          >
+                            <option value="grapefruit">Grapefruit</option>
+                            {adminAssos &&
+                              adminAssos.map(assoId => (
+                                <option key={assoId} value={assoId}>
+                                  {' '}
+                                  {assosById[assoId].name}{' '}
+                                </option>
+                              ))}
+                          </select>
+                        ) : (
+                          <h6 style={{ color: 'black' }}>
+                            {assosById[adminAssos[0]].name}
+                          </h6>
+                        )}
+                      </label>
+                    </div>
+
+                    <br />
+                    <button
+                      className={
+                        !this.validateEmailsList(emailsList)
+                          ? 'btn-large disabled'
+                          : 'waves-effect waves-light btn-large orange lighten-1'
+                      }
+                      type="submit"
+                      name="action"
+                    >
+                      <i className="material-icons left">send</i>
+                      Create
+                    </button>
+                  </form>
+                </div>
+              )}
+          </div>
+        )}
+
+        {showingResult && (
           <div>
             <div className="itemsContainer hoverable">
               <h4 className="stepTitle">Confirmation of invitations</h4>
@@ -247,7 +269,8 @@ class sendInvites extends Component {
 function mapStateToProps(state) {
   return {
     profile: getProfile(state),
-    adminAssos: getAdminAssos(state)
+    adminAssos: getAdminAssos(state),
+    assosById: getAssosById(state)
   };
 }
 

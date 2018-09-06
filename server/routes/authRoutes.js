@@ -292,6 +292,7 @@ module.exports = app => {
     // (for each event) registrationStart and registrationEnd,
     // through assoEvents.filter()
     const currentRegistrationEvents = ['e0'];
+    // TODO don't hardcoded!
     const pastRegistrationEvents = [''];
     const futureRegistrationEvents = [''];
 

@@ -76,6 +76,9 @@ export const getReceipt = state => state.receipt;
 export const getDump = state => state.dump;
 export const getRegistrations = state => state.dump.assos[0].registrations;
 
+export const getAssosById = state =>
+  !state.assos ? '' : state.assos.assosById;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // createSelector() items
 
