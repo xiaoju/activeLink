@@ -125,7 +125,7 @@ class Dashboard extends Component {
                         <span key={userId}>
                           {usersById[userId].firstName +
                             ' ' +
-                            usersById[userId].familyName +
+                            usersById[userId].familyName.toUpperCase() +
                             ', ' +
                             usersById[userId].kidGrade}
                         </span>
@@ -153,7 +153,7 @@ class Dashboard extends Component {
                   <span key={kidId}>
                     {usersById[kidId].firstName +
                       ' ' +
-                      usersById[kidId].familyName +
+                      usersById[kidId].familyName.toUpperCase() +
                       ', ' +
                       usersById[kidId].kidGrade}
                   </span>
@@ -172,7 +172,7 @@ class Dashboard extends Component {
                       parentId =>
                         usersById[parentId].firstName +
                         ' ' +
-                        usersById[parentId].familyName
+                        usersById[parentId].familyName.toUpperCase()
                     )
                     .join(' / ')}
                 </strong>
@@ -201,7 +201,7 @@ class Dashboard extends Component {
                             parentId =>
                               usersById[parentId].firstName +
                               ' ' +
-                              usersById[parentId].familyName
+                              usersById[parentId].familyName.toUpperCase()
                           )
                           .join(' / ') +
                           ' ( ' +
