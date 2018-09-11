@@ -1,10 +1,7 @@
 module.exports = (req, res, next) => {
   const myAssoArray = req.user.roles.admin;
-  // BUG the roles shouldn't be read from req! They should come from database,
-  // otherwise it can be faked!
 
-  if (!myAssoArray.includes('a0')) {
-    console.log("you must be admin of 'a0'!");
+  if (!myAssoArray || !myAssoArray.includes('a0')) {
     return res.status(403).send({
       error: 'Unauthorized!'
       // status: 403,

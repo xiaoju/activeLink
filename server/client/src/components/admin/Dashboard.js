@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SpinnerWrapper from '../SpinnerWrapper';
 import { fetchDashboard } from '../../actions/index';
+import { getProfile, getAdminAssos, getAssosById } from '../../selectors';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -10,6 +11,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { profile, adminAssos, assosById, errorMessage } = this.props;
     const {
       dashboard: {
         usersById,
@@ -34,128 +36,146 @@ class Dashboard extends Component {
       }
     } = this.props;
 
-    return !loaded ? (
+    return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">Dashboard</h4>
-        <div className="container itemDetails">
-          <SpinnerWrapper caption="Loading..." />
-        </div>
-      </div>
-    ) : (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">Dashboard</h4>
-
-        <h5>
-          <strong>
-            {familiesRegisteredQuantity} families not yet registered:
-          </strong>
-        </h5>
-        {FamiliesNotRegistered.map(
-          familyId => familiesById[familyId].primaryEmail
-        ).join(', ')}
-
-        <h5>
-          <strong>
-            {familiesNotRegisteredQuantity} families registered (={' '}
-            {kidsQuantity} children):
-          </strong>
-        </h5>
-        {FamiliesRegistered.map(
-          familyId => familiesById[familyId].primaryEmail
-        ).join(', ')}
-
-        <h5>
-          <strong>Registrations by classes</strong>
-        </h5>
-        {classItems.map(itemId => (
-          <div>
-            <h5>{itemsById[itemId].name}</h5>
+        {!!profile &&
+          !!adminAssos &&
+          !loaded && (
             <div>
-              {registrationsByItem[itemId].map(userId => (
-                <div>
-                  <span key={userId}>
-                    {usersById[userId].firstName +
-                      ' ' +
-                      usersById[userId].familyName +
-                      ', ' +
-                      usersById[userId].kidGrade}
-                  </span>
-                  <br />
-                </div>
-              ))}
+              <SpinnerWrapper caption="Loading..." />
             </div>
-          </div>
-        ))}
+          )}
 
-        <h5>
-          <strong>Children with "photo consent = no"</strong>
-        </h5>
-        {NoPhotoconsentKids.map(kidId => (
+        {!loaded && (
+          <div className="card-panel validationMessage">
+            {!profile && <p>YOU NEED TO LOG IN!</p>}
+
+            {profile && !adminAssos && <p>YOU NEED ADMIN RIGHTS!</p>}
+
+            {errorMessage && (
+              <strong>
+                <p>{errorMessage}</p>
+              </strong>
+            )}
+          </div>
+        )}
+
+        {loaded && (
           <div>
-            <span key={kidId}>
-              {usersById[kidId].firstName +
-                ' ' +
-                usersById[kidId].familyName +
-                ', ' +
-                usersById[kidId].kidGrade}
-            </span>
-            <br />
-          </div>
-        ))}
+            <h5>
+              <strong>
+                {familiesRegisteredQuantity} families not yet registered:
+              </strong>
+            </h5>
+            {FamiliesNotRegistered.map(
+              familyId => familiesById[familyId].primaryEmail
+            ).join(', ')}
 
-        <h5>
-          <strong>The Volunteers (by name)</strong>
-        </h5>
-        {volunteers.map(volunteerObject => (
-          <p key={volunteerObject.familyId}>
-            <strong>
-              {familiesById[volunteerObject.familyId].allParents
-                .map(
-                  parentId =>
-                    usersById[parentId].firstName +
-                    ' ' +
-                    usersById[parentId].familyName
-                )
-                .join(' / ')}
-            </strong>
-            <br />
-            {volunteerObject.volunteeringItemIds.map(itemId => (
+            <h5>
+              <strong>
+                {familiesNotRegisteredQuantity} families registered (={' '}
+                {kidsQuantity} children):
+              </strong>
+            </h5>
+            {FamiliesRegistered.map(
+              familyId => familiesById[familyId].primaryEmail
+            ).join(', ')}
+
+            <h5>
+              <strong>Registrations by classes</strong>
+            </h5>
+            {classItems.map(itemId => (
               <div>
-                {itemsById[itemId].name}
+                <h5>{itemsById[itemId].name}</h5>
+                <div>
+                  {registrationsByItem[itemId].map(userId => (
+                    <div>
+                      <span key={userId}>
+                        {usersById[userId].firstName +
+                          ' ' +
+                          usersById[userId].familyName +
+                          ', ' +
+                          usersById[userId].kidGrade}
+                      </span>
+                      <br />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <h5>
+              <strong>Children with "photo consent = no"</strong>
+            </h5>
+            {NoPhotoconsentKids.map(kidId => (
+              <div>
+                <span key={kidId}>
+                  {usersById[kidId].firstName +
+                    ' ' +
+                    usersById[kidId].familyName +
+                    ', ' +
+                    usersById[kidId].kidGrade}
+                </span>
                 <br />
               </div>
             ))}
-          </p>
-        ))}
 
-        <h5>
-          <strong>The Volunteers (by activity)</strong>
-        </h5>
-        {volunteeringItems.map(itemId => (
-          <p key={itemId}>
-            <strong>{itemsById[itemId].name}</strong>
-            <div>
-              {registrationsByItem[itemId].map(familyId => (
+            <h5>
+              <strong>The Volunteers (by name)</strong>
+            </h5>
+            {volunteers.map(volunteerObject => (
+              <p key={volunteerObject.familyId}>
+                <strong>
+                  {familiesById[volunteerObject.familyId].allParents
+                    .map(
+                      parentId =>
+                        usersById[parentId].firstName +
+                        ' ' +
+                        usersById[parentId].familyName
+                    )
+                    .join(' / ')}
+                </strong>
+                <br />
+                {volunteerObject.volunteeringItemIds.map(itemId => (
+                  <div>
+                    {itemsById[itemId].name}
+                    <br />
+                  </div>
+                ))}
+              </p>
+            ))}
+
+            <h5>
+              <strong>The Volunteers (by activity)</strong>
+            </h5>
+            {volunteeringItems.map(itemId => (
+              <p key={itemId}>
+                <strong>{itemsById[itemId].name}</strong>
                 <div>
-                  <span key={familyId}>
-                    {familiesById[familyId].allParents
-                      .map(
-                        parentId =>
-                          usersById[parentId].firstName +
-                          ' ' +
-                          usersById[parentId].familyName
-                      )
-                      .join(' / ') +
-                      ' ( ' +
-                      familiesById[familyId].primaryEmail +
-                      ' )'}
-                  </span>
-                  <br />
+                  {registrationsByItem[itemId].map(familyId => (
+                    <div>
+                      <span key={familyId}>
+                        {familiesById[familyId].allParents
+                          .map(
+                            parentId =>
+                              usersById[parentId].firstName +
+                              ' ' +
+                              usersById[parentId].familyName
+                          )
+                          .join(' / ') +
+                          ' ( ' +
+                          familiesById[familyId].primaryEmail +
+                          ' )'}
+                      </span>
+                      <br />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </p>
-        ))}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -163,7 +183,10 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    dashboard: state.dashboard
+    dashboard: state.dashboard,
+    profile: getProfile(state),
+    adminAssos: getAdminAssos(state),
+    assosById: getAssosById(state)
   };
 }
 
