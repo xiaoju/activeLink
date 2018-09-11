@@ -18,7 +18,7 @@ const assoSchema = new Schema({
   allFamilies: { type: [String], default: [] },
   registrations: { type: Object, default: {} },
   eventsById: { type: Object, default: {} },
-
+  referenceNumbers: { type: Object, default: {} },
   assoEvents: { type: [String], default: [] }
 
   // currentRegistrationEvents: { type: Array, default: [] },
