@@ -11,6 +11,26 @@ class Dashboard extends Component {
   }
 
   render() {
+    // define the sort order for the classes
+    let ordering = {},
+      sortOrder = [
+        'PS',
+        'MS',
+        'GS',
+        'CP',
+        'CE1',
+        'CE2',
+        'CM1',
+        'CM2',
+        '6e',
+        '5e',
+        '4e',
+        '3e'
+      ];
+    for (var i = 0; i < sortOrder.length; i++) ordering[sortOrder[i]] = i;
+    // finished defining the sort order
+
+    let sortedRegistrationsByItem = {};
     const { profile, adminAssos, assosById, errorMessage } = this.props;
     const {
       dashboard: {
@@ -89,18 +109,29 @@ class Dashboard extends Component {
               <div>
                 <h5>{itemsById[itemId].name}</h5>
                 <div>
-                  {registrationsByItem[itemId].map(userId => (
-                    <div>
-                      <span key={userId}>
-                        {usersById[userId].firstName +
-                          ' ' +
-                          usersById[userId].familyName +
-                          ', ' +
-                          usersById[userId].kidGrade}
-                      </span>
-                      <br />
-                    </div>
-                  ))}
+                  {[]
+                    .concat(registrationsByItem[itemId])
+                    .sort(function(a, b) {
+                      return (
+                        ordering[usersById[a].kidGrade] -
+                          ordering[usersById[b].kidGrade] ||
+                        usersById[a].familyName.localeCompare(
+                          usersById[b].familyName
+                        )
+                      );
+                    })
+                    .map(userId => (
+                      <div>
+                        <span key={userId}>
+                          {usersById[userId].firstName +
+                            ' ' +
+                            usersById[userId].familyName +
+                            ', ' +
+                            usersById[userId].kidGrade}
+                        </span>
+                        <br />
+                      </div>
+                    ))}
                 </div>
               </div>
             ))}
@@ -108,18 +139,27 @@ class Dashboard extends Component {
             <h5>
               <strong>Children with "photo consent = no"</strong>
             </h5>
-            {NoPhotoconsentKids.map(kidId => (
-              <div>
-                <span key={kidId}>
-                  {usersById[kidId].firstName +
-                    ' ' +
-                    usersById[kidId].familyName +
-                    ', ' +
-                    usersById[kidId].kidGrade}
-                </span>
-                <br />
-              </div>
-            ))}
+            {[]
+              .concat(NoPhotoconsentKids)
+              .sort(function(a, b) {
+                return (
+                  ordering[usersById[a].kidGrade] -
+                    ordering[usersById[b].kidGrade] ||
+                  usersById[a].familyName.localeCompare(usersById[b].familyName)
+                );
+              })
+              .map(kidId => (
+                <div>
+                  <span key={kidId}>
+                    {usersById[kidId].firstName +
+                      ' ' +
+                      usersById[kidId].familyName +
+                      ', ' +
+                      usersById[kidId].kidGrade}
+                  </span>
+                  <br />
+                </div>
+              ))}
 
             <h5>
               <strong>The Volunteers (by name)</strong>
