@@ -11,15 +11,15 @@ const assoSchema = new Schema({
   website: { type: String, default: '' },
   contacts: { type: Array, default: [] },
   address: { type: String, default: '' },
-  allStaff: { type: Array, default: [] },
+  allStaff: { type: [String], default: [] },
   staffById: { type: Object, default: {} },
-  allItems: { type: Array, default: [] },
+  allItems: { type: [String], default: [] },
   itemsById: { type: Object, default: {} },
-  allFamilies: { type: Array, default: [] },
+  allFamilies: { type: [String], default: [] },
   registrations: { type: Object, default: {} },
   eventsById: { type: Object, default: {} },
 
-  assoEvents: { type: Array, default: [] }
+  assoEvents: { type: [String], default: [] }
 
   // currentRegistrationEvents: { type: Array, default: [] },
   // pastRegistrationEvents: { type: Array, default: [] },

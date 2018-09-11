@@ -6,6 +6,7 @@ import receiptReducer from './receiptReducer';
 import dumpReducer from './dumpReducer';
 import assoReducer from './assoReducer';
 import assosReducer from './assosReducer'; // beware the plural form!
+import dashboardReducer from './dashboardReducer';
 
 export default combineReducers({
   receipt: receiptReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   asso: assoReducer,
   assos: assosReducer,
   checked: checkedReducer,
-  dump: dumpReducer
+  dump: dumpReducer,
+  dashboard: dashboardReducer
 });

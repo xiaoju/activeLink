@@ -102,6 +102,7 @@ class OneKidForm extends Component {
               onChange={this.handleOnChangeEvent}
               onBlur={this.handleOnBlurEvent}
               // onInput={this.handleOnBlurEvent}
+              // TODO get allKidGrades = [['PS', 'MS', 'GS'], ['CP', 'CE1', 'CE2', 'CM1', 'CM2'], ['6e', '5e', '4e', '3e']] from Asso document
             >
               <option value=" "> </option>
               <option value="PS">PS</option>

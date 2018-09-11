@@ -7,8 +7,8 @@ const familySchema = new Schema({
   familyId: { type: String, default: '' },
   // admin: { type: Boolean, default: false },
   roles: { type: Object, default: { parent: ['a0'] } },
-  allKids: { type: Array, default: [] },
-  allParents: { type: Array, default: [] },
+  allKids: { type: [String], default: [] },
+  allParents: { type: [String], default: [] },
   familyMedia: {
     type: Array,
     default: [{ media: 'more_horiz', value: '', tags: ['personal'] }]

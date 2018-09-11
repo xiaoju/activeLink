@@ -16,6 +16,7 @@ const keys = require('./config/keys');
 require('./models/Asso');
 require('./models/Family');
 require('./models/User');
+require('./models/Registration');
 require('./services/passport');
 
 mongoose

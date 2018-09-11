@@ -1,5 +1,6 @@
 export const FETCH_USER = 'fetch_user';
 export const LOAD_DUMP = 'load_dump';
+export const LOAD_DASHBOARD = 'load_dashboard';
 export const LOAD_RECEIPT = 'load_receipt';
 export const UNCHECK_CHECKBOX = 'uncheck_checkbox';
 export const CHECK_CHECKBOX = 'check_checkbox';

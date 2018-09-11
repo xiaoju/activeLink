@@ -6,7 +6,7 @@ const userSchema = new Schema({
   firstName: { type: String },
   familyName: { type: String },
   kidGrade: { type: String },
-  family: { type: Array }, // kids and parents might belong to several families ("familles recomposées")
+  family: { type: [String] }, // kids and parents might belong to several families ("familles recomposées")
   deleted: { type: Boolean }
 });
 

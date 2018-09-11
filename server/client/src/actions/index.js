@@ -14,7 +14,8 @@ import {
   ADD_MEDIA_ROW,
   ADD_KID_ROW,
   ADD_PARENT_ROW,
-  LOAD_DUMP
+  LOAD_DUMP,
+  LOAD_DASHBOARD
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -31,6 +32,17 @@ export const fetchUser = () => async dispatch => {
     );
     // dispatch(push('/sorry'));
     dispatch(push('/login')); // TODO add an error message as props: errorMessage
+  }
+};
+
+export const fetchDashboard = () => async dispatch => {
+  try {
+    const dashboard = await axios.get('/api/v1/dashboard');
+    console.log('dashboard: ', dashboard);
+    dispatch({ type: LOAD_DASHBOARD, payload: dashboard.data });
+  } catch (err) {
+    // if error is auth, then redirect to login with message
+    console.log('ERROR: ', err.toString());
   }
 };
 
