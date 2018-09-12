@@ -83,166 +83,176 @@ class Dashboard extends Component {
 
         {loaded && (
           <div>
-            <h5>
-              <strong>
-                {familiesRegisteredQuantity} families not yet registered:
-              </strong>
-            </h5>
-            {FamiliesNotRegistered.map(
-              familyId => familiesById[familyId].primaryEmail
-            ).join(', ')}
-
-            <h5>
-              <strong>
-                {familiesNotRegisteredQuantity} families registered (={' '}
-                {kidsQuantity} children):
-              </strong>
-            </h5>
-            {FamiliesRegistered.map(
-              familyId => familiesById[familyId].primaryEmail
-            ).join(', ')}
-
-            <h5>
-              {kidsInClasses.length} children registered in classes or
-              activities:
-            </h5>
-            {[]
-              .concat(kidsInClasses)
-              .sort(function(a, b) {
-                return (
-                  ordering[usersById[a].kidGrade] -
-                    ordering[usersById[b].kidGrade] ||
-                  usersById[a].familyName.localeCompare(
-                    usersById[b].familyName
-                  ) ||
-                  usersById[a].firstName.localeCompare(usersById[b].firstName)
-                );
-              })
-              .map(kidId => (
+            <div className="container itemDetails">
+              <h5>
+                <strong>
+                  {familiesRegisteredQuantity} families not yet registered:
+                </strong>
+              </h5>
+              {FamiliesNotRegistered.map(
+                familyId => familiesById[familyId].primaryEmail
+              ).join(', ')}
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                <strong>
+                  {familiesNotRegisteredQuantity} families registered (={' '}
+                  {kidsQuantity} children):
+                </strong>
+              </h5>
+              {FamiliesRegistered.map(
+                familyId => familiesById[familyId].primaryEmail
+              ).join(', ')}
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                {kidsInClasses.length} children registered in classes or
+                activities:
+              </h5>
+              {[]
+                .concat(kidsInClasses)
+                .sort(function(a, b) {
+                  return (
+                    ordering[usersById[a].kidGrade] -
+                      ordering[usersById[b].kidGrade] ||
+                    usersById[a].familyName.localeCompare(
+                      usersById[b].familyName
+                    ) ||
+                    usersById[a].firstName.localeCompare(usersById[b].firstName)
+                  );
+                })
+                .map(kidId => (
+                  <div>
+                    <span key={kidId}>
+                      {usersById[kidId].firstName +
+                        ' ' +
+                        usersById[kidId].familyName.toUpperCase() +
+                        ', ' +
+                        usersById[kidId].kidGrade}
+                    </span>
+                    <br />
+                  </div>
+                ))}
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                <strong>Registrations by classes</strong>
+              </h5>
+              {classItems.map(itemId => (
                 <div>
-                  <span key={kidId}>
-                    {usersById[kidId].firstName +
-                      ' ' +
-                      usersById[kidId].familyName.toUpperCase() +
-                      ', ' +
-                      usersById[kidId].kidGrade}
-                  </span>
-                  <br />
+                  <h5>{itemsById[itemId].name}</h5>
+                  <div>
+                    {[]
+                      .concat(registrationsByItem[itemId])
+                      .sort(function(a, b) {
+                        return (
+                          ordering[usersById[a].kidGrade] -
+                            ordering[usersById[b].kidGrade] ||
+                          usersById[a].familyName.localeCompare(
+                            usersById[b].familyName
+                          )
+                        );
+                      })
+                      .map(userId => (
+                        <div>
+                          <span key={userId}>
+                            {usersById[userId].firstName +
+                              ' ' +
+                              usersById[userId].familyName.toUpperCase() +
+                              ', ' +
+                              usersById[userId].kidGrade}
+                          </span>
+                          <br />
+                        </div>
+                      ))}
+                  </div>
                 </div>
               ))}
-
-            <h5>
-              <strong>Registrations by classes</strong>
-            </h5>
-            {classItems.map(itemId => (
-              <div>
-                <h5>{itemsById[itemId].name}</h5>
-                <div>
-                  {[]
-                    .concat(registrationsByItem[itemId])
-                    .sort(function(a, b) {
-                      return (
-                        ordering[usersById[a].kidGrade] -
-                          ordering[usersById[b].kidGrade] ||
-                        usersById[a].familyName.localeCompare(
-                          usersById[b].familyName
-                        )
-                      );
-                    })
-                    .map(userId => (
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                <strong>Children with "photo consent = no"</strong>
+              </h5>
+              {[]
+                .concat(NoPhotoconsentKids)
+                .sort(function(a, b) {
+                  return (
+                    ordering[usersById[a].kidGrade] -
+                      ordering[usersById[b].kidGrade] ||
+                    usersById[a].familyName.localeCompare(
+                      usersById[b].familyName
+                    )
+                  );
+                })
+                .map(kidId => (
+                  <div>
+                    <span key={kidId}>
+                      {usersById[kidId].firstName +
+                        ' ' +
+                        usersById[kidId].familyName.toUpperCase() +
+                        ', ' +
+                        usersById[kidId].kidGrade}
+                    </span>
+                    <br />
+                  </div>
+                ))}
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                <strong>The Volunteers (by name)</strong>
+              </h5>
+              {volunteers.map(volunteerObject => (
+                <p key={volunteerObject.familyId}>
+                  <strong>
+                    {familiesById[volunteerObject.familyId].allParents
+                      .map(
+                        parentId =>
+                          usersById[parentId].firstName +
+                          ' ' +
+                          usersById[parentId].familyName.toUpperCase()
+                      )
+                      .join(' / ')}
+                  </strong>
+                  <br />
+                  {volunteerObject.volunteeringItemIds.map(itemId => (
+                    <div>
+                      {itemsById[itemId].name}
+                      <br />
+                    </div>
+                  ))}
+                </p>
+              ))}
+            </div>
+            <div className="container itemDetails">
+              <h5>
+                <strong>The Volunteers (by activity)</strong>
+              </h5>
+              {volunteeringItems.map(itemId => (
+                <p key={itemId}>
+                  <strong>{itemsById[itemId].name}</strong>
+                  <div>
+                    {registrationsByItem[itemId].map(familyId => (
                       <div>
-                        <span key={userId}>
-                          {usersById[userId].firstName +
-                            ' ' +
-                            usersById[userId].familyName.toUpperCase() +
-                            ', ' +
-                            usersById[userId].kidGrade}
+                        <span key={familyId}>
+                          {familiesById[familyId].allParents
+                            .map(
+                              parentId =>
+                                usersById[parentId].firstName +
+                                ' ' +
+                                usersById[parentId].familyName.toUpperCase()
+                            )
+                            .join(' / ') +
+                            ' ( ' +
+                            familiesById[familyId].primaryEmail +
+                            ' )'}
                         </span>
                         <br />
                       </div>
                     ))}
-                </div>
-              </div>
-            ))}
-
-            <h5>
-              <strong>Children with "photo consent = no"</strong>
-            </h5>
-            {[]
-              .concat(NoPhotoconsentKids)
-              .sort(function(a, b) {
-                return (
-                  ordering[usersById[a].kidGrade] -
-                    ordering[usersById[b].kidGrade] ||
-                  usersById[a].familyName.localeCompare(usersById[b].familyName)
-                );
-              })
-              .map(kidId => (
-                <div>
-                  <span key={kidId}>
-                    {usersById[kidId].firstName +
-                      ' ' +
-                      usersById[kidId].familyName.toUpperCase() +
-                      ', ' +
-                      usersById[kidId].kidGrade}
-                  </span>
-                  <br />
-                </div>
-              ))}
-
-            <h5>
-              <strong>The Volunteers (by name)</strong>
-            </h5>
-            {volunteers.map(volunteerObject => (
-              <p key={volunteerObject.familyId}>
-                <strong>
-                  {familiesById[volunteerObject.familyId].allParents
-                    .map(
-                      parentId =>
-                        usersById[parentId].firstName +
-                        ' ' +
-                        usersById[parentId].familyName.toUpperCase()
-                    )
-                    .join(' / ')}
-                </strong>
-                <br />
-                {volunteerObject.volunteeringItemIds.map(itemId => (
-                  <div>
-                    {itemsById[itemId].name}
-                    <br />
                   </div>
-                ))}
-              </p>
-            ))}
-
-            <h5>
-              <strong>The Volunteers (by activity)</strong>
-            </h5>
-            {volunteeringItems.map(itemId => (
-              <p key={itemId}>
-                <strong>{itemsById[itemId].name}</strong>
-                <div>
-                  {registrationsByItem[itemId].map(familyId => (
-                    <div>
-                      <span key={familyId}>
-                        {familiesById[familyId].allParents
-                          .map(
-                            parentId =>
-                              usersById[parentId].firstName +
-                              ' ' +
-                              usersById[parentId].familyName.toUpperCase()
-                          )
-                          .join(' / ') +
-                          ' ( ' +
-                          familiesById[familyId].primaryEmail +
-                          ' )'}
-                      </span>
-                      <br />
-                    </div>
-                  ))}
-                </div>
-              </p>
-            ))}
+                </p>
+              ))}
+            </div>
           </div>
         )}
       </div>
