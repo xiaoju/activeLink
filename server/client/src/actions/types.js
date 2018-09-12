@@ -13,3 +13,6 @@ export const ADD_KID_ROW = 'add_kid_row';
 export const ADD_PARENT_ROW = 'add_parent_row';
 export const ADD_ADDRESS_ROW = 'add_address_row';
 export const ADD_MEDIA_ROW = 'add_media_row';
+export const LOAD_ERROR = 'load_error';
+export const LOAD_SELECTION = 'load_selection';
+export const SELECT_PRIMARY_EMAIL = 'select_primary_email';

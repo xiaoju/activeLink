@@ -3,6 +3,14 @@ import { capitalizeFirstLetter } from '../utils/Tools';
 
 // import { createSelectorWithDependencies as createSelector } from 'reselect-tools';
 
+export const getSelectedAsso = state => state.currentForm.selectedAsso;
+export const getSelectedEvent = state => state.currentForm.selectedEvent;
+export const getSelectedFamily = state => state.currentForm.selectedFamily;
+
+export const getErrorMessage = state => state.ui.errorMessage;
+
+export const getDashboardIsLoaded = state => state.dashboard.loaded;
+
 export const getAssoEmail = state => state.asso.assoEmail;
 export const getReplyTo = state => state.asso.replyTo;
 export const getEmailFrom = state => state.asso.emailFrom;

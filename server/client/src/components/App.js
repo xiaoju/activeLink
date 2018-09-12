@@ -15,6 +15,7 @@ import EmailSent from './EmailSent';
 import SendInvites from './admin/SendInvites';
 import Dump from './admin/Dump';
 import Dashboard from './admin/Dashboard';
+import RegisterForOther from './admin/RegisterForOther';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -46,6 +47,7 @@ class App extends Component {
           <Route path="/admin/sendinvites" component={SendInvites} />
           <Route path="/admin/dump" component={Dump} />
           <Route path="/admin/dashboard" component={Dashboard} />
+          <Route path="/admin/manualinput" component={RegisterForOther} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

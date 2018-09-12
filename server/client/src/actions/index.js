@@ -15,7 +15,8 @@ import {
   ADD_KID_ROW,
   ADD_PARENT_ROW,
   LOAD_DUMP,
-  LOAD_DASHBOARD
+  LOAD_DASHBOARD,
+  SELECT_PRIMARY_EMAIL
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -108,6 +109,14 @@ export function modifyUser({ userId, fieldName, value }) {
       fieldName,
       value
     }
+  };
+}
+
+export function selectPrimaryEmail({ selectedFamily }) {
+  console.log('actions/index, selectedFamily: ', selectedFamily);
+  return {
+    type: SELECT_PRIMARY_EMAIL,
+    payload: selectedFamily
   };
 }
 

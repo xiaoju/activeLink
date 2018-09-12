@@ -63,7 +63,6 @@ export default function(state = empty, { type, payload }) {
     }
 
     case ADD_KID_ROW: {
-      // let newKidId = 'k' + (Object.keys(state).length - 1);
       let newKidId = uuid();
       return {
         ...state,
