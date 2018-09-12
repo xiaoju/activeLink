@@ -30,7 +30,6 @@ class Dashboard extends Component {
     for (var i = 0; i < sortOrder.length; i++) ordering[sortOrder[i]] = i;
     // finished defining the sort order
 
-    let sortedRegistrationsByItem = {};
     const { profile, adminAssos, assosById, errorMessage } = this.props;
     const {
       dashboard: {
@@ -49,6 +48,7 @@ class Dashboard extends Component {
         // parentsByFamily,
         itemsById,
         kidsQuantity,
+        kidsInClasses,
         // parentsQuantity,
         volunteers,
         familiesRegisteredQuantity,
@@ -101,6 +101,35 @@ class Dashboard extends Component {
             {FamiliesRegistered.map(
               familyId => familiesById[familyId].primaryEmail
             ).join(', ')}
+
+            <h5>
+              {kidsInClasses.length} children registered in classes or
+              activities:
+            </h5>
+            {[]
+              .concat(kidsInClasses)
+              .sort(function(a, b) {
+                return (
+                  ordering[usersById[a].kidGrade] -
+                    ordering[usersById[b].kidGrade] ||
+                  usersById[a].familyName.localeCompare(
+                    usersById[b].familyName
+                  ) ||
+                  usersById[a].firstName.localeCompare(usersById[b].firstName)
+                );
+              })
+              .map(kidId => (
+                <div>
+                  <span key={kidId}>
+                    {usersById[kidId].firstName +
+                      ' ' +
+                      usersById[kidId].familyName.toUpperCase() +
+                      ', ' +
+                      usersById[kidId].kidGrade}
+                  </span>
+                  <br />
+                </div>
+              ))}
 
             <h5>
               <strong>Registrations by classes</strong>

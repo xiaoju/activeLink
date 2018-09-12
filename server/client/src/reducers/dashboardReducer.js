@@ -17,6 +17,7 @@ const empty = {
   // itemDetails: [],
   itemsById: {},
   kidsQuantity: 0,
+  kidsInClasses: 0,
   parentsQuantity: 0,
   volunteers: []
   // volunteersById: {}

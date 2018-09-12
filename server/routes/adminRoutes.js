@@ -78,6 +78,7 @@ module.exports = app => {
       familyDetails,
       NoPhotoconsentKids,
       kidsQuantity,
+      kidsInClasses,
       parentsQuantity,
       clientsByItem;
 
@@ -196,6 +197,7 @@ module.exports = app => {
       res.status(500).json({ error: err.toString() });
     }
 
+    // TODO get familiesRegistered as families who registered 'i0'
     try {
       FamiliesRegistered = await Family.distinct('familyId', {
         registeredEvents: { $ne: [] }
@@ -260,6 +262,16 @@ module.exports = app => {
       res.status(500).json({ error: err.toString() });
     }
 
+    try {
+      kidsInClasses = await Registration.distinct('clientId', {
+        clientId: {
+          $nin: FamiliesRegistered
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ error: err.toString() });
+    }
+
     let allKidGrades = [
       ['PS', 'MS', 'GS'],
       ['CP', 'CE1', 'CE2', 'CM1', 'CM2'],
@@ -304,6 +316,7 @@ module.exports = app => {
     }
 
     res.status(201).json({
+      kidsInClasses,
       volunteers,
       KidsByGrade,
       registrationItems,
