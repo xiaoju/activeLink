@@ -104,44 +104,85 @@ class Dashboard extends Component {
                 familyId => familiesById[familyId].primaryEmail
               ).join(', ')}
             </div>
-            <div className="container itemDetails">
+            <div className="container itemDetails page-break-before">
               <h5>
                 {kidsInClasses.length} children registered in classes or
                 activities:
               </h5>
-              {[]
-                .concat(kidsInClasses)
-                .sort(function(a, b) {
-                  return (
-                    ordering[usersById[a].kidGrade] -
-                      ordering[usersById[b].kidGrade] ||
-                    usersById[a].familyName.localeCompare(
-                      usersById[b].familyName
-                    ) ||
-                    usersById[a].firstName.localeCompare(usersById[b].firstName)
-                  );
-                })
-                .map(kidId => (
-                  <div>
-                    <span key={kidId}>
-                      {usersById[kidId].firstName +
-                        ' ' +
-                        usersById[kidId].familyName.toUpperCase() +
-                        ', ' +
-                        usersById[kidId].kidGrade}
-                    </span>
-                    <br />
-                  </div>
-                ))}
+              <div className="column-count-3">
+                {[]
+                  .concat(kidsInClasses)
+                  .sort(function(a, b) {
+                    return (
+                      ordering[usersById[a].kidGrade] -
+                        ordering[usersById[b].kidGrade] ||
+                      usersById[a].familyName.localeCompare(
+                        usersById[b].familyName
+                      ) ||
+                      usersById[a].firstName.localeCompare(
+                        usersById[b].firstName
+                      )
+                    );
+                  })
+                  .map(kidId => (
+                    <div>
+                      <span key={kidId}>
+                        {usersById[kidId].firstName +
+                          ' ' +
+                          usersById[kidId].familyName.toUpperCase() +
+                          ', ' +
+                          usersById[kidId].kidGrade}
+                      </span>
+                      <br />
+                    </div>
+                  ))}
+              </div>
             </div>
+
             <div className="container itemDetails">
+              <h5>
+                {NoPhotoconsentKids.length} children with "photo consent = no"
+              </h5>
+              <div className="column-count-3">
+                {[]
+                  .concat(NoPhotoconsentKids)
+                  .sort(function(a, b) {
+                    return (
+                      ordering[usersById[a].kidGrade] -
+                        ordering[usersById[b].kidGrade] ||
+                      usersById[a].familyName.localeCompare(
+                        usersById[b].familyName
+                      )
+                    );
+                  })
+                  .map(kidId => (
+                    <div>
+                      <span key={kidId}>
+                        {usersById[kidId].firstName +
+                          ' ' +
+                          usersById[kidId].familyName.toUpperCase() +
+                          ', ' +
+                          usersById[kidId].kidGrade}
+                      </span>
+                      <br />
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            <div className="container itemDetails page-break-before">
               <h5>
                 <strong>Registrations by classes</strong>
               </h5>
               {classItems.map(itemId => (
-                <div>
-                  <h5>{itemsById[itemId].name}</h5>
-                  <div>
+                <div className="no_break_inside">
+                  <h5>
+                    {itemsById[itemId].name} ({
+                      registrationsByItem[itemId].length
+                    }{' '}
+                    children)
+                  </h5>
+                  <div className="column-count-3">
                     {[]
                       .concat(registrationsByItem[itemId])
                       .sort(function(a, b) {
@@ -169,35 +210,7 @@ class Dashboard extends Component {
                 </div>
               ))}
             </div>
-            <div className="container itemDetails">
-              <h5>
-                <strong>Children with "photo consent = no"</strong>
-              </h5>
-              {[]
-                .concat(NoPhotoconsentKids)
-                .sort(function(a, b) {
-                  return (
-                    ordering[usersById[a].kidGrade] -
-                      ordering[usersById[b].kidGrade] ||
-                    usersById[a].familyName.localeCompare(
-                      usersById[b].familyName
-                    )
-                  );
-                })
-                .map(kidId => (
-                  <div>
-                    <span key={kidId}>
-                      {usersById[kidId].firstName +
-                        ' ' +
-                        usersById[kidId].familyName.toUpperCase() +
-                        ', ' +
-                        usersById[kidId].kidGrade}
-                    </span>
-                    <br />
-                  </div>
-                ))}
-            </div>
-            <div className="container itemDetails">
+            <div className="container itemDetails page-break-before">
               <h5>
                 <strong>The Volunteers (by name)</strong>
               </h5>
