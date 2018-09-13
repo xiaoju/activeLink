@@ -1,55 +1,63 @@
-html,
-body {
-  background-color: #ede7f6;
-  /* materializecss deep-purple lighten-5 */
+@media print {
+  .stepTitle,
+  nav {
+    display: none;
+  }
 }
 
-div {
-  text-align: center;
-}
+@media screen {
+  html,
+  body {
+    background-color: #ede7f6;
+    /* materializecss deep-purple lighten-5 */
+  }
 
-div #logo {
-  text-align: left;
-}
+  div {
+    text-align: center;
+  }
 
-.orangeStrong {
-  color: #ffa726;
-}
+  div #logo {
+    text-align: left;
+  }
 
-.SelectComponent__value-container > div:focus-within {
-  border-width: 2px;
-}
+  .orangeStrong {
+    color: #ffa726;
+  }
 
-.circle-clipper .circle {
-  border-color: #9575cd;
-}
+  .SelectComponent__value-container > div:focus-within {
+    border-width: 2px;
+  }
 
-.innerContainer {
-  margin: 0 9%;
-}
+  .circle-clipper .circle {
+    border-color: #9575cd;
+  }
 
-.checkbox-orange[type='checkbox'].filled-in:checked + label:after {
-  border: 2px solid #ffa726;
-  background-color: #ffa726;
-  /* materializecss orange lighten-1 */
-}
+  .innerContainer {
+    margin: 0 9%;
+  }
 
-.checkbox-orange[type='checkbox'].filled-in + label:after {
-  border: 2px solid #ffa726;
-  background: transparent;
-}
+  .checkbox-orange[type='checkbox'].filled-in:checked + label:after {
+    border: 2px solid #ffa726;
+    background-color: #ffa726;
+    /* materializecss orange lighten-1 */
+  }
 
-.volunteersCheckbox label,
-.usernameCheckbox label {
-  color: rgba(0, 0, 0, 0.87);
-  font-weight: bold;
-}
+  .checkbox-orange[type='checkbox'].filled-in + label:after {
+    border: 2px solid #ffa726;
+    background: transparent;
+  }
 
-.photoConsentCheckbox label {
-  color: rgba(0, 0, 0, 0.87);
-}
+  .volunteersCheckbox label,
+  .usernameCheckbox label {
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+  }
 
-/* materializecss colors for the switch button lever:
+  .photoConsentCheckbox label {
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  /* materializecss colors for the switch button lever:
 #ef9a9a red lighten-3
 #e53935 red darken-1 = rgba(229,57,53)
 #ffa726 orange (border line and the flash when clicking the switch)
@@ -57,323 +65,324 @@ div #logo {
 #a5d6a7 green lighten-3
  */
 
-.switch label {
-  font-size: 1em;
-  border: thin #ffa726 solid;
-  padding: 1em 7%;
-}
+  .switch label {
+    font-size: 1em;
+    border: thin #ffa726 solid;
+    padding: 1em 7%;
+  }
 
-.switch label .lever:after {
-  /* le rond, left side */
-  background-color: #e53935;
-}
+  .switch label .lever:after {
+    /* le rond, left side */
+    background-color: #e53935;
+  }
 
-.switch label input[type='checkbox']:checked + .lever:after {
-  /* le rond, right side */
-  background-color: #43a047;
-}
+  .switch label input[type='checkbox']:checked + .lever:after {
+    /* le rond, right side */
+    background-color: #43a047;
+  }
 
-.switch label input[type='checkbox']:checked + .lever {
-  /* le rail, right side (green) */
-  background-color: #a5d6a7;
-}
+  .switch label input[type='checkbox']:checked + .lever {
+    /* le rail, right side (green) */
+    background-color: #a5d6a7;
+  }
 
-.switch label .lever {
-  /* le rail, left side (red) */
-  background-color: #ef9a9a;
-}
+  .switch label .lever {
+    /* le rail, left side (red) */
+    background-color: #ef9a9a;
+  }
 
-.switch label input[type='checkbox'] + .lever:before {
-  /* the flash, left side (red), initial color */
-  background-color: #e53935;
-}
+  .switch label input[type='checkbox'] + .lever:before {
+    /* the flash, left side (red), initial color */
+    background-color: #e53935;
+  }
 
-.switch label input[type='checkbox']:checked + .lever:before {
-  /* the flash, right side (green), initial color */
-  /* background-color: rgba(67, 160, 71, 0.15); */
-  background-color: #43a047;
-}
+  .switch label input[type='checkbox']:checked + .lever:before {
+    /* the flash, right side (green), initial color */
+    /* background-color: rgba(67, 160, 71, 0.15); */
+    background-color: #43a047;
+  }
 
-input[type='checkbox']:not(:disabled) ~ .lever:active:before {
-  /* the flash, left side (red), final color */
-  background-color: rgba(239, 154, 154, 0.15);
-}
+  input[type='checkbox']:not(:disabled) ~ .lever:active:before {
+    /* the flash, left side (red), final color */
+    background-color: rgba(239, 154, 154, 0.15);
+  }
 
-.photoConsentCheckbox p {
-  margin: 0em;
-  padding: 0em;
-}
+  .photoConsentCheckbox p {
+    margin: 0em;
+    padding: 0em;
+  }
 
-.photoConsentCheckbox .signature {
-  padding-top: 0.6em;
-}
+  .photoConsentCheckbox .signature {
+    padding-top: 0.6em;
+  }
 
-.usernameCheckboxDisabled label {
-  color: #9e9e9e;
-}
+  .usernameCheckboxDisabled label {
+    color: #9e9e9e;
+  }
 
-.gradesContainer {
-}
+  .gradesContainer {
+  }
 
-.columnContainer {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-}
+  .columnContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+  }
 
-.navbar-fixed nav {
-  right: 0;
-}
+  .navbar-fixed nav {
+    right: 0;
+  }
 
-nav i.material-icons.tiny {
-  font-size: 1rem;
-}
+  nav i.material-icons.tiny {
+    font-size: 1rem;
+  }
 
-nav i.material-icons.small {
-  font-size: 2rem;
-}
+  nav i.material-icons.small {
+    font-size: 2rem;
+  }
 
-nav i.material-icons.medium {
-  font-size: 4rem;
-}
+  nav i.material-icons.medium {
+    font-size: 4rem;
+  }
 
-nav i.material-icons.large {
-  font-size: 6rem;
-}
+  nav i.material-icons.large {
+    font-size: 6rem;
+  }
 
-.inline-icon {
-  vertical-align: bottom;
-  font-size: 5px !important;
-  line-height: 36px;
-}
+  .inline-icon {
+    vertical-align: bottom;
+    font-size: 5px !important;
+    line-height: 36px;
+  }
 
-.itemsContainer {
-  border: medium solid #9575cd;
-  /* materializecss deep-purple lighten-2 */
-  margin: 1.5em 0;
-  padding-bottom: 1.5em;
-}
+  .itemsContainer {
+    border: medium solid #9575cd;
+    /* materializecss deep-purple lighten-2 */
+    margin: 1.5em 0;
+    padding-bottom: 1.5em;
+  }
 
-.itemsContainer button {
-  margin: 0.5em;
-}
+  .itemsContainer button {
+    margin: 0.5em;
+  }
 
-.stepTitle {
-  color: #9575cd;
-  margin-bottom: 2.2rem;
-}
+  .stepTitle {
+    color: #9575cd;
+    margin-bottom: 2.2rem;
+  }
 
-.itemDetails {
-  border-bottom: thin solid #9575cd;
-  padding-bottom: 0.8em;
-}
+  .itemDetails {
+    border-bottom: thin solid #9575cd;
+    padding-bottom: 0.8em;
+  }
 
-.itemDetails:last-child {
-  border-bottom: none;
-}
+  .itemDetails:last-child {
+    border-bottom: none;
+  }
 
-.formInputsContainer {
-  width: 100%;
-  min-height: 6em;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-}
+  .formInputsContainer {
+    width: 100%;
+    min-height: 6em;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+  }
 
-.twoNamesContainer {
-  margin-right: 1em;
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-shrink: 0;
-}
+  .twoNamesContainer {
+    margin-right: 1em;
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
 
-.twoNamesContainer input {
-  margin-top: 1em;
-}
+  .twoNamesContainer input {
+    margin-top: 1em;
+  }
 
-.loginEmail,
-.loginPassword,
-.firstName {
-  display: flex;
-  flex-grow: 1;
-  margin-right: 1em;
-}
+  .loginEmail,
+  .loginPassword,
+  .firstName {
+    display: flex;
+    flex-grow: 1;
+    margin-right: 1em;
+  }
 
-.familyName {
-  display: flex;
-  flex-grow: 2;
-}
+  .familyName {
+    display: flex;
+    flex-grow: 2;
+  }
 
-.tagsContainer {
-  height: 80%;
-  min-width: 3em;
-  border: thin solid #ffa726;
-  border-radius: 5px;
-  padding: 0.8em 0em 0.8em 0.5em;
-  margin: 0.5em 7% 0.5em -3em;
-}
+  .tagsContainer {
+    height: 80%;
+    min-width: 3em;
+    border: thin solid #ffa726;
+    border-radius: 5px;
+    padding: 0.8em 0em 0.8em 0.5em;
+    margin: 0.5em 7% 0.5em -3em;
+  }
 
-.schoolGrade {
-  min-width: 3em;
-  height: 80%;
-  /* border: thin solid #ffa726;
+  .schoolGrade {
+    min-width: 3em;
+    height: 80%;
+    /* border: thin solid #ffa726;
   padding: 0.8em 0em 0.8em 0.5em;
   margin: 0.5em 7% 0.5em -3em; */
-}
+  }
 
-.schoolGrade > select {
-  background-color: #ede7f6;
-  border: 1px solid #9575cd;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 500;
-  width: 5em;
-}
+  .schoolGrade > select {
+    background-color: #ede7f6;
+    border: 1px solid #9575cd;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 500;
+    width: 5em;
+  }
 
-.schoolGrade > select.pasValide {
-  border: 1px solid #ffa726;
-}
+  .schoolGrade > select.pasValide {
+    border: 1px solid #ffa726;
+  }
 
-.schoolGrade > select:focus {
-  outline: none;
-  border: 2px solid #9575cd;
-}
+  .schoolGrade > select:focus {
+    outline: none;
+    border: 2px solid #9575cd;
+  }
 
-.schoolGrade > select.pasValide:focus {
-  outline: none;
-  border: 2px solid #ffa726;
-}
+  .schoolGrade > select.pasValide:focus {
+    outline: none;
+    border: 2px solid #ffa726;
+  }
 
-.eventContacts {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-}
+  .eventContacts {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+  }
 
-.myIconContainer {
-  margin: auto 1em auto 1em;
-}
-/*
+  .myIconContainer {
+    margin: auto 1em auto 1em;
+  }
+  /*
 .chip {
   background-color: #d1c4e9;
   margin-bottom: 1px;
 } */
 
-.categoryIcon {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  padding-bottom: 1em;
-  padding-top: 1em;
-  margin-top: 2em;
-  border-top: thin solid #9575cd;
-}
+  .categoryIcon {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    margin-top: 2em;
+    border-top: thin solid #9575cd;
+  }
 
-.myContactsContainer {
-  display: flex;
-  flex-flow: column nowrap;
-  flex-grow: 1;
-}
+  .myContactsContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+  }
 
-.orderSummary {
-  background-color: #f5f5f5;
-  border: thin solid #9575cd;
-  margin-bottom: 2em;
-  padding: 2em;
-}
+  .orderSummary {
+    background-color: #f5f5f5;
+    border: thin solid #9575cd;
+    margin-bottom: 2em;
+    padding: 2em;
+  }
 
-table.striped > tbody > tr:nth-child(odd) {
-  background-color: #eeeeee;
-}
+  table.striped > tbody > tr:nth-child(odd) {
+    background-color: #eeeeee;
+  }
 
-/* input:not([type]) {
+  /* input:not([type]) {
   border-bottom: thin solid #9575cd;
 } */
 
-input:not([type]).pasValide {
-  border-bottom-color: #ffa726;
-}
+  input:not([type]).pasValide {
+    border-bottom-color: #ffa726;
+  }
 
-/* remove materializecss decorations for react-select*/
-.SelectComponent__input input:focus {
-  border-bottom: none !important;
-  box-shadow: none !important;
-  margin-bottom: none !important;
-  padding: 0 1em !important;
-}
+  /* remove materializecss decorations for react-select*/
+  .SelectComponent__input input:focus {
+    border-bottom: none !important;
+    box-shadow: none !important;
+    margin-bottom: none !important;
+    padding: 0 1em !important;
+  }
 
-/* label focus color */
-.schoolGrade select:focus + label,
-.input-field input:focus + label {
-  color: #9575cd !important;
-}
+  /* label focus color */
+  .schoolGrade select:focus + label,
+  .input-field input:focus + label {
+    color: #9575cd !important;
+  }
 
-/* label underline focus color */
-.input-field input {
-  border-bottom: 1px solid #9575cd !important;
-  box-shadow: none !important;
-}
+  /* label underline focus color */
+  .input-field input {
+    border-bottom: 1px solid #9575cd !important;
+    box-shadow: none !important;
+  }
 
-.input-field input.pasValide {
-  border-bottom-color: #ffa726 !important;
-}
+  .input-field input.pasValide {
+    border-bottom-color: #ffa726 !important;
+  }
 
-.input-field input:focus {
-  border-bottom-width: 2px !important;
-  box-shadow: none !important;
-}
+  .input-field input:focus {
+    border-bottom-width: 2px !important;
+    box-shadow: none !important;
+  }
 
-.double-line-label {
-  line-height: 1em;
-}
+  .double-line-label {
+    line-height: 1em;
+  }
 
-/* TODO the following to avoid in chrome the color of autofill to be yelllow background, not working */
-.input-field input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 30px blue inset;
-  -webkit-text-fill-color: green !important;
-  background-color: red !important;
-  background-image: none !important;
-  color: pink !important;
-}
+  /* TODO the following to avoid in chrome the color of autofill to be yelllow background, not working */
+  .input-field input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px blue inset;
+    -webkit-text-fill-color: green !important;
+    background-color: red !important;
+    background-image: none !important;
+    color: pink !important;
+  }
 
-.nav-wrapper > a,
-.nav-wrapper > a > img {
-  height: 100%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: 1%;
-}
+  .nav-wrapper > a,
+  .nav-wrapper > a > img {
+    height: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 1%;
+  }
 
-.card-title {
-  color: white;
-}
+  .card-title {
+    color: white;
+  }
 
-i.icon-orange {
-  color: #ffa726;
-}
+  i.icon-orange {
+    color: #ffa726;
+  }
 
-.title_and_button {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-}
+  .title_and_button {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+  }
 
-input[type='text']:not(.browser-default) {
-  height: 1em;
-}
+  input[type='text']:not(.browser-default) {
+    height: 1em;
+  }
 
-.validationMessage {
-  background-color: #fff3e0;
-  border: medium solid #ffa726;
-  border-radius: 15px;
-  margin: 1em auto;
-}
-/* #fff3e0 is materializecss 'orange lighten-5' */
+  .validationMessage {
+    background-color: #fff3e0;
+    border: medium solid #ffa726;
+    border-radius: 15px;
+    margin: 1em auto;
+  }
+  /* #fff3e0 is materializecss 'orange lighten-5' */
 
-/* .validationMessage > p {
+  /* .validationMessage > p {
   color: #ffa726;
 } */
 
-.validationMessage:empty {
-  display: none;
+  .validationMessage:empty {
+    display: none;
+  }
 }
