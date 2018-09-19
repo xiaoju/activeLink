@@ -16,7 +16,8 @@ import {
   ADD_PARENT_ROW,
   LOAD_DUMP,
   LOAD_DASHBOARD,
-  SELECT_PRIMARY_EMAIL
+  SELECT_PRIMARY_EMAIL,
+  SELECT_PAYMENT_OPTION
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -61,7 +62,7 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     // throw 'oops';
-    // console.log('payload: ', payload);
+    console.log('handlePayment. payload: ', payload);
     const res = await axios.post('/api/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {
@@ -94,6 +95,19 @@ export function uncheckCheckbox(userId, itemId) {
     }
   };
 }
+
+export const selectPaymentOption = ({
+  paymentOption,
+  installmentsQuantity
+}) => {
+  return {
+    type: SELECT_PAYMENT_OPTION,
+    payload: {
+      paymentOption,
+      installmentsQuantity
+    }
+  };
+};
 
 export function togglePhotoConsent() {
   return {

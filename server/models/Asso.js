@@ -19,6 +19,18 @@ const assoSchema = new Schema({
   registrations: { type: Object, default: {} },
   eventsById: { type: Object, default: {} },
   referenceNumbers: { type: Object, default: {} },
+  bankReference: {
+    type: Array,
+    default: [
+      {
+        IBAN: '',
+        BIC: '',
+        bankName: '',
+        accountName: '',
+        description: ''
+      }
+    ]
+  },
   assoEvents: { type: [String], default: [] }
 
   // currentRegistrationEvents: { type: Array, default: [] },

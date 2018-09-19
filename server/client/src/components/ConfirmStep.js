@@ -2,63 +2,76 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  // getStaffById,
-  getAssoEmail,
-  getEventProviderName
-  // getEventContacts
+  getPaymentOption,
+  getInstallmentsQuantity,
+  getEventProviderName,
+  getFormIsValid,
+  getTotal,
+  getPhotoConsent,
+  getFamilyId,
+  getEventId,
+  getValidKids,
+  getValidParents,
+  getValidAddresses,
+  getValidMedia,
+  getValidFamilyById,
+  getValidChecked,
+  getPrimaryEmail,
+  getEventName
 } from '../selectors';
-import Payments from './Payments';
-// import { capitalizeFirstLetter } from '../utils/Tools';
+import Payment from './Payment';
+import ValidationPanel from './ValidationPanel';
+import HelpContact from './HelpContact';
 
 class ConfirmStep extends Component {
   render() {
     const {
-      assoEmail,
+      paymentOption,
+      installmentsQuantity,
       sectionTitle,
-      // staffById,
-      eventProviderName
-      // eventContacts
+      eventProviderName,
+      total,
+      formIsValid,
+      eventName,
+      primaryEmail,
+      familyId,
+      eventId,
+      validKids,
+      validParents,
+      validAddresses,
+      validMedia,
+      validFamilyById,
+      validChecked,
+      photoConsent
     } = this.props;
 
     return (
       <div className="itemsContainer hoverable">
         <h4 className="stepTitle">{sectionTitle}</h4>
-        <div className="container">
-          <Payments />
-          <div className="categoryIcon">
-            <div className="myIconContainer">
-              <i className="small material-icons prefix">help_outline</i>
-            </div>
-            <div className="myContactsContainer">
-              <span>
-                Payments are securely processed by 'stripe.com'
-                {/* following '3D-Secure' authentication. */}
-              </span>
-              <span>The connections to the servers are encrypted.</span>
-              <span>
-                {eventProviderName} doesn't see credit card numbers nor
-                passwords.
-              </span>
-              <br />
-              {/* <span>Any questions? Please contact us!</span>
-              {eventContacts.map(contactId => (
-                <div key={contactId} className="eventContacts">
-                  <span>
-                    {staffById[contactId].firstName}{' '}
-                    {staffById[contactId].familyName}
-                  </span>
-                  <span>{capitalizeFirstLetter(staffById[contactId].job)}</span>
-                  <span>{staffById[contactId].phone}</span>
-                  <span>{staffById[contactId].email}</span>
-                </div>
-              ))} */}
-              <p>
-                Any questions? Please drop us an email at{' '}
-                <strong>{assoEmail}</strong>
-              </p>
-            </div>
-          </div>
+        <ValidationPanel />
+
+        <div className="paymentOptions container">
+          <Payment
+            paymentOption={paymentOption}
+            installmentsQuantity={installmentsQuantity}
+            eventProviderName={eventProviderName}
+            eventName={eventName}
+            total={total}
+            primaryEmail={primaryEmail}
+            familyId={familyId}
+            eventId={eventId}
+            validKids={validKids}
+            validParents={validParents}
+            validAddresses={validAddresses}
+            validMedia={validMedia}
+            validFamilyById={validFamilyById}
+            validChecked={validChecked}
+            photoConsent={photoConsent}
+            formIsValid={formIsValid}
+          />
         </div>
+
+        <HelpContact />
       </div>
     );
   }
@@ -66,18 +79,41 @@ class ConfirmStep extends Component {
 
 function mapStateToProps(state) {
   return {
-    // staffById: getStaffById(state),
-    assoEmail: getAssoEmail(state),
+    paymentOption: getPaymentOption(state),
+    installmentsQuantity: getInstallmentsQuantity(state),
+    photoConsent: getPhotoConsent(state),
+    familyId: getFamilyId(state),
+    eventId: getEventId(state),
+    validKids: getValidKids(state),
+    validParents: getValidParents(state),
+    validAddresses: getValidAddresses(state),
+    validMedia: getValidMedia(state),
+    validFamilyById: getValidFamilyById(state),
+    validChecked: getValidChecked(state),
+    primaryEmail: getPrimaryEmail(state),
+    eventName: getEventName(state),
+    total: getTotal(state),
+    formIsValid: getFormIsValid(state),
     eventProviderName: getEventProviderName(state)
-    // eventContacts: getEventContacts(state)
   };
 }
 
 export default connect(mapStateToProps)(ConfirmStep);
 
 ConfirmStep.propTypes = {
-  // staffById: PropTypes.object.isRequired,
-  assoEmail: PropTypes.string.isRequired,
+  paymentOption: PropTypes.string,
+  installmentsQuantity: PropTypes.number.isRequired,
+  photoConsent: PropTypes.bool.isRequired,
+  familyId: PropTypes.string.isRequired,
+  eventId: PropTypes.string.isRequired,
+  validKids: PropTypes.array.isRequired,
+  validParents: PropTypes.array.isRequired,
+  validMedia: PropTypes.array.isRequired,
+  validFamilyById: PropTypes.object.isRequired,
+  validChecked: PropTypes.object.isRequired,
+  total: PropTypes.number.isRequired,
+  primaryEmail: PropTypes.string.isRequired,
+  eventName: PropTypes.string.isRequired,
+  formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired,
   eventProviderName: PropTypes.string.isRequired
-  // eventContacts: PropTypes.array.isRequired
 };

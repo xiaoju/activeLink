@@ -6,6 +6,7 @@ import SelectClassesForm from './SelectClassesForm';
 import OrderSummary from './OrderSummary';
 import PhotoConsent from './PhotoConsent';
 import CallForVolunteers from './CallForVolunteers';
+import SelectPaymentOption from './SelectPaymentOption';
 import ConfirmStep from './ConfirmStep';
 
 // line 22, should have several events in redux state at same time.
@@ -15,6 +16,9 @@ import ConfirmStep from './ConfirmStep';
 
 class RegisterEvent extends Component {
   render() {
+    // const eventId = this.props.match.params.eventId;
+    //TODO above eventId will be useful when the form is built dynamically for each event
+
     return (
       <div>
         {!this.props.profile && <h5>Please log in!</h5>}
@@ -25,11 +29,12 @@ class RegisterEvent extends Component {
           this.props.events && (
             <div>
               <ProfileForm sectionTitle="① Update your profile" />
-              <SelectClassesForm sectionTitle="② Select classes for your kids" />
+              <SelectClassesForm sectionTitle="② Select classes for your children" />
               <CallForVolunteers sectionTitle="③ Call for Volunteers!" />
               <PhotoConsent sectionTitle="④ Photo & video consent" />
-              <OrderSummary sectionTitle="⑤ Review your order" />
-              <ConfirmStep sectionTitle="⑥ Confirm and pay" />
+              <SelectPaymentOption sectionTitle="⑤ Select your payment option" />
+              <OrderSummary sectionTitle="⑥ Review your order" />
+              <ConfirmStep sectionTitle="⑦ Confirm" />
             </div>
           )}
       </div>

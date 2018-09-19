@@ -39,16 +39,13 @@ class LogIn extends Component {
   }
 
   handleMessageCode(messageCode) {
-    // console.log('messageCode: ', messageCode);
     switch (messageCode) {
       case '851': {
-        console.log('case 851');
         this.setState({ errorMessage: 'TEST MESSAGE' });
         return;
       }
 
       default:
-        console.log('case null');
         this.setState({ errorMessage: '' });
     }
   }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getFormIsValid } from '../selectors';
+import { getFormIsValid, getPaymentOption } from '../selectors';
 import PropTypes from 'prop-types';
 
 class ValidationPanel extends Component {
   render() {
     const {
+      paymentOption,
       formIsValid: {
         totalNotZero,
         oneAddressMini,
@@ -17,7 +18,7 @@ class ValidationPanel extends Component {
     } = this.props;
 
     return (
-      <div className="card-panel validationMessage">
+      <div className="card-panel validationMessage container">
         {!totalNotZero && (
           <p>
             <strong>Items:</strong> please select the items you want to purchase
@@ -52,6 +53,12 @@ class ValidationPanel extends Component {
             for at least 1 parent.
           </p>
         )}
+        {!paymentOption && (
+          <p>
+            <strong>Payment option:</strong> please select a payment option in
+            section ⑥.
+          </p>
+        )}
       </div>
     );
   }
@@ -59,6 +66,7 @@ class ValidationPanel extends Component {
 
 function mapStateToProps(state) {
   return {
+    paymentOption: getPaymentOption(state),
     formIsValid: getFormIsValid(state)
   };
 }
@@ -66,5 +74,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(ValidationPanel);
 
 ValidationPanel.propTypes = {
+  paymentOption: PropTypes.string,
   formIsValid: PropTypes.objectOf(PropTypes.bool).isRequired
 };

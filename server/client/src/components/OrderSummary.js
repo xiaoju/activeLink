@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  getPaymentOption,
+  // getInstallmentsQuantity,
   getPhotoConsent,
   getPrimaryEmail,
   getVolunteeringItems,
@@ -29,6 +31,8 @@ import {
 class OrderSummary extends Component {
   render() {
     const {
+      paymentOption,
+      // installmentsQuantity,
       photoConsent,
       primaryEmail,
       sectionTitle,
@@ -221,6 +225,19 @@ class OrderSummary extends Component {
           ) : (
             <p>No pictures of my children please!</p>
           )}
+
+          {/* Consent section */}
+          <h5>- ➎ Payment Option -</h5>
+          <p>
+            {
+              {
+                creditCard: '1 installment, per credit card.',
+                moneyCheque: '3 installments, per cheque.',
+                bankTransfer: '3 installments, per bank transfer.',
+                null: 'Please select a payment option in section ⑥.'
+              }[paymentOption]
+            }
+          </p>
         </div>
       </div>
     );
@@ -229,6 +246,8 @@ class OrderSummary extends Component {
 
 function mapStateToProps(state) {
   return {
+    paymentOption: getPaymentOption(state),
+    // installmentsQuantity: getInstallmentsQuantity(state),
     photoConsent: getPhotoConsent(state),
     primaryEmail: getPrimaryEmail(state),
     volunteeringItems: getVolunteeringItems(state),

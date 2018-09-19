@@ -6,12 +6,17 @@ import { capitalizeFirstLetter } from '../utils/Tools';
 export const getSelectedAsso = state => state.currentForm.selectedAsso;
 export const getSelectedEvent = state => state.currentForm.selectedEvent;
 export const getSelectedFamily = state => state.currentForm.selectedFamily;
+export const getPaymentOption = state => state.currentForm.paymentOption;
+export const getInstallmentsQuantity = state =>
+  state.currentForm.installmentsQuantity;
 
 export const getErrorMessage = state => state.ui.errorMessage;
 
 export const getDashboardIsLoaded = state => state.dashboard.loaded;
 
 export const getAssoEmail = state => state.asso.assoEmail;
+export const getBankReference = state =>
+  state.assos.assosById['a0'].bankReference;
 export const getReplyTo = state => state.asso.replyTo;
 export const getEmailFrom = state => state.asso.emailFrom;
 export const getItemsById = state => state.asso.itemsById;
@@ -469,7 +474,8 @@ export const getFormIsValid = createSelector(
     getOnePhoneMini,
     // getOneEmailMini,
     getOneKidMini,
-    getOneParentMini
+    getOneParentMini,
+    getPaymentOption
   ],
   (
     totalNotZero,
@@ -477,7 +483,8 @@ export const getFormIsValid = createSelector(
     onePhoneMini,
     // oneEmailMini,
     oneKidMini,
-    oneParentMini
+    oneParentMini,
+    paymentOption
   ) => ({
     totalNotZero,
     oneAddressMini,
@@ -491,7 +498,8 @@ export const getFormIsValid = createSelector(
       onePhoneMini &&
       // oneEmailMini &&
       oneKidMini &&
-      oneParentMini
+      oneParentMini &&
+      !!paymentOption
   })
 );
 

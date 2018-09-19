@@ -17,8 +17,22 @@ import Dump from './admin/Dump';
 import Dashboard from './admin/Dashboard';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-library.add(faSignInAlt, faSignOutAlt);
+import {
+  faSignInAlt,
+  faSignOutAlt,
+  faMoneyCheck,
+  faCreditCard,
+  faExchangeAlt,
+  faShoppingCart
+} from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faSignInAlt,
+  faSignOutAlt,
+  faMoneyCheck,
+  faCreditCard,
+  faExchangeAlt,
+  faShoppingCart
+);
 
 class App extends Component {
   componentDidMount() {
