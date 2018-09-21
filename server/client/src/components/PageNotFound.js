@@ -1,10 +1,10 @@
 import React from 'react';
+import PageSection from './layout/PageSection';
 
 function PageNotFound() {
   return (
-    <div className="itemsContainer hoverable">
+    <PageSection sectionTitle="404 errror">
       <div className="innerContainer">
-        <h4 className="stepTitle">404 errror</h4>
         <div className="title_and_button">
           <strong>
             <h5>
@@ -16,7 +16,7 @@ function PageNotFound() {
           </strong>
         </div>
       </div>
-    </div>
+    </PageSection>
   );
 }
 

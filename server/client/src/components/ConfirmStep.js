@@ -22,6 +22,7 @@ import {
 import Payment from './Payment';
 import ValidationPanel from './ValidationPanel';
 import HelpContact from './HelpContact';
+import PageSection from './layout/PageSection';
 
 class ConfirmStep extends Component {
   render() {
@@ -46,10 +47,8 @@ class ConfirmStep extends Component {
     } = this.props;
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">{sectionTitle}</h4>
+      <PageSection sectionTitle={sectionTitle}>
         <ValidationPanel />
-
         <div className="paymentOptions container">
           <Payment
             paymentOption={paymentOption}
@@ -72,7 +71,7 @@ class ConfirmStep extends Component {
         </div>
 
         <HelpContact />
-      </div>
+      </PageSection>
     );
   }
 }

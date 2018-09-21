@@ -1,17 +1,17 @@
 import React from 'react';
+import PageSection from './layout/PageSection';
 
 function MyClasses() {
   return (
-    <div className="itemsContainer hoverable">
+    <PageSection sectionTitle="Members Area">
       <div className="innerContainer">
-        <h4 className="stepTitle">Members Area</h4>
         <div className="title_and_button">
           <strong>
             <h5>Please log in to enter the members area.</h5>
           </strong>
         </div>
       </div>
-    </div>
+    </PageSection>
   );
 }
 

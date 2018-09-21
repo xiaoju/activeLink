@@ -10,6 +10,7 @@ import {
   getAddresses,
   getFamilyMedia
 } from '../selectors';
+import PageSection from './layout/PageSection';
 import OneKidForm from './OneKidForm';
 import OneAddressForm from './OneAddressForm';
 import OneMediaForm from './OneMediaForm';
@@ -28,9 +29,8 @@ class ProfileForm extends Component {
     } = this.props;
 
     return (
-      <div className="itemsContainer hoverable">
+      <PageSection sectionTitle={sectionTitle}>
         <div className="innerContainer">
-          <h4 className="stepTitle">{sectionTitle}</h4>
           <div className="title_and_button">
             <h5>
               <strong>Children</strong>
@@ -92,7 +92,7 @@ class ProfileForm extends Component {
               />
             ))}
         </div>
-      </div>
+      </PageSection>
     );
   }
 }

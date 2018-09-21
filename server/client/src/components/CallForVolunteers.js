@@ -9,6 +9,7 @@ import {
   getItemsById
 } from '../selectors';
 // import PropTypes from 'prop-types';
+import PageSection from './layout/PageSection';
 
 class CallForVolunteers extends Component {
   render() {
@@ -23,8 +24,7 @@ class CallForVolunteers extends Component {
     } = this.props;
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">{sectionTitle}</h4>
+      <PageSection sectionTitle={sectionTitle}>
         <div className="container itemDetails">
           <p>
             Without support from parents, The English Link may need to scale
@@ -112,7 +112,7 @@ class CallForVolunteers extends Component {
             </label>
           </div>
         </div> */}
-      </div>
+      </PageSection>
     );
   }
 }

@@ -1,160 +1,141 @@
 import React from 'react';
+import PageSection from './layout/PageSection';
+
+// TODO automatically log out, and remove from state what needs to
 
 function OrderReceipt(props) {
   let {
-    // familyId, // 'abcd'
-    // users, // [{id, firstName, familyName, kidGrade},{},...]
-    // allKids, // ['k0', 'k2']
-    // allParents, // ['p0', 'p1']
-    // addresses, // [{...}, {value: 'abc', tags: ['ab', 'de']}]
-    // familyMedia, // [{media: 'email', value: 'abc@abc.abc', tags: ['personal']}, {media: 'phone', value: '12345', tags: []}]
-    // photoConsent, // false
     assoName,
     primaryEmail,
-    eventName, // 'this is the name'
-    total, // 30000 (in cents)
-    timeStamp, //12345432
-    currency, // 'eur'
-    last4, // '1234'
-    status, // 'succeeded'
-    chargeId, // 'abcd'
-    applyDiscount // true
-    // allPurchasedItems, // ['i0', 'i2', 'i7']
-    // purchasedItemsById // { i0: {...}, i2: { id: 'i2', name: 'Knitting class', period: '2038-2039', paidPrice: 3000, beneficiaries: ['familyId', 'k7', 'p3'] } }
+    eventName,
+    applyDiscount,
+    paymentOption,
+    total,
+    datesToPay,
+    bankReference: { IBAN, BIC, AccountName, BankName },
+    paymentReference,
+    installmentsQuantity,
+    chequeOrder,
+    chequeCollection,
+    timeStamp,
+    currency,
+    last4,
+    status,
+    chargeId
   } = props.receipt;
-  return (
-    <div>
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">⑦ Order receipt</h4>
+
+  return paymentOption !== 'creditCard' ? (
+    <PageSection sectionTitle="⑧ Confirmation">
+      <div className="itemDetails innerContainer">
+        <p>
+          Your pre-registration to {assoName}, {eventName}, is complete. <br />Thank
+          you!<br />
+          Please proceed with your first payment as soon as possible, <br />per
+          cheque or bank transfer:
+        </p>
+      </div>
+      <div className="itemDetails innerContainer">
+        <h6>
+          <strong>Payment per bank transfer: </strong>
+        </h6>
+        <ul>
+          <li>
+            {installmentsQuantity} payments of{' '}
+            {Math.ceil(total / installmentsQuantity / 100)}&nbsp;&euro; each,
+          </li>
+          <li>
+            on{' '}
+            {datesToPay
+              .map(timeStamp =>
+                new Date(timeStamp * 1).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })
+              )
+              .join(', ')}.
+          </li>
+          <li>
+            <strong>or</strong> 1 payment of {Math.ceil(total / 100)}&nbsp;&euro;.
+          </li>
+          <li>Account name: {AccountName}</li>
+          <li>Name of the bank: {BankName}</li>
+          <li>IBAN: {IBAN}</li>
+          <li>BIC: {BIC}</li>
+          <li>
+            Reference to write: <strong>{paymentReference}</strong>
+          </li>
+        </ul>
+      </div>
+      <div className="itemDetails innerContainer">
+        <h6>
+          <strong>Payment per cheque: </strong>
+        </h6>
+        <ul>
+          <li>1 cheque of {Math.ceil(total / 100)}&nbsp;&euro;</li>
+          <strong> or </strong>3 cheques of{' '}
+          {Math.ceil(total / installmentsQuantity / 100)}&nbsp;&euro; each,
+          <li>
+            to the order of <strong>{chequeOrder}</strong>.
+          </li>
+          <li>
+            Object: <strong>{paymentReference}</strong>
+          </li>
+          <li>{chequeCollection}</li>
+        </ul>
+      </div>
+      <div className="itemDetails innerContainer">
+        <p>
+          We've sent an email to your address <strong>{primaryEmail}</strong>{' '}
+          with this information. <br />
+          You now can close this page.
+        </p>
+      </div>
+    </PageSection>
+  ) : (
+    <PageSection sectionTitle="⑧ Order receipt">
+      <div className="innerContainer">
         <p>
           This is your receipt. <br />
           We've sent a copy for you to <strong>{primaryEmail}</strong>.
         </p>
-        <div className="orderSummary" style={{ margin: '3em 2%' }}>
-          <ul>
-            <li>
-              <strong>
-                {assoName}, {eventName}
-              </strong>
-            </li>
-            <li>
-              <strong>Receipt number: </strong>
-              {chargeId}
-            </li>
-            <li>
-              <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
-            </li>
-            <li>
-              <strong>Total paid: </strong> {total / 100}{' '}
-              {currency.toUpperCase()}
-            </li>
-            <li>{applyDiscount && 'Discount has been applied.'}</li>
-            <li>
-              <strong>Payment status: </strong>
-              {status}
-            </li>
-            <li>
-              <strong>Time: </strong>
-              {new Date(1000 * timeStamp).toLocaleString()}
-            </li>
-          </ul>
-          {/*
-      <h5>Profile:</h5>
-      <br />
-      <strong>kids</strong>
-      <ul>
-        {allKids.map(userId => (
-          <li key={userId}>
-            {users[userId].firstName} {users[userId].familyName},{' '}
-            {users[userId].kidGrade}
-          </li>
-        ))}
-      </ul>
-      <br />
-      <strong>Parents</strong>
-      <ul>
-        {allParents.map(userId => (
-          <li key={userId}>
-            {users[userId].firstName} {users[userId].familyName}
-          </li>
-        ))}
-      </ul>
-      <br />
-      <strong>Address</strong>
-      <br />
-      {addresses.map(addressObject => (
-        <li key={addressObject.value}>
-          {addressObject.media} (``{addressObject.tags.map(tag => (
-            <span>{tag} </span>
-          ))}): {addressObject.value}
-        </li>
-      ))}
-      <br />
-      <strong>Phone and emails</strong>
-      <br />
-      <ul>
-        {familyMedia.map(mediaObj => (
-          <li key={mediaObj.value}>
-            {mediaObj.media} ( {mediaObj.tags.map(tag => <span>{tag} </span>)}):{' '}
-            {mediaObj.value}
-          </li>
-        ))}
-      </ul>
-      <br />
-      <strong>Photo consent: </strong>
-      {allPurchasedItems.includes('i21')
-        ? 'OK for pictures'
-        : 'not OK for pictures'}
-         */}
-
-          {/* {allPurchasedToday.map(obj => (
-        <ul key={obj.id}>
+      </div>
+      <div className="container orderSummary">
+        <ul>
           <li>
-            Item: {obj.name}, {obj.period}
+            <strong>{assoName}</strong>
           </li>
-          <li>Price: {obj.paidPrice / 100} &euro;</li>
           <li>
-            {obj.beneficiaries.map((name, index) => (
-              <span key={index}>{name} </span>
-            ))}
+            <strong>{eventName}</strong>
+          </li>
+          <li>
+            <strong>Receipt number: </strong>
+            {chargeId}
+          </li>
+          <li>
+            <strong>Credit card number: </strong>xxxx xxxx xxxx {last4}
+          </li>
+          <li>
+            <strong>Total paid: </strong> {total / 100} {currency.toUpperCase()}
+          </li>
+          <li>{applyDiscount && 'Discount has been applied.'}</li>
+          <li>
+            <strong>Payment status: </strong>
+            {status}
+          </li>
+          <li>
+            <strong>Time: </strong>
+            {new Date(1000 * timeStamp).toLocaleString()}
           </li>
         </ul>
-      ))} */}
-
-          {/*
-      <strong>Purchased items: </strong>
-      <div>
-        {allPurchasedItems.map(itemId => (
-          <div>
-            <ul>
-              <li>{purchasedItemsById[itemId].name}</li>
-              <li>{purchasedItemsById[itemId].period}</li>
-              <li>
-                Price: {purchasedItemsById[itemId].paidPrice / 100}{' '}
-                {currency === 'eur' ? 'EUR' : currency}
-              </li>
-            </ul>
-            <ul>
-              <strong>Beneficiaries: </strong>
-              {purchasedItemsById[itemId].beneficiaries.map(userId => (
-                <li>
-                  {userId === familyId
-                    ? 'The whole family'
-                    : users[userId].firstName + ' ' + users[userId].familyName}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div> */}
-        </div>
+      </div>
+      <div className="itemDetails innerContainer">
         <p>
           Thank you for your registration and enjoy the activities!<br />
-          You can now close this page.
+          You now can close this page.
         </p>
       </div>
-    </div>
-    // TODO automatically log out, and remove from state what needs to
+    </PageSection>
   );
 }
 

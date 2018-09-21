@@ -31,6 +31,8 @@ const assoSchema = new Schema({
       }
     ]
   },
+  chequeOrder: { type: String, default: '' },
+  chequeCollection: { type: String, default: '' },
   assoEvents: { type: [String], default: [] }
 
   // currentRegistrationEvents: { type: Array, default: [] },

@@ -27,6 +27,7 @@ import {
   getTotal,
   getFamilyById
 } from '../selectors';
+import PageSection from './layout/PageSection';
 
 class OrderSummary extends Component {
   render() {
@@ -81,8 +82,7 @@ class OrderSummary extends Component {
     );
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">{sectionTitle}</h4>
+      <PageSection sectionTitle={sectionTitle}>
         <div className="orderSummary" style={{ margin: '2%' }}>
           {/* Profile section */}
           <h5>- ➊ Profile -</h5>
@@ -239,7 +239,7 @@ class OrderSummary extends Component {
             }
           </p>
         </div>
-      </div>
+      </PageSection>
     );
   }
 }

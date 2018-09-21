@@ -20,6 +20,7 @@ import {
   getDiscountedPrices,
   getValidKids
 } from '../selectors';
+import PageSection from './layout/PageSection';
 
 class SelectClassesForm extends Component {
   render() {
@@ -42,8 +43,7 @@ class SelectClassesForm extends Component {
     } = this.props;
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">{sectionTitle}</h4>
+      <PageSection sectionTitle={sectionTitle}>
         {allItems &&
           allItems.map((itemId, i) => (
             <div className="container itemDetails" key={itemId}>
@@ -90,7 +90,7 @@ class SelectClassesForm extends Component {
               />
             </div>
           ))}
-      </div>
+      </PageSection>
     );
   }
 }

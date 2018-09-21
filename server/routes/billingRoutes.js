@@ -24,6 +24,9 @@ module.exports = app => {
     // Save the raw user input into database, for future reference
     // userInput is all of req.body without req.body.stripeToken
     const userInput = {
+      // stripeTokenId: req.body.stripeToken ? req.body.stripeToken.id : null,
+      paymentOption: req.body.paymentOption,
+      installmentsQuantity: req.body.installmentsQuantity,
       familyId: req.body.familyId,
       eventId: req.body.eventId,
       validKids: req.body.validKids,
@@ -36,6 +39,11 @@ module.exports = app => {
       total: req.body.total,
       timestamp: Date.now()
     };
+    // console.log(
+    //   'billingRoutes, 43, userInput.stripeTokenId: ',
+    //   userInput.stripeTokenId
+    // );
+
     const inputHistoryNewCount = req.user.inputsHistory.push(userInput); // NB we won't use this const
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -44,7 +52,10 @@ module.exports = app => {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // rename the variables from frontend, for clarity:
     const familyId = req.user.familyId,
+      stripeTokenId = req.body.stripeToken ? req.body.stripeToken.id : null,
       primaryEmail = req.user.primaryEmail,
+      paymentOption = req.body.paymentOption,
+      installmentsQuantity = req.body.installmentsQuantity,
       frontendEventId = req.body.eventId,
       frontendAllKids = req.body.validKids,
       frontendAllParents = req.body.validParents,
@@ -63,6 +74,8 @@ module.exports = app => {
         frontendTotal,
         frontendChecked
       };
+
+    console.log('billingroutes.js, 78, stripeTokenId: ', stripeTokenId);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // look up the event details, from backend database
@@ -85,6 +98,7 @@ module.exports = app => {
     // TODO e0 is hardcoded!
     const previousRegistered = thisAsso.registrations;
     const {
+      eventId,
       eventName,
       discountedPrices,
       standardPrices
@@ -112,6 +126,7 @@ module.exports = app => {
       });
       // NB this custom error text is actually not shown in my client app
     } else {
+      let validatedTotal = frontendTotal;
       // ######## end of form validation ########
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -227,38 +242,59 @@ module.exports = app => {
       });
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // execute the paiement
-      const chargeDescription = assoName + '-' + eventName + '-' + primaryEmail;
+      // execute the payment
+      // console.log('billingRoutes, 244, testing paymentOption: ', paymentOption);
+
       let stripeReceipt;
-      try {
-        stripeReceipt = await stripe.charges.create({
-          amount: frontendTotal,
-          currency: 'eur',
-          description: chargeDescription,
-          source: req.body.stripeToken.id
-        });
-      } catch (error) {
-        'familyId: ',
-          familyId,
-          console.log('. Error while connecting to Stripe server: ', error);
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // save stripeCharge receipt into this `family` collection, in database,
-      // for future reference:
-      const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
-      try {
-        family = await req.user.save();
-      } catch (error) {
-        console.log(
+      if (paymentOption === 'creditCard') {
+        const chargeDescription =
+          assoName + '-' + eventName + '-' + primaryEmail;
+        try {
+          console.log('billingRoutes, 250, creating Stripe Charge');
+          stripeReceipt = await stripe.charges.create({
+            amount: validatedTotal,
+            currency: 'eur',
+            description: chargeDescription,
+            source: stripeTokenId
+          });
+          console.log(
+            'billingRoutes, 257, stripeReceipt.id: ',
+            stripeReceipt.id
+          );
+        } catch (error) {
           'familyId: ',
-          familyId,
-          '. Error while saving stripeCharge to database: ',
-          error
-        );
+            familyId,
+            console.log('. Error while connecting to Stripe server: ', error);
+        }
+
+        // console.log('billingRoutes, 264, stripeReceipt.id: ', stripeReceipt.id);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // save stripeCharge receipt into this `family` collection, in database,
+        // for future reference:
+        const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
+        console.log('billingRoutes, 270, ReceiptsCount: ', ReceiptsCount);
+        console.log('billingRoutes, 283, stripeReceipt.id: ', stripeReceipt.id);
+        try {
+          family = await req.user.save();
+        } catch (error) {
+          console.log(
+            'familyId: ',
+            familyId,
+            '. Error while saving stripeCharge to database: ',
+            error
+          );
+        }
       }
 
-      if (stripeReceipt.status === 'succeeded') {
+      console.log('billingRoutes, 283, stripeReceipt: ', stripeReceipt);
+
+      if (
+        (paymentOption === 'creditCard' &&
+          stripeReceipt.status === 'succeeded') ||
+        paymentOption === 'bankTransfer' ||
+        paymentOption === 'moneyCheque'
+      ) {
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // save the paid classes into the `registrations` property of `asso`
 
@@ -462,7 +498,16 @@ module.exports = app => {
       // TODO all the data in publicReceipt should be pulled from the database,
       // not from the request data, otherwise it will be wrong whenever there was
       // an erorr during database writing.
+      const paymentReference = (
+        eventId +
+        '-' +
+        familyId.slice(0, 4) +
+        '-' +
+        familyId.slice(4, 8)
+      ).toUpperCase();
+
       let publicReceipt = {
+        paymentOption,
         assoName: thisAsso.name,
         mergedFamilyName,
         familyId,
@@ -474,13 +519,25 @@ module.exports = app => {
         familyMedia: family.familyMedia,
         photoConsent: family.photoConsent,
         eventName,
-        total: stripeReceipt.amount,
-        livemode: stripeReceipt.livemode,
-        timeStamp: stripeReceipt.created,
-        currency: stripeReceipt.currency,
-        last4: stripeReceipt.source.last4,
-        status: stripeReceipt.status,
-        chargeId: stripeReceipt.id,
+        paymentOption,
+        paymentReference,
+        datesToPay: thisEvent.installmentDates,
+        bankReference: thisAsso.bankReference[0],
+        installmentsQuantity:
+          paymentOption !== 'creditCard' ? thisEvent.installments * 1 : 1,
+        chequeOrder: thisAsso.chequeOrder,
+        chequeCollection: thisAsso.chequeCollection,
+        total: validatedTotal,
+        livemode:
+          paymentOption === 'creditCard' ? stripeReceipt.livemode : null,
+        timeStamp:
+          paymentOption === 'creditCard' ? stripeReceipt.created : null,
+        currency:
+          paymentOption === 'creditCard' ? stripeReceipt.currency : null,
+        last4:
+          paymentOption === 'creditCard' ? stripeReceipt.source.last4 : null,
+        status: paymentOption === 'creditCard' ? stripeReceipt.status : null,
+        chargeId: paymentOption === 'creditCard' ? stripeReceipt.id : null,
         familyRegistrations, // purchased in this order or BEFORE
         applyDiscount,
         allPurchasedItems, // purchased in THIS purchase order // TODO copy to family database with date of purchase, for archive
@@ -504,34 +561,89 @@ module.exports = app => {
         )
         .join(' & ');
 
-      const emailBody =
-        'Hello,\n\n' +
-        'thank you for your registration!\n' +
-        'You find below your confirmation of registration. ' +
-        'Please contact us if you notice any error.\n\n' +
-        'Kind Regards,\n' +
-        'Jerome\n\n' +
+      const paymentDatesString = publicReceipt.datesToPay
+        .map(
+          timeStamp =>
+            '            ' +
+            new Date(timeStamp * 1).toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            })
+        )
+        .join('\n');
+
+      const email_Volunteering =
+        '# Volunteering # \n\n' +
+        (publicReceipt.purchasedVolunteeringItems.length > 0
+          ? 'I volunteer to help with following activities:\n' +
+            publicReceipt.purchasedVolunteeringItems
+              .map(
+                itemId => '- ' + publicReceipt.purchasedItemsById[itemId].name
+              )
+              .join('\n')
+          : 'I choose not to volunteer to assist with any activities at this time.') +
+        '\n\n';
+
+      const email_Closing =
+        '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n';
+
+      // prettier-ignore
+      const email_Greetings =
+        'Dear ' + capitalizeFirstLetter(
+          publicReceipt.users[publicReceipt.allParents[0]].firstName) + ',\n\n' +
+        'thank you for your ' +
+        (paymentOption === 'creditCard' ? '' : 'pre-') + 'registration to ' +
+        thisAsso.name + '!\n' +
+        'You find below a summary of the information you submitted. ' +
+        'Please contact us if you notice any error.\n\n';
+
+      // prettier-ignore
+      const email_PaymentInstructions =
+        paymentOption !== 'creditCard' ?
+            'To complete this registration, please proceed with the payment, ' +
+            'either per cheque, either per bank transfer:\n\n' +
+            'Per cheque: \n' +
+            '    - 3 cheques of ' + Math.ceil(publicReceipt.total / 300) + ' EUR each,\n' +
+            '         to be dropped in the mailbox of ' + thisAsso.name + ',\n' +
+            '         and that will be cashed on:\n' + paymentDatesString + '\n' +
+            '      or 1 cheque only of ' + Math.ceil(publicReceipt.total / 100) + 'EUR,\n' +
+            '    - to the order of: ' + thisAsso.name + '.\n' +
+            '    - Object (important!): ' + paymentReference + '.\n\n' +
+            'Per bank transfer: \n' +
+            '    - 3 payments of ' + Math.ceil(publicReceipt.total / 300) + ' EUR each,\n' +
+            '      or 1 payment only of ' + Math.ceil(publicReceipt.total / 100) + '\n' +
+            '    - IBAN: ' + thisAsso.bankReference[0].IBAN + '\n' +
+            '    - BIC: ' + thisAsso.bankReference[0].BIC + '\n' +
+            '    - Name of the bank: ' + thisAsso.bankReference[0].BankName + '\n' +
+            '    - Account owner: ' + thisAsso.name + '\n' +
+            '    - Reference to write (important!): ' + paymentReference + '\n' +
+            '    - Deadlines for the transfers:\n' + paymentDatesString + '\n\n'
+          : '';
+
+      // prettier-ignore
+      const email_CreditCardReceipt =
+        paymentOption === 'creditCard'
+          ? '# Payment receipt #\n\n' +
+            '- Receipt No.: ' + publicReceipt.chargeId + '\n' +
+            '- Credit card number: xxxx xxxx xxxx ' + publicReceipt.last4 + '\n' +
+            '- Total paid: ' + publicReceipt.total / 100 + ' EUR \n' +
+            '- Payment status: ' + publicReceipt.status + '\n' +
+            '- Time: ' + new Date(1000 * publicReceipt.timeStamp).toLocaleString() + '\n\n'
+          : '';
+
+      const email_Regards = 'Kind Regards,\n' + 'Jerome\n\n';
+
+      // prettier-ignore
+      const email_AssoHeader =
         '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n' +
-        thisAsso.name +
-        ', ' +
-        thisEvent.eventName +
-        '\n\n' +
-        '# Paiement receipt #\n\n' +
-        '- Receipt No.: ' +
-        publicReceipt.chargeId +
-        '\n' +
-        '- Credit card number: xxxx xxxx xxxx ' +
-        publicReceipt.last4 +
-        '\n' +
-        '- Total paid: ' +
-        publicReceipt.total / 100 +
-        ' EUR \n' +
-        '- Payment status: ' +
-        publicReceipt.status +
-        '\n' +
-        '- Time: ' +
-        new Date(1000 * publicReceipt.timeStamp).toLocaleString() +
-        '\n\n' +
+        thisAsso.name + '\n' +
+        thisAsso.address + '\n' +
+        'Association registered at the prefecture under number ' +
+        thisAsso.referenceNumbers.SIRETnumber + '\n\n' +
+        thisEvent.eventName + '\n\n';
+
+      const email_Profile =
         '# Profile #\n\n' +
         '## Children ##\n\n' +
         publicReceipt.allKids
@@ -557,7 +669,7 @@ module.exports = app => {
           )
           .join('\n') +
         '\n\n' +
-        '## Phones & Emails ##\n\n' +
+        '## Phones, emails, post addresses ##\n\n' +
         '- Primary email: ' +
         publicReceipt.primaryEmail +
         '\n' +
@@ -576,14 +688,13 @@ module.exports = app => {
         publicReceipt.addresses
           .map(
             address =>
-              '- address (' +
-              address.tags.join(', ') +
-              '): ' +
-              address.value +
-              '\n'
+              '- address (' + address.tags.join(', ') + '): ' + address.value
           )
-          .join() +
-        '\n # Selected classes # \n\n' +
+          .join('\n') +
+        '\n\n';
+
+      const email_SelectedClasses =
+        '# Selected classes # \n\n' +
         publicReceipt.purchasedClassItems
           .map(
             itemId =>
@@ -607,7 +718,9 @@ module.exports = app => {
               ' EUR.'
           )
           .join('\n') +
-        '\n\n' +
+        '\n\n';
+
+      const email_PhotoConsent =
         '# Photo & Video Consent # \n\n' +
         (publicReceipt.photoConsent
           ? 'I give permission to ' +
@@ -635,36 +748,43 @@ module.exports = app => {
         publicReceipt.users[
           publicReceipt.allParents[0]
         ].familyName.toUpperCase() +
-        '\n\n' +
-        '# Volunteering # \n\n' +
-        (publicReceipt.purchasedVolunteeringItems.length > 0
-          ? 'I volunteer to help with following activities:\n' +
-            publicReceipt.purchasedVolunteeringItems
-              .map(
-                itemId => '- ' + publicReceipt.purchasedItemsById[itemId].name
-              )
-              .join('\n')
-          : 'I choose not to volunteer to assist with any activities at this time.') +
-        '\n\n' +
-        '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n';
+        '\n\n';
 
-      const emailData = {
+      const email_Text =
+        email_Greetings +
+        email_PaymentInstructions +
+        email_Regards +
+        email_AssoHeader +
+        email_CreditCardReceipt +
+        email_Profile +
+        email_SelectedClasses +
+        email_PhotoConsent +
+        email_Volunteering +
+        email_Closing;
+
+      const email_Subject =
+        (publicReceipt.livemode ? '' : 'TEST / ') +
+        thisAsso.name +
+        ' / ' +
+        mergedFamilyName +
+        ' / ' +
+        {
+          moneyCheque: 'Registration (payment required)',
+          bankTransfer: 'Registration (payment required)',
+          creditCard: 'Confirmation of registration'
+        }[paymentOption];
+
+      const email_Data = {
         from: thisAsso.emailFrom,
         to: primaryEmail,
         cc: thisAsso.backupEmail,
         'h:Reply-To': thisAsso.replyTo,
-        subject:
-          thisAsso.name +
-          (publicReceipt.livemode ? ' / ' : ' - TEST - / ') +
-          mergedFamilyName +
-          ' / Confirmation of registration',
-        text: emailBody
+        subject: email_Subject,
+        text: email_Text
       };
 
-      // console.log('emailData: ', emailData);
-
       try {
-        mailgun.messages().send(emailData, function(error, body) {
+        mailgun.messages().send(email_Data, function(error, body) {
           if (error) {
             console.log('billingRoutes, 591. ERROR: ', error);
             res.status(500).json({ error: error.toString() });

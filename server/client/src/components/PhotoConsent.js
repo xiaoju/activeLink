@@ -10,6 +10,7 @@ import {
   getValidKids,
   getFamilyById
 } from '../selectors';
+import PageSection from './layout/PageSection';
 
 class PhotoConsent extends Component {
   render() {
@@ -55,8 +56,7 @@ class PhotoConsent extends Component {
     );
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">{sectionTitle}</h4>
+      <PageSection sectionTitle={sectionTitle}>
         <div className="container itemDetails">
           <div className="photoConsentCheckbox">
             <div className="switch">
@@ -78,7 +78,7 @@ class PhotoConsent extends Component {
             </p>
           </div>
         </div>
-      </div>
+      </PageSection>
     );
   }
 }

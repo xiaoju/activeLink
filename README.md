@@ -112,8 +112,8 @@ old version:
 // BUG this user gets "" as a UUID! Anyway, don't use an admin account to book classes!
 
 
-- database backup
-  - install mongoDB locally to get the mongodumb command
+### database backup
+  - install mongoDB locally to get the mongodumb command:
     - on mac: `
       ```
       brew update
@@ -121,7 +121,21 @@ old version:
       mongodump -h ds247347.mlab.com:47347 -d activelink-prod -u <user> -p <password> -o <output directory>
       ```
 
-    - see MongodbCommands.md
+  - backup from production database to local folder:
+    `mongodump -h dsxxxxxx.mlab.com:xxxxx -d <production_database_name> -u <user_name-prod-RO> -p <password> -o <local-folder>`
+
+    where `user_name-prod-RO` is the name of a user with read-only rights on the production database `production_database_name`.
+
+  - restore (for example restore to the -staging database)
+    - delele all collections from the target database (`staging_database_name`), because mongorestore doesn't replace documents with same IDs.
+    - restore
+      - for mongoDB version older than 3.4:
+    `mongorestore -h dsxxxxxx.mlab.com:xxxxx -d <staging_database_name> -u <user_name-staging-W> -p <password> <local-folder/production_database_name>`
+
+      - for mongoDB version from 3.4:
+    `mongorestore -h dsxxxxxx.mlab.com:xxxxx -d <staging_database_name> -u <user_name-staging-W> -p <password> <local-folder/production_database_name>`
+
+  - see `/MongodbCommands.md` (outside of git version control) for tailored commands
 
 ## Architecture
 
@@ -272,5 +286,11 @@ A 'family' consists of some 'parents' and 'kids'. In practice, this means that t
 
 
 #### Resources
+
+- timeStamps generation: as long as generation of timestamps is not implemented within the app, just do it in console:
+  `new Date(2018,9,30).getTime();`
+  `new Date(1540854000000).toLocaleDateString('en-US', {  day : 'numeric',month : 'short',year : 'numeric'});`
+  `Date.now()`
+
 ①②③④⑤⑥⑦⑧⑨⑩
 🄌➊➋➌➍➎➏➐➑➒➓

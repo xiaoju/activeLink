@@ -195,7 +195,7 @@
 
   .itemDetails {
     border-bottom: thin solid #9575cd;
-    padding-bottom: 0.8em;
+    padding: 0.8em 0;
   }
 
   .itemDetails:last-child {
@@ -308,7 +308,6 @@
   .orderSummary {
     background-color: #f5f5f5;
     border: thin solid #9575cd;
-    margin-bottom: 2em;
     padding: 2em;
   }
 
