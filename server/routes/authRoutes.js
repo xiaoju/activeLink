@@ -356,6 +356,7 @@ module.exports = app => {
           id: thisAsso.id,
           contacts: thisAsso.contacts,
           eventProviderName: thisAsso.name,
+          paymentPreferences: thisAsso.paymentPreferences,
           replyTo: thisAsso.replyTo,
           assoEmail: thisAsso.assoEmail,
           allItems: thisAsso.allItems,

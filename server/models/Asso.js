@@ -19,6 +19,10 @@ const assoSchema = new Schema({
   registrations: { type: Object, default: {} },
   eventsById: { type: Object, default: {} },
   referenceNumbers: { type: Object, default: {} },
+  paymentPreferences: {
+    type: Array,
+    default: ['creditCard', 'bankTransfer', 'moneyCheque']
+  },
   bankReference: {
     type: Array,
     default: [
