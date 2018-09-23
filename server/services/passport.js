@@ -82,8 +82,11 @@ passport.use(
             if (isMatch) {
               return done(null, family);
             } else {
-              console.log('NO PWD MATCH');
-              return done(null, false, { message: 'Incorrect password.' });
+              // console.log('NO PWD MATCH');
+              // return done(null, false, { message: 'Incorrect password.' });
+
+              return done(null, false, console.log('NO PWD MATCH'));
+
               // return done(null, family, { message: 'Incorrect password.' }); // bypass the password check!
             }
           });
