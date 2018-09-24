@@ -36,6 +36,7 @@ module.exports = app => {
 
   // app.post('/auth/reset', function(req, res, next) {
   app.post('/auth/reset', function(req, res) {
+    let emailTo;
     async.waterfall(
       [
         function(done) {
@@ -65,9 +66,14 @@ module.exports = app => {
           });
         },
         function(token, family, done) {
+          emailTo =
+            process.env.NODE_ENV === 'production' && !process.env.SILENT
+              ? family.primaryEmail
+              : 'dev@xiaoju.io';
+
           const emailData = {
             from: 'The English Link <english-link@xiaoju.io>',
-            to: family.primaryEmail,
+            to: emailTo,
             'h:Reply-To': 'englishlink31@gmail.com',
             subject: 'English-Link / password reset link',
             text:
@@ -92,14 +98,18 @@ module.exports = app => {
               });
             } else {
               console.log(
-                'The link has been sent: http://' +
+                'The link http://' +
                   req.headers.host +
                   '/reset/' +
-                  token
+                  token +
+                  ' for ' +
+                  family.primaryEmail +
+                  ' has been sent to ' +
+                  emailTo
               );
               return res.json({
                 resetTokenEmailSent: true,
-                emailedTo: family.primaryEmail,
+                emailedTo: emailTo,
                 body
               });
             }
@@ -130,6 +140,7 @@ module.exports = app => {
   });
 
   app.post('/auth/reset/:token', function(req, res) {
+    let emailTo;
     async.waterfall(
       [
         function(done) {
@@ -159,9 +170,14 @@ module.exports = app => {
           );
         },
         function(family, done) {
+          emailTo =
+            process.env.NODE_ENV === 'production' && !process.env.SILENT
+              ? family.primaryEmail
+              : 'dev@xiaoju.io';
+
           const emailData = {
             from: 'The English Link <english-link@xiaoju.io>',
-            to: family.primaryEmail,
+            to: emailTo,
             'h:Reply-To': 'englishlink31@gmail.com',
             subject: 'English-Link / your password has been changed',
             text:

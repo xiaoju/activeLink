@@ -9,6 +9,9 @@ export const getSelectedFamily = state => state.currentForm.selectedFamily;
 export const getPaymentOption = state => state.currentForm.paymentOption;
 export const getInstallmentsQuantity = state =>
   state.currentForm.installmentsQuantity;
+export const getJsonProfiles = state => state.currentForm.jsonProfiles;
+export const getJsonRegistrations = state =>
+  state.currentForm.jsonRegistrations;
 
 export const getErrorMessage = state => state.ui.errorMessage;
 

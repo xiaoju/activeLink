@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SpinnerWrapper from '../SpinnerWrapper';
 import { fetchDashboard } from '../../actions/index';
-import { getProfile, getAdminAssos, getAssosById } from '../../selectors';
+import {
+  getProfile,
+  getAdminAssos
+  // , getAssosById
+} from '../../selectors';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -30,7 +34,12 @@ class Dashboard extends Component {
     for (var i = 0; i < sortOrder.length; i++) ordering[sortOrder[i]] = i;
     // finished defining the sort order
 
-    const { profile, adminAssos, assosById, errorMessage } = this.props;
+    const {
+      profile,
+      adminAssos,
+      // assosById,
+      errorMessage
+    } = this.props;
     const {
       dashboard: {
         usersById,
@@ -277,8 +286,8 @@ function mapStateToProps(state) {
   return {
     dashboard: state.dashboard,
     profile: getProfile(state),
-    adminAssos: getAdminAssos(state),
-    assosById: getAssosById(state)
+    adminAssos: getAdminAssos(state)
+    // assosById: getAssosById(state)
   };
 }
 

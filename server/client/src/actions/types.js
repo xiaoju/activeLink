@@ -16,4 +16,5 @@ export const ADD_MEDIA_ROW = 'add_media_row';
 export const LOAD_ERROR = 'load_error';
 export const LOAD_SELECTION = 'load_selection';
 export const SELECT_PRIMARY_EMAIL = 'select_primary_email';
+export const MODIFY_JSON_PROFILES = 'modify_json_profiles';
 export const SELECT_PAYMENT_OPTION = 'select_payment_option';

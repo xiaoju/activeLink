@@ -15,6 +15,8 @@ import EmailSent from './EmailSent';
 import SendInvites from './admin/SendInvites';
 import Dump from './admin/Dump';
 import Dashboard from './admin/Dashboard';
+import UpdateOthers from './admin/UpdateOthers';
+import UpdateMany from './admin/UpdateMany';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -36,10 +38,12 @@ library.add(
 
 class App extends Component {
   componentDidMount() {
+    // console.log('app.js did mount');
     this.props.fetchUser();
   }
 
   componentDidUpdate() {
+    // console.log('app.js did update');
     this.props.fetchUser();
   }
 
@@ -49,8 +53,7 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route path="/register/:eventId" component={RegisterEvent} /> */}
-          <Route path="/register" component={RegisterEvent} />
+          <Route path="/register/:eventId?" component={RegisterEvent} />
           <Route path="/login/:messageCode?" component={LogIn} />
           <Route path="/getinvited" component={GetInvited} />
           <Route path="/thanks" component={Thanks} />
@@ -60,6 +63,8 @@ class App extends Component {
           <Route path="/admin/sendinvites" component={SendInvites} />
           <Route path="/admin/dump" component={Dump} />
           <Route path="/admin/dashboard" component={Dashboard} />
+          {/* <Route path="/admin/updateothers" component={UpdateOthers} /> */}
+          <Route path="/admin/updatemany" component={UpdateMany} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

@@ -18,6 +18,8 @@ const validateCharge = require('../utils/validateCharge');
 
 module.exports = app => {
   app.post('/api/payment', requireLogin, async (req, res) => {
+    console.log('process.env.SILENT: ', process.env.SILENT);
+
     let family; // this will contain the family data, after pulling it from database
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -589,7 +591,7 @@ module.exports = app => {
         '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n';
 
       // prettier-ignore
-      const email_Greetings =
+      const email_Greetings = process.env.SILENT ? '' :
         'Dear ' + capitalizeFirstLetter(
           publicReceipt.users[publicReceipt.allParents[0]].firstName) + ',\n\n' +
         'thank you for your ' +
@@ -600,7 +602,7 @@ module.exports = app => {
 
       // prettier-ignore
       const email_PaymentInstructions =
-        paymentOption !== 'creditCard' ?
+        paymentOption !== 'creditCard' && !process.env.SILENT ?
             'To complete this registration, please proceed with the payment, ' +
             'either per cheque, either per bank transfer:\n\n' +
             'Per cheque: \n' +
@@ -623,7 +625,7 @@ module.exports = app => {
 
       // prettier-ignore
       const email_CreditCardReceipt =
-        paymentOption === 'creditCard'
+        paymentOption === 'creditCard' && !process.env.SILENT
           ? '# Payment receipt #\n\n' +
             '- Receipt No.: ' + publicReceipt.chargeId + '\n' +
             '- Credit card number: xxxx xxxx xxxx ' + publicReceipt.last4 + '\n' +
@@ -632,7 +634,13 @@ module.exports = app => {
             '- Time: ' + new Date(1000 * publicReceipt.timeStamp).toLocaleString() + '\n\n'
           : '';
 
-      const email_Regards = 'Kind Regards,\n' + 'Jerome\n\n';
+      const email_Regards = process.env.SILENT
+        ? ''
+        : 'Kind Regards,\n' + 'Jerome\n\n';
+
+      const email_ForOther = process.env.SILENT
+        ? '[Data input by admin]\n\n'
+        : '';
 
       // prettier-ignore
       const email_AssoHeader =
@@ -754,6 +762,7 @@ module.exports = app => {
         email_Greetings +
         email_PaymentInstructions +
         email_Regards +
+        email_ForOther +
         email_AssoHeader +
         email_CreditCardReceipt +
         email_Profile +
@@ -762,8 +771,15 @@ module.exports = app => {
         email_Volunteering +
         email_Closing;
 
+      const emailTo =
+        process.env.NODE_ENV === 'production' && !process.env.SILENT
+          ? primaryEmail
+          : 'dev@xiaoju.io';
+
       const email_Subject =
-        (publicReceipt.livemode ? '' : 'TEST / ') +
+        (paymentOption === 'creditCard' && !publicReceipt.livemode
+          ? 'TEST / '
+          : '') +
         thisAsso.name +
         ' / ' +
         mergedFamilyName +
@@ -772,11 +788,12 @@ module.exports = app => {
           moneyCheque: 'Registration (payment required)',
           bankTransfer: 'Registration (payment required)',
           creditCard: 'Confirmation of registration'
-        }[paymentOption];
+        }[paymentOption] +
+        (process.env.SILENT ? ' - ADMIN INPUT -' : '');
 
       const email_Data = {
         from: thisAsso.emailFrom,
-        to: primaryEmail,
+        to: emailTo,
         cc: thisAsso.backupEmail,
         'h:Reply-To': thisAsso.replyTo,
         subject: email_Subject,
@@ -791,7 +808,7 @@ module.exports = app => {
           } else {
             console.log(
               'Confirmation of registration has been sent to: ',
-              primaryEmail
+              emailTo
             );
             // send the payment receipt to front end:
             res.status(200).send(publicReceipt);

@@ -9,13 +9,7 @@ import {
   getDashboardIsLoaded
 } from '../../selectors';
 import SpinnerWrapper from '../SpinnerWrapper';
-import ProfileForm from '../ProfileForm';
-import SelectClassesForm from '../SelectClassesForm';
-import OrderSummary from '../OrderSummary';
-import PhotoConsent from '../PhotoConsent';
-import CallForVolunteers from '../CallForVolunteers';
-import SaveRegistration from '../registrationForm/SaveRegistration';
-import SelectFamily from '../registrationForm/SelectFamily';
+import UpdateOthers from './UpdateOthers';
 
 class RegisterForOther extends Component {
   componentDidMount() {
@@ -60,12 +54,6 @@ class RegisterForOther extends Component {
           !!adminAssos && (
             <div>
               <SelectFamily sectionTitle="🄌 Registration for other" />
-              <ProfileForm sectionTitle="① Profile" />
-              <SelectClassesForm sectionTitle="② Classes" />
-              <CallForVolunteers sectionTitle="③ Volunteering" />
-              <PhotoConsent sectionTitle="④ Photo & video consent" />
-              <OrderSummary sectionTitle="⑤ Review" />
-              <SaveRegistration sectionTitle="⑥ Save" />
             </div>
           )}
       </div>

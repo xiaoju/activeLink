@@ -84,8 +84,8 @@ test credit card number
 - push to heroku staging server:
 `git subtree push --prefix server staging master`
 
-- force push to heroku:
-`git push heroku `git subtree split --prefix server master`:master --force`
+- force push to heroku staging:
+`git push staging `git subtree split --prefix server master`:master --force`
 
 - create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
 
@@ -135,7 +135,7 @@ old version:
       - for mongoDB version from 3.4:
     `mongorestore -h dsxxxxxx.mlab.com:xxxxx -d <staging_database_name> -u <user_name-staging-W> -p <password> <local-folder/production_database_name>`
 
-  - see `/MongodbCommands.md` (outside of git version control) for tailored commands
+  - see `/MongodbCommands.md` (outside of git version control) for commands including passwords.
 
 ## Architecture
 

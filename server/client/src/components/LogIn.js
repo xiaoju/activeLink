@@ -20,10 +20,16 @@ class LogIn extends Component {
   }
 
   componentDidMount() {
+    // console.log('Login.js did mount');
     this.handleMessageCode(this.props.match.params.messageCode);
   }
 
+  // componentDidUpdate() {
+  //   console.log('Login.js did update');
+  // }
+
   handleChange(event) {
+    // console.log('login.js handleChange');
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -39,18 +45,29 @@ class LogIn extends Component {
   }
 
   handleMessageCode(messageCode) {
+    // console.log('login.js, handleMessageCode');
     switch (messageCode) {
       case '851': {
         this.setState({ errorMessage: 'TEST MESSAGE' });
         return;
       }
 
+      case '852': {
+        this.setState({
+          errorMessage:
+            'Sorry, there is a problem by the login server. Please try again later. You can also inform us on bug@xiaoju.io   Thank you!'
+        });
+        return;
+      }
+
       default:
         this.setState({ errorMessage: '' });
+        return;
     }
   }
 
   async onSubmit(event) {
+    // console.log('login.js, onSubmit');
     event.preventDefault();
     this.setState({ loading: true });
     const { loginEmail, loginPassword, resendPassword } = this.state;
@@ -83,12 +100,13 @@ class LogIn extends Component {
       // but if authentication failed, don't fetch and don't redirect.
 
       // TODO refactor without nested 'try await' loops
+      // console.log('login.js 90');
       try {
         await axios.post('/auth/local', {
           primaryEmail: loginEmail,
           password: loginPassword
         });
-
+        // console.log('login.js, 96');
         try {
           await this.props.fetchUser();
           // .then(() => this.props.dispatch(push('/register')))
@@ -110,6 +128,7 @@ class LogIn extends Component {
         //   console.log(key, ': ', err[key])
         // );
         // console.log('err.request.status', err.request.status);
+        // console.log('login.js, failed, 118');
         this.setState({
           loading: false,
           errorMessage:

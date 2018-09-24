@@ -65,6 +65,7 @@ require('./routes/authRoutes')(app);
 // require('./routes/googleAuthRoutes')(app);
 require('./routes/billingRoutes')(app);
 require('./routes/adminRoutes')(app);
+require('./routes/updateMany')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

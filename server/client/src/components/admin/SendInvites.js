@@ -13,7 +13,7 @@ class sendInvites extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.validateEmailsList = this.validateEmailsList.bind(this);
-    console.log('this.props.adminAssos: ', this.props.adminAssos);
+    // console.log('this.props.adminAssos: ', this.props.adminAssos);
     this.state = {
       showingForm: true,
       loadingResult: false,
@@ -194,7 +194,7 @@ class sendInvites extends Component {
                         {adminAssos.length > 1 ? (
                           <select
                             className={'browser-default'}
-                            value={this.state.selectedAsso}
+                            value={selectedAsso}
                             onChange={this.handleAssoChange}
                           >
                             <option value="grapefruit">Grapefruit</option>

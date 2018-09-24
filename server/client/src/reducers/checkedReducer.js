@@ -7,7 +7,7 @@ import {
   ADD_KID_ROW
 } from '../actions/types';
 
-import uuid from 'uuid4';
+import uuid from 'uuid/v4';
 
 const empty = null;
 

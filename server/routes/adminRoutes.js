@@ -1,4 +1,4 @@
-const uuid = require('uuid4');
+const uuid = require('uuid/v4');
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 const Asso = mongoose.model('assos');
@@ -207,6 +207,7 @@ module.exports = app => {
     }
 
     try {
+      // kidsQuantity = await User.find({kidGrade: {$exists: 1}}).countDocuments();
       kidsQuantity = await User.find({
         kidGrade: { $ne: null }
       }).countDocuments();
