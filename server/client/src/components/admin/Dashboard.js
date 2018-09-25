@@ -12,6 +12,13 @@ import {
 class Dashboard extends Component {
   componentDidMount() {
     this.props.fetchDashboard();
+    console.log('FamilyIdbyKidId: ', this.props.dashboard.FamilyIdbyKidId);
+    // console.log(
+    //   'FamilyIdbyKidId["5666cee8-77cf-4801-99da-6e28570591aa"]: ',
+    //   this.props.dashboard.FamilyIdbyKidId[
+    //     '5666cee8-77cf-4801-99da-6e28570591aa'
+    // ]
+    // );
   }
 
   render() {
@@ -54,6 +61,8 @@ class Dashboard extends Component {
         FamiliesNotRegistered,
         NoPhotoconsentKids,
         // kidsByFamily,
+        FamilyIdbyKidId,
+        FamilyIdbyParentId,
         // parentsByFamily,
         itemsById,
         kidsQuantity,
@@ -93,9 +102,14 @@ class Dashboard extends Component {
         {loaded && (
           <div>
             <div className="container itemDetails">
+              {/* <h5>
+                <strong>test</strong>
+              </h5>
+              {FamilyIdbyKidId['5666cee8-77cf-4801-99da-6e28570591aa'].familyId} */}
+
               <h5>
                 <strong>
-                  {familiesRegisteredQuantity} families not yet registered:
+                  {familiesNotRegisteredQuantity} families not yet registered:
                 </strong>
               </h5>
               {FamiliesNotRegistered.map(
@@ -105,7 +119,7 @@ class Dashboard extends Component {
             <div className="container itemDetails">
               <h5>
                 <strong>
-                  {familiesNotRegisteredQuantity} families registered (={' '}
+                  {familiesRegisteredQuantity} families registered (={' '}
                   {kidsQuantity} children):
                 </strong>
               </h5>
@@ -210,7 +224,17 @@ class Dashboard extends Component {
                               ' ' +
                               usersById[userId].familyName.toUpperCase() +
                               ', ' +
-                              usersById[userId].kidGrade}
+                              usersById[userId].kidGrade
+                            // + ' | ' +
+                            // familiesById[
+                            //   FamilyIdbyKidId[userId].familyId
+                            // ].familyMedia
+                            //   .filter(
+                            //     mediaObject => mediaObject.media === 'phone'
+                            //   )
+                            //   .map(mediaObject => mediaObject.value)
+                            //   .join(', ')
+                            }
                           </span>
                           <br />
                         </div>
@@ -273,6 +297,64 @@ class Dashboard extends Component {
                     ))}
                   </div>
                 </p>
+              ))}
+            </div>
+
+            <div className="container itemDetails page-break-before">
+              {classItems.map(itemId => (
+                <div className="no_break_inside page-break-before">
+                  <h5>{itemsById[itemId].name}</h5>
+                  <h6>
+                    <strong>Parents phone numbers</strong>
+                  </h6>
+                  <div>
+                    {[]
+                      .concat(registrationsByItem[itemId])
+                      .sort(function(a, b) {
+                        return (
+                          // ordering[usersById[a].kidGrade] -
+                          //   ordering[usersById[b].kidGrade] ||
+                          usersById[a].familyName.localeCompare(
+                            usersById[b].familyName
+                          )
+                        );
+                      })
+                      .map(userId => (
+                        <div key={userId} style={{ display: 'flex' }}>
+                          <span style={{ flex: '1' }}>
+                            {usersById[userId].firstName +
+                              ' ' +
+                              usersById[userId].familyName.toUpperCase()}
+                          </span>
+                          <span style={{ flex: '2' }}>
+                            {familiesById[
+                              FamilyIdbyKidId[userId].familyId
+                            ].familyMedia
+                              .filter(
+                                mediaObject => mediaObject.media === 'phone'
+                              )
+                              .map(
+                                mediaObject =>
+                                  mediaObject.value +
+                                  (mediaObject.tags.filter(
+                                    thisTag => thisTag !== 'personal'
+                                  ).length === 0
+                                    ? ''
+                                    : ' (' +
+                                      mediaObject.tags
+                                        .filter(
+                                          thisTag => thisTag !== 'personal'
+                                        )
+                                        .join(', ') +
+                                      ')')
+                              )
+                              .join(', ')}
+                          </span>
+                          <br />
+                        </div>
+                      ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

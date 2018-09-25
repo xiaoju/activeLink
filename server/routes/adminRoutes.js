@@ -163,8 +163,14 @@ module.exports = app => {
 
     try {
       kidsByFamily = await Family.aggregate([
-        { $project: { _id: 0, familyId: 1, allKids: 1 } },
-        { $unwind: '$allKids' }
+        {
+          $project: {
+            _id: 0,
+            familyId: 1,
+            kidId: '$allKids'
+          }
+        },
+        { $unwind: '$kidId' }
       ]);
     } catch (err) {
       console.log('adminRoutes, 47, query error: ', err);
@@ -173,8 +179,14 @@ module.exports = app => {
 
     try {
       parentsByFamily = await Family.aggregate([
-        { $project: { _id: 0, familyId: 1, allParents: 1 } },
-        { $unwind: '$allParents' }
+        {
+          $project: {
+            _id: 0,
+            familyId: 1,
+            ParentId: '$allParents'
+          }
+        },
+        { $unwind: '$ParentId' }
       ]);
     } catch (err) {
       console.log('adminRoutes, 47, query error: ', err);

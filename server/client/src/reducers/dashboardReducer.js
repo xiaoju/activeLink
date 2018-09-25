@@ -11,8 +11,10 @@ const empty = {
   FamiliesNotRegistered: [],
   NoPhotoconsentKids: [],
   // usersDetails: [],
-  kidsByFamily: [],
-  parentsByFamily: [],
+  // kidsByFamily: [],
+  FamilyIdbyKidId: {},
+  // parentsByFamily: [],
+  FamilyIdByParentId: {},
   // familyDetails: [],
   // itemDetails: [],
   itemsById: {},
@@ -31,6 +33,8 @@ export default function(state = empty, { type, payload }) {
         usersDetails: undefined,
         familyDetails: undefined,
         itemDetails: undefined,
+        kidsByFamily: undefined,
+        parentsByFamily: undefined,
         // volunteers: undefined,
         loaded: true,
         itemsById: payload.itemDetails[0], // TODO store items in a mongo collection, like usersDetails and familiesDetails
@@ -42,6 +46,17 @@ export default function(state = empty, { type, payload }) {
           obj[userObject.familyId] = userObject;
           return obj;
         }, {}),
+        FamilyIdbyKidId: payload.kidsByFamily.reduce((obj, KidFamilyObj) => {
+          obj[KidFamilyObj.kidId] = KidFamilyObj;
+          return obj;
+        }, {}),
+        FamilyIdByParentId: payload.parentsByFamily.reduce(
+          (obj, ParentFamilyObj) => {
+            obj[ParentFamilyObj.parentId] = ParentFamilyObj;
+            return obj;
+          },
+          {}
+        ),
         familiesRegisteredQuantity: payload.FamiliesRegistered.length,
         familiesNotRegisteredQuantity: payload.FamiliesNotRegistered.length
 
