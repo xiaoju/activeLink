@@ -1,6 +1,4 @@
-var express = require('express');
-var router = express.Router();
-
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead

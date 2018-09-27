@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 const Asso = mongoose.model('assos');
@@ -7,7 +6,6 @@ const User = mongoose.model('users');
 const Registration = mongoose.model('registrations');
 const requireLogin = require('../../middlewares/requireLogin');
 const requireAdmin = require('../../middlewares/requireAdmin');
-// const requirePlatformAdmin = require('../../middlewares/requirePlatformAdmin');
 
 router.get('/', requireLogin, requireAdmin, async function(req, res) {
   let assoId = 'a0';

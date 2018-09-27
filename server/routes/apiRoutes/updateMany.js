@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router();
 const requireLogin = require('../../middlewares/requireLogin');
 const requireAdmin = require('../../middlewares/requireAdmin');
 

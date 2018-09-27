@@ -1,27 +1,17 @@
-var express = require('express');
-var router = express.Router();
-
-var createFamiliesRoute = require('./createFamilies');
-var currentFamilyRoute = require('./currentFamily');
-var dashboardRoute = require('./dashboard');
-var dbdumpRoute = require('./dbdump');
-var logoutRoute = require('./logout');
-var paymentRoute = require('./payment');
-var rebuildregistrationsRoute = require('./rebuildRegistrations');
-var updateManyRoute = require('./updateMany');
+const router = require('express').Router();
 
 router
   .get('/', function(req, res) {
-    console.log('THIS IS /api/v1');
-    res.status(200).send({ apiName: 'activeLink', version: '1.0.0' });
+    // console.log('THIS IS /api/v1');
+    res.status(200).send({ name: 'activeLink', version: '1.0.0' });
   })
-  .use('/logout', logoutRoute)
-  .use('/current_family', currentFamilyRoute)
-  .use('/payment', paymentRoute)
-  .use('/dashboard', dashboardRoute)
-  .use('/rebuildregistrations', rebuildregistrationsRoute)
-  .use('/createFamilies', createFamiliesRoute)
-  .use('/api/v1/updatemany', updateManyRoute)
-  .use('/dbdump', dbdumpRoute);
+  .use('/logout', require('./logout'))
+  .use('/current_family', require('./createFamilies'))
+  .use('/payment', require('./payment'))
+  .use('/dashboard', require('./dashboard'))
+  .use('/rebuildregistrations', require('./rebuildRegistrations'))
+  .use('/createFamilies', require('./createFamilies'))
+  .use('/api/v1/updatemany', require('./updateMany'))
+  .use('/dbdump', require('./dbdump'));
 
 module.exports = router;

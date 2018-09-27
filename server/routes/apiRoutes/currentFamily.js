@@ -1,18 +1,7 @@
-var express = require('express');
-var router = express.Router();
-
-// const passport = require('passport');
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
-// const Family = mongoose.model('families');
-// var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead
-// var crypto = require('crypto');
-// const keys = require('../config/keys');
-// var mailgun = require('mailgun-js')({
-//   apiKey: keys.mailgunAPIKey,
-//   domain: keys.mailgunDomain
-// });
 
 router.get('/', async (req, res) => {
   let theseAssos; // all asso details for the assos where this family is a parent.

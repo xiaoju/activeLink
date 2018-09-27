@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 const Asso = mongoose.model('assos');

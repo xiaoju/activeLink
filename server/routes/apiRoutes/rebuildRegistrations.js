@@ -1,6 +1,4 @@
-var express = require('express');
-var router = express.Router();
-
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const Registration = mongoose.model('registrations');
