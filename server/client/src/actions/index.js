@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
 import { push } from 'connected-react-router';
 import {
   FETCH_USER,
@@ -26,10 +27,8 @@ export const fetchUser = () => async dispatch => {
     fetched = await axios.get('/api/v1/current_family');
     // TODO dispatch something if there is no answer from backend or from google
     // so that user knows where it's going wrong
-    // console.log('actions/index.js. fetched.data: ', fetched.data);
 
     try {
-      // console.log('actions/index.js, fetchUser, fetched.data: ', fetched.data);
       dispatch({ type: FETCH_USER, payload: fetched.data });
     } catch (err) {
       console.log('Error by dispatch FETCH_USER : ', err);
@@ -38,17 +37,14 @@ export const fetchUser = () => async dispatch => {
     // console.log('Error by axios GET /api/v1/current_family: ', error);
     // dispatch(push('/sorry'));
     dispatch(push('/login/852'));
-    // console.log('actions/index.js, 34, after dispatch push');
   }
 };
 
-export const fetchDashboard = () => async dispatch => {
+export const loadDashboard = () => async dispatch => {
   try {
-    const dashboard = await axios.get('/api/v1/dashboard');
-    // console.log('dashboard: ', dashboard);
+    const dashboard = await ActiveLinkAPI.fetchDashboard();
     dispatch({ type: LOAD_DASHBOARD, payload: dashboard.data });
   } catch (err) {
-    // if error is auth, then redirect to login with message
     console.log('ERROR: ', err.toString());
   }
 };
@@ -56,7 +52,6 @@ export const fetchDashboard = () => async dispatch => {
 export const fetchDump = () => async dispatch => {
   try {
     const fetched = await axios.get('/api/v1/dbdump');
-    // console.log('fetched.data: ', fetched.data);
     dispatch({ type: LOAD_DUMP, payload: fetched.data });
   } catch (error) {
     console.log('Error in axios fetchDump. Error: ', error);
@@ -67,7 +62,6 @@ export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
     // throw 'oops';
-    // console.log('handlePayment. payload: ', payload);
     const res = await axios.post('/api/v1/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {
@@ -77,8 +71,6 @@ export const handlePayment = payload => async dispatch => {
     );
     dispatch(push('/sorry'));
   }
-
-  // console.log('res.data.paymentReceipt: ', res.data.paymentReceipt);
 };
 
 export function checkCheckbox(userId, itemId) {
@@ -132,7 +124,6 @@ export function modifyUser({ userId, fieldName, value }) {
 }
 
 export function selectPrimaryEmail({ selectedFamily }) {
-  // console.log('actions/index, selectedFamily: ', selectedFamily);
   return {
     type: SELECT_PRIMARY_EMAIL,
     payload: selectedFamily

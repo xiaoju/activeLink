@@ -2,23 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SpinnerWrapper from '../SpinnerWrapper';
-import { fetchDashboard } from '../../actions/index';
-import {
-  getProfile,
-  getAdminAssos
-  // , getAssosById
-} from '../../selectors';
+import { loadDashboard } from '../../actions/index';
+import { getProfile, getAdminAssos } from '../../selectors';
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.fetchDashboard();
-    console.log('FamilyIdbyKidId: ', this.props.dashboard.FamilyIdbyKidId);
-    // console.log(
-    //   'FamilyIdbyKidId["5666cee8-77cf-4801-99da-6e28570591aa"]: ',
-    //   this.props.dashboard.FamilyIdbyKidId[
-    //     '5666cee8-77cf-4801-99da-6e28570591aa'
-    // ]
-    // );
+    this.props.loadDashboard();
   }
 
   render() {
@@ -41,33 +30,23 @@ class Dashboard extends Component {
     for (var i = 0; i < sortOrder.length; i++) ordering[sortOrder[i]] = i;
     // finished defining the sort order
 
-    const {
-      profile,
-      adminAssos,
-      // assosById,
-      errorMessage
-    } = this.props;
+    const { profile, adminAssos, errorMessage } = this.props;
     const {
       dashboard: {
         usersById,
         familiesById,
         loaded,
-        // kidsByGrade,
-        // registrationItems,
         classItems,
         volunteeringItems,
         registrationsByItem,
         FamiliesRegistered,
         FamiliesNotRegistered,
         NoPhotoconsentKids,
-        // kidsByFamily,
         FamilyIdbyKidId,
         FamilyIdbyParentId,
-        // parentsByFamily,
         itemsById,
         kidsQuantity,
         kidsInClasses,
-        // parentsQuantity,
         volunteers,
         familiesRegisteredQuantity,
         familiesNotRegisteredQuantity
@@ -102,11 +81,6 @@ class Dashboard extends Component {
         {loaded && (
           <div>
             <div className="container itemDetails">
-              {/* <h5>
-                <strong>test</strong>
-              </h5>
-              {FamilyIdbyKidId['5666cee8-77cf-4801-99da-6e28570591aa'].familyId} */}
-
               <h5>
                 <strong>
                   {familiesNotRegisteredQuantity} families not yet registered:
@@ -224,17 +198,7 @@ class Dashboard extends Component {
                               ' ' +
                               usersById[userId].familyName.toUpperCase() +
                               ', ' +
-                              usersById[userId].kidGrade
-                            // + ' | ' +
-                            // familiesById[
-                            //   FamilyIdbyKidId[userId].familyId
-                            // ].familyMedia
-                            //   .filter(
-                            //     mediaObject => mediaObject.media === 'phone'
-                            //   )
-                            //   .map(mediaObject => mediaObject.value)
-                            //   .join(', ')
-                            }
+                              usersById[userId].kidGrade}
                           </span>
                           <br />
                         </div>
@@ -311,12 +275,8 @@ class Dashboard extends Component {
                     {[]
                       .concat(registrationsByItem[itemId])
                       .sort(function(a, b) {
-                        return (
-                          // ordering[usersById[a].kidGrade] -
-                          //   ordering[usersById[b].kidGrade] ||
-                          usersById[a].familyName.localeCompare(
-                            usersById[b].familyName
-                          )
+                        return usersById[a].familyName.localeCompare(
+                          usersById[b].familyName
                         );
                       })
                       .map(userId => (
@@ -369,12 +329,11 @@ function mapStateToProps(state) {
     dashboard: state.dashboard,
     profile: getProfile(state),
     adminAssos: getAdminAssos(state)
-    // assosById: getAssosById(state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchDashboard }, dispatch);
+  return bindActionCreators({ loadDashboard }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -61,11 +61,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-var apiRoute = require('./routes/apiRoute');
-app.use('/api/v1', apiRoute);
+// var apiRoute = require('./routes/apiRoute');
+// app.use('/api/v1', apiRoute);
+//
+// var authRoute = require('./routes/authRoute');
+// app.use('/auth', authRoute);
 
-var authRoute = require('./routes/authRoute');
-app.use('/auth', authRoute);
+const routes = require('./routes');
+app.use('/', routes);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

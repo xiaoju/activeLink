@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var LocalStrategyRoute = require('./authRoutes/LocalStrategyRoute');
-var checkResetTokenRoute = require('./authRoutes/checkResetTokenRoute');
-var resetRoute = require('./authRoutes/resetRoute');
-var reset_tokenRoute = require('./authRoutes/reset_tokenRoute');
+var LocalStrategyRoute = require('./LocalStrategy');
+var checkResetTokenRoute = require('./checkResetToken');
+var resetRoute = require('./reset');
+var reset_tokenRoute = require('./reset_token');
 
 router
   .get('/', function(req, res) {

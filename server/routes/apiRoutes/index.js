@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var dashboardRoute = require('./apiRoutes/dashboard');
-var rebuildregistrationsRoute = require('./apiRoutes/rebuildRegistrations');
-var dbdumpRoute = require('./apiRoutes/dbdump');
-var createFamiliesRoute = require('./apiRoutes/createFamilies');
-var logoutRoute = require('./apiRoutes/logout');
-var currentFamilyRoute = require('./apiRoutes/currentFamily');
-var updateManyRoute = require('./apiRoutes/updateMany');
-var paymentRoute = require('./apiRoutes/payment');
+var createFamiliesRoute = require('./createFamilies');
+var currentFamilyRoute = require('./currentFamily');
+var dashboardRoute = require('./dashboard');
+var dbdumpRoute = require('./dbdump');
+var logoutRoute = require('./logout');
+var paymentRoute = require('./payment');
+var rebuildregistrationsRoute = require('./rebuildRegistrations');
+var updateManyRoute = require('./updateMany');
 
 router
   .get('/', function(req, res) {
