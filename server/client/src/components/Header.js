@@ -26,7 +26,7 @@ class Header extends Component {
                 {!profile ? (
                   <a href="/auth/google">Login with Google</a>
                 ) : (
-                  <a href="/api/logout">
+                  <a href="/api/v1/logout">
                     <i className="medium material-icons">exit_to_app</i>
                   </a>
                 )}
@@ -42,7 +42,7 @@ class Header extends Component {
                     />
                   </Link>
                 ) : (
-                  <a title="Sign out" href="/api/logout">
+                  <a title="Sign out" href="/api/v1/logout">
                     <FontAwesomeIcon
                       icon="sign-out-alt"
                       color="fff"

@@ -42,10 +42,10 @@ class App extends Component {
     this.props.fetchUser();
   }
 
-  componentDidUpdate() {
-    // console.log('app.js did update');
-    this.props.fetchUser();
-  }
+  // componentDidUpdate() {
+  //   // console.log('app.js did update');
+  //   this.props.fetchUser();
+  // }
 
   render() {
     return (

@@ -23,22 +23,22 @@ import {
 export const fetchUser = () => async dispatch => {
   let fetched;
   try {
-    fetched = await axios.get('/api/current_family');
+    fetched = await axios.get('/api/v1/current_family');
     // TODO dispatch something if there is no answer from backend or from google
     // so that user knows where it's going wrong
     // console.log('actions/index.js. fetched.data: ', fetched.data);
+
+    try {
+      // console.log('actions/index.js, fetchUser, fetched.data: ', fetched.data);
+      dispatch({ type: FETCH_USER, payload: fetched.data });
+    } catch (err) {
+      console.log('Error by dispatch FETCH_USER : ', err);
+    }
   } catch (error) {
-    // console.log('Error by axios GET /api/current_family: ', error);
+    // console.log('Error by axios GET /api/v1/current_family: ', error);
     // dispatch(push('/sorry'));
     dispatch(push('/login/852'));
     // console.log('actions/index.js, 34, after dispatch push');
-  }
-
-  try {
-    // console.log('actions/index.js, fetchUser, fetched.data: ', fetched.data);
-    dispatch({ type: FETCH_USER, payload: fetched.data });
-  } catch (err) {
-    console.log('Error by dispatch FETCH_USER : ', err);
   }
 };
 
@@ -68,11 +68,11 @@ export const handlePayment = payload => async dispatch => {
   try {
     // throw 'oops';
     // console.log('handlePayment. payload: ', payload);
-    const res = await axios.post('/api/payment', payload);
+    const res = await axios.post('/api/v1/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {
     console.log(
-      'error in axios POST /api/payment or LOAD_RECEIPT dispatch: ',
+      'error in axios POST /api/v1/payment or LOAD_RECEIPT dispatch: ',
       error
     );
     dispatch(push('/sorry'));

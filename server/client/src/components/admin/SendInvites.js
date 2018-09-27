@@ -40,11 +40,11 @@ class sendInvites extends Component {
   }
 
   handleChange(event) {
-    console.log('event.target.name:', event.target.name);
-    console.log('event.target.value:', event.target.value);
+    // console.log('event.target.name:', event.target.name);
+    // console.log('event.target.value:', event.target.value);
 
     this.setState({ [event.target.name]: event.target.value });
-    console.log('selectedAsso: ', this.state.selectedAsso);
+    // console.log('selectedAsso: ', this.state.selectedAsso);
   }
 
   handleAssoChange(event) {
@@ -64,9 +64,9 @@ class sendInvites extends Component {
 
     let result;
     try {
-      console.log('emailsArray: ', emailsArray);
-      console.log('selectedAsso: ', this.state.selectedAsso);
-      result = await axios.put('/api/createFamilies', {
+      // console.log('emailsArray: ', emailsArray);
+      // console.log('selectedAsso: ', this.state.selectedAsso);
+      result = await axios.put('/api/v1/createFamilies', {
         emailsArray,
         selectedAsso: this.state.selectedAsso
       });
@@ -243,7 +243,9 @@ class sendInvites extends Component {
                   {badFormatEmails.length} account(s) not created because emails
                   badly formatted
                 </h5>
-                <ul>{badFormatEmails.map(email => <li>{email}</li>)}</ul>
+                <ul>
+                  {badFormatEmails.map(email => <li key={email}>{email}</li>)}
+                </ul>
               </div>
 
               <div>
@@ -251,12 +253,14 @@ class sendInvites extends Component {
                   {duplicateEmails.length} account(s) not created because
                   already existing
                 </h5>
-                <ul>{duplicateEmails.map(email => <li>{email}</li>)}</ul>
+                <ul>
+                  {duplicateEmails.map(email => <li key={email}>{email}</li>)}
+                </ul>
               </div>
 
               <div>
                 <h5>{newEmails.length} account(s) created </h5>
-                <ul>{newEmails.map(email => <li>{email}</li>)}</ul>
+                <ul>{newEmails.map(email => <li key={email}>{email}</li>)}</ul>
               </div>
             </div>
           </div>

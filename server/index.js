@@ -29,7 +29,7 @@ mongoose
     console.log('______________ mongoose: connection success ______________ \n')
   )
   .catch(err => {
-    console.log('______________ Mongoose connect error: __________ \n', err);
+    console.log('_-_-_-_-_-_-_ Mongoose connect error: _-_-_-_-_-_-_-_\n', err);
     res.status(500).json({ error: err.toString() });
   });
 // .then(
@@ -61,11 +61,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/authRoutes')(app);
-// require('./routes/googleAuthRoutes')(app);
-require('./routes/billingRoutes')(app);
-require('./routes/adminRoutes')(app);
-require('./routes/updateMany')(app);
+var apiRoute = require('./routes/apiRoute');
+app.use('/api/v1', apiRoute);
+
+var authRoute = require('./routes/authRoute');
+app.use('/auth', authRoute);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
