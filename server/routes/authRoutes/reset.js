@@ -10,6 +10,7 @@ var mailgun = require('mailgun-js')({
 });
 
 router.post('/', async function(req, res) {
+  console.log('reset.js route');
   let emailTo;
   async.waterfall(
     [

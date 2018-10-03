@@ -1,6 +1,7 @@
 import {
   LOAD_RECEIPT,
   FETCH_USER,
+  LOAD_FAMILY,
   CHECK_CHECKBOX,
   UNCHECK_CHECKBOX,
   MODIFY_USER,
@@ -17,6 +18,7 @@ export default function(state = empty, { type, payload }) {
       return empty;
     }
 
+    case LOAD_FAMILY:
     case FETCH_USER: {
       // create initial state:
       // 1- convert familyAndValidKids, from

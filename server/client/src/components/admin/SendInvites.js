@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import * as Validation from '../../utils/Validation';
 import SpinnerWrapper from '../SpinnerWrapper';
 import * as actions from '../../actions';
 import { getProfile, getAdminAssos, getAssosById } from '../../selectors';
+import * as ActiveLinkAPI from '../../utils/ActiveLinkAPI';
 
 class sendInvites extends Component {
   constructor(props) {
@@ -13,7 +13,6 @@ class sendInvites extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.validateEmailsList = this.validateEmailsList.bind(this);
-    // console.log('this.props.adminAssos: ', this.props.adminAssos);
     this.state = {
       showingForm: true,
       loadingResult: false,
@@ -40,11 +39,7 @@ class sendInvites extends Component {
   }
 
   handleChange(event) {
-    // console.log('event.target.name:', event.target.name);
-    // console.log('event.target.value:', event.target.value);
-
     this.setState({ [event.target.name]: event.target.value });
-    // console.log('selectedAsso: ', this.state.selectedAsso);
   }
 
   handleAssoChange(event) {
@@ -64,14 +59,12 @@ class sendInvites extends Component {
 
     let result;
     try {
-      // console.log('emailsArray: ', emailsArray);
-      // console.log('selectedAsso: ', this.state.selectedAsso);
-      result = await axios.put('/api/v1/createFamilies', {
+      result = await ActiveLinkAPI.createFamilies({
         emailsArray,
         selectedAsso: this.state.selectedAsso
       });
     } catch (err) {
-      console.log('SendInvites.js, ERROR by axios put createFamilies: ', err);
+      console.log('SendInvites.js, ERROR by createFamilies(): ', err);
       this.setState({
         showingForm: true,
         loadingResult: false,

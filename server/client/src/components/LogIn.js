@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Validation from '../utils/Validation';
-import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
 import * as actions from '../actions';
+import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
 
 class LogIn extends Component {
   constructor(props) {
@@ -25,7 +25,11 @@ class LogIn extends Component {
   }
 
   // componentDidUpdate() {
-  //   console.log('Login.js did update');
+  // happens after wrong password has been entered, and the app redirects
+  // back to same page `/login/some_message` to try again
+  // console.log('Login.js did update');
+  // this.setState({ loading: false });
+  // this.handleMessageCode(this.props.match.params.messageCode);
   // }
 
   handleChange(event) {
@@ -47,18 +51,77 @@ class LogIn extends Component {
   handleMessageCode(messageCode) {
     // console.log('login.js, handleMessageCode');
     switch (messageCode) {
-      case '851': {
+      case 'test': {
         this.setState({ errorMessage: 'TEST MESSAGE' });
         return;
       }
 
-      case '852': {
+      case 'fetchError': {
         this.setState({
           errorMessage:
-            'Sorry, there is a problem by the login server. Please try again later. You can also inform us on bug@xiaoju.io   Thank you!'
+            "Sorry, there is a problem with the server ('fetchError'). " +
+            'Please try again later, or inform us per email to dev@xiaoju.io \n' +
+            'Thank you!'
         });
         return;
       }
+
+      case 'fetchDispatchError': {
+        this.setState({
+          errorMessage:
+            "Sorry, there is a problem with the server ('fetchDispatchError'). " +
+            'Please try again later, or inform us per email to dev@xiaoju.io \n' +
+            'Thank you!'
+        });
+        return;
+      }
+
+      case 'invalidToken': {
+        this.setState({
+          errorMessage:
+            'The token to reset your password is invalid. Please note that ' +
+            'you have 24 hours to reset the password, after reception of ' +
+            "the 'reset' email. Please also double-check that there was no " +
+            'mistake copying the link from your email.'
+        });
+        return;
+      }
+
+      case 'unchangedPassword': {
+        this.setState({
+          errorMessage:
+            'Sorry, the password was not updated.' +
+            'Please try again or ask for support, with an email to dev@xiaoju.io'
+        });
+        return;
+      }
+
+      case 'passwordResetError': {
+        this.setState({
+          errorMessage:
+            'Sorry, there was a mistake with password reset. ' +
+            'Please try again or ask for support, with an email to dev@xiaoju.io'
+        });
+        return;
+      }
+
+      case 'no_pwd_match': {
+        console.log('handleMessage: no_pwd_match');
+        this.setState({
+          // loading: false,
+          errorMessage: 'Wrong password. Please try again.'
+        });
+        return;
+      }
+
+      case 'no_account_with_email': {
+        this.setState({
+          errorMessage: 'Wrong login. Please try again.'
+        });
+        return;
+      }
+
+      // case 'pwd_did_match'
 
       default:
         this.setState({ errorMessage: '' });
@@ -73,11 +136,8 @@ class LogIn extends Component {
     const { loginEmail, loginPassword, resendPassword } = this.state;
 
     if (resendPassword) {
-      axios
-        // user only provides email address, asking for password reset
-        .post('/auth/reset', {
-          primaryEmail: loginEmail
-        })
+      // user only provides email address, asking for password reset
+      ActiveLinkAPI.requestPasswordReset(loginEmail)
         .then(result => {
           const { resetTokenEmailSent, emailedTo } = result.data;
           if (resetTokenEmailSent) {
@@ -90,81 +150,34 @@ class LogIn extends Component {
                 'The authentication failed, please double check that the email address you typed is the one you registered with.'
             });
           }
-        });
+        })
+        .catch(error => console.log('error by requestPasswordReset: ', error));
     } else {
-      // user provides email and password and wants to log in
-      // first authenticate (axios.post)
-      // if this works, fetchUser
-      // and then redirect
-      //
-      // but if authentication failed, don't fetch and don't redirect.
-
-      // TODO refactor without nested 'try await' loops
-      // console.log('login.js 90');
-      try {
-        await axios.post('/auth/local', {
-          primaryEmail: loginEmail,
-          password: loginPassword
+      ActiveLinkAPI.localLogin({
+        primaryEmail: loginEmail,
+        password: loginPassword
+      })
+        // .then(output => {
+        //   console.log(
+        //     'output.data.message: ',
+        //     output && output.data && output.data.message
+        //   );
+        // })
+        .then(() => ActiveLinkAPI.fetchFamily())
+        .then(fetched => this.props.loadFamily(fetched.data))
+        .then(() => this.props.history.push('/register'))
+        .catch(error => {
+          // console.log('JSON.stringify(error): ', JSON.stringify(error));
+          this.setState({
+            loading: false,
+            errorMessage:
+              error.response &&
+              error.response.data &&
+              error.response.data.message
+          });
         });
-        // console.log('login.js, 96');
-        try {
-          await this.props.fetchUser();
-          // .then(() => this.props.dispatch(push('/register')))
-        } catch (err) {
-          // error by fetchUser
-          console.log('LogIn.js, error by fetchuser: ', err);
-        }
-
-        this.props.history.push('/register');
-      } catch (err) {
-        // error by axios.post
-        // console.log('err: ', err);
-        // console.log('err.toString(): ', err.toString());
-        // console.log(
-        //   'Object.getOwnPropertyNames(err): ',
-        //   Object.getOwnPropertyNames(err)
-        // );
-        // Object.getOwnPropertyNames(err).map(key =>
-        //   console.log(key, ': ', err[key])
-        // );
-        // console.log('err.request.status', err.request.status);
-        // console.log('login.js, failed, 118');
-        this.setState({
-          loading: false,
-          errorMessage:
-            'The authentication failed. Please double check email address and password. You can also tick the orange checkbox, fill-in your email and press the button to request a new password.'
-        });
-      }
-
-      // .catch(error => {
-      //   this.setState({
-      //     loading: false,
-      //     errorMessage:
-      //       'The authentication failed, please double check email address and password. You can also check the box to reset the pasword.'
-      //   });
-      // });
     }
   }
-  //   if (error.response) {
-  //     // The request was made and the server responded with a status code
-  //     // that falls out of the range of 2xx
-  //     console.log('error.response.data:', error.response.data);
-  //     console.log('error.response.status:', error.response.status);
-  //     console.log('error.response.headers:', error.response.headers);
-  //   } else if (error.request) {
-  //     // The request was made but no response was received
-  //     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-  //     // http.ClientRequest in node.js
-  //     console.log(error.request);
-  //   } else {
-  //     // Something happened in setting up the request that triggered an Error
-  //     console.log('error.message:', error.message);
-  //   }
-  //   console.log('error.config:', error.config);
-  // });
-  // if (error.response.status === 401) {
-  //   console.log('error.response.status:', error.response.status);
-  // }
 
   render() {
     const {

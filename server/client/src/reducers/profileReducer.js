@@ -2,6 +2,7 @@ import uuid from 'uuid/v4';
 
 import {
   FETCH_USER,
+  LOAD_FAMILY,
   LOAD_RECEIPT,
   UPDATE_TAGS,
   MODIFY_ADDRESS,
@@ -19,6 +20,7 @@ import * as Validation from '../utils/Validation';
 
 export default function(state = null, { type, payload }) {
   switch (type) {
+    case LOAD_FAMILY:
     case FETCH_USER: {
       // console.log('profileReducer, case FETCH_USER, uuid(): ', uuid());
       // console.log('FETCH_USER action. payload: ', payload);

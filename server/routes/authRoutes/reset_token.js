@@ -11,6 +11,8 @@ var mailgun = require('mailgun-js')({
 });
 
 router.post('/', requireLogin, requireAdmin, async function(req, res) {
+  console.log('reset_token.js route, process.env.SILENT: ', process.env.SILENT);
+  console.log('!process.env.SILENT: ', !process.env.SILENT);
   let emailTo;
   async.waterfall(
     [

@@ -123,10 +123,10 @@ class SelectPaymentOption extends Component {
                           Arrange yourself the payment per bank transfer from
                           your bank to the association.
                         </li>
-                        {/* <li>
+                        <li>
                           Dates:{' '}
                           <strong>today, february 1st, april 1st.</strong>
-                        </li> */}
+                        </li>
                         <li>
                           Account name:{' '}
                           <strong>{bankReference[0].AccountName}</strong>
@@ -165,10 +165,11 @@ class SelectPaymentOption extends Component {
                           Arrange yourself the payment per bank transfer from
                           your bank to the association.
                         </li>
-                        {/* <li>
+                        <li>
                           Dates:{' '}
                           <strong>today, february 1st, april 1st.</strong>
-                        </li> */}
+                        </li>
+                        {/* TODO dont hardcode the dates*/}
                         <li>
                           Account name:{' '}
                           <strong>{bankReference[0].AccountName}</strong>
@@ -225,7 +226,8 @@ class SelectPaymentOption extends Component {
                           3 payments of {Math.ceil(total / 300)} &euro; each
                         </li>
                         <li>
-                          Dates: <em>today, february 1st, april 1st,</em>
+                          Dates the cheques will be cashed:{' '}
+                          <em>today, february 1st, april 1st,</em>
                         </li>
                         <li>
                           To the order of: <em>{eventProviderName}</em>
@@ -256,7 +258,8 @@ class SelectPaymentOption extends Component {
                           3 payments of {Math.ceil(total / 300)} &euro; each
                         </li>
                         <li>
-                          Dates: <em>today, february 1st, april 1st,</em>
+                          Dates the cheques will be cashed:{' '}
+                          <em>today, february 1st, april 1st,</em>
                         </li>
 
                         <li>

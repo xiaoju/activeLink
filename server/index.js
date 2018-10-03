@@ -19,18 +19,26 @@ require('./models/User');
 require('./models/Registration');
 require('./services/passport');
 
+const MongooseOptions = {
+  // useMongoClient: true, // TODO do I need this option?
+  useNewUrlParser: true,
+  reconnectTries: Number.MAX_VALUE,
+  reconnectInterval: 1000
+};
+
 mongoose
-  .connect(keys.mongoURI, {
-    useNewUrlParser: true,
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 1000
-  })
+  .connect(keys.mongoURI, MongooseOptions)
   .then(res =>
     console.log('______________ mongoose: connection success ______________ \n')
   )
   .catch(err => {
-    console.log('_-_-_-_-_-_-_ Mongoose connect error: _-_-_-_-_-_-_-_\n', err);
+    console.log(
+      '_-_-_-_-_-_-_ Mongoose connect error: _-_-_-_-_-_-_-_\n',
+      err,
+      '\n_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n'
+    );
     res.status(500).json({ error: err.toString() });
+    // TODO in line above, res is undefined, and this error isn't caught.
   });
 // .then(
 //   () => {

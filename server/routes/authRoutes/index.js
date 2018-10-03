@@ -6,8 +6,8 @@ router
     res.status(200).send({ status: 'working' });
   })
   .use('/local', require('./LocalStrategy'))
-  .use('/reset', require('./reset'))
   .use('/checkResetToken/:token', require('./checkResetToken'))
-  .use('/reset/:token', require('./reset_token'));
+  .use('/reset/:token', require('./reset_token'))
+  .use('/reset', require('./reset'));
 
 module.exports = router;

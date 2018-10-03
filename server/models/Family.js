@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 var bcrypt = require('bcrypt-nodejs');
 
 const familySchema = new Schema({
-  // googleId: { type: String, default: '' },
   familyId: { type: String, default: '' },
   // admin: { type: Boolean, default: false },
   roles: { type: Object, default: { parent: ['a0'] } },

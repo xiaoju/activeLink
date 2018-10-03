@@ -594,12 +594,12 @@ router.post('/', requireLogin, async (req, res) => {
             '    - 3 cheques of ' + Math.ceil(publicReceipt.total / 300) + ' EUR each,\n' +
             '         to be dropped in the mailbox of ' + thisAsso.name + ',\n' +
             '         and that will be cashed on:\n' + paymentDatesString + '\n' +
-            '      or 1 cheque only of ' + Math.ceil(publicReceipt.total / 100) + 'EUR,\n' +
+            '      or 1 cheque only of ' + Math.ceil(publicReceipt.total / 100) + ' EUR,\n' +
             '    - to the order of: ' + thisAsso.name + '.\n' +
             '    - Object (important!): ' + paymentReference + '.\n\n' +
             'Per bank transfer: \n' +
             '    - 3 payments of ' + Math.ceil(publicReceipt.total / 300) + ' EUR each,\n' +
-            '      or 1 payment only of ' + Math.ceil(publicReceipt.total / 100) + '\n' +
+            '      or 1 payment only of ' + Math.ceil(publicReceipt.total / 100) + ' EUR\n' +
             '    - IBAN: ' + thisAsso.bankReference[0].IBAN + '\n' +
             '    - BIC: ' + thisAsso.bankReference[0].BIC + '\n' +
             '    - Name of the bank: ' + thisAsso.bankReference[0].BankName + '\n' +
@@ -788,19 +788,24 @@ router.post('/', requireLogin, async (req, res) => {
     try {
       mailgun.messages().send(email_Data, function(error, body) {
         if (error) {
-          console.log('billingRoutes, 591. ERROR: ', error);
+          console.log('billingRoutes, 791. ERROR: ', error);
           res.status(500).json({ error: error.toString() });
         } else {
           console.log(
-            'Confirmation of registration has been sent to: ',
-            emailTo
+            'REGISTRATION CONFIRMATION for ',
+            primaryEmail,
+            ' was sent to ',
+            emailTo,
+            ' and ',
+            thisAsso.backupEmail,
+            '. Payment option: ',
+            paymentOption
           );
-          // send the payment receipt to front end:
           res.status(200).send(publicReceipt);
         }
       });
     } catch (error) {
-      console.log('billingRoutes, 604. ERROR: ', error);
+      console.log('ERROR, billingRoutes, 808: ', error);
       res.status(500).json({
         error: error.toString(),
         receipt: publicReceipt,

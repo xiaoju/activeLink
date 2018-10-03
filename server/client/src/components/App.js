@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
 import Header from './Header';
 import Home from './Home';
 import RegisterEvent from './RegisterEvent';
@@ -15,8 +16,8 @@ import EmailSent from './EmailSent';
 import SendInvites from './admin/SendInvites';
 import Dump from './admin/Dump';
 import Dashboard from './admin/Dashboard';
-import UpdateOthers from './admin/UpdateOthers';
-import UpdateMany from './admin/UpdateMany';
+// import UpdateOthers from './admin/UpdateOthers';
+// import UpdateMany from './admin/UpdateMany';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -38,14 +39,14 @@ library.add(
 
 class App extends Component {
   componentDidMount() {
-    // console.log('app.js did mount');
-    this.props.fetchUser();
+    ActiveLinkAPI.fetchFamily()
+      .then(fetched => this.props.loadFamily(fetched.data))
+      .then(() => this.props.history.push('/register'))
+      .catch(error => {
+        console.log('ERROR by app.js, componentDidMount, error: ', error);
+        this.props.history.push('/login');
+      });
   }
-
-  // componentDidUpdate() {
-  //   // console.log('app.js did update');
-  //   this.props.fetchUser();
-  // }
 
   render() {
     return (
@@ -64,7 +65,7 @@ class App extends Component {
           <Route path="/admin/dump" component={Dump} />
           <Route path="/admin/dashboard" component={Dashboard} />
           {/* <Route path="/admin/updateothers" component={UpdateOthers} /> */}
-          <Route path="/admin/updatemany" component={UpdateMany} />
+          {/* <Route path="/admin/updatemany" component={UpdateMany} /> */}
           <Route component={PageNotFound} />
         </Switch>
       </div>

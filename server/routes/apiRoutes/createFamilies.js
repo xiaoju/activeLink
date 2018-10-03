@@ -21,9 +21,9 @@ router.put('/', requireLogin, requireAdmin, async function(req, res) {
   const myAssoArray = req.user.roles.admin;
   const selectedAsso = req.body.selectedAsso; // the asso in which the users should be added
   const frontendEmailsArray = req.body.emailsArray;
-  console.log('myAssoArray: ', myAssoArray);
-  console.log('selectedAsso: ', selectedAsso);
-  console.log('frontendEmailsArray: ', frontendEmailsArray);
+  // console.log('myAssoArray: ', myAssoArray);
+  // console.log('selectedAsso: ', selectedAsso);
+  // console.log('frontendEmailsArray: ', frontendEmailsArray);
   if (!myAssoArray.includes(selectedAsso)) {
     console.log('adminRoutes, 61, error 401, unauthorized!');
     return res.status(401).send({
@@ -119,7 +119,12 @@ router.put('/', requireLogin, requireAdmin, async function(req, res) {
   } catch (error) {
     console.log('adminRoute, row 137, error by replacing old data: ', error);
   }
-  updatedAsso.save();
+
+  try {
+    updatedAsso.save();
+  } catch (err) {
+    console.log('ERROR by updateAsso.save(): ', err);
+  }
 
   // TODO send email to the emails in the list,
   // and to the logged in admin who created the accounts
@@ -133,6 +138,18 @@ router.put('/', requireLogin, requireAdmin, async function(req, res) {
   const duplicateEmails = emailsArray.filter(
     email => !newEmailsArray.includes(email)
   );
+
+  console.log(
+    'NEW ACCOUNTS CREATED by ',
+    req.user.primaryEmail,
+    ' for ',
+    newEmails.join(', '),
+    '. badFormatEmails: ',
+    badFormatEmails.join(', '),
+    '. duplicatedEmails: ',
+    duplicateEmails.join(', ')
+  );
+
   res.status(201).json({
     newEmails,
     newfamiliesByEmail,

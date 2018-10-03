@@ -2,8 +2,9 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
+const requireLogin = require('../../middlewares/requireLogin');
 
-router.get('/', async (req, res) => {
+router.get('/', requireLogin, async (req, res) => {
   let theseAssos; // all asso details for the assos where this family is a parent.
   // Obtained from database, find in assos collection the documents that match
   // the IDs listed in req.user.roles.parent
@@ -15,10 +16,16 @@ router.get('/', async (req, res) => {
     thisAsso = await Asso.findOne({ id: 'a0' });
   } catch (error) {
     console.log(
-      "/api/current_family (get) error, couldn't access event in database ",
+      req.user.primaryEmail,
+      ', authRoutes.js, ERROR by MONGO findOne asso: ',
       error
     );
-    res.status(500).json({ error: error.toString() });
+    return res.status(500).json({
+      message:
+        'Sorry, there was a problem with the server. ' +
+        'Please try again later or contact dev@xiaoju.io ' +
+        'for support.'
+    });
   }
 
   // for now, only one asso...
@@ -51,9 +58,16 @@ router.get('/', async (req, res) => {
       });
     } catch (error) {
       console.log(
-        'authRoutes.js, api/current_family (get), error by mongo search to build familyById: ',
+        req.user.primaryEmail,
+        ', authRoutes.js, ERROR by MONGO find to build familyById: ',
         error
       );
+      return res.status(500).json({
+        message:
+          'Sorry, there was a problem with the server. ' +
+          'Please try again later or contact dev@xiaoju.io ' +
+          'for support.'
+      });
     }
     // convert familyByIdArray [{...},{..}] to an object: {id:{...}, id:{...}}
     familyById = familyByIdArray.reduce((obj, item) => {
@@ -132,17 +146,11 @@ router.get('/', async (req, res) => {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put together the data required by client, and send it
   if (!req.user) {
-    // res.status(401).send(null);
-    // console.log('authroutes.js, row 258, send(null)');
-    res.send(null); // if not logged in, don't send data.
+    // normally this case (user not logged in) is handled by requireLogin
+    // middleware, here just for safety, normaly never called.
+    return res.status(401).json({ message: 'Error: you are not logged in.' });
   } else {
-    // let thisEvent = req.user.registeredEvents.includes('e0')
-    //   ? null // send null if there is no event opened for registration
-    //   : thisAsso.eventsById.e0;
-    //
-    // let openEvents = req.user.registeredEvents.includes('e0') ? [] : ['e0'];
-
-    res.status(200).send({
+    return res.status(200).send({
       assos: {
         assosById,
         allAssos: req.user.roles.parent
@@ -183,7 +191,6 @@ router.get('/', async (req, res) => {
       }
     });
   }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 });
 
 module.exports = router;

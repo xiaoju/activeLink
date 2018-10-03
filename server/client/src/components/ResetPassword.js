@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import SpinnerWrapper from './SpinnerWrapper';
+import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -24,43 +24,38 @@ class ResetPassword extends Component {
   onSubmit(event) {
     event.preventDefault();
     const { resetToken, password1 } = this.state;
-    axios
-      .post('/auth/reset/' + resetToken, { password: password1 })
+
+    ActiveLinkAPI.resetPassword({ resetToken, newPassword: password1 })
       .then(result => {
         const { passwordWasChanged } = result.data;
-
         if (passwordWasChanged) {
           this.props.history.push('/register');
         } else {
-          this.props.history.push('/login');
+          this.props.history.push('/login/unchangedPassword');
         }
       })
-
       .catch(error => {
-        console.log('AXIOS error: ', error);
-        this.props.history.push('/login');
+        console.log('ResetPassword.js, 40, error: ', error);
+        this.props.history.push('/login/passwordResetError');
       });
   }
 
   componentDidMount() {
-    try {
-      axios
-        .get(`/auth/checkResetToken/${this.props.match.params.resetToken}`)
-        .then(result =>
-          this.setState({ tokenIsValid: result.data.tokenIsValid })
-        );
-    } catch (error) {
-      console.log('ERROR by AXIOS checkResetToken: ', error);
-    }
+    ActiveLinkAPI.checkResetToken(this.props.match.params.resetToken)
+      .then(result => this.setState({ tokenIsValid: result.data.tokenIsValid }))
+      .catch(error => {
+        console.log('ERROR by checkResetToken(): ', error);
+        this.props.history.push('/login/invalidToken');
+      });
   }
-
   // TODO
   // !tokenIsValid && redirect to /login with message that
   // "Password reset token is invalid or has expired, please request a new reset link";
   // also pass the 'resendPassword: false' parameter to /login,
 
   componentDidUpdate() {
-    !this.state.tokenIsValid && this.props.history.push('/login');
+    // !this.state.tokenIsValid && this.props.history.push('/login');
+    console.log('ResetPassword.js did update');
   }
 
   render() {

@@ -43,7 +43,7 @@ class Dashboard extends Component {
         FamiliesNotRegistered,
         NoPhotoconsentKids,
         FamilyIdbyKidId,
-        FamilyIdbyParentId,
+        // FamilyIdbyParentId,
         itemsById,
         kidsQuantity,
         kidsInClasses,

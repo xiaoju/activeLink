@@ -18,25 +18,39 @@ import {
   LOAD_DUMP,
   LOAD_DASHBOARD,
   SELECT_PRIMARY_EMAIL,
-  SELECT_PAYMENT_OPTION
+  SELECT_PAYMENT_OPTION,
+  LOAD_FAMILY
 } from './types';
 
+export const loadFamily = payload => ({
+  type: LOAD_FAMILY,
+  payload
+});
+
 export const fetchUser = () => async dispatch => {
+  console.log('action/index.js fetchUser()');
   let fetched;
   try {
-    fetched = await axios.get('/api/v1/current_family');
-    // TODO dispatch something if there is no answer from backend or from google
+    fetched = await ActiveLinkAPI.fetchFamily();
+    // TODO dispatch something if there is no answer from backend
     // so that user knows where it's going wrong
-
-    try {
-      dispatch({ type: FETCH_USER, payload: fetched.data });
-    } catch (err) {
-      console.log('Error by dispatch FETCH_USER : ', err);
-    }
   } catch (error) {
-    // console.log('Error by axios GET /api/v1/current_family: ', error);
-    // dispatch(push('/sorry'));
-    dispatch(push('/login/852'));
+    // console.log('Error by ActiveLinkAPI.fetchFamily(): ', error);
+
+    if (error.response && error.response.status === 401) {
+      dispatch(push('/login'));
+    } else {
+      // dispatch(push('/sorry'));
+      dispatch(push('/login/fetchError'));
+    }
+  }
+
+  try {
+    if (fetched && fetched.data) {
+      dispatch({ type: FETCH_USER, payload: fetched.data });
+    }
+  } catch (err) {
+    dispatch(push('/login/fetchDispatchError'));
   }
 };
 

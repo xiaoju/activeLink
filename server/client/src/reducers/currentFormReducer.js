@@ -1,5 +1,6 @@
 import {
   FETCH_USER,
+  LOAD_FAMILY,
   LOAD_SELECTION,
   SELECT_PRIMARY_EMAIL,
   MODIFY_JSON_PROFILES,
@@ -16,6 +17,7 @@ const empty = {
 
 export default function(state = empty, { type, payload }) {
   switch (type) {
+    case LOAD_FAMILY:
     case FETCH_USER:
       // console.log(
       //   'currentForm reducer, case FETCH_USER, payload.assos',
