@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { getLastMediaValid } from '../selectors';
 import { modifyMedia, addMediaRow } from '../actions/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SelectComponentStyled from './SelectComponentStyled';
 
 class OneMediaForm extends Component {
@@ -39,14 +40,16 @@ class OneMediaForm extends Component {
     return (
       <form className="formInputsContainer">
         <div className="input-field twoNamesContainer">
-          <i
-            className={
-              'material-icons prefix ' +
-              (media === 'more_horiz' ? 'icon-orange' : '')
+          <FontAwesomeIcon
+            style={{ transform: 'translate(-30%, 18%)' }}
+            className="prefix"
+            icon={
+              { phone: 'phone', email: 'envelope', more_horiz: 'minus' }[media]
             }
-          >
-            {media}
-          </i>
+            color={media === 'more_horiz' ? '#ffa726' : ''}
+            size="1x"
+          />
+
           <input
             readOnly={this.props.isDisabled}
             value={value}

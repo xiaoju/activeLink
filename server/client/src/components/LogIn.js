@@ -4,6 +4,7 @@ import * as Validation from '../utils/Validation';
 import SpinnerWrapper from './SpinnerWrapper';
 import * as actions from '../actions';
 import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class LogIn extends Component {
   constructor(props) {
@@ -199,7 +200,13 @@ class LogIn extends Component {
             <br />
             <form onSubmit={this.onSubmit}>
               <div className="input-field loginEmail">
-                <i className={'material-icons prefix icon-orange'}>email</i>
+                <FontAwesomeIcon
+                  style={{ transform: 'translate(-30%, 18%)' }}
+                  className="prefix"
+                  icon="envelope"
+                  color="#ffa726"
+                  size="1x"
+                />
                 <input
                   // type="email"
                   name="loginEmail"
@@ -214,7 +221,13 @@ class LogIn extends Component {
 
               {!resendPassword ? (
                 <div className="input-field loginPassword">
-                  <i className={'material-icons prefix icon-orange'}>lock</i>
+                  <FontAwesomeIcon
+                    style={{ transform: 'translate(-30%, 18%)' }}
+                    className="prefix"
+                    icon="lock"
+                    color="#ffa726"
+                    size="1x"
+                  />
                   <input
                     type="password"
                     name="loginPassword"
@@ -260,7 +273,20 @@ class LogIn extends Component {
                 type="submit"
                 name="action"
               >
-                <i className="material-icons left">send</i>
+                {resendPassword ? (
+                  <FontAwesomeIcon
+                    style={{ transform: 'translate(-30%, 18%)' }}
+                    icon="paper-plane"
+                    size="2x"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    style={{ transform: 'translate(-30%, 18%)' }}
+                    icon="sign-in-alt"
+                    size="2x"
+                  />
+                )}
+
                 {resendPassword ? "Let's reset my password" : 'Login'}
               </button>
 

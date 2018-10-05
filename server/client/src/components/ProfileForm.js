@@ -10,6 +10,7 @@ import {
   getAddresses,
   getFamilyMedia
 } from '../selectors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageSection from './layout/PageSection';
 import OneKidForm from './OneKidForm';
 import OneAddressForm from './OneAddressForm';
@@ -63,8 +64,9 @@ class ProfileForm extends Component {
           ))}
           <div className="title_and_button">
             <h5>
-              <i className="material-icons small">phone</i> &nbsp; &nbsp;
-              <i className="material-icons small">email</i>
+              <FontAwesomeIcon icon="phone" />
+              &nbsp; &nbsp;
+              <FontAwesomeIcon icon="envelope" />
             </h5>
           </div>
           <OneMediaForm // readyOnly view of the primaryEmail

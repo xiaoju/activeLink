@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
+import '../utils/fontAwesome';
 import Header from './Header';
 import Home from './Home';
 import RegisterEvent from './RegisterEvent';
@@ -18,24 +19,6 @@ import Dump from './admin/Dump';
 import Dashboard from './admin/Dashboard';
 // import UpdateOthers from './admin/UpdateOthers';
 // import UpdateMany from './admin/UpdateMany';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faSignInAlt,
-  faSignOutAlt,
-  faMoneyCheck,
-  faCreditCard,
-  faExchangeAlt,
-  faShoppingCart
-} from '@fortawesome/free-solid-svg-icons';
-library.add(
-  faSignInAlt,
-  faSignOutAlt,
-  faMoneyCheck,
-  faCreditCard,
-  faExchangeAlt,
-  faShoppingCart
-);
 
 class App extends Component {
   componentDidMount() {

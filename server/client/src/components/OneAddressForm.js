@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getLastAddressValid } from '../selectors';
 import { modifyAddress, addAddressRow } from '../actions/index';
 import SelectComponentStyled from './SelectComponentStyled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class OneAddressForm extends Component {
   constructor(props) {
@@ -34,26 +35,19 @@ class OneAddressForm extends Component {
       valueExample
     } = this.props;
 
-    // const tagOptions = [
-    //   { value: 'everybody', label: 'everybody!' },
-    //   { value: 'Donald', label: 'Donald' },
-    //   { value: 'Rosemary', label: 'Rosemary' }
-    // ];
-
     return (
       <form className="formInputsContainer">
         <div className="input-field twoNamesContainer">
-          <i
-            className={
-              'material-icons prefix ' + (value === '' ? 'icon-orange' : '')
-            }
-          >
-            home
-          </i>
+          <FontAwesomeIcon
+            style={{ transform: 'translate(-30%, 18%)' }}
+            className="prefix"
+            icon="home"
+            color={value === '' ? '#ffa726' : ''}
+            size="1x"
+          />
           <input
             id={'address' + index}
             name="address"
-            // placeholder="1 place du Capitole, 31000 Toulouse FRANCE"
             className={!value ? 'pasValide' : ' '}
             value={value}
             style={{ paddingTop: '1em' }}
@@ -62,7 +56,6 @@ class OneAddressForm extends Component {
           />
           <label
             htmlFor={'address' + index}
-            // style={{ lineHeight: '1em' }}
             className="double-line-label active"
           >
             {caption}

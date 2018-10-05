@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAssoEmail } from '../selectors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class HelpContact extends Component {
   render() {
@@ -10,7 +11,7 @@ class HelpContact extends Component {
     return (
       <div className="categoryIcon container">
         <div className="myIconContainer">
-          <i className="small material-icons prefix">help_outline</i>
+          <FontAwesomeIcon icon="info-circle" color="fff" size="3x" />
         </div>
         <div className="myContactsContainer">
           <p>

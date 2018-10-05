@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SpinnerWrapper from './SpinnerWrapper';
 import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -76,7 +77,12 @@ class ResetPassword extends Component {
           <div className="container itemDetails">
             <form onSubmit={this.onSubmit}>
               <div className="input-field loginPassword">
-                <i className={'material-icons prefix icon-orange'}>lock</i>
+                <FontAwesomeIcon
+                  style={{ transform: 'translate(-30%, 18%)' }}
+                  className="prefix"
+                  icon="lock"
+                  color="#ffa726"
+                />
                 <input
                   type="password"
                   name="password1"
@@ -90,7 +96,12 @@ class ResetPassword extends Component {
               </div>
 
               <div className="input-field loginPassword">
-                <i className={'material-icons prefix icon-orange'}>lock</i>
+                <FontAwesomeIcon
+                  style={{ transform: 'translate(-30%, 18%)' }}
+                  className="prefix"
+                  icon="lock"
+                  color="#ffa726"
+                />
                 <input
                   type="password"
                   name="password2"
@@ -112,7 +123,11 @@ class ResetPassword extends Component {
                 type="submit"
                 name="action"
               >
-                <i className="material-icons left">send</i>
+                <FontAwesomeIcon
+                  style={{ transform: 'translate(-30%, 18%)' }}
+                  icon="paper-plane"
+                  size="2x"
+                />
                 Update password
               </button>
             </form>

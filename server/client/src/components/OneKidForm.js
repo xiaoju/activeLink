@@ -11,6 +11,7 @@ import {
   getKidGrade
 } from '../selectors';
 import { modifyUser, addKidRow, addParentRow } from '../actions/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { capitalizeFirstLetter } from '../utils/Tools';
 
 class OneKidForm extends Component {
@@ -51,14 +52,13 @@ class OneKidForm extends Component {
       <form className="formInputsContainer">
         <div className="twoNamesContainer">
           <div className="input-field firstName">
-            <i
-              className={
-                'material-icons prefix ' +
-                (validUsers.includes(userId) ? '' : 'icon-orange')
-              }
-            >
-              {!!kidGrade ? 'face' : 'account_circle'}
-            </i>
+            <FontAwesomeIcon
+              style={{ transform: 'translate(-30%, 18%)' }}
+              className="prefix"
+              icon={!!kidGrade ? 'child' : 'user'}
+              color={validUsers.includes(userId) ? '' : '#ffa726'}
+              size="1x"
+            />
             <input
               name="firstName"
               id={userId + '-firstName'}
