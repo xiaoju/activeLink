@@ -16,15 +16,10 @@ router.get('/:token', async function(req, res) {
         // TODO search again for the family, but without the {$gt: Date.now()}
         // constraint, so I can log who got a problem
         // TODO and use promises instead of callbacks!
-        return res.status(401).json({
-          tokenIsValid: false,
-          message:
-            'Invalid token: the token to reset the password is not ' +
-            'valid or has expired.'
-        });
+        return res.sendStatus(401);
       }
       console.log('CLICKED the reset link: ', family.primaryEmail);
-      return res.status(200).json({ tokenIsValid: true });
+      return res.sendStatus(200);
     }
   );
 });

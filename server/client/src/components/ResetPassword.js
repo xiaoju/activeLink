@@ -13,7 +13,6 @@ class ResetPassword extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       resetToken: this.props.match.params.resetToken,
-      tokenIsValid: null,
       loadingBefore: true,
       loadingAfter: false,
       password1: '',
@@ -59,7 +58,6 @@ class ResetPassword extends Component {
     ActiveLinkAPI.checkResetToken(this.props.match.params.resetToken)
       .then(result =>
         this.setState({
-          tokenIsValid: result.data.tokenIsValid,
           loadingBefore: false
         })
       )
@@ -68,24 +66,9 @@ class ResetPassword extends Component {
         this.props.history.push('/login/invalidToken');
       });
   }
-  // TODO
-  // !tokenIsValid && redirect to /login with message that
-  // "Password reset token is invalid or has expired, please request a new reset link";
-  // also pass the 'resendPassword: false' parameter to /login,
-
-  componentDidUpdate() {
-    // !this.state.tokenIsValid && this.props.history.push('/login');
-    console.log('ResetPassword.js did update');
-  }
 
   render() {
-    const {
-      tokenIsValid,
-      password1,
-      password2,
-      loadingBefore,
-      loadingAfter
-    } = this.state;
+    const { password1, password2, loadingBefore, loadingAfter } = this.state;
 
     return (
       <PageSection sectionTitle="Reset password">
@@ -158,5 +141,5 @@ class ResetPassword extends Component {
     );
   }
 }
-// export default ResetPassword;
+
 export default connect(null, actions)(ResetPassword);
