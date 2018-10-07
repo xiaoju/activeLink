@@ -3,7 +3,8 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 
-router.get('/', async function(req, res) {
+router.get('/:token', async function(req, res) {
+  console.log('ROUTE checkResetToken.js, req.params.token: ', req.params.token);
   Family.findOne(
     {
       resetPasswordToken: req.params.token,
