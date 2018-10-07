@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 router.get('/', (req, res) => {
   try {
-    console.log(req.user.primaryEmail, 'LOGGING OUT.');
+    console.log('LOGGING OUT: ', req.user.primaryEmail);
     req.logout();
   } catch (error) {
     console.log('There was an error by logout: ', error);

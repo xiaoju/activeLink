@@ -5,6 +5,7 @@ const User = mongoose.model('users');
 const requireLogin = require('../../middlewares/requireLogin');
 
 router.get('/', requireLogin, async (req, res) => {
+  console.log('ROUTE currentFamily.js');
   let theseAssos; // all asso details for the assos where this family is a parent.
   // Obtained from database, find in assos collection the documents that match
   // the IDs listed in req.user.roles.parent

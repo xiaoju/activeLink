@@ -42,6 +42,13 @@ passport.use(
             return done(err);
           }
 
+          if (family) {
+            console.log(
+              'PASSPORT.JS did find a family with this email (family.primaryEmail): ',
+              family.primaryEmail
+            );
+          }
+
           if (!family) {
             console.log('FOUND NO ACCOUNT for: ', primaryEmail);
             return done(null, false, {
