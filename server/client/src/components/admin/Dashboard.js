@@ -122,8 +122,8 @@ class Dashboard extends Component {
                     );
                   })
                   .map(kidId => (
-                    <div>
-                      <span key={kidId}>
+                    <div key={kidId}>
+                      <span>
                         {usersById[kidId].firstName +
                           ' ' +
                           usersById[kidId].familyName.toUpperCase() +
@@ -153,8 +153,8 @@ class Dashboard extends Component {
                     );
                   })
                   .map(kidId => (
-                    <div>
-                      <span key={kidId}>
+                    <div key={kidId}>
+                      <span>
                         {usersById[kidId].firstName +
                           ' ' +
                           usersById[kidId].familyName.toUpperCase() +
@@ -172,7 +172,7 @@ class Dashboard extends Component {
                 <strong>Registrations by classes</strong>
               </h5>
               {classItems.map(itemId => (
-                <div className="no_break_inside">
+                <div key={itemId} className="no_break_inside">
                   <h5>
                     {itemsById[itemId].name} ({
                       registrationsByItem[itemId].length
@@ -192,8 +192,8 @@ class Dashboard extends Component {
                         );
                       })
                       .map(userId => (
-                        <div>
-                          <span key={userId}>
+                        <div key={userId}>
+                          <span>
                             {usersById[userId].firstName +
                               ' ' +
                               usersById[userId].familyName.toUpperCase() +
@@ -212,7 +212,7 @@ class Dashboard extends Component {
                 <strong>The Volunteers (by name)</strong>
               </h5>
               {volunteers.map(volunteerObject => (
-                <p key={volunteerObject.familyId}>
+                <div key={volunteerObject.familyId}>
                   <strong>
                     {familiesById[volunteerObject.familyId].allParents
                       .map(
@@ -225,12 +225,13 @@ class Dashboard extends Component {
                   </strong>
                   <br />
                   {volunteerObject.volunteeringItemIds.map(itemId => (
-                    <div>
+                    <div key={itemId}>
                       {itemsById[itemId].name}
                       <br />
                     </div>
                   ))}
-                </p>
+                  <br />
+                </div>
               ))}
             </div>
             <div className="container itemDetails">
@@ -238,11 +239,11 @@ class Dashboard extends Component {
                 <strong>The Volunteers (by activity)</strong>
               </h5>
               {volunteeringItems.map(itemId => (
-                <p key={itemId}>
+                <div key={itemId}>
                   <strong>{itemsById[itemId].name}</strong>
                   <div>
                     {registrationsByItem[itemId].map(familyId => (
-                      <div>
+                      <div key={familyId}>
                         <span key={familyId}>
                           {familiesById[familyId].allParents
                             .map(
@@ -260,13 +261,14 @@ class Dashboard extends Component {
                       </div>
                     ))}
                   </div>
-                </p>
+                  <br />
+                </div>
               ))}
             </div>
 
             <div className="container itemDetails page-break-before">
               {classItems.map(itemId => (
-                <div className="no_break_inside page-break-before">
+                <div key={itemId} className="no_break_inside page-break-before">
                   <h5>{itemsById[itemId].name}</h5>
                   <h6>
                     <strong>Parents phone numbers</strong>
