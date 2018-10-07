@@ -52,6 +52,16 @@ class LogIn extends Component {
   handleMessageCode(messageCode) {
     // console.log('login.js, handleMessageCode');
     switch (messageCode) {
+      case 'serverError': {
+        this.setState({
+          errorMessage:
+            'Sorry, there was a problem with the server. ' +
+            'Please try again later, or inform us per email to dev@xiaoju.io \n' +
+            'Thank you!'
+        });
+        return;
+      }
+
       case 'test': {
         this.setState({ errorMessage: 'TEST MESSAGE' });
         return;

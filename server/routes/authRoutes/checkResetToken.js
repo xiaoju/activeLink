@@ -4,24 +4,46 @@ const mongoose = require('mongoose');
 const Family = mongoose.model('families');
 
 router.get('/:token', async function(req, res) {
-  console.log('ROUTE checkResetToken.js, req.params.token: ', req.params.token);
-  Family.findOne(
-    {
+  let family;
+
+  try {
+    family = await Family.findOne({
       resetPasswordToken: req.params.token,
       resetPasswordExpires: { $gt: Date.now() }
-    },
-    function(error, family) {
-      if (!family) {
-        console.log('FAILED TOKEN CHECK by somebody');
-        // TODO search again for the family, but without the {$gt: Date.now()}
-        // constraint, so I can log who got a problem
-        // TODO and use promises instead of callbacks!
-        return res.sendStatus(401);
-      }
-      console.log('CLICKED the reset link: ', family.primaryEmail);
-      return res.sendStatus(200);
+    });
+  } catch (err) {
+    console.log('FAILED database lookup by checkResetToken ROUTE');
+    return res.sendStatus(500);
+  }
+
+  if (!family) {
+    // just logging who got problems
+    let failed;
+    try {
+      failed = await Family.findOne({
+        resetPasswordToken: req.params.token
+      });
+    } catch (err) {
+      console.log('FAILED database lookup 2 by checkResetToken ROUTE');
+      // but still sending status code 401 to client
     }
-  );
+    if (!failed) {
+      console.log(
+        'FAILED TOKEN CHECK (token not found) by somebody. NB this user was logged in: ',
+        req.user.primaryEmail
+      );
+    } else {
+      console.log(
+        'FAILED TOKEN CHECK (token too old) by ',
+        failed.primaryEmail
+      );
+    }
+    // end of 'logging who got problems'
+    return res.sendStatus(401);
+  } else {
+    console.log('CLICKED the reset link: ', family.primaryEmail);
+    return res.sendStatus(200);
+  }
 });
 
 module.exports = router;

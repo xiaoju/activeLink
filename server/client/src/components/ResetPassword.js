@@ -20,6 +20,23 @@ class ResetPassword extends Component {
     };
   }
 
+  componentDidMount() {
+    ActiveLinkAPI.checkResetToken(this.props.match.params.resetToken)
+      .then(result =>
+        this.setState({
+          loadingBefore: false
+        })
+      )
+      .catch(error => {
+        // console.log('ERROR by checkResetToken(): ', JSON.stringify(error));
+        if (error.response.status === 401) {
+          this.props.history.push('/login/invalidToken');
+        } else {
+          this.props.history.push('/login/serverError');
+        }
+      });
+  }
+
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
@@ -51,19 +68,6 @@ class ResetPassword extends Component {
       .catch(error => {
         console.log('ResetPassword.js, 40, error: ', error);
         this.props.history.push('/login/passwordResetError');
-      });
-  }
-
-  componentDidMount() {
-    ActiveLinkAPI.checkResetToken(this.props.match.params.resetToken)
-      .then(result =>
-        this.setState({
-          loadingBefore: false
-        })
-      )
-      .catch(error => {
-        console.log('ERROR by checkResetToken(): ', error);
-        this.props.history.push('/login/invalidToken');
       });
   }
 
