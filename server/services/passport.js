@@ -6,13 +6,16 @@ const keys = require('../config/keys');
 const Family = mongoose.model('families');
 
 passport.serializeUser((family, done) => {
-  // console.log('serializeUser()');
+  console.log('serializeUser(), family.primaryEmail: ', family.primaryEmail);
   done(null, family.id);
 });
 
 passport.deserializeUser((id, done) => {
-  // console.log('deserializeUser()');
   Family.findById(id).then(family => {
+    console.log(
+      'just did deserializeUser(), family.primaryEmail: ',
+      family.primaryEmail
+    );
     done(null, family);
   });
 });

@@ -5,3 +5,6 @@ EnglishLinkSeed.json
 primaryEmails.js
 .DS_Store
 TODO.md
+
+# mongodb local database for development
+/data

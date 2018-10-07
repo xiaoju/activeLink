@@ -12,7 +12,7 @@ export const updateMany = payload => axios.put(`${api}/updatemany`, payload);
 export const fetchDashboard = () => axios.get(`${api}/dashboard`);
 
 export const requestPasswordReset = email =>
-  axios.post(`${authAPI}/reset`, {
+  axios.post(`${authAPI}/createResetToken`, {
     primaryEmail: email
   });
 
@@ -46,4 +46,6 @@ export const checkResetToken = token =>
   axios.get(`${authAPI}/checkResetToken/${token}`);
 
 export const resetPassword = ({ resetToken, newPassword }) =>
-  axios.post(`${authAPI}/reset/${resetToken}`, { password: newPassword });
+  axios.post(`${authAPI}/resetPassword/${resetToken}`, {
+    password: newPassword
+  });

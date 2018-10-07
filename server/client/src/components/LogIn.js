@@ -139,20 +139,36 @@ class LogIn extends Component {
     if (resendPassword) {
       // user only provides email address, asking for password reset
       ActiveLinkAPI.requestPasswordReset(loginEmail)
-        .then(result => {
-          const { resetTokenEmailSent, emailedTo } = result.data;
-          if (resetTokenEmailSent) {
-            this.props.history.push('/EmailSent/' + emailedTo);
-          } else {
-            // stay on /login page
-            this.setState({
-              loading: false,
-              errorMessage:
-                'The authentication failed, please double check that the email address you typed is the one you registered with.'
-            });
-          }
-        })
-        .catch(error => console.log('error by requestPasswordReset: ', error));
+        .then(result =>
+          this.props.history.push('/EmailSent/' + result.data.emailedTo)
+        )
+        .catch(error => {
+          console.log('JSON.stringify(error) (catch): ', JSON.stringify(error));
+          this.setState({
+            loading: false,
+            errorMessage: error.response.data.message
+          });
+        });
+      // .then(result => {
+      //   const { message, resetTokenEmailSent, emailedTo } = result.data;
+      //   if (resetTokenEmailSent) {
+      //     this.props.history.push('/EmailSent/' + emailedTo);
+      //   } else {
+      //     // stay on /login page
+      //     // console.log(
+      //     //   error.response &&
+      //     //     error.response.data &&
+      //     //     error.response.data.message
+      //     // );
+      //     this.setState({
+      //       loading: false,
+      //       errorMessage:
+      //         'The authentication failed, please double check that the ' +
+      //         'email address you typed is the one you registered with.'
+      //     });
+      //   }
+      // })
+      // .catch(error => console.log('error by requestPasswordReset: ', error));
     } else {
       ActiveLinkAPI.localLogin({
         primaryEmail: loginEmail,

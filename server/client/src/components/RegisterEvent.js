@@ -22,6 +22,7 @@ class RegisterEvent extends Component {
     return (
       <div>
         {!this.props.profile && (
+          // this shouldn't be called, as app should redirect to `/login`
           <h5>Please log in! (Use the button on top right of this page)</h5>
         )}
 

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import SpinnerWrapper from './SpinnerWrapper';
 import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
+import * as actions from '../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PageSection from './layout/PageSection';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -11,6 +14,8 @@ class ResetPassword extends Component {
     this.state = {
       resetToken: this.props.match.params.resetToken,
       tokenIsValid: null,
+      loadingBefore: true,
+      loadingAfter: false,
       password1: '',
       password2: ''
     };
@@ -25,12 +30,21 @@ class ResetPassword extends Component {
   onSubmit(event) {
     event.preventDefault();
     const { resetToken, password1 } = this.state;
+    this.setState({ loadingAfter: true });
 
     ActiveLinkAPI.resetPassword({ resetToken, newPassword: password1 })
       .then(result => {
         const { passwordWasChanged } = result.data;
         if (passwordWasChanged) {
-          this.props.history.push('/register');
+          ActiveLinkAPI.fetchFamily()
+            .then(fetched => this.props.loadFamily(fetched.data))
+            .then(() => this.props.history.push('/register'))
+            .catch(error =>
+              console.log(
+                'resetPassword.js: fetchFamily() or push(/register) failed: ',
+                error
+              )
+            );
         } else {
           this.props.history.push('/login/unchangedPassword');
         }
@@ -43,7 +57,12 @@ class ResetPassword extends Component {
 
   componentDidMount() {
     ActiveLinkAPI.checkResetToken(this.props.match.params.resetToken)
-      .then(result => this.setState({ tokenIsValid: result.data.tokenIsValid }))
+      .then(result =>
+        this.setState({
+          tokenIsValid: result.data.tokenIsValid,
+          loadingBefore: false
+        })
+      )
       .catch(error => {
         console.log('ERROR by checkResetToken(): ', error);
         this.props.history.push('/login/invalidToken');
@@ -63,15 +82,14 @@ class ResetPassword extends Component {
     const {
       tokenIsValid,
       password1,
-      password2
-      // , loading
+      password2,
+      loadingBefore,
+      loadingAfter
     } = this.state;
 
     return (
-      <div className="itemsContainer hoverable">
-        <h4 className="stepTitle">Reset password</h4>
-        <br />
-        {tokenIsValid === null ? (
+      <PageSection sectionTitle="Reset password">
+        {loadingBefore || loadingAfter ? (
           <SpinnerWrapper caption="Processing your request..." />
         ) : (
           <div className="container itemDetails">
@@ -136,8 +154,9 @@ class ResetPassword extends Component {
             </div>
           </div>
         )}
-      </div>
+      </PageSection>
     );
   }
 }
-export default ResetPassword;
+// export default ResetPassword;
+export default connect(null, actions)(ResetPassword);

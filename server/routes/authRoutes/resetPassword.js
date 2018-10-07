@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
-const requireLogin = require('../../middlewares/requireLogin');
-const requireAdmin = require('../../middlewares/requireAdmin');
 var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead
 const keys = require('../../config/keys');
 var mailgun = require('mailgun-js')({
@@ -10,13 +8,17 @@ var mailgun = require('mailgun-js')({
   domain: keys.mailgunDomain
 });
 
-router.post('/', requireLogin, requireAdmin, async function(req, res) {
-  console.log('reset_token.js route, process.env.SILENT: ', process.env.SILENT);
+router.post('/:token', async function(req, res) {
+  console.log('resetPassword ROUTE, process.env.SILENT: ', process.env.SILENT);
   console.log('!process.env.SILENT: ', !process.env.SILENT);
   let emailTo;
   async.waterfall(
     [
       function(done) {
+        console.log(
+          'resetPassword.js ROUTE, req.params.token: ',
+          req.params.token
+        );
         Family.findOne(
           {
             resetPasswordToken: req.params.token,
@@ -24,17 +26,27 @@ router.post('/', requireLogin, requireAdmin, async function(req, res) {
           },
           function(error, family) {
             if (!family) {
+              console.log('ERROR by ROUTE resetPassword.js, ERROR 34');
               return res.status(500).json({
                 passwordWasChanged: false,
-                error: 'Password reset token is invalid or has expired.'
+                message: 'Password reset token is invalid or has expired.'
               });
             }
+
+            console.log(
+              'ROUTE resetPassword.js, found family that matches the ',
+              'token (family.primaryEmail: )',
+              family.primaryEmail
+            );
+
+            console.log('req.body.password: ', req.body.password);
 
             family.password = req.body.password;
             family.resetPasswordToken = undefined;
             family.resetPasswordExpires = undefined;
 
             family.save(function(error) {
+              console.log('resetPassword.js, 58, logging in');
               req.logIn(family, function(error) {
                 done(error, family);
               });
@@ -63,24 +75,25 @@ router.post('/', requireLogin, requireAdmin, async function(req, res) {
         };
         mailgun.messages().send(emailData, function(error, body) {
           if (error) {
-            return res.status(500).json({
-              passwordWasChanged: false,
-              error
-            });
-          } else {
-            return res.status(200).json({
-              passwordWasChanged: true,
-              body
-            });
+            console.log(
+              'ERROR by sending confirmation email to ',
+              emailTo,
+              ' after PASSWORD RESET by ',
+              family.primaryEmail
+            );
           }
+          res.status(200).json({ passwordWasChanged: true, body });
         });
         // TODO message to show on next page: 'Success! Your password has been changed.'
       }
     ],
+    // here the final callback to catch errors within the waterfall
     function(error) {
       // res.redirect('/');
-      return res.json({
+      console.log('reset_token.js, ERROR 91');
+      return res.status(500).json({
         passwordWasChanged: false,
+        message: 'ERROR 91',
         error
       });
     }

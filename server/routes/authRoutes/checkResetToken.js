@@ -11,7 +11,6 @@ router.get('/:token', async function(req, res) {
       resetPasswordExpires: { $gt: Date.now() }
     },
     function(error, family) {
-      // TODO handle error
       if (!family) {
         console.log('FAILED TOKEN CHECK by somebody');
         // TODO search again for the family, but without the {$gt: Date.now()}

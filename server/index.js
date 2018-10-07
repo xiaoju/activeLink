@@ -37,8 +37,10 @@ mongoose
       err,
       '\n_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n'
     );
-    res.status(500).json({ error: err.toString() });
-    // TODO in line above, res is undefined, and this error isn't caught.
+    // res.status(500).json({ error: err.toString() });
+    // maybe set env variable that connect to db is dead, then use middleware to answer to any request "no connection come back later"
+    // TODO in line above, (when no connection to database,
+    // res is undefined, and this error isn't caught.
   });
 // .then(
 //   () => {

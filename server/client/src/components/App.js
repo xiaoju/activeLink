@@ -22,13 +22,15 @@ import Dashboard from './admin/Dashboard';
 
 class App extends Component {
   componentDidMount() {
+    console.log('app.js did mount -> fetchFamily()');
     ActiveLinkAPI.fetchFamily()
       .then(fetched => this.props.loadFamily(fetched.data))
-      .then(() => this.props.history.push('/register'))
-      .catch(error => {
-        console.log('ERROR by app.js, componentDidMount, error: ', error);
-        this.props.history.push('/login');
-      });
+      .catch(error => console.log('app.js: fetchFamily() failed.'));
+    // .then(() => this.props.history.push('/register'))  // NO! otherwise cannot show for example /admin/dashboard
+    // .catch(error => {
+    // console.log('ERROR by app.js, componentDidMount, error: ', error);
+    // this.props.history.push('/login'); // NO! otherwise cannot show for example /reset/:resetToken
+    // });
   }
 
   render() {
