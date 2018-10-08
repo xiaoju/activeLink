@@ -10,7 +10,6 @@ var mailgun = require('mailgun-js')({
 });
 
 router.post('/', async function(req, res) {
-  console.log('createResetToken ROUTE');
   let emailTo;
   async.waterfall([
     function(done) {
@@ -52,7 +51,6 @@ router.post('/', async function(req, res) {
         }
 
         family.resetPasswordToken = token;
-        // family.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         family.resetPasswordExpires = Date.now() + 25 * 60 * 60 * 1000; // 25 hours
 
         try {
@@ -99,10 +97,10 @@ router.post('/', async function(req, res) {
       mailgun.messages().send(emailData, function(error, body) {
         if (error) {
           console.log(
-            'ERROR by emailing reset link ' +
-            'http://' + req.headers.host + '/reset/' + token +
-            ' to ', emailTo,
-            ' for ', family.primaryEmail, ': ',
+            req.ip, ',', family.primaryEmail, ':',
+            'ERROR by emailing reset link ',
+            'http://' + req.headers.host + '/reset/' + token,
+            'to', emailTo,':\n',
             error
           );
           return res.status(500).json({
@@ -114,15 +112,11 @@ router.post('/', async function(req, res) {
             error
           });
         } else {
+          // prettier-ignore
           console.log(
-            'SENT LINK http://' +
-              req.headers.host +
-              '/reset/' +
-              token +
-              ' for ' +
-              family.primaryEmail +
-              ' to ' +
-              emailTo
+            req.ip, ',', family.primaryEmail, ':',
+            'SENT LINK http://' + req.headers.host + '/reset/' + token,
+            'to', emailTo
           );
           return res.status(200).json({
             message: 'An email with a reset link has been sent',

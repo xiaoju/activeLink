@@ -29,19 +29,23 @@ router.get('/:token', async function(req, res) {
     }
     if (!failed) {
       console.log(
-        'FAILED TOKEN CHECK (token not found) by somebody. NB this user was logged in: ',
-        req.user.primaryEmail
+        req.ip,
+        ', ',
+        req.user && req.user.primaryEmail,
+        ': FAILED TOKEN CHECK (token not found)'
       );
     } else {
       console.log(
-        'FAILED TOKEN CHECK (token too old) by ',
-        failed.primaryEmail
+        req.ip,
+        ', ',
+        failed.primaryEmail,
+        ': FAILED TOKEN CHECK (token too old)'
       );
     }
     // end of 'logging who got problems'
     return res.sendStatus(401);
   } else {
-    console.log('CLICKED the reset link: ', family.primaryEmail);
+    console.log(req.ip, ', ', family.primaryEmail, ': CLICKED the reset link');
     return res.sendStatus(200);
   }
 });

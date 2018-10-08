@@ -75,7 +75,7 @@ router.post('/', requireLogin, async (req, res) => {
       frontendChecked
     };
 
-  console.log('billingroutes.js, 78, stripeTokenId: ', stripeTokenId);
+  // console.log('billingroutes.js, 78, stripeTokenId: ', stripeTokenId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // look up the event details, from backend database
@@ -269,8 +269,8 @@ router.post('/', requireLogin, async (req, res) => {
       // save stripeCharge receipt into this `family` collection, in database,
       // for future reference:
       const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
-      console.log('billingRoutes, 270, ReceiptsCount: ', ReceiptsCount);
-      console.log('billingRoutes, 283, stripeReceipt.id: ', stripeReceipt.id);
+      // console.log('billingRoutes, 270, ReceiptsCount: ', ReceiptsCount);
+      // console.log('billingRoutes, 283, stripeReceipt.id: ', stripeReceipt.id);
       try {
         family = await req.user.save();
       } catch (error) {
@@ -283,7 +283,7 @@ router.post('/', requireLogin, async (req, res) => {
       }
     }
 
-    console.log('billingRoutes, 283, stripeReceipt: ', stripeReceipt);
+    // console.log('billingRoutes, 283, stripeReceipt: ', stripeReceipt);
 
     if (
       (paymentOption === 'creditCard' &&
@@ -788,13 +788,14 @@ router.post('/', requireLogin, async (req, res) => {
     try {
       mailgun.messages().send(email_Data, function(error, body) {
         if (error) {
-          console.log('billingRoutes, 791. ERROR: ', error);
+          console.log('payment ROUTE, 791. ERROR: ', error);
           res.status(500).json({ error: error.toString() });
         } else {
           console.log(
-            'REGISTRATION CONFIRMATION for ',
+            req.ip,
+            ',',
             primaryEmail,
-            ' was sent to ',
+            ': REGISTRATION CONFIRMATION sent to ',
             emailTo,
             ' and ',
             thisAsso.backupEmail,
@@ -805,7 +806,7 @@ router.post('/', requireLogin, async (req, res) => {
         }
       });
     } catch (error) {
-      console.log('ERROR, billingRoutes, 808: ', error);
+      console.log('ERROR, payment ROUTE, 808: ', error);
       res.status(500).json({
         error: error.toString(),
         receipt: publicReceipt,

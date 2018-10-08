@@ -9,16 +9,12 @@ var mailgun = require('mailgun-js')({
 });
 
 router.post('/:token', async function(req, res) {
-  console.log('resetPassword ROUTE, process.env.SILENT: ', process.env.SILENT);
-  console.log('!process.env.SILENT: ', !process.env.SILENT);
+  // console.log('resetPassword ROUTE, process.env.SILENT: ', process.env.SILENT);
+  // console.log('!process.env.SILENT: ', !process.env.SILENT);
   let emailTo;
   async.waterfall(
     [
       function(done) {
-        console.log(
-          'resetPassword.js ROUTE, req.params.token: ',
-          req.params.token
-        );
         Family.findOne(
           {
             resetPasswordToken: req.params.token,
@@ -34,19 +30,17 @@ router.post('/:token', async function(req, res) {
             }
 
             console.log(
-              'ROUTE resetPassword.js, found family that matches the ',
-              'token (family.primaryEmail: )',
-              family.primaryEmail
+              req.ip,
+              ', ',
+              family.primaryEmail,
+              ': ROUTE resetPassword.js, found family that matches the token'
             );
-
-            console.log('req.body.password: ', req.body.password);
 
             family.password = req.body.password;
             family.resetPasswordToken = undefined;
             family.resetPasswordExpires = undefined;
 
             family.save(function(error) {
-              console.log('resetPassword.js, 58, logging in');
               req.logIn(family, function(error) {
                 done(error, family);
               });

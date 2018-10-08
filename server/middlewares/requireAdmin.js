@@ -3,12 +3,13 @@ module.exports = (req, res, next) => {
 
   if (!myAssoArray || !myAssoArray.includes('a0')) {
     console.log(
-      'REQUIRE_ADMIN REJECTED the connection to ',
+      req.ip,
+      ', ',
       req.user.primaryEmail,
-      ' for asso ',
-      'a0',
-      ' from ',
-      req.ip
+      ': REJECTED ADMIN access to ',
+      req.originalUrl,
+      ' of asso ',
+      'a0'
     );
     return res.status(403).send({
       error: 'Unauthorized!'
@@ -19,12 +20,11 @@ module.exports = (req, res, next) => {
     });
   } else {
     console.log(
-      'REQUIRE_ADMIN GRANTED ',
+      req.ip,
+      ', ',
       req.user.primaryEmail,
-      ' for asso ',
-      'a0',
-      ' from ',
-      req.ip
+      ': GRANTED ADMIN access to ',
+      req.originalUrl
     );
     next();
   }

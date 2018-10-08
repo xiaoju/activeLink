@@ -8,7 +8,7 @@ const requireLogin = require('../../middlewares/requireLogin');
 const requireAdmin = require('../../middlewares/requireAdmin');
 
 router.get('/', requireLogin, requireAdmin, async function(req, res) {
-  console.log('DASHBOARD opened by ', req.user.primaryEmail);
+  // console.log('DASHBOARD opened by ', req.user.primaryEmail);
   let assoId = 'a0';
 
   let volunteers,
