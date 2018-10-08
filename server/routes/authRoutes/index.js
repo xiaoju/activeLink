@@ -5,7 +5,7 @@ router
     // console.log('THIS IS /auth');
     res.status(200).send({ status: 'working' });
   })
-  .use('/local', require('./LocalStrategy'))
+  .use('/local', require('./localStrategy'))
   .use('/createResetToken', require('./createResetToken'))
   .use('/checkResetToken', require('./checkResetToken'))
   .use('/resetPassword', require('./resetPassword'));
