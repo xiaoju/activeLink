@@ -75,8 +75,7 @@ test credit card number
         * `STRIPE_PUBLISHABLE_KEY`: pk_test_xxxxxx
         * `STRIPE_SECRET_KEY`: sk_test_xxxxxx
 
-- push to heroku: /////// DEPRECATED ////////
-`git subtree push --prefix server heroku master`
+- create to heroku apps (staging and production), fed by the same github repo). Make them "remotes" for the github repo.
 
 - push to production server on heroku:
 `git subtree push --prefix server production master`

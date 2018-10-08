@@ -150,13 +150,23 @@ class LogIn extends Component {
       // user only provides email address, asking for password reset
       ActiveLinkAPI.requestPasswordReset(loginEmail)
         .then(result =>
-          this.props.history.push('/EmailSent/' + result.data.emailedTo)
+          this.props.history.push('/EmailSent/' + result.data.emailTo)
         )
         .catch(error => {
-          console.log('JSON.stringify(error) (catch): ', JSON.stringify(error));
+          // console.log('JSON.stringify(error) (catch): ', JSON.stringify(error));
           this.setState({
             loading: false,
-            errorMessage: error.response.data.message
+            errorMessage: {
+              401:
+                "Sorry, we couldn't recognize your email address. Please double " +
+                'check that the email address you typed is the one where you ' +
+                'received an invitation. ' +
+                'You can also contact dev@xiaoju.io for support.',
+              500:
+                'Sorry, there was a problem with our server ' +
+                "and we couldn't send you the reset link. " +
+                'Please try again later or contact dev@xiaoju.io for support.'
+            }[error.response.status]
           });
         });
       // .then(result => {
