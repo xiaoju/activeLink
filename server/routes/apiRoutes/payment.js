@@ -16,8 +16,6 @@ const User = mongoose.model('users');
 const Family = mongoose.model('families');
 
 router.post('/', requireLogin, async (req, res) => {
-  // console.log('process.env.SILENT: ', process.env.SILENT);
-
   let family; // this will contain the family data, after pulling it from database
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -576,7 +574,7 @@ router.post('/', requireLogin, async (req, res) => {
       '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n';
 
     // prettier-ignore
-    const email_Greetings = process.env.SILENT ? '' :
+    const email_Greetings = process.env.SILENT === 'true' ? '' :
         'Dear ' + capitalizeFirstLetter(
           publicReceipt.users[publicReceipt.allParents[0]].firstName) + ',\n\n' +
         'thank you for your ' +
@@ -587,7 +585,7 @@ router.post('/', requireLogin, async (req, res) => {
 
     // prettier-ignore
     const email_PaymentInstructions =
-        paymentOption !== 'creditCard' && !process.env.SILENT ?
+        paymentOption !== 'creditCard' && process.env.SILENT === 'false' ?
             'To complete this registration, please proceed with the payment, ' +
             'either per cheque, either per bank transfer:\n\n' +
             'Per cheque: \n' +
@@ -610,7 +608,7 @@ router.post('/', requireLogin, async (req, res) => {
 
     // prettier-ignore
     const email_CreditCardReceipt =
-        paymentOption === 'creditCard' && !process.env.SILENT
+        paymentOption === 'creditCard' && process.env.SILENT === 'false'
           ? '# Payment receipt #\n\n' +
             '- Receipt No.: ' + publicReceipt.chargeId + '\n' +
             '- Credit card number: xxxx xxxx xxxx ' + publicReceipt.last4 + '\n' +
@@ -619,13 +617,11 @@ router.post('/', requireLogin, async (req, res) => {
             '- Time: ' + new Date(1000 * publicReceipt.timeStamp).toLocaleString() + '\n\n'
           : '';
 
-    const email_Regards = process.env.SILENT
-      ? ''
-      : 'Kind Regards,\n' + 'Jerome\n\n';
+    const email_Regards =
+      process.env.SILENT === 'true' ? '' : 'Kind Regards,\n' + 'Jerome\n\n';
 
-    const email_ForOther = process.env.SILENT
-      ? '[Data input by admin]\n\n'
-      : '';
+    const email_ForOther =
+      process.env.SILENT === 'true' ? '[Data input by admin]\n\n' : '';
 
     // prettier-ignore
     const email_AssoHeader =
@@ -757,7 +753,7 @@ router.post('/', requireLogin, async (req, res) => {
       email_Closing;
 
     const emailTo =
-      process.env.NODE_ENV === 'production' && !process.env.SILENT
+      process.env.NODE_ENV === 'production' && process.env.SILENT === 'false'
         ? primaryEmail
         : 'dev@xiaoju.io';
 
@@ -774,7 +770,7 @@ router.post('/', requireLogin, async (req, res) => {
         bankTransfer: 'Registration (payment required)',
         creditCard: 'Confirmation of registration'
       }[paymentOption] +
-      (process.env.SILENT ? ' - ADMIN INPUT -' : '');
+      (process.env.SILENT === 'true' ? ' - ADMIN INPUT -' : '');
 
     const email_Data = {
       from: thisAsso.emailFrom,

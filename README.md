@@ -90,7 +90,7 @@ test credit card number
 - create the assos collection inside your mlab MongoDB database, and create one document there with the content of `/server/models/assoSeed.json`
 
 - check logs:
-  `heroku logs --tail --remote production`
+  `heroku logs --tail --remote production --source app`
 
 - create also a first user, from inside your mlab interface:
 old version:

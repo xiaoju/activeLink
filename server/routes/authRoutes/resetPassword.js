@@ -50,7 +50,8 @@ router.post('/:token', async function(req, res) {
       },
       function(family, done) {
         emailTo =
-          process.env.NODE_ENV === 'production' && !process.env.SILENT
+          process.env.NODE_ENV === 'production' &&
+          process.env.SILENT === 'false'
             ? family.primaryEmail
             : 'dev@xiaoju.io';
 
