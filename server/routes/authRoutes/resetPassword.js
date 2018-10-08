@@ -8,7 +8,7 @@ var mailgun = require('mailgun-js')({
   domain: keys.mailgunDomain
 });
 
-router.post('/:token', async function(req, res) {
+router.post('/', async function(req, res) {
   // console.log('resetPassword ROUTE, process.env.SILENT: ', process.env.SILENT);
   // console.log('!process.env.SILENT: ', !process.env.SILENT);
   let emailTo;
@@ -17,7 +17,7 @@ router.post('/:token', async function(req, res) {
       function(done) {
         Family.findOne(
           {
-            resetPasswordToken: req.params.token,
+            resetPasswordToken: req.body.token,
             resetPasswordExpires: { $gt: Date.now() }
           },
           function(error, family) {

@@ -46,6 +46,7 @@ export const checkResetToken = token =>
   axios.get(`${authAPI}/checkResetToken/${token}`);
 
 export const resetPassword = ({ resetToken, newPassword }) =>
-  axios.post(`${authAPI}/resetPassword/${resetToken}`, {
+  axios.post(`${authAPI}/resetPassword`, {
+    token: resetToken,
     password: newPassword
   });
