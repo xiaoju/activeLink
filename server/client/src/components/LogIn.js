@@ -160,7 +160,7 @@ class LogIn extends Component {
               (error.response &&
                 error.response.status &&
                 {
-                  401:
+                  404:
                     "Sorry, we couldn't recognize your email address. Please double " +
                     'check that the email address you typed is the one where you ' +
                     'received an invitation. ' +
