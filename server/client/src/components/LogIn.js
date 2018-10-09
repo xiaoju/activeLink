@@ -156,17 +156,22 @@ class LogIn extends Component {
           // console.log('JSON.stringify(error) (catch): ', JSON.stringify(error));
           this.setState({
             loading: false,
-            errorMessage: {
-              401:
-                "Sorry, we couldn't recognize your email address. Please double " +
-                'check that the email address you typed is the one where you ' +
-                'received an invitation. ' +
-                'You can also contact dev@xiaoju.io for support.',
-              500:
-                'Sorry, there was a problem with our server ' +
-                "and we couldn't send you the reset link. " +
+            errorMessage:
+              (error.response &&
+                error.response.status &&
+                {
+                  401:
+                    "Sorry, we couldn't recognize your email address. Please double " +
+                    'check that the email address you typed is the one where you ' +
+                    'received an invitation. ' +
+                    'You can also contact dev@xiaoju.io for support.',
+                  500:
+                    'Sorry, there was a problem with our server ' +
+                    "and we couldn't send you the reset link. " +
+                    'Please try again later or contact dev@xiaoju.io for support.'
+                }[error.response.status]) ||
+              'Sorry for this error. ' +
                 'Please try again later or contact dev@xiaoju.io for support.'
-            }[error.response.status]
           });
         });
       // .then(result => {

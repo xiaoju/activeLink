@@ -93,5 +93,8 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+app.use(require('./middlewares/errorHandler_Logger'));
+app.use(require('./middlewares/errorHandler_Final'));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

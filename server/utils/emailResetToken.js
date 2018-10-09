@@ -33,6 +33,9 @@ module.exports = (req, token) =>
 
     mailgun.messages().send(emailData, error => {
       if (error) {
+        // return reject(new Error('Emailing reset token failed.', error));
+        // return reject(new Error('Emailing reset token failed.'));
+        error.httpStatusCode = 500;
         return reject(error);
       }
       return resolve(emailTo);
