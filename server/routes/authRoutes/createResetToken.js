@@ -8,10 +8,8 @@ const emailResetToken = require('../../utils/emailResetToken');
 const wrapAsync = require('../../utils/wrapAsync');
 
 const AppError = require('../../errors/AppError');
-const OrderNotFoundError = require('../../errors/OrderNotFoundError');
 const UserNotFoundError = require('../../errors/UserNotFoundError');
 
-// router.post('/', async function(req, res, next) {
 router.post(
   '/',
   wrapAsync(async (req, res, next) => {
@@ -20,23 +18,10 @@ router.post(
     const family = await Family.findOne({
       primaryEmail: req.body.primaryEmail
     });
-
-    // to test mongodb errors:
-    // const family = await Family.find({ Date: { $last: 'Date' } })
-    //   .catch(err => {
-    //     err.httpStatusCode = 500;
-    //     return next(err);
-    //   });
+    // TODO handle fast the lost connections to db
 
     if (!family) {
-      // const err = new UserNotFoundError();
       throw new UserNotFoundError();
-      // const err = new Error('No account with this email address.');
-      // // err.httpStatusCode = 401;
-      // err.name = 'authError';
-      // err.code = 'ENACWE';
-      // throw err;
-      // // return next(error);
     }
 
     family.resetPasswordToken = token;

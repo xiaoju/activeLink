@@ -7,15 +7,19 @@ module.exports = (err, req, res, next) => {
     return next(err);
   }
 
-  if (err instanceof UserNotFoundError) {
-    // return res.status(401).send(err.message);
-    // return res.status(err.status).send(err.message);
-    return res.status(err.status).send(err);
-  }
+  // if (err instanceof UserNotFoundError) {
+  //   // return res.status(401).send(err.message);
+  //   // return res.status(err.status).send(err.message);
+  //   return res.status(err.status).send(err);
+  // }
 
   // if (err instanceof MongoError) {
   //   return res.status(500).send(err.message);
   // }
+
+  if (err.status) {
+    return res.status(err.status).send(err);
+  }
 
   return res.status(500).json({ err });
 };
