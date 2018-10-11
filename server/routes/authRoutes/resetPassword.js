@@ -1,98 +1,56 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const Family = mongoose.model('families');
-var async = require('async'); // TODO remove this dependancy, using promises or `async await` instead
-const keys = require('../../config/keys');
-var mailgun = require('mailgun-js')({
-  apiKey: keys.mailgunAPIKey,
-  domain: keys.mailgunDomain
-});
+const wrapAsync = require('../../utils/wrapAsync');
+const util = require('util');
+const UserNotFound = require('../../errors/UserNotFound');
+// const emailResetConfirmation = require('../../utils/emailResetConfirmation');
 
-router.post('/', async function(req, res) {
-  // console.log('resetPassword ROUTE, process.env.SILENT: ', process.env.SILENT);
-  // console.log('!process.env.SILENT: ', !process.env.SILENT);
-  let emailTo;
-  async.waterfall(
-    [
-      function(done) {
-        Family.findOne(
-          {
-            resetPasswordToken: req.body.token,
-            resetPasswordExpires: { $gt: Date.now() }
-          },
-          function(error, family) {
-            if (!family) {
-              console.log('ERROR by ROUTE resetPassword.js, ERROR 34');
-              return res.status(500).json({
-                passwordWasChanged: false,
-                message: 'Password reset token is invalid or has expired.'
-              });
-            }
+router.post(
+  '/',
+  wrapAsync(async function(req, res, next) {
+    const family = await Family.findOne({
+      resetPasswordToken: req.body.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
 
-            console.log(
-              req.ip,
-              ', ',
-              family.primaryEmail,
-              ': ROUTE resetPassword.js, found family that matches the token'
-            );
-
-            family.password = req.body.password;
-            family.resetPasswordToken = undefined;
-            family.resetPasswordExpires = undefined;
-
-            family.save(function(error) {
-              req.logIn(family, function(error) {
-                done(error, family);
-              });
-            });
-          }
-        );
-      },
-      function(family, done) {
-        emailTo =
-          process.env.NODE_ENV === 'production' &&
-          process.env.SILENT === 'false'
-            ? family.primaryEmail
-            : 'dev@xiaoju.io';
-
-        const emailData = {
-          from: 'The English Link <english-link@xiaoju.io>',
-          to: emailTo,
-          'h:Reply-To': 'englishlink31@gmail.com',
-          subject: 'English-Link / your password has been changed',
-          text:
-            'Hello,\n\n' +
-            'the password has just been changed for your English-Link account ' +
-            family.primaryEmail +
-            '\n\n' +
-            'Kind Regards,\n' +
-            'Jerome'
-        };
-        mailgun.messages().send(emailData, function(error, body) {
-          if (error) {
-            console.log(
-              'ERROR by sending confirmation email to ',
-              emailTo,
-              ' after PASSWORD RESET by ',
-              family.primaryEmail
-            );
-          }
-          res.status(200).json({ passwordWasChanged: true, body });
-        });
-        // TODO message to show on next page: 'Success! Your password has been changed.'
-      }
-    ],
-    // here the final callback to catch errors within the waterfall
-    function(error) {
-      // res.redirect('/');
-      console.log('reset_token.js, ERROR 91');
-      return res.status(500).json({
-        passwordWasChanged: false,
-        message: 'ERROR 91',
-        error
-      });
+    if (!family) {
+      throw new UserNotFound();
     }
-  );
-});
+
+    family.password = req.body.password;
+    family.resetPasswordToken = undefined;
+    family.resetPasswordExpires = undefined;
+    const updatedFamily = await family.save();
+
+    console.log('resetPassword.js, updatedFamily._id: ', updatedFamily._id);
+
+    // await util.promisify(req.logIn)(updatedFamily);
+
+    req.logIn(updatedFamily, function(err) {
+      if (err) {
+        console.log('DASFGDFSFSGFDSFGHRT');
+        return next(err); // BUG how to test this case?
+      }
+    });
+
+    // const buggedFamily = { id: 'abc123' };
+    // try {
+    //   req.logIn(buggedFamily, function(err) {
+    //     console.log('Running logIn err callback');
+    //     if (err) {
+    //       console.log('OOOOOO');
+    //       return next(err); // BUG how to test this case?
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log('OUPS!');
+    // }
+
+    console.log('Ready to send out the confirmation email...');
+    // const emailTo = await emailResetConfirmation(req, token);
+    return res.status(200).json({ passwordWasChanged: true });
+  })
+);
 
 module.exports = router;

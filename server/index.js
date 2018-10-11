@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const keys = require('./config/keys');
+// const cookieKy = require('./config/keys').cookieKey;
 
 require('./services/databaseManager');
 require('./services/passport');
@@ -14,7 +15,7 @@ app.use(sslRedirect());
 app.use(bodyParser.json());
 app.use(
   cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     keys: [keys.cookieKey]
   })
 );
@@ -22,6 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', require('./routes'));
 
+// TODO consider moving next line of code to /routes, where it belongs(?)
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   // if it doesn't recognize the routes

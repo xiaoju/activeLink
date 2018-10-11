@@ -46,3 +46,11 @@ mongoose.connection.on('disconnected', () => {
 mongoose.connection.on('connected', () => {
   console.log('-> database connected');
 });
+
+mongoose.connection.on('error', () => {
+  console.log('connection error');
+});
+
+// mongoose.connection.once('open', function() {
+//   // we're connected!
+// });

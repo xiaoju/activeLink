@@ -153,7 +153,10 @@ class LogIn extends Component {
           this.props.history.push('/EmailSent/' + result.data.emailTo)
         )
         .catch(error => {
-          console.log('error.response.data: ', error.response.data);
+          console.log(
+            'error.response && error.response.data: ',
+            error.response && error.response.data
+          );
           this.setState({
             loading: false,
             errorMessage:
@@ -174,48 +177,33 @@ class LogIn extends Component {
                 'Please try again later or contact dev@xiaoju.io for support.'
           });
         });
-      // .then(result => {
-      //   const { message, resetTokenEmailSent, emailedTo } = result.data;
-      //   if (resetTokenEmailSent) {
-      //     this.props.history.push('/EmailSent/' + emailedTo);
-      //   } else {
-      //     // stay on /login page
-      //     // console.log(
-      //     //   error.response &&
-      //     //     error.response.data &&
-      //     //     error.response.data.message
-      //     // );
-      //     this.setState({
-      //       loading: false,
-      //       errorMessage:
-      //         'The authentication failed, please double check that the ' +
-      //         'email address you typed is the one you registered with.'
-      //     });
-      //   }
-      // })
-      // .catch(error => console.log('error by requestPasswordReset: ', error));
     } else {
       ActiveLinkAPI.localLogin({
         primaryEmail: loginEmail,
         password: loginPassword
       })
-        // .then(output => {
-        //   console.log(
-        //     'output.data.message: ',
-        //     output && output.data && output.data.message
-        //   );
-        // })
         .then(() => ActiveLinkAPI.fetchFamily())
         .then(fetched => this.props.loadFamily(fetched.data))
         .then(() => this.props.history.push('/register'))
         .catch(error => {
-          // console.log('JSON.stringify(error): ', JSON.stringify(error));
           this.setState({
             loading: false,
             errorMessage:
-              error.response &&
-              error.response.data &&
-              error.response.data.message
+              (error.response &&
+                error.response.status &&
+                {
+                  401:
+                    'Sorry, the email address or password were not correct. ' +
+                    'Especially, please double check that the email address ' +
+                    'you typed is the one where you received an invitation. ' +
+                    'You can also contact dev@xiaoju.io for support.',
+                  500:
+                    'Sorry, there was a problem with our server ' +
+                    "and we couldn't log you in. " +
+                    'Please try again later or contact dev@xiaoju.io for support.'
+                }[error.response.status]) ||
+              'Sorry for this error. ' +
+                'Please try again later or contact dev@xiaoju.io for support.'
           });
         });
     }

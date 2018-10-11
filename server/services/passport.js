@@ -4,15 +4,24 @@ var LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const Family = mongoose.model('families');
+// const wrapAsync = require('../../utils/wrapAsync');
 
 passport.serializeUser((family, done) => {
-  done(null, family.id);
+  if (!family.id) {
+    done(err, null);
+  } else {
+    done(null, family.id);
+  }
 });
 
 passport.deserializeUser((id, done) => {
-  Family.findById(id).then(family => {
-    done(null, family);
-  });
+  Family.findById(id)
+    .then(family => {
+      done(null, family);
+    })
+    .catch(error => {
+      done(error);
+    });
 });
 
 passport.use(

@@ -13,8 +13,12 @@ module.exports = (err, req, res, next) => {
     return next(err);
   }
 
-  if (err.status) {
-    return res.sendStatus(err.status);
+  if (err.name === 'CastError') {
+    // if session id gets corrupted, this deletes the cookie from client browser.
+    req.session = null;
+    req.logout;
+    return res.sendStatus(500);
   }
-  return res.sendStatus(err.status);
+
+  return res.sendStatus(err.status || 500);
 };
