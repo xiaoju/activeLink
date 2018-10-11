@@ -9,8 +9,8 @@ module.exports = (err, req, res, next) => {
   // }
 
   if (res.headersSent) {
-    console.log('ALREADY SENT');
-    return next(err);
+    // console.log('ALREADY SENT');
+    return;
   }
 
   if (err.name === 'CastError') {

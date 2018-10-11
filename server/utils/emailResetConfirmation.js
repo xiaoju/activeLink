@@ -4,11 +4,11 @@ const mailgun = require('mailgun-js')({
   domain: keys.mailgunDomain
 });
 
-module.exports = (req, token) =>
+module.exports = (req, primaryEmail) =>
   new Promise((resolve, reject) => {
     const emailTo =
       process.env.NODE_ENV === 'production' && process.env.SILENT === 'false'
-        ? family.primaryEmail
+        ? primaryEmail
         : 'dev@xiaoju.io';
 
     const emailData = {
@@ -19,7 +19,7 @@ module.exports = (req, token) =>
       text:
         'Hello,\n\n' +
         'the password has just been changed for your English-Link account ' +
-        family.primaryEmail +
+        primaryEmail +
         '\n\n' +
         'Kind Regards,\n' +
         'Jerome'
@@ -28,13 +28,15 @@ module.exports = (req, token) =>
     mailgun.messages().send(emailData, error => {
       if (error) {
         error.status = 500;
+        error.privateBackendMessage =
+          '\n' +
+          'ERROR by sending confirmation email to ' +
+          emailTo +
+          ' after PASSWORD RESET by ' +
+          primaryEmail +
+          '\n';
         return reject(error);
       }
       return resolve(emailTo);
     });
   });
-
-'ERROR by sending confirmation email to ',
-  emailTo,
-  ' after PASSWORD RESET by ',
-  family.primaryEmail;

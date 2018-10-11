@@ -4,7 +4,7 @@ const Family = mongoose.model('families');
 const wrapAsync = require('../../utils/wrapAsync');
 const util = require('util');
 const UserNotFound = require('../../errors/UserNotFound');
-// const emailResetConfirmation = require('../../utils/emailResetConfirmation');
+const emailResetConfirmation = require('../../utils/emailResetConfirmation');
 
 router.post(
   '/',
@@ -45,10 +45,9 @@ router.post(
     // } catch (error) {
     //   console.log('OUPS!');
     // }
-
+    res.sendStatus(200);
     console.log('Ready to send out the confirmation email...');
-    // const emailTo = await emailResetConfirmation(req, token);
-    return res.sendStatus(200);
+    return await emailResetConfirmation(req, updatedFamily.primaryEmail);
   })
 );
 

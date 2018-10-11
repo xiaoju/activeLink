@@ -153,10 +153,6 @@ class LogIn extends Component {
           this.props.history.push('/EmailSent/' + result.data.emailTo)
         )
         .catch(error => {
-          console.log(
-            'error.response && error.response.data: ',
-            error.response && error.response.data
-          );
           this.setState({
             loading: false,
             errorMessage:
