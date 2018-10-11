@@ -47,28 +47,11 @@ class ResetPassword extends Component {
     event.preventDefault();
     const { resetToken, password1 } = this.state;
     this.setState({ loadingAfter: true });
-
     ActiveLinkAPI.resetPassword({ resetToken, newPassword: password1 })
-      .then(result => {
-        const { passwordWasChanged } = result.data;
-        if (passwordWasChanged) {
-          ActiveLinkAPI.fetchFamily()
-            .then(fetched => this.props.loadFamily(fetched.data))
-            .then(() => this.props.history.push('/register'))
-            .catch(error =>
-              console.log(
-                'resetPassword.js: fetchFamily() or push(/register) failed: ',
-                error
-              )
-            );
-        } else {
-          this.props.history.push('/login/unchangedPassword');
-        }
-      })
-      .catch(error => {
-        console.log('ResetPassword.js, 40, error: ', error);
-        this.props.history.push('/login/passwordResetError');
-      });
+      .then(() => ActiveLinkAPI.fetchFamily())
+      .then(fetched => this.props.loadFamily(fetched.data))
+      .then(() => this.props.history.push('/register'))
+      .catch(error => this.props.history.push('/login/passwordResetError'));
   }
 
   render() {

@@ -23,13 +23,12 @@ router.post(
     family.resetPasswordExpires = undefined;
     const updatedFamily = await family.save();
 
-    console.log('resetPassword.js, updatedFamily._id: ', updatedFamily._id);
+    // console.log('resetPassword.js, updatedFamily._id: ', updatedFamily._id);
 
     // await util.promisify(req.logIn)(updatedFamily);
 
     req.logIn(updatedFamily, function(err) {
       if (err) {
-        console.log('DASFGDFSFSGFDSFGHRT');
         return next(err); // BUG how to test this case?
       }
     });
@@ -49,7 +48,7 @@ router.post(
 
     console.log('Ready to send out the confirmation email...');
     // const emailTo = await emailResetConfirmation(req, token);
-    return res.status(200).json({ passwordWasChanged: true });
+    return res.sendStatus(200);
   })
 );
 
