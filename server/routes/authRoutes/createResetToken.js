@@ -7,8 +7,8 @@ const randomBytes = util.promisify(crypto.randomBytes);
 const emailResetToken = require('../../utils/emailResetToken');
 const wrapAsync = require('../../utils/wrapAsync');
 
-const AppError = require('../../errors/AppError');
-const UserNotFoundError = require('../../errors/UserNotFoundError');
+// const AppError = require('../../errors/AppError');
+const UserNotFound = require('../../errors/UserNotFound');
 
 router.post(
   '/',
@@ -21,12 +21,12 @@ router.post(
     // TODO handle fast the lost connections to db
 
     if (!family) {
-      throw new UserNotFoundError();
+      throw new UserNotFound();
     }
 
     family.resetPasswordToken = token;
     family.resetPasswordExpires = Date.now() + 25 * 60 * 60 * 1000; // 25 hours
-    family.save();
+    await family.save();
 
     const emailTo = await emailResetToken(req, token);
 

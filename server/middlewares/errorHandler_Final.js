@@ -1,25 +1,20 @@
-const AppError = require('../errors/AppError');
-const OrderNotFoundError = require('../errors/OrderNotFoundError');
-const UserNotFoundError = require('../errors/UserNotFoundError');
+const TokenTooOld = require('../errors/TokenTooOld');
 
 module.exports = (err, req, res, next) => {
+  err.privateBackendMessage = undefined;
+  // NB privateBackendMessage must never be sent to client! (security issue)
+
+  // if (err instanceof TokenTooOld) {
+  //   console.log('AAAAAAAAAAAAA');
+  // }
+
   if (res.headersSent) {
+    console.log('ALREADY SENT');
     return next(err);
   }
 
-  // if (err instanceof UserNotFoundError) {
-  //   // return res.status(401).send(err.message);
-  //   // return res.status(err.status).send(err.message);
-  //   return res.status(err.status).send(err);
-  // }
-
-  // if (err instanceof MongoError) {
-  //   return res.status(500).send(err.message);
-  // }
-
   if (err.status) {
-    return res.status(err.status).send(err);
+    return res.sendStatus(err.status);
   }
-
-  return res.status(500).json({ err });
+  return res.sendStatus(err.status);
 };

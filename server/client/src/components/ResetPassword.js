@@ -29,7 +29,7 @@ class ResetPassword extends Component {
       )
       .catch(error => {
         // console.log('ERROR by checkResetToken(): ', JSON.stringify(error));
-        if (error.response.status === 401) {
+        if (error.response.status === 404) {
           this.props.history.push('/login/invalidToken');
         } else {
           this.props.history.push('/login/serverError');

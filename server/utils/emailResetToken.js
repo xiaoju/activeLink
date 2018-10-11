@@ -33,9 +33,14 @@ module.exports = (req, token) =>
 
     mailgun.messages().send(emailData, error => {
       if (error) {
-        // return reject(new Error('Emailing reset token failed.', error));
-        // return reject(new Error('Emailing reset token failed.'));
-        error.httpStatusCode = 500;
+        error.status = 500;
+        // prettier-ignore
+        error.privateBackendMessage =
+          '\n' +
+          'Failed emailing reset token: ' +
+          'http://' + req.headers.host + '/reset/' + token +
+          '\n';
+        // NB privateBackendMessage must NOT be sent to client! (security issue)
         return reject(error);
       }
       return resolve(emailTo);
