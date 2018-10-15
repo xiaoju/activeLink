@@ -44,7 +44,11 @@ class OneMediaForm extends Component {
             style={{ transform: 'translate(-30%, 18%)' }}
             className="prefix"
             icon={
-              { phone: 'phone', email: 'envelope', more_horiz: 'minus' }[media]
+              {
+                phone: 'phone',
+                email: 'envelope',
+                more_horiz: 'ellipsis-h'
+              }[media]
             }
             color={media === 'more_horiz' ? '#ffa726' : ''}
             size="1x"
