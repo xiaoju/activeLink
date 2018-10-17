@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import * as ActiveLinkAPI from '../utils/ActiveLinkAPI';
 import '../utils/fontAwesome';
+import ErrorBoundary from './layout/ErrorBoundary';
 import Header from './Header';
 import Home from './Home';
 import RegisterEvent from './RegisterEvent';
@@ -36,23 +37,27 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/register/:eventId?" component={RegisterEvent} />
-          <Route path="/login/:messageCode?" component={LogIn} />
-          <Route path="/getinvited" component={GetInvited} />
-          <Route path="/thanks" component={Thanks} />
-          <Route path="/sorry" component={Sorry} />
-          <Route path="/emailsent/:emailedTo" component={EmailSent} />
-          <Route path="/reset/:resetToken" component={ResetPassword} />
-          <Route path="/admin/sendinvites" component={SendInvites} />
-          <Route path="/admin/dump" component={Dump} />
-          <Route path="/admin/dashboard" component={Dashboard} />
-          {/* <Route path="/admin/updateothers" component={UpdateOthers} /> */}
-          {/* <Route path="/admin/updatemany" component={UpdateMany} /> */}
-          <Route component={PageNotFound} />
-        </Switch>
+        <ErrorBoundary>
+          <Header />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/register/:eventId?" component={RegisterEvent} />
+            <Route path="/login/:messageCode?" component={LogIn} />
+            <Route path="/getinvited" component={GetInvited} />
+            <Route path="/thanks" component={Thanks} />
+            <Route path="/sorry" component={Sorry} />
+            <Route path="/emailsent/:emailedTo" component={EmailSent} />
+            <Route path="/reset/:resetToken" component={ResetPassword} />
+            <Route path="/admin/sendinvites" component={SendInvites} />
+            <Route path="/admin/dump" component={Dump} />
+            <Route path="/admin/dashboard" component={Dashboard} />
+            {/* <Route path="/admin/updateothers" component={UpdateOthers} /> */}
+            {/* <Route path="/admin/updatemany" component={UpdateMany} /> */}
+            <Route component={PageNotFound} />
+          </Switch>
+        </ErrorBoundary>
       </div>
     );
   }
