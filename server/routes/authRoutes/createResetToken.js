@@ -30,13 +30,14 @@ router.post(
 
     const emailTo = await emailResetToken(req, token);
 
-    // prettier-ignore
     console.log(
-    req.ip, ',', req.body.primaryEmail,':',
-    'SENT LINK http://' + req.headers.host + '/reset/' + token,
-    'to', emailTo,
-    'for', req.body.primaryEmail
-  );
+      '%s %s : SENT LINK http://%s/reset/%s to %s',
+      req.ip,
+      req.body.primaryEmail,
+      req.headers.host,
+      token,
+      emailTo
+    );
     return res.status(200).json({ emailTo });
   })
 );

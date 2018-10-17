@@ -6,10 +6,9 @@ router.get('/', (req, res) => {
     req.logout();
   } catch (error) {
     console.log(
+      '%s %s: ERROR by logout: %s',
       req.ip,
-      ', ',
       req.user.primaryEmail,
-      ': ERROR by logout: ',
       error
     );
   }

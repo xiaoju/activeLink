@@ -140,14 +140,12 @@ router.put('/', requireLogin, requireAdmin, async function(req, res) {
   );
 
   console.log(
-    'NEW ACCOUNTS CREATED by ',
+    '%s %s: NEW ACCOUNTS CREATED: %s. badFormatEmails: %s. duplicatedEmails: %s',
+    req.ip,
     req.user.primaryEmail,
-    ' for ',
-    newEmails.join(', '),
-    '. badFormatEmails: ',
-    badFormatEmails.join(', '),
-    '. duplicatedEmails: ',
-    duplicateEmails.join(', ')
+    newEmails.length === 0 ? 'none' : newEmails.join(', '),
+    badFormatEmails.length === 0 ? 'none' : badFormatEmails.join(', '),
+    duplicateEmails.length === 0 ? 'none' : duplicateEmails.join(', ')
   );
 
   res.status(201).json({

@@ -788,14 +788,11 @@ router.post('/', requireLogin, async (req, res) => {
           res.status(500).json({ error: error.toString() });
         } else {
           console.log(
+            '%s, %s: REGISTRATION CONFIRMATION sent to %s and %s. Payment option: %s',
             req.ip,
-            ',',
             primaryEmail,
-            ': REGISTRATION CONFIRMATION sent to ',
             emailTo,
-            ' and ',
             thisAsso.backupEmail,
-            '. Payment option: ',
             paymentOption
           );
           res.status(200).send(publicReceipt);
