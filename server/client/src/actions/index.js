@@ -75,15 +75,23 @@ export const fetchDump = () => async dispatch => {
 export const handlePayment = payload => async dispatch => {
   dispatch(push('/thanks'));
   try {
-    // throw 'oops';
     const res = await axios.post('/api/v1/payment', payload);
     dispatch({ type: LOAD_RECEIPT, payload: res.data });
   } catch (error) {
-    console.log(
-      'error in axios POST /api/v1/payment or LOAD_RECEIPT dispatch: ',
-      error
-    );
-    dispatch(push('/sorry'));
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.frontEndData
+    ) {
+      console.log('still showing receipt');
+      dispatch({
+        type: LOAD_RECEIPT,
+        payload: error.response.data.frontEndData
+      });
+    } else {
+      console.log('redirect to sorry');
+      dispatch(push('/sorry'));
+    }
   }
 };
 

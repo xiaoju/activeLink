@@ -11,6 +11,8 @@ module.exports = (req, token) =>
         ? family.primaryEmail
         : 'dev@xiaoju.io';
 
+    const resetLink = 'http://' + req.headers.host + '/reset/' + token;
+
     // prettier-ignore
     const emailData = {
       from: 'The English Link <english-link@xiaoju.io>',
@@ -23,7 +25,7 @@ module.exports = (req, token) =>
         'requested a password reset for your English Link account.\n\n' +
         'Please click on the following link, or paste it into your ' +
         'internet browser to complete the process:\n\n' +
-        'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+        resetLink + '\n\n' +
         'This link is valid during 24 hours only.\n\n' +
         'If you did not request a new password, please ignore this email ' +
         'and your password will remain unchanged.\n\n' +
@@ -34,15 +36,11 @@ module.exports = (req, token) =>
     mailgun.messages().send(emailData, error => {
       if (error) {
         error.status = 500;
-        // prettier-ignore
         error.privateBackendMessage =
-          '\n' +
-          'Failed emailing reset token: ' +
-          'http://' + req.headers.host + '/reset/' + token +
-          '\n';
+          '\n' + 'Failed emailing reset token: ' + resetLink + '\n';
         // NB privateBackendMessage must NOT be sent to client! (security issue)
         return reject(error);
       }
-      return resolve(emailTo);
+      return resolve({ emailTo, resetLink });
     });
   });

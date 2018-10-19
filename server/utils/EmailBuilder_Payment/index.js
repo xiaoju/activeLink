@@ -1,0 +1,13 @@
+exports.subject = require('./subject');
+exports.greetings = require('./greetings');
+exports.paymentInstructions = require('./paymentInstructions');
+exports.regards = require('./regards');
+exports.forOther = require('./forOther');
+exports.assoHeader = require('./assoHeader');
+exports.creditCardReceipt = require('./creditCardReceipt');
+exports.profile = require('./profile');
+exports.selectedClasses = require('./selectedClasses');
+exports.photoConsent = require('./photoConsent');
+exports.volunteering = require('./volunteering');
+exports.closing = require('./closing');
+exports.emailTo = require('./emailTo');

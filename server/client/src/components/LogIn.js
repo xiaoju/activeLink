@@ -21,7 +21,6 @@ class LogIn extends Component {
   }
 
   componentDidMount() {
-    // console.log('Login.js did mount');
     this.handleMessageCode(this.props.match.params.messageCode);
   }
 
