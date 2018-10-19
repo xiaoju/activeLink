@@ -7,6 +7,7 @@ module.exports = ({
 }) => {
   // TODO handle the case if there is no mandatory item:
   // TODO review this whole logic!
+  // BUG for example by test when the mandatory item is not i0 but i2
   // if (!mandatoryItems.length) {errorMandatory = false};
 
   //  MANDATORY AND FAMILY

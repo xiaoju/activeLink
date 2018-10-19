@@ -4,12 +4,12 @@
 // https://gist.github.com/slavafomin/b164e3e710a6fc9352c934b9073e7216
 
 class AppError extends Error {
-  constructor(message, status) {
+  constructor(message, statusCode) {
     super(message);
     Error.captureStackTrace(this, this.constructor);
     this.name = this.constructor.name;
-    this.message = message || 'Something went wrong with the server.';
-    this.status = status || 500;
+    this.message = message || 'Internal Server Error!';
+    this.statusCode = statusCode || 500;
   }
 }
 
