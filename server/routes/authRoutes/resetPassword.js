@@ -23,8 +23,6 @@ router.post(
     family.resetPasswordExpires = undefined;
     const updatedFamily = await family.save();
 
-    // console.log('resetPassword.js, updatedFamily._id: ', updatedFamily._id);
-
     // await util.promisify(req.logIn)(updatedFamily);
 
     req.logIn(updatedFamily, function(err) {
@@ -46,7 +44,6 @@ router.post(
     //   console.log('OUPS!');
     // }
     res.sendStatus(200);
-    console.log('Ready to send out the confirmation email...');
     return await emailResetConfirmation(req, updatedFamily.primaryEmail);
   })
 );

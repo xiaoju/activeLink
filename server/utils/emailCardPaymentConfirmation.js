@@ -258,11 +258,10 @@ module.exports = publicReceipt =>
       }
       console.log(
         req.ip,
-        ',',
         primaryEmail,
-        ': REGISTRATION CONFIRMATION sent to ',
+        ': REGISTRATION CONFIRMATION sent to',
         emailTo,
-        ' and ',
+        'and',
         thisAsso.backupEmail,
         '. Payment option: ',
         paymentOption

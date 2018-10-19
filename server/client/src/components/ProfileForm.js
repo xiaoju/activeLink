@@ -48,7 +48,7 @@ class ProfileForm extends Component {
           ))}
           <div className="title_and_button">
             <h5>
-              <i className="material-icons small">home</i>
+              <FontAwesomeIcon icon="home" />
             </h5>
           </div>
           {addresses.map((addressObject, index) => (

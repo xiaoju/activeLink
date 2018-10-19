@@ -112,18 +112,11 @@ router.post(
       const droppedParentsAndKids = previousParentsAndKids.filter(
         userId => !frontendAllParentsAndKids.includes(userId)
       );
-      // droppedParentsAndKids.map(userId => {
-      //   let deletedOne = User.findOneAndDelete({ id: userId });
-      //   console.log('deletedOne: ', deletedOne);
-      // });
-      // User.findOneAndDelete({id: { $in: droppedParentsAndKids }});
+
       User.deleteMany({ id: { $in: droppedParentsAndKids } }, function(err) {
         if (err) {
-          console.log('familyId: ', familyId, '. error by deleteMany: ', err);
+          console.log(req.ip, familyId, 'ERROR by deleteMany: ', err);
         }
-        // else {
-        // console.log('deleteMany succeeded.');
-        // }
       });
     }
 
@@ -143,9 +136,6 @@ router.post(
     req.user.addresses = frontendAddresses;
     req.user.familyMedia = frontendMedia;
     req.user.photoConsent = frontendPhotoConsent;
-
-    // console.log('x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-');
-    // console.log('frontendPhotoConsent: ', frontendPhotoConsent);
 
     let thisFamily = await req.user.save();
 

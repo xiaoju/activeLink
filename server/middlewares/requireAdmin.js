@@ -4,11 +4,10 @@ module.exports = (req, res, next) => {
   if (!myAssoArray || !myAssoArray.includes('a0')) {
     console.log(
       req.ip,
-      ', ',
       req.user.primaryEmail,
-      ': REJECTED ADMIN access to ',
+      ': REJECTED ADMIN access to',
       req.originalUrl,
-      ' of asso ',
+      'of asso',
       'a0'
     );
     return res.status(403).send({
@@ -21,9 +20,8 @@ module.exports = (req, res, next) => {
   } else {
     console.log(
       req.ip,
-      ', ',
       req.user.primaryEmail,
-      ': GRANTED ADMIN access to ',
+      ': GRANTED ADMIN access to',
       req.originalUrl
     );
     next();

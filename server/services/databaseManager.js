@@ -14,16 +14,20 @@ const MongooseOptions = {
   reconnectInterval: 1000
 };
 
+// TODO handle fast the lost connections to db
+
 mongoose
   .connect(keys.mongoURI, MongooseOptions)
   .then(res =>
-    console.log('______________ mongoose: connection success ______________ \n')
+    console.log(
+      '____________ mongoose initial connection: success ____________ \n'
+    )
   )
   .catch(err => {
     console.log(
-      '_-_-_-_-_-_-_ Mongoose connect error: _-_-_-_-_-_-_-_\n',
+      '_-_-_-_-_-_-_ Mongoose initial connection error: _-_-_-_-_-_-_-_\n',
       err,
-      '\n_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n'
+      '\n_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n'
     );
     // res.status(500).json({ error: err.toString() });
     // maybe set env variable that connect to db is dead, then use middleware to answer to any request "no connection come back later"
@@ -41,8 +45,10 @@ mongoose
 // );
 
 mongoose.connection.on('disconnected', () => {
+  // TODO should I throw a 503 error? Or store the request (where?!) and handle it later?
   console.log('-> database lost connection');
 });
+
 mongoose.connection.on('connected', () => {
   console.log('-> database connected');
 });
