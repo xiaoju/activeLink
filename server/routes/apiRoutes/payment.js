@@ -20,8 +20,6 @@ router.post(
   '/',
   requireLogin,
   wrapAsync(async (req, res) => {
-    let family; // this will contain the family data, after pulling it from database
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // saveUserInput();
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,21 +83,10 @@ router.post(
     // look up the event details, from backend database
     // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
 
-    let thisAsso;
-    try {
-      thisAsso = await Asso.findOne({ id: 'a0' });
-    } catch (error) {
-      console.log(
-        'familyId: ',
-        familyId,
-        '. billingRoutes.js // line 61 // error: ',
-        error
-      );
-    }
-
+    let thisAsso = await Asso.findOne({ id: 'a0' });
     const assoName = thisAsso.name;
     const thisEvent = thisAsso.eventsById.e0;
-    // TODO e0 is hardcoded!
+    // TODO e0 and a0 are hardcoded!
     const previousRegistered = thisAsso.registrations;
     const {
       eventId,
@@ -184,18 +171,8 @@ router.post(
 
       // console.log('x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-');
       // console.log('frontendPhotoConsent: ', frontendPhotoConsent);
-      try {
-        family = await req.user.save();
-        //TODO rename family to thisFamily to ease search per keyword in code
-      } catch (error) {
-        res.status(500).json({ error: error.toString() });
-        console.log(
-          'familyId: ',
-          familyId,
-          '. billingRoutes.js, line 144: error by saving frontend info into family collection',
-          error
-        );
-      }
+
+      let thisFamily = await req.user.save();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save new users (kids and parents) from frontend into
@@ -249,29 +226,17 @@ router.post(
       // execute the payment
       // console.log('billingRoutes, 244, testing paymentOption: ', paymentOption);
 
-      let stripeReceipt;
-      if (paymentOption === 'creditCard') {
-        const chargeDescription =
-          assoName + '-' + eventName + '-' + primaryEmail;
-        try {
-          console.log('billingRoutes, 250, creating Stripe Charge');
-          stripeReceipt = await stripe.charges.create({
-            amount: validatedTotal,
-            currency: 'eur',
-            description: chargeDescription,
-            source: stripeTokenId
-          });
-          console.log(
-            'billingRoutes, 257, stripeReceipt.id: ',
-            stripeReceipt.id
-          );
-        } catch (error) {
-          'familyId: ',
-            familyId,
-            console.log('. Error while connecting to Stripe server: ', error);
-        }
+      const chargeDescription = assoName + '-' + eventName + '-' + primaryEmail;
 
-        // console.log('billingRoutes, 264, stripeReceipt.id: ', stripeReceipt.id);
+      let stripeReceipt;
+
+      if (paymentOption === 'creditCard') {
+        stripeReceipt = await stripe.charges.create({
+          amount: validatedTotal,
+          currency: 'eur',
+          description: chargeDescription,
+          source: stripeTokenId
+        });
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // save stripeCharge receipt into this `family` collection, in database,
@@ -279,19 +244,9 @@ router.post(
         const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
         // console.log('billingRoutes, 270, ReceiptsCount: ', ReceiptsCount);
         // console.log('billingRoutes, 283, stripeReceipt.id: ', stripeReceipt.id);
-        try {
-          family = await req.user.save();
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. Error while saving stripeCharge to database: ',
-            error
-          );
-        }
-      }
 
-      // console.log('billingRoutes, 283, stripeReceipt: ', stripeReceipt);
+        thisFamily = await req.user.save();
+      }
 
       if (
         (paymentOption === 'creditCard' &&
@@ -321,40 +276,8 @@ router.post(
         // console.log('frontendChecked: ', frontendChecked);
         // console.log('newRegistered: ', newRegistered);
 
-        try {
-          thisAsso = await Asso.findOne({ id: 'a0' });
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. billingRoutes.js, line 267 // error by findOne Asso: ',
-            error
-          );
-        }
-
-        try {
-          updatedAsso = await thisAsso.set({
-            registrations: newRegistered
-          });
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. billingRoutes.js, line 281 // error by saving newRegistered: ',
-            error
-          );
-        }
-
-        try {
-          updatedAsso.save();
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. billingRoutes.js, line 292, error by saving modified asso to db: ',
-            error
-          );
-        }
+        updatedAsso = await thisAsso.set({ registrations: newRegistered });
+        updatedAsso.save();
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // // double checking if really saved:
@@ -379,29 +302,18 @@ router.post(
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // build receipt data out of stripeReceipt and database data
       // TODO beware that from here on `stripeReceipt.status` can be 'succeeded' or not
-      const allKidsAndParents = [].concat(family.allKids, family.allParents);
+      const allKidsAndParents = [].concat(
+        thisFamily.allKids,
+        thisFamily.allParents
+      );
       const allKidsFamilyParents = [familyId].concat(allKidsAndParents);
-      try {
-        family = await Family.findOne({ familyId });
-      } catch (error) {
-        console.log(
-          '. billingRoutes.js, line 329, error by Family.findOne: ',
-          error
-        );
-      }
+
+      thisFamily = await Family.findOne({ familyId });
 
       // TODO rename users (the extract from database) to usersArray, to avoid mix up format (array vs object)
-      try {
-        users = await User.find({
-          id: { $in: allKidsAndParents }
-          // [{id, firstName, familyName, kidGrade},{},...]
-        });
-      } catch (error) {
-        console.log(
-          '. billingRoutes.js, line 341, error by User.find: ',
-          error
-        );
-      }
+
+      users = await User.find({ id: { $in: allKidsAndParents } }); // [{id, firstName, familyName, kidGrade},{},...]
+
       const normalizedUsers = users.reduce((obj, thisUser) => {
         obj[thisUser.id] = thisUser;
         return obj;
@@ -423,15 +335,6 @@ router.post(
         standardPrices,
         applyDiscount
       }) => (applyDiscount ? discountedPrices[itemId] : standardPrices[itemId]);
-
-      try {
-        thisAsso = await Asso.findOne({ id: 'a0' });
-      } catch (error) {
-        console.log(
-          '. billingRoutes.js, line 367, error by pulling asso from database: ',
-          error
-        );
-      }
 
       // the classes that have been booked by this family, so far
       const familyRegistrations = allKidsFamilyParents.map(userId => ({
@@ -485,7 +388,7 @@ router.post(
       // }
       const mergedFamilyName = [
         ...new Set(
-          family.allParents.map(thisParentId =>
+          thisFamily.allParents.map(thisParentId =>
             capitalizeFirstLetter(normalizedUsers[thisParentId].familyName)
           )
         )
@@ -521,12 +424,12 @@ router.post(
         mergedFamilyName,
         familyId,
         users: normalizedUsers, // [{firstName, familyName, kidGrade},{},...]
-        allKids: family.allKids,
-        allParents: family.allParents,
-        addresses: family.addresses,
+        allKids: thisFamily.allKids,
+        allParents: thisFamily.allParents,
+        addresses: thisFamily.addresses,
         primaryEmail,
-        familyMedia: family.familyMedia,
-        photoConsent: family.photoConsent,
+        familyMedia: thisFamily.familyMedia,
+        photoConsent: thisFamily.photoConsent,
         eventName,
         paymentOption,
         paymentReference,
@@ -555,6 +458,8 @@ router.post(
         purchasedItemsById, // purchased in THIS purchase order
         registeredEvents: newRegisteredEvents
       };
+
+      // const publicReceipt = buildPublicReceipt(thisAsso, stripeReceipt, thisEvent, )
 
       const emailData = buildEmailData(publicReceipt, thisAsso);
       const sentEmailData = await sendEmail(emailData);
