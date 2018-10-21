@@ -4,7 +4,8 @@ const Family = mongoose.model('families');
 const util = require('util');
 const crypto = require('crypto');
 const randomBytes = util.promisify(crypto.randomBytes);
-const emailResetToken = require('../../utils/emailResetToken');
+const buildEmailData_ResetToken = require('../../utils/buildEmailData_ResetToken');
+const sendEmail = require('../../utils/sendEmail');
 const wrapAsync = require('../../utils/wrapAsync');
 const UserNotFound = require('../../errors/UserNotFound');
 
@@ -25,19 +26,16 @@ router.post(
     family.resetPasswordExpires = Date.now() + 25 * 60 * 60 * 1000; // 25 hours
     await family.save();
 
-    // const emailData = buildEmailData(req, token);
-    // const { emailTo, resetLink } = await emailResetToken(emailData);
-
-    const { emailTo, resetLink } = await emailResetToken(req, token);
-
+    const emailData = buildEmailData_ResetToken(req, token);
+    const output = await sendEmail(emailData);
     console.log(
       '%s %s : SENT LINK %s to %s',
       req.ip,
       req.body.primaryEmail,
-      resetLink,
-      emailTo
+      output.privateBackendMessage,
+      output.to
     );
-    return res.status(200).json({ emailTo });
+    return res.status(200).json({ emailTo: emailData.to });
   })
 );
 

@@ -1,6 +1,4 @@
-const wrapAsync = require('../../utils/wrapAsync');
-
-module.exports = wrapAsync(async (req, token) => {
+module.exports = (req, token) => {
   const emailTo =
     process.env.NODE_ENV === 'production' && process.env.SILENT === 'false'
       ? family.primaryEmail
@@ -29,7 +27,5 @@ module.exports = wrapAsync(async (req, token) => {
       'Jerome'
     };
 
-  output = await sendEmail(emailData);
-
-  return { emailTo, resetLink };
-});
+  return emailData;
+};

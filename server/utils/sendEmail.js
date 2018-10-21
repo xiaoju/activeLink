@@ -10,9 +10,10 @@ module.exports = emailData =>
       if (error) {
         error.statusCode = 503;
         error.frontEndData = emailData.frontEndData;
-        // even if mailing failed, still should pass the frontEndData to client
+        // even if mailing failed, still should pass the "frontEndData" to client
         // to show some on-screen confirmation. We even could send them the
         // confirmation email later manually
+        error.privateBackendMessage = emailData.privateBackendMessage;
         return reject(error);
       }
       return resolve(emailData);

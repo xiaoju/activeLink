@@ -1,7 +1,7 @@
 module.exports = (err, req, res, next) => {
-  console.error(
+  console.log(
     req.ip,
-    req.user.primaryEmail,
+    (req.user && req.user.primaryEmail) || (req.body && req.body.primaryEmail),
     err.statusCode,
     err.privateBackendMessage,
     err.stack

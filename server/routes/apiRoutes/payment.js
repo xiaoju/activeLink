@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const capitalizeFirstLetter = require('../../utils/capitalizeFirstLetter');
 const validateCharge = require('../../utils/validateCharge');
 const requireLogin = require('../../middlewares/requireLogin');
