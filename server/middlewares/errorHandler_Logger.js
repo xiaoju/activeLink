@@ -5,8 +5,9 @@ module.exports = (err, req, res, next) => {
     req.originalUrl,
     err.statusCode,
     err.privateBackendMessage,
+    err.errorLabels,
+    err.name,
     err.stack
   );
-  debugger;
   next(err);
 };

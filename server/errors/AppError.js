@@ -10,17 +10,8 @@ class AppError extends Error {
     this.name = this.constructor.name;
     this.message = message || 'Internal Server Error!';
     this.statusCode = statusCode || 500;
+    // this.__proto__ = AppError.prototype; // is this necessary?!
   }
 }
-
-// https://medium.com/@xpl/javascript-deriving-from-error-properly-8d2f8f315801
-// class MyError extends Error {
-//    constructor (message) {
-//       super (message)
-//       this.constructor = MyError
-//       this.__proto__   = MyError.prototype
-//       this.message     = message
-//    }
-// }
 
 module.exports = AppError;

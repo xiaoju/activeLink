@@ -22,72 +22,54 @@ router.post(
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // const userInput = saveUserInput(req.body);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Save the raw user input into database, for future reference
-    // userInput is all of req.body without req.body.stripeToken
-    const userInput = {
-      // stripeTokenId: req.body.stripeToken ? req.body.stripeToken.id : null,
-      paymentOption: req.body.paymentOption,
-      installmentsQuantity: req.body.installmentsQuantity,
-      familyId: req.body.familyId,
-      eventId: req.body.eventId,
-      validKids: req.body.validKids,
-      validParents: req.body.validParents,
-      validAddresses: req.body.validAddresses,
-      validMedia: req.body.validMedia,
-      validFamilyById: req.body.validFamilyById,
-      validChecked: req.body.validChecked,
-      photoConsent: req.body.photoConsent,
-      total: req.body.total,
-      timestamp: Date.now()
-    };
+    // Save the raw user input (userInput) into database for future reference
+    const { stripeToken, ...userInput } = req.body;
+    userInput.timestamp = Date.now();
+    if (stripeToken) {
+      userInput.stripeTokenId = stripeToken.id;
+    }
+    req.user.inputsHistory.push(userInput);
 
-    const inputHistoryNewCount = req.user.inputsHistory.push(userInput); // NB we won't use this const
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TODO .trim() on familyNames and firstNames
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // rename the variables from frontend, for clarity:
-    const familyId = req.user.familyId,
-      stripeTokenId = req.body.stripeToken ? req.body.stripeToken.id : null,
-      primaryEmail = req.user.primaryEmail,
-      paymentOption = req.body.paymentOption,
-      installmentsQuantity = req.body.installmentsQuantity,
-      frontendEventId = req.body.eventId,
-      frontendAllKids = req.body.validKids,
-      frontendAllParents = req.body.validParents,
-      frontendAllParentsAndKids = frontendAllKids.concat(frontendAllParents),
-      frontendAddresses = req.body.validAddresses,
-      frontendMedia = req.body.validMedia,
-      frontendFamilyById = req.body.validFamilyById,
-      frontendTotal = req.body.total,
-      frontendPhotoConsent = req.body.photoConsent,
-      frontendChecked = req.body.validChecked,
-      frontendCharge = {
-        frontendAllKids,
-        frontendAllParents,
-        frontendMedia,
-        frontendFamilyById,
-        frontendTotal,
-        frontendChecked
-      };
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // look up the event details, from backend database
-    // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
+    const { familyId, primaryEmail } = req.user;
+    const {
+      paymentOption,
+      installmentsQuantity,
+      eventId: frontendEventId,
+      validKids: frontendAllKids,
+      validParents: frontendAllParents,
+      validAddresses: frontendAddresses,
+      validMedia: frontendMedia,
+      validFamilyById: frontendFamilyById,
+      total: frontendTotal,
+      photoConsent: frontendPhotoConsent,
+      validChecked: frontendChecked,
+      stripeTokenId
+    } = userInput;
+    const frontendAllParentsAndKids = frontendAllKids.concat(
+      frontendAllParents
+    );
 
     let thisAsso = await Asso.findOne({ id: 'a0' });
+    // TODO I shouldn't be looking up this data again, I already did it in authRoutes (get)!
     const assoName = thisAsso.name;
     const thisEvent = thisAsso.eventsById.e0;
     // TODO e0 and a0 are hardcoded!
     const previousRegistered = thisAsso.registrations;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     let applyDiscount = validateCharge({
       familyId,
-      frontendCharge,
+      frontendAllKids,
+      frontendAllParents,
+      frontendMedia,
+      frontendFamilyById,
+      frontendTotal,
+      frontendChecked,
       thisEvent
     });
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TODO change from real data delete to just `delete` flag
     // "Delete" (= set `deleted` flag to `true`) kids and parents in the
@@ -106,11 +88,7 @@ router.post(
         userId => !frontendAllParentsAndKids.includes(userId)
       );
 
-      User.deleteMany({ id: { $in: droppedParentsAndKids } }, function(err) {
-        if (err) {
-          console.log(req.ip, familyId, 'ERROR by deleteMany: ', err);
-        }
-      });
+      User.deleteMany({ id: { $in: droppedParentsAndKids } });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,65 +111,28 @@ router.post(
     let thisFamily = await req.user.save();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // NewUsersSaved = await saveNewUsers(frontendAllParentsAndKids, frontendFamilyById);
     // save new users (kids and parents) from frontend into
     // `users` collection (firstName, familyName and kidGrade):
-    frontendAllParentsAndKids.map(async userId => {
-      const newUserData = frontendFamilyById[userId];
-      let newOrUpdatedUser;
-
-      let existingUser;
-      try {
-        existingUser = await User.findOne({ id: userId });
-      } catch (error) {
-        console.log(
-          'familyId: ',
-          familyId,
-          '. billingRoutes.js // line 163 // error by findOne: ',
-          error
-        );
-      }
-
-      if (existingUser) {
-        // console.log('found existing user: ', newUserData.firstName);
-        try {
+    frontendAllParentsAndKids.map(
+      wrapAsync(async userId => {
+        const newUserData = frontendFamilyById[userId];
+        let newOrUpdatedUser;
+        let existingUser = await User.findOne({ id: userId });
+        if (existingUser) {
           newOrUpdatedUser = await existingUser.set(newUserData);
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. error by replacing old data: ',
-            error
-          );
-        }
-      } else {
-        // console.log('creating new user: ', newUserData.firstName);
-        try {
+        } else {
           newOrUpdatedUser = await new User(newUserData).save();
-        } catch (error) {
-          console.log(
-            'familyId: ',
-            familyId,
-            '. error by creating new user: ',
-            error
-          );
         }
-      }
-      newOrUpdatedUser.save();
-      // console.log('newOrUpdatedUser: ', newOrUpdatedUser);
-    });
+        newOrUpdatedUser.save();
+      })
+    );
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handleStripePaymentSpecifics()
     // execute the payment
-    // console.log('billingRoutes, 244, testing paymentOption: ', paymentOption);
 
-    const {
-      // eventId,
-      eventName
-      // discountedPrices,
-      // standardPrices
-    } = thisAsso.eventsById.e0;
-
+    const eventName = thisAsso.eventsById.e0.eventName;
     const chargeDescription = assoName + '-' + eventName + '-' + primaryEmail;
 
     let stripeReceipt;
@@ -206,10 +147,7 @@ router.post(
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save stripeCharge receipt into this `family` collection, in database,
-      // for future reference:
       const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
-      // console.log('billingRoutes, 270, ReceiptsCount: ', ReceiptsCount);
-      // console.log('billingRoutes, 283, stripeReceipt.id: ', stripeReceipt.id);
 
       thisFamily = await req.user.save(); // TODO move this few lines after, outside of if loop, then remove the other similar line
     }
@@ -222,6 +160,7 @@ router.post(
     ) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save the paid classes into the `registrations` property of `asso`
+      // registrationSaved = await saveRegistrations(previousRegistered, frontendChecked);
 
       // TODO in case of error inside this 'succeeded' loop, the risk is that
       // a parent has paid, but the classes don't get recorded in his profile.
@@ -237,10 +176,6 @@ router.post(
       let newRegistered = deepMerge(previousRegistered, frontendChecked, {
         arrayMerge
       });
-
-      // console.log('previousRegistered: ', previousRegistered);
-      // console.log('frontendChecked: ', frontendChecked);
-      // console.log('newRegistered: ', newRegistered);
 
       updatedAsso = await thisAsso.set({ registrations: newRegistered });
       updatedAsso.save();

@@ -27,14 +27,12 @@ const testMandatory = require('./testMandatory');
 
 module.exports = ({
   familyId,
-  frontendCharge: {
-    frontendAllKids,
-    frontendAllParents,
-    frontendMedia,
-    frontendFamilyById,
-    frontendTotal,
-    frontendChecked
-  },
+  frontendAllKids,
+  frontendAllParents,
+  frontendMedia,
+  frontendFamilyById,
+  frontendTotal,
+  frontendChecked,
   thisEvent: {
     discountQualifiers,
     standardPrices,
