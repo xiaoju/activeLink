@@ -108,8 +108,6 @@ router.post(
     req.user.familyMedia = frontendMedia;
     req.user.photoConsent = frontendPhotoConsent;
 
-    let thisFamily = await req.user.save();
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // NewUsersSaved = await saveNewUsers(frontendAllParentsAndKids, frontendFamilyById);
     // save new users (kids and parents) from frontend into
@@ -124,7 +122,7 @@ router.post(
         } else {
           newOrUpdatedUser = await new User(newUserData).save();
         }
-        newOrUpdatedUser.save();
+        await newOrUpdatedUser.save();
       })
     );
 
@@ -148,10 +146,11 @@ router.post(
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save stripeCharge receipt into this `family` collection, in database,
       const ReceiptsCount = req.user.paymentReceipts.push(stripeReceipt); // NB we won't use this const
-
-      thisFamily = await req.user.save(); // TODO move this few lines after, outside of if loop, then remove the other similar line
     }
 
+    thisFamily = await req.user.save();
+
+    // and now, if success...
     if (
       (paymentOption === 'creditCard' &&
         stripeReceipt.status === 'succeeded') ||
@@ -166,9 +165,7 @@ router.post(
       // a parent has paid, but the classes don't get recorded in his profile.
       // Should automatically either save the classes later, either inform the admin!
 
-      // console.log('--------------------------------------');
-      // console.log('stripeReceipt.status: ', stripeReceipt.status);
-
+      // TODO registrations should be in their own mongo collection
       const arrayMerge = (arr1, arr2) => [...new Set(arr1.concat(arr2))];
       // arrayMerge defines how the deepMerge shall proceed with arrays:
       // concatenate and remove the duplicates.
@@ -178,7 +175,7 @@ router.post(
       });
 
       updatedAsso = await thisAsso.set({ registrations: newRegistered });
-      updatedAsso.save();
+      await updatedAsso.save();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // // double checking if really saved:
@@ -193,13 +190,9 @@ router.post(
       // }
       // newAssoRegistrations = newAsso.registrations;
       // // here I would need some comparison with the data from frontend.
-      // // For now only a manual check in the console
-      // console.log('newAssoRegistrations: ', newAssoRegistrations);
-      // console.log('--------------------------------------------');
-
-      // TODO is it ok to close the `if` loop in next row???!
     }
 
+    // and now, in all cases: success or failed
     const publicReceipt = await buildPublicReceipt({
       familyId,
       primaryEmail,
