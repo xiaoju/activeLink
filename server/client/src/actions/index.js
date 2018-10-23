@@ -83,13 +83,11 @@ export const handlePayment = payload => async dispatch => {
       error.response.data &&
       error.response.data.frontEndData
     ) {
-      console.log('still showing receipt');
       dispatch({
         type: LOAD_RECEIPT,
         payload: error.response.data.frontEndData
       });
     } else {
-      console.log('redirect to sorry');
       dispatch(push('/sorry'));
     }
   }

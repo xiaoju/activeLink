@@ -3,7 +3,8 @@ const capitalizeFirstLetter = require('../capitalizeFirstLetter');
 module.exports = publicReceipt =>
   // prettier-ignore
   process.env.SILENT === 'true' ? '' :
-    'Dear ' + capitalizeFirstLetter(
+    'Dear ' +
+    capitalizeFirstLetter(
       publicReceipt.users[publicReceipt.allParents[0]].firstName) + ',\n\n' +
     'thank you for your ' +
     (publicReceipt.paymentOption === 'creditCard' ? '' : 'pre-') + 'registration to ' +

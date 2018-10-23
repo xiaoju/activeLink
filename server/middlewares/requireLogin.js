@@ -1,14 +1,14 @@
 module.exports = (req, res, next) => {
   if (!req.user) {
-    console.log(req.ip, ': REJECTED logged-in access to', req.originalUrl);
-    return res.status(401).send({ message: 'Please log in...' });
+    console.log(req.ip, req.originalUrl, 'REJECTED USER access');
+    return res.sendStatus(401);
   }
   if (req.user) {
     console.log(
       req.ip,
       req.user.primaryEmail,
-      ': GRANTED logged-in access to',
-      req.originalUrl
+      req.originalUrl,
+      'GRANTED USER access'
     );
   }
   next();
