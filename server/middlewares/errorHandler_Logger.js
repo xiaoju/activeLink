@@ -1,13 +1,15 @@
 module.exports = (err, req, res, next) => {
   console.log(
-    req.ip,
-    (req.user && req.user.primaryEmail) || (req.body && req.body.primaryEmail),
-    req.originalUrl,
-    err.statusCode,
-    err.privateBackendMessage,
-    err.errorLabels,
-    err.name,
-    err.stack
+    req.ip || '[ip]',
+    (req.user && req.user.primaryEmail) ||
+      (req.body && req.body.primaryEmail) ||
+      '[email]',
+    req.originalUrl || '[URL]',
+    err.statusCode || '[statusCode]',
+    err.privateBackendMessage || '[privateBackendMessage]',
+    err.errorLabels || '[errorLabels]',
+    err.name || '[name]',
+    err.stack || '[stack]'
   );
   next(err);
 };

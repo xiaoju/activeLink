@@ -1,9 +1,9 @@
+const NotLoggedIn = require('../errors/NotLoggedIn');
+
 module.exports = (req, res, next) => {
   if (!req.user) {
-    console.log(req.ip, req.originalUrl, 'REJECTED USER access');
-    return res.sendStatus(401);
-  }
-  if (req.user) {
+    throw new NotLoggedIn();
+  } else {
     console.log(
       req.ip,
       req.user.primaryEmail,
