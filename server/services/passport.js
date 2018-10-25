@@ -4,7 +4,12 @@ var LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const Family = mongoose.model('families');
-// const wrapAsync = require('../../utils/wrapAsync');
+const FoundNoAccount = require('../errors/FoundNoAccount');
+const WrongPassword = require('../errors/WrongPassword');
+const wrapAsync = require('../utils/wrapAsync');
+var bcrypt = require('bcrypt-nodejs');
+const util = require('util');
+const bcryptCompare = util.promisify(bcrypt.compare);
 
 passport.serializeUser((family, done) => {
   if (!family.id) {
@@ -28,45 +33,31 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: 'primaryEmail',
-      passwordField: 'password',
-      passReqToCallback: true
+      passwordField: 'password'
     },
-    function(req, primaryEmail, password, done) {
-      if (primaryEmail) primaryEmail = primaryEmail.toLowerCase();
-      // TODO careful that not 2 different accounts can be created, with
-      // different cases, but pointing to same email address
+    wrapAsync(async function(primaryEmail, candidatePassword, done) {
+      if (primaryEmail) {
+        primaryEmail = primaryEmail.toLowerCase();
+      }
 
-      process.nextTick(function() {
-        Family.findOne({ primaryEmail: primaryEmail }, function(err, family) {
-          if (err) {
-            console.log(req.ip, ', ', primaryEmail, ', AUTH ERROR: ', err);
-            return done(err);
-          }
-
-          if (!family) {
-            console.log(req.ip, ', ', primaryEmail, ': FOUND NO ACCOUNT');
-            return done(null, false, {
-              message:
-                'No known account for this email. ' +
-                'Please try again, or contact dev@xiaoju.io for support.'
-            });
-          }
-
-          family.comparePassword(password, function(err, isMatch) {
-            if (isMatch) {
-              // console.log('JUST LOGGED IN: ', primaryEmail);
-              return done(null, family, { message: 'pwd_did_match' });
-            } else {
-              console.log(req.ip, ', ', primaryEmail, ': NO PWD MATCH');
-              return done(null, false, {
-                message:
-                  'Wrong password. ' +
-                  'Please try again, or contact dev@xiaoju.io for support.'
-              });
-            }
-          });
-        });
+      const thisFamily = await Family.findOne({
+        primaryEmail: primaryEmail
       });
-    }
+
+      if (!thisFamily) {
+        throw new FoundNoAccount();
+      }
+
+      const isMatch = await bcryptCompare(
+        candidatePassword,
+        thisFamily.password
+      );
+
+      if (isMatch) {
+        return done(null, thisFamily);
+      } else {
+        throw new WrongPassword();
+      }
+    })
   )
 );
