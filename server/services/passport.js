@@ -19,15 +19,15 @@ passport.serializeUser((family, done) => {
   }
 });
 
-passport.deserializeUser((id, done) => {
-  Family.findById(id)
-    .then(family => {
-      done(null, family);
-    })
-    .catch(error => {
-      done(error);
-    });
-});
+passport.deserializeUser(
+  wrapAsync(async (req, id, done) => {
+    const thisFamily = await Family.findById(id);
+    if (!thisFamily) {
+      throw new FoundNoAccount('by deserializeUser');
+    }
+    done(null, thisFamily);
+  })
+);
 
 passport.use(
   new LocalStrategy(
@@ -39,11 +39,9 @@ passport.use(
       if (primaryEmail) {
         primaryEmail = primaryEmail.toLowerCase();
       }
-
       const thisFamily = await Family.findOne({
         primaryEmail: primaryEmail
       });
-
       if (!thisFamily) {
         throw new FoundNoAccount();
       }
