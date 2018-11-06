@@ -235,6 +235,7 @@ class LogIn extends Component {
                   // type="email"
                   name="loginEmail"
                   id="loginEmail"
+                  autoComplete="username email"
                   value={loginEmail}
                   onChange={this.handleChange}
                 />
@@ -256,6 +257,7 @@ class LogIn extends Component {
                     type="password"
                     name="loginPassword"
                     id="loginPassword"
+                    autoComplete="current-password"
                     value={loginPassword}
                     onChange={this.handleChange}
                   />
