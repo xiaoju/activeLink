@@ -11,3 +11,4 @@ exports.photoConsent = require('./photoConsent');
 exports.volunteering = require('./volunteering');
 exports.closing = require('./closing');
 exports.emailTo = require('./emailTo');
+exports.emailCc = require('./emailCc');

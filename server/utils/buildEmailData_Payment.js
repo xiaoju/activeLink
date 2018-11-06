@@ -3,6 +3,7 @@ const thisEmail = require('./EmailBuilder_Payment');
 exports.buildEmailData = function(publicReceipt, thisAsso) {
   const thisEmailSubject = thisEmail.subject(publicReceipt);
   const thisEmailTo = thisEmail.emailTo(publicReceipt);
+  const thisEmailCc = thisEmail.emailCc(thisAsso);
   const thisEmailText =
     thisEmail.greetings(publicReceipt) +
     thisEmail.paymentInstructions(publicReceipt) +
@@ -16,13 +17,18 @@ exports.buildEmailData = function(publicReceipt, thisAsso) {
     thisEmail.volunteering(publicReceipt) +
     thisEmail.closing;
 
-  return {
-    from: thisAsso.emailFrom,
+  const EmailData = {
+    from: thisAsso.replyTo,
     to: thisEmailTo,
-    cc: thisAsso.backupEmail,
-    'h:Reply-To': thisAsso.replyTo,
+    // 'h:Reply-To': thisAsso.replyTo,
     subject: thisEmailSubject,
     text: thisEmailText,
     frontEndData: publicReceipt
   };
+
+  if (thisEmailCc) {
+    EmailData.cc = thisEmailCc;
+  }
+
+  return EmailData;
 };

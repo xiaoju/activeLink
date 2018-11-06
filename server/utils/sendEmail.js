@@ -14,7 +14,6 @@ module.exports = emailData =>
         // to show some on-screen confirmation. We even could send them the
         // confirmation email later manually
         error.privateBackendMessage = emailData.privateBackendMessage;
-        debugger;
         return reject(error);
       }
       return resolve(emailData);
