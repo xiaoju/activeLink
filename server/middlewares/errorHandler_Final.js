@@ -17,6 +17,13 @@ module.exports = (err, req, res, next) => {
   // MongoNetworkError: cannot connect to database
   // MongoError: something wrong with the query, e.g. Family.find({ Date: { $last: 'Date' } });
 
+  // if (error instanceof MongoError) {
+  //   return res.status(503).json({
+  //     type: 'MongoError',
+  //     message: error.message
+  //   });
+  // }
+
   if (err.name === 'CastError') {
     // if session id gets corrupted, this deletes the cookie from client browser.
     req.session = null;
