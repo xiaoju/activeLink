@@ -3,7 +3,6 @@ const Family = mongoose.model('families');
 const Asso = mongoose.model('assos');
 const User = mongoose.model('users');
 const Registration = mongoose.model('registrations');
-
 const wrapAsync = require('./wrapAsync');
 
 module.exports = wrapAsync(async () => {

@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 router
   .get('/', function(req, res) {
-    // console.log('THIS IS /api/v1');
+    // This is `/api/v1`
     res.status(200).send({ name: 'activeLink', version: '1.0.0' });
   })
   .use('/logout', require('./logout'))

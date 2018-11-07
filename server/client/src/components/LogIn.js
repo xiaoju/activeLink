@@ -131,6 +131,14 @@ class LogIn extends Component {
         return;
       }
 
+      case 'no_admin': {
+        this.setState({
+          errorMessage:
+            'You need admin rights to access the page you just requested.'
+        });
+        return;
+      }
+
       // case 'pwd_did_match'
 
       default:

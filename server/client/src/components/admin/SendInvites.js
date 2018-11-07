@@ -64,14 +64,18 @@ class sendInvites extends Component {
         selectedAsso: this.state.selectedAsso
       });
     } catch (err) {
-      console.log('SendInvites.js, ERROR by createFamilies(): ', err);
+      // console.log('SendInvites.js, ERROR by createFamilies(): ', err);
+      // console.log('err.response: ', err.response.status statusText);
+      // debugger;
       this.setState({
         showingForm: true,
         loadingResult: false,
         showingResult: false,
         errorMessage:
-          'Something went wrong, sorry about this! ERROR: ' +
-          err.response.data.error
+          'Something went wrong, sorry about this! ERROR ' +
+          (err.response && err.response.status) +
+          ' ' +
+          (err.response && err.response.statusText)
       });
       return;
     }

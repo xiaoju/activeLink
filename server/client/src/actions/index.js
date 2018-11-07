@@ -35,12 +35,9 @@ export const fetchUser = () => async dispatch => {
     // TODO dispatch something if there is no answer from backend
     // so that user knows where it's going wrong
   } catch (error) {
-    // console.log('Error by ActiveLinkAPI.fetchFamily(): ', error);
-
     if (error.response && error.response.status === 401) {
       dispatch(push('/login'));
     } else {
-      // dispatch(push('/sorry'));
       dispatch(push('/login/fetchError'));
     }
   }
@@ -59,7 +56,11 @@ export const loadDashboard = () => async dispatch => {
     const dashboard = await ActiveLinkAPI.fetchDashboard();
     dispatch({ type: LOAD_DASHBOARD, payload: dashboard.data });
   } catch (err) {
-    console.log('ERROR: ', err.toString());
+    if (err.response && err.response.status === 403) {
+      dispatch(push('/login/no_admin'));
+    } else {
+      dispatch(push('/login/serverError'));
+    }
   }
 };
 
@@ -68,7 +69,7 @@ export const fetchDump = () => async dispatch => {
     const fetched = await axios.get('/api/v1/dbdump');
     dispatch({ type: LOAD_DUMP, payload: fetched.data });
   } catch (error) {
-    console.log('Error in axios fetchDump. Error: ', error);
+    dispatch(push('/login/serverError'));
   }
 };
 

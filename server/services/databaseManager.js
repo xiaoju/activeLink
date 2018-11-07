@@ -47,15 +47,27 @@ mongoose
 mongoose.connection.on('disconnected', () => {
   // TODO should I throw a 503 error? Or store the request (where?!) and handle it later?
   console.log('-> database lost connection');
+  // throw 'oops';
 });
 
 mongoose.connection.on('connected', () => {
   console.log('-> database connected');
 });
 
-mongoose.connection.on('error', () => {
-  console.log('connection error');
+mongoose.connection.on('error', err => {
+  console.log('Mongoose connection error:', err);
 });
+
+// process.on('SIGINT', function() {
+//  //  mongoose.connection.close(function() {
+//     mongoose.disconnect() {
+//     console.log(
+//       'Mongoose default connection was disconnected due to application termination'
+//     );
+//     //  process.exit(0);
+//     process.exitCode = 0;
+//   });
+// });
 
 // mongoose.connection.once('open', function() {
 //   // we're connected!
