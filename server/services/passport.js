@@ -9,7 +9,6 @@ const WrongPassword = require('../errors/WrongPassword');
 const wrapAsync = require('../utils/wrapAsync');
 var bcrypt = require('bcrypt');
 const util = require('util');
-const bcryptCompare = util.promisify(bcrypt.compare);
 
 passport.serializeUser((family, done) => {
   if (!family.id) {
@@ -45,8 +44,7 @@ passport.use(
       if (!thisFamily) {
         throw new FoundNoAccount();
       }
-
-      const isMatch = await bcryptCompare(
+      const isMatch = await bcrypt.compare(
         candidatePassword,
         thisFamily.password
       );
