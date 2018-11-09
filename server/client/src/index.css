@@ -156,22 +156,6 @@
     right: 0;
   }
 
-  nav i.material-icons.tiny {
-    font-size: 1rem;
-  }
-
-  nav i.material-icons.small {
-    font-size: 2rem;
-  }
-
-  nav i.material-icons.medium {
-    font-size: 4rem;
-  }
-
-  nav i.material-icons.large {
-    font-size: 6rem;
-  }
-
   .inline-icon {
     vertical-align: bottom;
     font-size: 5px !important;

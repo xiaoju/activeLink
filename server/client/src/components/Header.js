@@ -22,15 +22,6 @@ class Header extends Component {
             </a>
 
             <ul id="nav-mobile" className="right">
-              {/* <li>
-                {!profile ? (
-                  <a href="/auth/google">Login with Google</a>
-                ) : (
-                  <a href="/api/v1/logout">
-                    <i className="medium material-icons">exit_to_app</i>
-                  </a>
-                )}
-              </li> */}
               <li>
                 {!profile ? (
                   <Link title="Sign in" to="/login">

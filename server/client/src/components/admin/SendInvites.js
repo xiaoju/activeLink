@@ -5,6 +5,7 @@ import SpinnerWrapper from '../SpinnerWrapper';
 import * as actions from '../../actions';
 import { getProfile, getAdminAssos, getAssosById } from '../../selectors';
 import * as ActiveLinkAPI from '../../utils/ActiveLinkAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class sendInvites extends Component {
   constructor(props) {
@@ -159,9 +160,12 @@ class sendInvites extends Component {
                   <br />
                   <form onSubmit={this.onSubmit}>
                     <div className="input-field loginEmail">
-                      <i className={'material-icons prefix icon-orange'}>
-                        email
-                      </i>
+                      <FontAwesomeIcon
+                        style={{ transform: 'translate(-30%, 18%)' }}
+                        className="prefix"
+                        icon="envelope"
+                        color="#ffa726"
+                      />
                       <textarea
                         name="emailsList"
                         value={emailsList}
@@ -221,7 +225,11 @@ class sendInvites extends Component {
                       type="submit"
                       name="action"
                     >
-                      <i className="material-icons left">send</i>
+                      <FontAwesomeIcon
+                        style={{ transform: 'translate(-30%, 18%)' }}
+                        icon="paper-plane"
+                        size="2x"
+                      />
                       Create
                     </button>
                   </form>
