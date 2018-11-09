@@ -7,13 +7,13 @@ const Family = mongoose.model('families');
 const FoundNoAccount = require('../errors/FoundNoAccount');
 const WrongPassword = require('../errors/WrongPassword');
 const wrapAsync = require('../utils/wrapAsync');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 const util = require('util');
 const bcryptCompare = util.promisify(bcrypt.compare);
 
 passport.serializeUser((family, done) => {
   if (!family.id) {
-    done(err, null);
+    throw new FoundNoAccount('by serializeUser');
   } else {
     done(null, family.id);
   }

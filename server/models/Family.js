@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-var bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 const familySchema = new Schema({
   familyId: { type: String, default: '' },
@@ -29,21 +29,17 @@ const familySchema = new Schema({
   paymentReceipts: { type: Array, default: [] }
 });
 
-familySchema.pre('save', function(next) {
-  var family = this;
-  var SALT_FACTOR = 14;
-
+familySchema.pre('save', async function(next) {
+  let family = this;
   if (!family.isModified('password')) return next();
-
-  bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
-    if (err) return next(err);
-
-    bcrypt.hash(family.password, salt, null, function(err, hash) {
-      if (err) return next(err);
-      family.password = hash;
-      next();
-    });
-  });
+  try {
+    const saltRounds = 14;
+    const hash = await bcrypt.hash(family.password, saltRounds);
+    family.password = hash;
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 });
 
 mongoose.model('families', familySchema);
