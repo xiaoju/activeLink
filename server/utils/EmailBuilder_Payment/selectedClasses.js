@@ -1,3 +1,5 @@
+const capitalizeFirstLetter = require('../capitalizeFirstLetter');
+
 module.exports = publicReceipt =>
   '# Selected classes # \n\n' +
   publicReceipt.purchasedClassItems

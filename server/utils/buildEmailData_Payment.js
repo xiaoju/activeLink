@@ -16,7 +16,6 @@ exports.buildEmailData = function(publicReceipt, thisAsso) {
     thisEmail.photoConsent(publicReceipt) +
     thisEmail.volunteering(publicReceipt) +
     thisEmail.closing;
-
   const EmailData = {
     from: thisAsso.replyTo,
     to: thisEmailTo,
